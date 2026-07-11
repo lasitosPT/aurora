@@ -217,3 +217,22 @@ describe('aurora-grid (kendo parity wave 2)', () => {
     grid.remove()
   })
 })
+
+describe('aurora-grid (virtualization)', () => {
+  it('renders only a window of a 10k-row set with honest spacers', () => {
+    const grid = document.createElement('aurora-grid') as AuroraGrid
+    grid.setAttribute('virtual', '')
+    grid.setAttribute('row-height', '36')
+    document.body.append(grid)
+    grid.columns = [{ field: 'n', title: 'N' }]
+    grid.data = Array.from({ length: 10000 }, (_, n) => ({ n }))
+
+    const rows = grid.shadowRoot?.querySelectorAll('tbody tr[data-index]')
+    expect(rows!.length).toBeLessThan(100)
+    expect(grid.shadowRoot?.querySelector('table')?.getAttribute('aria-rowcount')).toBe('10000')
+    const spacers = grid.shadowRoot?.querySelectorAll('tbody tr[aria-hidden]')
+    expect(spacers?.length).toBe(2)
+    expect((spacers?.[1] as HTMLElement).style.height).toMatch(/px$/)
+    grid.remove()
+  })
+})

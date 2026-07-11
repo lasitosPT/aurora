@@ -145,7 +145,10 @@ type Row = Record<string, unknown>
  * Escape cancels), row detail templates (`detail = (row) => html`), column
  * hiding (`hidden`, `toggleColumn()`), and CSV export (`exportable`,
  * `toCsv()`/`exportCsv()`). Emits `aurora-sort`, `aurora-filter`,
- * `aurora-page`, `aurora-selection`, `aurora-edit`.
+ * `aurora-page`, `aurora-selection`, `aurora-edit`. With `virtual` (and no
+ * paging), only the visible window of rows is rendered inside
+ * `--aurora-grid-height` — spacer rows keep the scrollbar honest, so 100k rows
+ * stay smooth. Virtual mode ignores grouping and detail rows.
  */
 export class AuroraGrid extends AuroraElement {
   #columns: GridColumn[] = []
@@ -158,6 +161,9 @@ export class AuroraGrid extends AuroraElement {
   private selectedRows = new Set<Row>()
   private collapsed = new Set<string>()
   private expanded = new Set<Row>()
+  private scrollTopSaved = 0
+  private vStart = 0
+  private vTotal = 0
   private widths = new Map<string, number>()
   private draggedField: string | null = null
   #groupBy: string | null = null
@@ -315,6 +321,13 @@ export class AuroraGrid extends AuroraElement {
     const pages = pageSize > 0 ? Math.max(Math.ceil(total / pageSize), 1) : 1
     this.page = clamp(this.page, 0, pages - 1)
     if (pageSize > 0) rows = rows.slice(this.page * pageSize, (this.page + 1) * pageSize)
+    else if (this.hasAttribute('virtual')) {
+      const rowH = this.numberAttr('row-height', 36)
+      const viewH = this.root.querySelector('.viewport')?.clientHeight || 420
+      this.vTotal = total
+      this.vStart = clamp(Math.floor(this.scrollTopSaved / rowH) - 5, 0, Math.max(total - 1, 0))
+      rows = rows.slice(this.vStart, this.vStart + Math.ceil(viewH / rowH) + 10)
+    }
     return { rows, total, pages, pageSize }
   }
 
@@ -459,10 +472,46 @@ export class AuroraGrid extends AuroraElement {
         ? `<div class="pager" part="pager"><span>${total === 0 ? 0 : this.page * pageSize + 1}–${Math.min((this.page + 1) * pageSize, total)} of ${total}</span><span style="display:inline-flex;gap:8px;align-items:center">${sizeSelect}<button data-page="prev" ${this.page === 0 ? 'disabled' : ''} aria-label="Previous page">‹</button> ${this.page + 1} / ${pages} <button data-page="next" ${this.page >= pages - 1 ? 'disabled' : ''} aria-label="Next page">›</button></span></div>`
         : ''
 
-    this.root.innerHTML = `<style>${STYLE}</style>${toolbar}<div class="viewport"><table role="grid" aria-rowcount="${total}"><thead><tr>${selectHead}${expandHead}${head}</tr>${filterRow}</thead><tbody>${body}</tbody>${foot}</table>${rows.length === 0 ? '<div class="empty">No matching rows.</div>' : ''}</div>${pager}`
+    const virtual = this.hasAttribute('virtual') && pageSize <= 0
+    if (virtual) {
+      const rowH = this.numberAttr('row-height', 36)
+      const below = Math.max(this.vTotal - this.vStart - rows.length, 0)
+      body =
+        `<tr aria-hidden="true" style="height:${this.vStart * rowH}px"></tr>` +
+        body +
+        `<tr aria-hidden="true" style="height:${below * rowH}px"></tr>`
+    }
+    const vh = virtual ? ' style="max-height: var(--aurora-grid-height, 420px)"' : ''
+    this.root.innerHTML = `<style>${STYLE}</style>${toolbar}<div class="viewport"${vh}><table role="grid" aria-rowcount="${total}"><thead><tr>${selectHead}${expandHead}${head}</tr>${filterRow}</thead><tbody>${body}</tbody>${foot}</table>${rows.length === 0 ? '<div class="empty">No matching rows.</div>' : ''}</div>${pager}`
+
+    if (virtual) {
+      const vp = this.root.querySelector<HTMLElement>('.viewport')
+      if (vp) {
+        vp.scrollTop = this.scrollTopSaved
+        let raf = 0
+        vp.addEventListener('scroll', () => {
+          if (raf) return
+          raf = requestAnimationFrame(() => {
+            raf = 0
+            const rowH = this.numberAttr('row-height', 36)
+            const nextStart = clamp(
+              Math.floor(vp.scrollTop / rowH) - 5,
+              0,
+              Math.max(this.vTotal - 1, 0),
+            )
+            if (nextStart !== this.vStart) {
+              this.scrollTopSaved = vp.scrollTop
+              this.render()
+            } else {
+              this.scrollTopSaved = vp.scrollTop
+            }
+          })
+        })
+      }
+    }
 
     this.wire(rows)
-    if (!prefersReducedMotion() && rows.length > 0) {
+    if (!prefersReducedMotion() && rows.length > 0 && !virtual) {
       gsap.fromTo(
         this.root.querySelectorAll('tbody tr'),
         { opacity: 0, y: 6 },

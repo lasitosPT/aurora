@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.15.0
+
+Grid parity wave 3 — virtualization.
+
+- `virtual` (+ `row-height`, default 36): with paging off, only the visible window of
+  rows renders inside `--aurora-grid-height` (420px default); spacer rows keep the
+  scrollbar honest and scroll position survives re-renders — 10k+ rows stay smooth.
+  Virtual mode ignores grouping/detail rows; `aria-rowcount` reports the true total.
+
 ## 0.14.0
 
 Grid parity wave 2.
