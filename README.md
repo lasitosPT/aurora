@@ -44,20 +44,36 @@ Because they're standard custom elements, you write them the same way in JSX, Vu
 
 ## Components
 
-| Element            | Description                              | Attributes                                 |
-| ------------------ | ---------------------------------------- | ------------------------------------------ |
-| `aurora-button`    | Themeable button                         | `variant` (`primary`/`ghost`), `disabled`  |
-| `aurora-magnetic`  | Content magnetically follows the cursor  | `strength` (default `0.4`)                 |
-| `aurora-text`      | Word-by-word masked text reveal          | `stagger`, `delay`                         |
-| `aurora-marquee`   | Seamless horizontal scroller             | `speed` (px/s, default `60`)               |
-| `aurora-tilt`      | 3D tilt toward the cursor                | `max` degrees (default `12`)               |
-| `aurora-modal`     | Animated dialog with backdrop            | `open`; `show()` / `hide()`                |
-| `aurora-tooltip`   | Hover / focus tooltip                    | `text`, `position` (top/bottom/left/right) |
-| `aurora-accordion` | Collapsible panel with animated height   | `label`, `open`; `show()` / `hide()`       |
-| `aurora-tabs`      | Tabbed interface with animated indicator | `active`; wraps `aurora-tab-panel[label]`  |
-| `aurora-scene` ⬦   | Animated 3D wireframe backdrop           | `color`, `detail`, `speed`                 |
+| Element            | Description                              | Attributes                                      |
+| ------------------ | ---------------------------------------- | ----------------------------------------------- |
+| `aurora-button`    | Themeable button                         | `variant` (`primary`/`ghost`), `disabled`       |
+| `aurora-magnetic`  | Content magnetically follows the cursor  | `strength` (default `0.4`)                      |
+| `aurora-text`      | Word-by-word masked text reveal          | `stagger`, `delay`                              |
+| `aurora-marquee`   | Seamless horizontal scroller             | `speed` (px/s, default `60`)                    |
+| `aurora-tilt`      | 3D tilt toward the cursor                | `max` degrees (default `12`)                    |
+| `aurora-modal`     | Animated dialog with backdrop            | `open`; `show()` / `hide()`                     |
+| `aurora-tooltip`   | Hover / focus tooltip                    | `text`, `position` (top/bottom/left/right)      |
+| `aurora-accordion` | Collapsible panel with animated height   | `label`, `open`; `show()` / `hide()`            |
+| `aurora-tabs`      | Tabbed interface with animated indicator | `active`; wraps `aurora-tab-panel[label]`       |
+| `aurora-input`     | Text field with animated focus underline | `label`, `type`, `placeholder`, `value`, `name` |
+| `aurora-switch`    | Animated toggle switch                   | `checked`, `value`, `disabled`, `name`          |
+| `aurora-slider`    | Draggable range slider                   | `min`, `max`, `step`, `value`, `name`           |
+| `aurora-scene` ⬦   | Animated 3D wireframe backdrop           | `color`, `detail`, `speed`                      |
 
 ⬦ imported from `aurora/three`.
+
+### Forms
+
+`aurora-input`, `aurora-switch`, and `aurora-slider` are **form-associated** (via
+`ElementInternals`), so they submit with a surrounding `<form>` just like native inputs:
+
+```html
+<form>
+  <aurora-input name="email" label="Email" type="email"></aurora-input>
+  <aurora-switch name="newsletter" checked></aurora-switch>
+  <aurora-slider name="volume" min="0" max="100" value="70"></aurora-slider>
+</form>
+```
 
 ### Overlays
 

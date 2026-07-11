@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.0
+
+Forms batch — all three are form-associated via `ElementInternals`, so they submit
+natively with a surrounding `<form>`.
+
+- `aurora-input` — text field with an animated focus underline; re-emits `input` / `change`
+- `aurora-switch` — animated toggle with `role="switch"`; submits `value` (default `on`) when checked
+- `aurora-slider` — draggable, keyboard-accessible range slider; emits `input` while sliding, `change` on release
+
 ## 0.2.0
 
 Overlays batch.

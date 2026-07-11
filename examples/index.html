@@ -161,6 +161,30 @@
       </section>
 
       <section>
+        <span class="label">aurora-input + aurora-switch + aurora-slider</span>
+        <form
+          class="card"
+          style="display: flex; flex-direction: column; gap: 24px"
+          onsubmit="event.preventDefault()"
+        >
+          <aurora-input
+            name="email"
+            label="Email"
+            type="email"
+            placeholder="you@example.com"
+          ></aurora-input>
+          <label style="display: flex; align-items: center; gap: 12px">
+            <aurora-switch name="newsletter" checked></aurora-switch>
+            <span>Subscribe to the newsletter</span>
+          </label>
+          <div>
+            <span class="label" style="display: block; margin-bottom: 8px">Volume</span>
+            <aurora-slider name="volume" min="0" max="100" value="70"></aurora-slider>
+          </div>
+        </form>
+      </section>
+
+      <section>
         <span class="label">aurora-marquee</span>
         <aurora-marquee speed="80"
           >GSAP · Three.js · Web Components · Zero config ·
