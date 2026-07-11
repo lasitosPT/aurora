@@ -50,7 +50,9 @@ Because they're standard custom elements, you write them the same way in JSX, Vu
 | -------------------- | ---------------------------------------- | ----------------------------------------------- |
 | `aurora-button`      | Themeable button                         | `variant` (`primary`/`ghost`), `disabled`       |
 | `aurora-magnetic`    | Content magnetically follows the cursor  | `strength` (default `0.4`)                      |
-| `aurora-text`        | Word-by-word masked text reveal          | `stagger`, `delay`                              |
+| `aurora-text`        | Masked text reveal on scroll into view   | `by` (`words`/`chars`), `stagger`, `delay`      |
+| `aurora-scramble`    | Glyph-scramble text decode               | `duration`, `chars`, `hover`; `play()`          |
+| `aurora-typewriter`  | Typed text behind a blinking caret       | `speed`, `delay`, `no-caret`; `start()`         |
 | `aurora-marquee`     | Seamless horizontal scroller             | `speed` (px/s, default `60`)                    |
 | `aurora-tilt`        | 3D tilt toward the cursor                | `max` degrees (default `12`)                    |
 | `aurora-modal`       | Animated dialog with backdrop            | `open`; `show()` / `hide()`                     |

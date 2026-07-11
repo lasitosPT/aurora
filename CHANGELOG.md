@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.0
+
+Text motion batch.
+
+- `aurora-text` now reveals on scroll into view (previously on mount — content already
+  in view still animates immediately) and gains `by="chars"` for a per-character rise
+  inside word masks, like a display headline; emits `aurora-complete`
+- `aurora-scramble` — decodes text through a run of random glyphs, left to right, on
+  scroll into view; `hover` replays on pointer enter; `duration`, `chars`, `play()`
+- `aurora-typewriter` — types text behind a blinking accent caret on scroll into view;
+  `speed` (chars/s), `delay`, `no-caret`, `start()`
+
 ## 0.4.0
 
 Motion & visuals batch — the aurorae from [auroralib.com](https://auroralib.com) as components.

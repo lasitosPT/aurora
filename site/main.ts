@@ -52,10 +52,14 @@ document.querySelectorAll<HTMLButtonElement>('.copy').forEach((btn) => {
   })
 })
 
-/* ---------- aurora-text replay ---------- */
-document.querySelector('.replay')?.addEventListener('click', () => {
-  const el = document.querySelector('#textStage aurora-text')
-  if (el) el.replaceWith(el.cloneNode(true))
+/* ---------- replay buttons: re-mount the card's component ---------- */
+document.querySelectorAll<HTMLButtonElement>('.replay').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const el = btn
+      .closest('.stage')
+      ?.querySelector('aurora-text, aurora-typewriter, aurora-scramble')
+    if (el) el.replaceWith(el.cloneNode(true))
+  })
 })
 
 /* ---------- nav state ---------- */
