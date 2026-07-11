@@ -44,16 +44,43 @@ Because they're standard custom elements, you write them the same way in JSX, Vu
 
 ## Components
 
-| Element           | Description                             | Attributes                                |
-| ----------------- | --------------------------------------- | ----------------------------------------- |
-| `aurora-button`   | Themeable button                        | `variant` (`primary`/`ghost`), `disabled` |
-| `aurora-magnetic` | Content magnetically follows the cursor | `strength` (default `0.4`)                |
-| `aurora-text`     | Word-by-word masked text reveal         | `stagger`, `delay`                        |
-| `aurora-marquee`  | Seamless horizontal scroller            | `speed` (px/s, default `60`)              |
-| `aurora-tilt`     | 3D tilt toward the cursor               | `max` degrees (default `12`)              |
-| `aurora-scene` ⬦  | Animated 3D wireframe backdrop          | `color`, `detail`, `speed`                |
+| Element            | Description                              | Attributes                                 |
+| ------------------ | ---------------------------------------- | ------------------------------------------ |
+| `aurora-button`    | Themeable button                         | `variant` (`primary`/`ghost`), `disabled`  |
+| `aurora-magnetic`  | Content magnetically follows the cursor  | `strength` (default `0.4`)                 |
+| `aurora-text`      | Word-by-word masked text reveal          | `stagger`, `delay`                         |
+| `aurora-marquee`   | Seamless horizontal scroller             | `speed` (px/s, default `60`)               |
+| `aurora-tilt`      | 3D tilt toward the cursor                | `max` degrees (default `12`)               |
+| `aurora-modal`     | Animated dialog with backdrop            | `open`; `show()` / `hide()`                |
+| `aurora-tooltip`   | Hover / focus tooltip                    | `text`, `position` (top/bottom/left/right) |
+| `aurora-accordion` | Collapsible panel with animated height   | `label`, `open`; `show()` / `hide()`       |
+| `aurora-tabs`      | Tabbed interface with animated indicator | `active`; wraps `aurora-tab-panel[label]`  |
+| `aurora-scene` ⬦   | Animated 3D wireframe backdrop           | `color`, `detail`, `speed`                 |
 
 ⬦ imported from `aurora/three`.
+
+### Overlays
+
+```html
+<button onclick="document.querySelector('#dialog').show()">Open</button>
+<aurora-modal id="dialog">
+  <h2>Hello</h2>
+  <p>Press Escape or click the backdrop to close.</p>
+</aurora-modal>
+
+<aurora-tooltip text="Copied to clipboard" position="top">
+  <aurora-button>Copy</aurora-button>
+</aurora-tooltip>
+
+<aurora-accordion label="What is aurora?">
+  A framework-agnostic set of animated web components.
+</aurora-accordion>
+
+<aurora-tabs active="0">
+  <aurora-tab-panel label="Overview">…</aurora-tab-panel>
+  <aurora-tab-panel label="Install">…</aurora-tab-panel>
+</aurora-tabs>
+```
 
 ## Theming
 

@@ -1,5 +1,6 @@
 import { gsap } from 'gsap'
 import { AuroraElement } from '../core/base'
+import { escapeHtml } from '../core/html'
 import { prefersReducedMotion } from '../core/motion'
 import { register } from '../core/register'
 
@@ -9,10 +10,6 @@ const STYLE = `
   .word { display: inline-block; will-change: transform; }
   .space { white-space: pre; }
 `
-
-function escapeHtml(input: string): string {
-  return input.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-}
 
 /**
  * `<aurora-text>` — reveals its text word by word with a masked upward slide.

@@ -80,6 +80,12 @@
         font-weight: 700;
         color: #8a8aa0;
       }
+      :root {
+        --aurora-surface: #16161f;
+        --aurora-fg: #eee;
+        --aurora-border: rgba(255, 255, 255, 0.12);
+        --aurora-muted: #8a8aa0;
+      }
     </style>
   </head>
   <body>
@@ -102,6 +108,56 @@
         <aurora-tilt max="14">
           <div class="card">Tilt me toward your cursor.</div>
         </aurora-tilt>
+      </section>
+
+      <section>
+        <span class="label">aurora-modal + aurora-tooltip</span>
+        <div style="display: flex; gap: 16px; align-items: center">
+          <aurora-tooltip text="Opens a dialog" position="top">
+            <aurora-button onclick="document.querySelector('#dialog').show()"
+              >Open modal</aurora-button
+            >
+          </aurora-tooltip>
+          <aurora-tooltip text="Nothing to see here" position="right">
+            <aurora-button variant="ghost">Hover me</aurora-button>
+          </aurora-tooltip>
+        </div>
+        <aurora-modal id="dialog">
+          <h2 style="margin-top: 0">Motion, built in.</h2>
+          <p>
+            A self-contained dialog — animated with GSAP. Press Escape or click the backdrop to
+            close.
+          </p>
+        </aurora-modal>
+      </section>
+
+      <section>
+        <span class="label">aurora-accordion</span>
+        <div>
+          <aurora-accordion label="What is aurora?" open
+            >A framework-agnostic set of animated web components powered by GSAP and
+            Three.js.</aurora-accordion
+          >
+          <aurora-accordion label="How do I theme it?"
+            >Set CSS custom properties like --aurora-accent — they pierce the shadow
+            boundary.</aurora-accordion
+          >
+          <aurora-accordion label="Does it work in React?"
+            >Yes. They're standard custom elements, so they work in any framework or plain
+            HTML.</aurora-accordion
+          >
+        </div>
+      </section>
+
+      <section>
+        <span class="label">aurora-tabs</span>
+        <aurora-tabs active="0">
+          <aurora-tab-panel label="Overview"
+            >Animated UI components as native web components.</aurora-tab-panel
+          >
+          <aurora-tab-panel label="Install">npm install aurora</aurora-tab-panel>
+          <aurora-tab-panel label="License">MIT — use it anywhere.</aurora-tab-panel>
+        </aurora-tabs>
       </section>
 
       <section>
