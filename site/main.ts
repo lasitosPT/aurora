@@ -1,5 +1,6 @@
 import 'aurora'
 import { AuroraConfetti, AuroraToaster } from 'aurora'
+import { DOCS } from './docs-data'
 import '@fontsource-variable/inter'
 import '@fontsource-variable/space-grotesk'
 import { gsap } from 'gsap'
@@ -392,4 +393,72 @@ if (catalog) {
     })
     if (none) none.hidden = any
   })
+}
+
+/* ---------- per-component docs page ---------- */
+const docRoot = document.getElementById('docRoot')
+if (docRoot) {
+  ;(window as unknown as Record<string, unknown>).AuroraToaster = AuroraToaster
+  const esc = (s: string): string => s.replace(/&/g, '&amp;').replace(/</g, '&lt;')
+  const tag = new URLSearchParams(location.search).get('c')
+  const doc = DOCS.find((d) => d.tag === tag)
+  const table = (title: string, rows: [string, string][]): string =>
+    rows.length
+      ? `<h2 class="cat-title" style="margin-top:40px">${title}</h2><table class="vars">${rows
+          .map(([a, b]) => `<tr><td><code>${esc(a)}</code></td><td>${esc(b)}</td></tr>`)
+          .join('')}</table>`
+      : ''
+  if (!doc) {
+    docRoot.innerHTML =
+      `<p class="kicker">Documentation</p><h1 class="section-title">Component docs</h1>` +
+      `<p style="color:var(--muted)">Deep-dive pages roll out component by component. Available now:</p>` +
+      `<div class="features" style="margin-top:30px">${DOCS.map(
+        (d) =>
+          `<a class="bento" style="grid-column: span 3" href="./docs.html?c=${d.tag}"><h3>${d.title}</h3><p>${d.summary.slice(0, 110)}…</p><p style="margin-top:12px;color:var(--accent)"><code>&lt;${d.tag}&gt;</code> →</p></a>`,
+      ).join('')}</div>`
+  } else {
+    docRoot.innerHTML =
+      `<p class="kicker">${doc.category} · docs</p>` +
+      `<h1 class="section-title">${doc.title} <code style="font-size:.45em;color:var(--accent)">&lt;${doc.tag}&gt;</code></h1>` +
+      `<p style="color:var(--muted);max-width:70ch">${doc.summary}</p>` +
+      `<h2 class="cat-title" style="margin-top:40px">Live example</h2>` +
+      `<div class="stage" style="margin:0 0 14px">${doc.example}</div>` +
+      `<div class="code"><button class="copy">Copy</button><pre>${esc(doc.example)}</pre></div>` +
+      table('Attributes', doc.attributes) +
+      table('Events', doc.events) +
+      table('CSS variables', doc.cssvars) +
+      table('Properties & methods', doc.methods) +
+      `<h2 class="cat-title" style="margin-top:40px">Tutorial</h2>` +
+      doc.tutorial
+        .map(
+          (t) =>
+            `<h3 style="font-family:var(--font-display);margin:26px 0 8px">${t.heading}</h3><p style="color:var(--muted);max-width:70ch">${t.text}</p>${t.code ? `<div class="code" style="margin-top:10px"><button class="copy">Copy</button><pre>${esc(t.code)}</pre></div>` : ''}`,
+        )
+        .join('')
+    if (doc.tag === 'aurora-grid') {
+      const g = document.getElementById('docGrid') as AuroraGrid | null
+      if (g) {
+        g.columns = [
+          { field: 'name', title: 'Project' },
+          { field: 'stars', title: 'Stars', align: 'right', aggregate: 'sum' },
+          { field: 'lang', title: 'Language' },
+        ]
+        g.data = [
+          { name: 'pulse', stars: 412, lang: 'TypeScript' },
+          { name: 'aurora', stars: 951, lang: 'TypeScript' },
+          { name: 'volley', stars: 187, lang: 'Go' },
+          { name: 'statelet', stars: 240, lang: 'TypeScript' },
+          { name: 'critique', stars: 305, lang: 'TypeScript' },
+          { name: 'devnotes', stars: 96, lang: 'Markdown' },
+        ]
+      }
+    }
+    docRoot.querySelectorAll<HTMLButtonElement>('.copy').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        void navigator.clipboard?.writeText(
+          btn.parentElement?.querySelector('pre')?.textContent ?? '',
+        )
+      })
+    })
+  }
 }
