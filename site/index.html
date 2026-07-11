@@ -3,18 +3,24 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>aurora — animated UI components for the web platform</title>
+    <script>
+      document.documentElement.classList.add('js')
+    </script>
+    <title>aurora — animated UI components for the modern web</title>
     <meta
       name="description"
       content="aurora is a framework-agnostic library of animated UI components — native Web Components powered by GSAP and Three.js. Works in React, Vue, Svelte, or plain HTML."
     />
+    <meta name="theme-color" content="#060609" />
     <meta property="og:title" content="aurora — animated UI components" />
     <meta
       property="og:description"
-      content="Framework-agnostic animated Web Components powered by GSAP and Three.js."
+      content="Framework-agnostic animated Web Components powered by GSAP and Three.js. No wrappers. No lock-in."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://auroralib.com/" />
+    <meta property="og:image" content="https://auroralib.com/og.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="https://auroralib.com/" />
     <link
       rel="icon"
@@ -23,348 +29,454 @@
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
+    <!-- ---------- Preloader ---------- -->
+    <div class="loader" aria-hidden="true">
+      <div class="loader-inner">
+        <span class="loader-word"><span class="mark">✦</span>aurora</span>
+        <span class="loader-bar"><i></i></span>
+      </div>
+    </div>
+
+    <!-- ---------- Cursor glow (desktop only) ---------- -->
+    <div class="cursor" aria-hidden="true"></div>
+
+    <!-- ---------- Nav ---------- -->
     <nav class="nav">
-      <a class="brand" href="#top"><span class="mark">✦</span> aurora</a>
+      <a class="brand" href="#top" data-hover><span class="mark">✦</span> aurora</a>
       <div class="nav-links">
-        <a href="#components" class="hide-sm">Components</a>
-        <a href="#install">Install</a>
-        <a href="#theming" class="hide-sm">Theming</a>
-        <a class="ext" href="https://github.com/lasitosPT/aurora">GitHub</a>
+        <a href="#components" class="hide-sm" data-hover>Components</a>
+        <a href="#install" data-hover>Install</a>
+        <a href="#theming" class="hide-sm" data-hover>Theming</a>
+        <a class="ext" href="https://github.com/lasitosPT/aurora" data-hover>GitHub</a>
       </div>
     </nav>
 
     <!-- ---------- Hero ---------- -->
     <header class="hero" id="top">
-      <aurora-scene color="#6d5cff" detail="1" speed="1.1"></aurora-scene>
+      <canvas class="gl" aria-hidden="true"></canvas>
       <div class="hero-inner">
-        <span class="eyebrow"><span class="dot"></span> Open source · MIT licensed</span>
-        <h1>Animated UI,<br /><span class="grad">built into the platform.</span></h1>
-        <p class="lead">
-          A framework-agnostic library of animated components — native Web Components powered by
-          GSAP and Three.js. Drop them into React, Vue, Svelte, or plain HTML. No wrappers, no
-          config.
+        <p class="eyebrow" data-intro>
+          <span class="dot"></span> Open source · MIT · 13 components
         </p>
-        <div class="hero-cta">
+        <h1 class="hero-title">
+          <span class="line">Motion,</span>
+          <span class="line">built into</span>
+          <span class="line line-grad"><span class="inner grad">the platform.</span></span>
+        </h1>
+        <p class="lead" data-intro>
+          A library of animated UI components, shipped as native Web Components. GSAP motion,
+          Three.js 3D, CSS theming — in React, Vue, Svelte, or plain HTML. No wrappers. No config.
+        </p>
+        <div class="hero-cta" data-intro>
           <aurora-magnetic strength="0.4">
-            <a href="#install"><aurora-button>Get started</aurora-button></a>
+            <a href="#components" data-hover><aurora-button>Explore components</aurora-button></a>
           </aurora-magnetic>
-          <a href="https://github.com/lasitosPT/aurora"
-            ><aurora-button variant="ghost">View on GitHub</aurora-button></a
+          <a href="https://github.com/lasitosPT/aurora" data-hover
+            ><aurora-button variant="ghost">Star on GitHub</aurora-button></a
           >
         </div>
-        <div class="install-pill">
+        <div class="install-pill" data-intro>
           <span><span class="prompt">$</span> npm install aurora</span>
-          <button class="copy" aria-label="Copy install command">Copy</button>
+          <button class="copy" aria-label="Copy install command" data-hover>Copy</button>
           <pre hidden>npm install aurora</pre>
         </div>
       </div>
+      <div class="scroll-hint" data-intro aria-hidden="true">
+        <span>scroll</span>
+        <i></i>
+      </div>
     </header>
 
-    <main class="wrap">
-      <!-- ---------- Features ---------- -->
-      <section class="block" data-reveal>
-        <div class="section-head">
-          <span class="kicker">Why aurora</span>
-          <h2>Motion and polish, without the lock-in.</h2>
-          <p>
-            Every component is a standard custom element — self-contained, themeable, and accessible
-            by default.
+    <!-- ---------- Marquee band ---------- -->
+    <div class="band" aria-hidden="true">
+      <aurora-marquee speed="60" class="outline-marquee"
+        >GSAP&ensp;✦&ensp;Three.js&ensp;✦&ensp;Web Components&ensp;✦&ensp;Zero
+        wrappers&ensp;✦&ensp;MIT&ensp;✦&ensp;</aurora-marquee
+      >
+      <aurora-marquee speed="110" class="outline-marquee fill"
+        >React&ensp;✦&ensp;Vue&ensp;✦&ensp;Svelte&ensp;✦&ensp;Plain
+        HTML&ensp;✦&ensp;Anywhere&ensp;✦&ensp;</aurora-marquee
+      >
+    </div>
+
+    <main>
+      <!-- ---------- Manifesto ---------- -->
+      <section class="block manifesto">
+        <div class="wrap">
+          <p class="kicker" data-reveal>01 · Philosophy</p>
+          <h2 class="mline"><span class="inner">No wrappers.</span></h2>
+          <h2 class="mline"><span class="inner">No lock-in.</span></h2>
+          <h2 class="mline"><span class="inner grad">Just the platform, in motion.</span></h2>
+          <p class="manifesto-sub" data-reveal>
+            Framework UI kits chain your interface to their runtime. aurora ships native custom
+            elements instead — animated by GSAP, themed by CSS custom properties, accessible by
+            default, and at home in any stack you'll use next.
           </p>
         </div>
-        <div class="features">
-          <div class="feature">
-            <div class="ico">🧩</div>
-            <h3>Framework-agnostic</h3>
-            <p>Native custom elements work the same in React, Vue, Svelte, or a raw HTML file.</p>
+      </section>
+
+      <!-- ---------- Stats ---------- -->
+      <section class="stats" data-reveal>
+        <div class="wrap stats-grid">
+          <div class="stat">
+            <span class="num" data-count="13">0</span>
+            <span class="stat-label">Components</span>
           </div>
-          <div class="feature">
-            <div class="ico">✨</div>
-            <h3>GSAP-powered</h3>
-            <p>Fluid, interruptible animations built on the industry-standard motion engine.</p>
+          <div class="stat">
+            <span class="num" data-count="35">0</span><span class="suffix">kB</span>
+            <span class="stat-label">Core, gzipped</span>
           </div>
-          <div class="feature">
-            <div class="ico">🌐</div>
-            <h3>Three.js, opt-in</h3>
-            <p>3D lives on a separate entry, so the core never ships the heavy renderer.</p>
+          <div class="stat">
+            <span class="num" data-count="60">0</span><span class="suffix">fps</span>
+            <span class="stat-label">GSAP motion</span>
           </div>
-          <div class="feature">
-            <div class="ico">📝</div>
-            <h3>Form-associated</h3>
-            <p>Inputs, switches, and sliders submit natively via <code>ElementInternals</code>.</p>
+          <div class="stat">
+            <span class="num" data-count="1">0</span>
+            <span class="stat-label">Import</span>
           </div>
-          <div class="feature">
-            <div class="ico">🎨</div>
-            <h3>Themeable</h3>
-            <p>Style everything with CSS custom properties that pierce the shadow boundary.</p>
-          </div>
-          <div class="feature">
-            <div class="ico">♿</div>
-            <h3>Accessible</h3>
-            <p>ARIA roles, keyboard support, and <code>prefers-reduced-motion</code> throughout.</p>
+        </div>
+      </section>
+
+      <!-- ---------- Features ---------- -->
+      <section class="block">
+        <div class="wrap">
+          <p class="kicker" data-reveal>02 · Features</p>
+          <h2 class="section-title" data-reveal>Polish, without the platform tax.</h2>
+          <div class="features">
+            <div class="feature" data-reveal>
+              <div class="ico">🧩</div>
+              <h3>Framework-agnostic</h3>
+              <p>
+                Native custom elements work identically in React, Vue, Svelte, or a raw HTML file.
+              </p>
+            </div>
+            <div class="feature" data-reveal>
+              <div class="ico">✨</div>
+              <h3>GSAP-powered</h3>
+              <p>Fluid, interruptible animation built on the industry-standard motion engine.</p>
+            </div>
+            <div class="feature" data-reveal>
+              <div class="ico">🌐</div>
+              <h3>Three.js, opt-in</h3>
+              <p>3D lives on a separate entry point — the core never ships the heavy renderer.</p>
+            </div>
+            <div class="feature" data-reveal>
+              <div class="ico">📝</div>
+              <h3>Form-associated</h3>
+              <p>Inputs, switches and sliders submit natively via <code>ElementInternals</code>.</p>
+            </div>
+            <div class="feature" data-reveal>
+              <div class="ico">🎨</div>
+              <h3>Themeable</h3>
+              <p>Style everything with CSS custom properties that pierce the shadow boundary.</p>
+            </div>
+            <div class="feature" data-reveal>
+              <div class="ico">♿</div>
+              <h3>Accessible</h3>
+              <p>
+                ARIA roles, keyboard support and <code>prefers-reduced-motion</code> throughout.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- ---------- Components ---------- -->
-      <section class="block" id="components" data-reveal>
-        <div class="section-head">
-          <span class="kicker">Components</span>
-          <h2>Thirteen components. One import.</h2>
-          <p>Every element below is live on this page — hover, click, and drag them.</p>
-        </div>
+      <section class="block" id="components">
+        <div class="wrap gallery">
+          <aside class="gallery-side">
+            <p class="kicker" data-reveal>03 · Components</p>
+            <h2 class="section-title" data-reveal>Thirteen components.<br />One import.</h2>
+            <p class="side-sub" data-reveal>
+              Everything below is live — hover, click, drag. Each card ships with its markup, ready
+              to paste.
+            </p>
+            <div class="side-cta" data-reveal>
+              <a href="https://github.com/lasitosPT/aurora" data-hover
+                ><aurora-button variant="ghost">Read the docs ↗</aurora-button></a
+              >
+            </div>
+          </aside>
 
-        <div class="demos">
-          <!-- Button -->
-          <article class="demo">
-            <div class="demo-head">
-              <h3>Button</h3>
-              <code>&lt;aurora-button&gt;</code>
-            </div>
-            <div class="demo-desc">Themeable button with primary and ghost variants.</div>
-            <div class="stage">
-              <aurora-button>Primary</aurora-button>
-              <aurora-button variant="ghost">Ghost</aurora-button>
-            </div>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>
+          <div class="demos">
+            <!-- Button -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Button</h3>
+                <code>&lt;aurora-button&gt;</code>
+              </div>
+              <div class="demo-desc">Themeable button with primary and ghost variants.</div>
+              <div class="stage">
+                <aurora-button data-hover>Primary</aurora-button>
+                <aurora-button variant="ghost" data-hover>Ghost</aurora-button>
+              </div>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
 &lt;aurora-button&gt;Primary&lt;/aurora-button&gt;
 &lt;aurora-button variant="ghost"&gt;Ghost&lt;/aurora-button&gt;</pre>
-            </div>
-          </article>
+              </div>
+            </article>
 
-          <!-- Magnetic -->
-          <article class="demo">
-            <div class="demo-head">
-              <h3>Magnetic</h3>
-              <code>&lt;aurora-magnetic&gt;</code>
-            </div>
-            <div class="demo-desc">Content is pulled toward the cursor as it approaches.</div>
-            <div class="stage">
-              <aurora-magnetic strength="0.6">
-                <aurora-button>Hover near me</aurora-button>
-              </aurora-magnetic>
-            </div>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>
+            <!-- Magnetic -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Magnetic</h3>
+                <code>&lt;aurora-magnetic&gt;</code>
+              </div>
+              <div class="demo-desc">Content is pulled toward the cursor as it approaches.</div>
+              <div class="stage">
+                <aurora-magnetic strength="0.6">
+                  <aurora-button data-hover>Hover near me</aurora-button>
+                </aurora-magnetic>
+              </div>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
 &lt;aurora-magnetic strength="0.6"&gt;
   &lt;aurora-button&gt;Hover near me&lt;/aurora-button&gt;
 &lt;/aurora-magnetic&gt;</pre>
-            </div>
-          </article>
+              </div>
+            </article>
 
-          <!-- Tilt -->
-          <article class="demo">
-            <div class="demo-head">
-              <h3>Tilt</h3>
-              <code>&lt;aurora-tilt&gt;</code>
-            </div>
-            <div class="demo-desc">3D tilt that follows the pointer across the surface.</div>
-            <div class="stage">
-              <aurora-tilt max="16">
-                <div class="card">Tilt me toward your cursor.</div>
-              </aurora-tilt>
-            </div>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>
+            <!-- Tilt -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Tilt</h3>
+                <code>&lt;aurora-tilt&gt;</code>
+              </div>
+              <div class="demo-desc">3D tilt that follows the pointer across the surface.</div>
+              <div class="stage">
+                <aurora-tilt max="16">
+                  <div class="card">Tilt me toward your cursor.</div>
+                </aurora-tilt>
+              </div>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
 &lt;aurora-tilt max="16"&gt;
   &lt;div class="card"&gt;Tilt me&lt;/div&gt;
 &lt;/aurora-tilt&gt;</pre>
-            </div>
-          </article>
+              </div>
+            </article>
 
-          <!-- Text -->
-          <article class="demo">
-            <div class="demo-head">
-              <h3>Text reveal</h3>
-              <code>&lt;aurora-text&gt;</code>
-            </div>
-            <div class="demo-desc">Word-by-word masked reveal on mount.</div>
-            <div class="stage">
-              <aurora-text stagger="0.06" style="font-size: 1.6rem; font-weight: 700">
-                Motion, built in.
-              </aurora-text>
-            </div>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>
+            <!-- Text -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Text reveal</h3>
+                <code>&lt;aurora-text&gt;</code>
+              </div>
+              <div class="demo-desc">Word-by-word masked reveal on mount.</div>
+              <div class="stage" id="textStage">
+                <aurora-text stagger="0.06" style="font-size: 1.5rem; font-weight: 700">
+                  Motion, built in.
+                </aurora-text>
+                <button class="replay" data-hover aria-label="Replay animation">↻ Replay</button>
+              </div>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
 &lt;aurora-text stagger="0.06"&gt;
   Motion, built in.
 &lt;/aurora-text&gt;</pre>
-            </div>
-          </article>
+              </div>
+            </article>
 
-          <!-- Modal + Tooltip -->
-          <article class="demo">
-            <div class="demo-head">
-              <h3>Modal &amp; Tooltip</h3>
-              <code>&lt;aurora-modal&gt;</code>
-            </div>
-            <div class="demo-desc">Animated dialog; hover the button for a tooltip.</div>
-            <div class="stage">
-              <aurora-tooltip text="Opens a dialog" position="top">
-                <aurora-button onclick="document.getElementById('demoModal').show()"
-                  >Open modal</aurora-button
-                >
-              </aurora-tooltip>
-              <aurora-modal id="demoModal">
-                <h2 style="margin-top: 0">Hello from aurora</h2>
-                <p style="color: var(--muted)">
-                  A self-contained dialog animated with GSAP. Press Escape or click the backdrop.
-                </p>
-                <aurora-button onclick="document.getElementById('demoModal').hide()"
-                  >Close</aurora-button
-                >
-              </aurora-modal>
-            </div>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>
+            <!-- Modal + Tooltip -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Modal &amp; Tooltip</h3>
+                <code>&lt;aurora-modal&gt;</code>
+              </div>
+              <div class="demo-desc">Animated dialog; hover the button for a tooltip.</div>
+              <div class="stage">
+                <aurora-tooltip text="Opens a dialog" position="top">
+                  <aurora-button data-hover onclick="document.getElementById('demoModal').show()"
+                    >Open modal</aurora-button
+                  >
+                </aurora-tooltip>
+                <aurora-modal id="demoModal">
+                  <h2 style="margin-top: 0">Hello from aurora</h2>
+                  <p style="color: var(--muted)">
+                    A self-contained dialog animated with GSAP. Press Escape or click the backdrop.
+                  </p>
+                  <aurora-button onclick="document.getElementById('demoModal').hide()"
+                    >Close</aurora-button
+                  >
+                </aurora-modal>
+              </div>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
 &lt;aurora-tooltip text="Opens a dialog"&gt;
   &lt;aurora-button onclick="dlg.show()"&gt;Open&lt;/aurora-button&gt;
 &lt;/aurora-tooltip&gt;
 &lt;aurora-modal id="dlg"&gt;…&lt;/aurora-modal&gt;</pre>
-            </div>
-          </article>
+              </div>
+            </article>
 
-          <!-- Accordion -->
-          <article class="demo">
-            <div class="demo-head">
-              <h3>Accordion</h3>
-              <code>&lt;aurora-accordion&gt;</code>
-            </div>
-            <div class="demo-desc">Collapsible panels with animated height.</div>
-            <div class="stage" style="align-items: stretch; flex-direction: column">
-              <aurora-accordion label="What is aurora?" open
-                >A framework-agnostic set of animated web components.</aurora-accordion
-              >
-              <aurora-accordion label="Does it work in React?"
-                >Yes — they are standard custom elements.</aurora-accordion
-              >
-            </div>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>
+            <!-- Accordion -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Accordion</h3>
+                <code>&lt;aurora-accordion&gt;</code>
+              </div>
+              <div class="demo-desc">Collapsible panels with animated height.</div>
+              <div class="stage stack">
+                <aurora-accordion label="What is aurora?" open
+                  >A framework-agnostic set of animated web components.</aurora-accordion
+                >
+                <aurora-accordion label="Does it work in React?"
+                  >Yes — they are standard custom elements.</aurora-accordion
+                >
+              </div>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
 &lt;aurora-accordion label="What is aurora?" open&gt;
   A set of animated web components.
 &lt;/aurora-accordion&gt;</pre>
-            </div>
-          </article>
+              </div>
+            </article>
 
-          <!-- Tabs -->
-          <article class="demo">
-            <div class="demo-head">
-              <h3>Tabs</h3>
-              <code>&lt;aurora-tabs&gt;</code>
-            </div>
-            <div class="demo-desc">Tabbed panels with an animated active indicator.</div>
-            <div class="stage" style="align-items: stretch; flex-direction: column">
-              <aurora-tabs active="0">
-                <aurora-tab-panel label="Overview"
-                  >Animated components as native web components.</aurora-tab-panel
-                >
-                <aurora-tab-panel label="Install">npm install aurora</aurora-tab-panel>
-                <aurora-tab-panel label="License">MIT — use it anywhere.</aurora-tab-panel>
-              </aurora-tabs>
-            </div>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>
+            <!-- Tabs -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Tabs</h3>
+                <code>&lt;aurora-tabs&gt;</code>
+              </div>
+              <div class="demo-desc">Tabbed panels with an animated active indicator.</div>
+              <div class="stage stack">
+                <aurora-tabs active="0">
+                  <aurora-tab-panel label="Overview"
+                    >Animated components as native web components.</aurora-tab-panel
+                  >
+                  <aurora-tab-panel label="Install">npm install aurora</aurora-tab-panel>
+                  <aurora-tab-panel label="License">MIT — use it anywhere.</aurora-tab-panel>
+                </aurora-tabs>
+              </div>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
 &lt;aurora-tabs active="0"&gt;
   &lt;aurora-tab-panel label="Overview"&gt;…&lt;/aurora-tab-panel&gt;
   &lt;aurora-tab-panel label="Install"&gt;…&lt;/aurora-tab-panel&gt;
 &lt;/aurora-tabs&gt;</pre>
-            </div>
-          </article>
+              </div>
+            </article>
 
-          <!-- Marquee -->
-          <article class="demo">
-            <div class="demo-head">
-              <h3>Marquee</h3>
-              <code>&lt;aurora-marquee&gt;</code>
-            </div>
-            <div class="demo-desc">Seamless, infinite horizontal scroller.</div>
-            <div class="stage">
-              <aurora-marquee speed="70" style="font-weight: 700; color: var(--muted)"
-                >GSAP · Three.js · Web Components · Zero config ·
-              </aurora-marquee>
-            </div>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>
+            <!-- Marquee -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Marquee</h3>
+                <code>&lt;aurora-marquee&gt;</code>
+              </div>
+              <div class="demo-desc">Seamless, infinite horizontal scroller.</div>
+              <div class="stage">
+                <aurora-marquee speed="70" style="font-weight: 700; color: var(--muted)"
+                  >GSAP · Three.js · Web Components · Zero config ·
+                </aurora-marquee>
+              </div>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
 &lt;aurora-marquee speed="70"&gt;
   GSAP · Three.js · Web Components ·
 &lt;/aurora-marquee&gt;</pre>
-            </div>
-          </article>
-
-          <!-- Forms -->
-          <article class="demo full">
-            <div class="demo-head">
-              <h3>Form controls</h3>
-              <code>&lt;aurora-input&gt; &lt;aurora-switch&gt; &lt;aurora-slider&gt;</code>
-            </div>
-            <div class="demo-desc">
-              Form-associated via <code>ElementInternals</code> — they submit with a real
-              <code>&lt;form&gt;</code>.
-            </div>
-            <div class="stage tall" style="align-items: stretch; flex-direction: column; gap: 24px">
-              <aurora-input label="Email" type="email" placeholder="you@example.com"></aurora-input>
-              <label style="display: flex; align-items: center; gap: 12px">
-                <aurora-switch checked></aurora-switch>
-                <span>Subscribe to the newsletter</span>
-              </label>
-              <div>
-                <span style="display: block; margin-bottom: 10px; color: var(--muted)">Volume</span>
-                <aurora-slider min="0" max="100" value="70"></aurora-slider>
               </div>
-            </div>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>
+            </article>
+
+            <!-- Forms -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Form controls</h3>
+                <code>&lt;aurora-input&gt; &lt;aurora-switch&gt; &lt;aurora-slider&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Form-associated via <code>ElementInternals</code> — they submit with a real
+                <code>&lt;form&gt;</code>.
+              </div>
+              <div class="stage stack roomy">
+                <aurora-input
+                  label="Email"
+                  type="email"
+                  placeholder="you@example.com"
+                ></aurora-input>
+                <label class="row">
+                  <aurora-switch checked data-hover></aurora-switch>
+                  <span>Subscribe to the newsletter</span>
+                </label>
+                <div>
+                  <span class="mini-label">Volume</span>
+                  <aurora-slider min="0" max="100" value="70" data-hover></aurora-slider>
+                </div>
+              </div>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
 &lt;form&gt;
-  &lt;aurora-input  name="email"     label="Email" type="email"&gt;&lt;/aurora-input&gt;
+  &lt;aurora-input  name="email"      label="Email" type="email"&gt;&lt;/aurora-input&gt;
   &lt;aurora-switch name="newsletter" checked&gt;&lt;/aurora-switch&gt;
   &lt;aurora-slider name="volume" min="0" max="100" value="70"&gt;&lt;/aurora-slider&gt;
 &lt;/form&gt;</pre>
-            </div>
-          </article>
+              </div>
+            </article>
+
+            <!-- 3D scene (lazy) -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>3D scene</h3>
+                <code>&lt;aurora-scene&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Lives on the <code>aurora/three</code> entry — this card lazy-loads Three.js as it
+                scrolls into view, exactly like your app would.
+              </div>
+              <div class="stage scene" id="sceneStage">
+                <aurora-scene color="#6d5cff" speed="1.2"></aurora-scene>
+                <span class="scene-note">loading three.js…</span>
+              </div>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
+import 'aurora/three' // opt-in entry
+
+&lt;aurora-scene color="#6d5cff" speed="1.2"&gt;&lt;/aurora-scene&gt;</pre>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
       <!-- ---------- Install ---------- -->
-      <section class="block" id="install" data-reveal>
-        <div class="section-head">
-          <span class="kicker">Install</span>
-          <h2>Up and running in two lines.</h2>
-          <p>Install from npm, then import once — components register themselves.</p>
-        </div>
-        <div class="usage-grid">
-          <div class="usage-card">
-            <h3>npm</h3>
-            <p>The recommended path for bundled apps.</p>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>npm install aurora</pre>
-            </div>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>
+      <section class="block" id="install">
+        <div class="wrap">
+          <p class="kicker" data-reveal>04 · Install</p>
+          <h2 class="section-title" data-reveal>Up and running in two lines.</h2>
+          <div class="usage-grid">
+            <div class="usage-card" data-reveal>
+              <h3>Install &amp; import</h3>
+              <p>Components register themselves on import.</p>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>npm install aurora</pre>
+              </div>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
 // registers the core components
 import 'aurora'
 
 // registers &lt;aurora-scene&gt; (pulls in Three.js only here)
 import 'aurora/three'</pre>
+              </div>
             </div>
-          </div>
-          <div class="usage-card">
-            <h3>Use anywhere</h3>
-            <p>They are custom elements, so the markup is identical across frameworks.</p>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>
+            <div class="usage-card" data-reveal>
+              <h3>Use anywhere</h3>
+              <p>Standard custom elements — the markup is identical across frameworks.</p>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
 // React — no wrapper needed
 export function Hero() {
   return (
@@ -373,28 +485,27 @@ export function Hero() {
     &lt;/aurora-text&gt;
   )
 }</pre>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ---------- Theming ---------- -->
-      <section class="block" id="theming" data-reveal>
-        <div class="section-head">
-          <span class="kicker">Theming</span>
-          <h2>One accent, everywhere.</h2>
-          <p>
-            Set CSS custom properties on <code>:root</code> or any ancestor — they cross the shadow
-            boundary into every component.
-          </p>
-        </div>
-        <div class="usage-grid">
-          <div class="usage-card">
-            <h3>Set your tokens</h3>
-            <p>Sensible fallbacks mean you only override what you need.</p>
-            <div class="code">
-              <button class="copy">Copy</button>
-              <pre>
+      <section class="block" id="theming">
+        <div class="wrap">
+          <p class="kicker" data-reveal>05 · Theming</p>
+          <h2 class="section-title" data-reveal>One accent, everywhere.</h2>
+          <div class="usage-grid">
+            <div class="usage-card" data-reveal>
+              <h3>Set your tokens</h3>
+              <p>
+                CSS custom properties cross the shadow boundary. Sensible fallbacks mean you only
+                override what you need.
+              </p>
+              <div class="code">
+                <button class="copy" data-hover>Copy</button>
+                <pre>
 :root {
   --aurora-accent: #6d5cff;
   --aurora-accent-hover: #5a49e0;
@@ -402,65 +513,81 @@ export function Hero() {
   --aurora-fg: #ececf2;
   --aurora-border: rgba(255, 255, 255, 0.14);
 }</pre>
+              </div>
             </div>
-          </div>
-          <div class="usage-card">
-            <h3>Common variables</h3>
-            <p>A few of the tokens the components read.</p>
-            <table class="vars">
-              <thead>
-                <tr>
-                  <th>Variable</th>
-                  <th>Purpose</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <span class="swatch" style="background: #6d5cff"></span
-                    ><code>--aurora-accent</code>
-                  </td>
-                  <td>Primary accent</td>
-                </tr>
-                <tr>
-                  <td>
-                    <span class="swatch" style="background: #16161f"></span
-                    ><code>--aurora-surface</code>
-                  </td>
-                  <td>Modal / panel background</td>
-                </tr>
-                <tr>
-                  <td><code>--aurora-border</code></td>
-                  <td>Dividers &amp; outlines</td>
-                </tr>
-                <tr>
-                  <td><code>--aurora-muted</code></td>
-                  <td>Secondary text</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="usage-card" data-reveal>
+              <h3>Common variables</h3>
+              <p>A few of the tokens the components read.</p>
+              <table class="vars">
+                <thead>
+                  <tr>
+                    <th>Variable</th>
+                    <th>Purpose</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <span class="swatch" style="background: #6d5cff"></span
+                      ><code>--aurora-accent</code>
+                    </td>
+                    <td>Primary accent</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <span class="swatch" style="background: #16161f"></span
+                      ><code>--aurora-surface</code>
+                    </td>
+                    <td>Modal / panel background</td>
+                  </tr>
+                  <tr>
+                    <td><code>--aurora-border</code></td>
+                    <td>Dividers &amp; outlines</td>
+                  </tr>
+                  <tr>
+                    <td><code>--aurora-muted</code></td>
+                    <td>Secondary text</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
     </main>
 
+    <!-- ---------- Footer ---------- -->
     <footer>
+      <div class="wrap footer-cta">
+        <h2 class="giant">Ship motion.</h2>
+        <p class="footer-sub" data-reveal>MIT licensed. Thirteen components. One import away.</p>
+        <div class="footer-buttons" data-reveal>
+          <aurora-magnetic strength="0.4">
+            <a href="https://github.com/lasitosPT/aurora" data-hover
+              ><aurora-button>Star on GitHub</aurora-button></a
+            >
+          </aurora-magnetic>
+          <a href="#install" data-hover
+            ><aurora-button variant="ghost">Get started</aurora-button></a
+          >
+        </div>
+      </div>
       <div class="wrap foot">
-        <div>
-          <span class="mark" style="color: var(--accent)">✦</span> aurora — MIT licensed. Built with
-          the components on this page.
+        <div><span class="mark">✦</span> aurora — built with the components on this page.</div>
+        <div class="foot-links">
+          <a href="https://github.com/lasitosPT/aurora" data-hover>GitHub</a>
+          <a href="https://github.com/lasitosPT/aurora/blob/main/README.md" data-hover>Docs</a>
+          <a href="https://github.com/lasitosPT/aurora/blob/main/CHANGELOG.md" data-hover
+            >Changelog</a
+          >
+          <a href="#top" data-hover>Top ↑</a>
         </div>
-        <div style="display: flex; gap: 22px">
-          <a href="https://github.com/lasitosPT/aurora">GitHub</a>
-          <a href="https://github.com/lasitosPT/aurora/blob/main/README.md">Docs</a>
-          <a href="#top">Back to top ↑</a>
-        </div>
+        <div class="foot-copy">© <span id="year">2026</span> · MIT</div>
       </div>
-      <div class="wrap" style="margin-top: 18px; font-size: 0.82rem; opacity: 0.7">
-        © <span id="year">2026</span> · aurora
-      </div>
+      <div class="watermark" aria-hidden="true">aurora</div>
     </footer>
 
+    <div class="grain" aria-hidden="true"></div>
     <script type="module" src="/main.ts"></script>
   </body>
 </html>
