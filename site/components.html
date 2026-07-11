@@ -48,7 +48,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Forty-one components.<br /><span class="grad">Every one of them live.</span>
+          Forty-two components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -470,6 +470,33 @@ AuroraConfetti.burst({ count: 120 })</pre>
   &lt;aurora-switch name="newsletter" checked&gt;&lt;/aurora-switch&gt;
   &lt;aurora-slider name="volume" min="0" max="100" value="70"&gt;&lt;/aurora-slider&gt;
 &lt;/form&gt;</pre>
+              </div>
+            </article>
+            <!-- Select -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Select</h3>
+                <code>&lt;aurora-select&gt;</code>
+              </div>
+              <div class="demo-desc">
+                An animated dropdown list — form-associated, combobox ARIA, arrows + first-letter
+                type-ahead, Enter/Escape.
+              </div>
+              <div class="stage">
+                <aurora-select placeholder="Pick a language" id="demoSelect">
+                  <option value="ts">TypeScript</option>
+                  <option value="go">Go</option>
+                  <option value="rs">Rust</option>
+                  <option value="py">Python</option>
+                </aurora-select>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-select name="lang" placeholder="Pick a language"&gt;
+  &lt;option value="ts"&gt;TypeScript&lt;/option&gt;
+  &lt;option value="go"&gt;Go&lt;/option&gt;
+&lt;/aurora-select&gt;</pre>
               </div>
             </article>
           </div>
