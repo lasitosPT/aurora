@@ -39,7 +39,7 @@ export class AuroraAutocomplete extends AuroraElement {
   private input: HTMLInputElement | null = null
   private listbox: HTMLElement | null = null
   private opts: string[] = []
-  private matches: string[] = []
+  private hits: string[] = []
   private activeIdx = -1
 
   constructor() {
@@ -87,12 +87,12 @@ export class AuroraAutocomplete extends AuroraElement {
       this.close()
       return
     }
-    this.matches = this.opts.filter((o) => o.toLowerCase().includes(q)).slice(0, 8)
-    this.activeIdx = this.matches.length > 0 ? 0 : -1
+    this.hits = this.opts.filter((o) => o.toLowerCase().includes(q)).slice(0, 8)
+    this.activeIdx = this.hits.length > 0 ? 0 : -1
     this.listbox.innerHTML =
-      this.matches.length === 0
+      this.hits.length === 0
         ? '<div class="none">No matches.</div>'
-        : this.matches
+        : this.hits
             .map((m, i) => {
               const at = m.toLowerCase().indexOf(q)
               const hl =
@@ -121,7 +121,7 @@ export class AuroraAutocomplete extends AuroraElement {
   }
 
   private choose(i: number): void {
-    const pick = this.matches[i]
+    const pick = this.hits[i]
     if (pick === undefined) return
     this.value = pick
     this.close()
@@ -134,7 +134,7 @@ export class AuroraAutocomplete extends AuroraElement {
   }
 
   private readonly onKey = (event: KeyboardEvent): void => {
-    const n = this.matches.length
+    const n = this.hits.length
     if (event.key === 'Escape') {
       this.close()
       return
