@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.16.0
+
+Dropdown editors begin.
+
+- `aurora-select` — animated DropDownList: options from child `<option>`s or the
+  `options` property, form-associated via ElementInternals, combobox/listbox ARIA,
+  full keyboard flow (arrows, Home/End, Enter, Escape, first-letter type-ahead),
+  outside-click close, `placeholder`, `value`; emits `aurora-change`
+
 ## 0.15.0
 
 Grid parity wave 3 — virtualization.
