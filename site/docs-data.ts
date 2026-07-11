@@ -194,6 +194,36 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-datepicker',
+    title: 'Date Picker',
+    category: 'Forms & Inputs',
+    summary:
+      'A date input that opens the aurora-calendar in a popup — composition inside the library. Picking closes the popup, refocuses the trigger, and submits the ISO date.',
+    example: `<aurora-datepicker value="2026-07-11" format="locale"></aurora-datepicker>`,
+    attributes: [
+      ['value', 'ISO date (yyyy-mm-dd)'],
+      ['placeholder', 'Trigger text before a pick'],
+      ['format', '"iso" (default) or "locale" display'],
+      ['name', 'Form field name'],
+    ],
+    events: [['aurora-change', '{ value } — ISO date']],
+    cssvars: [['--aurora-accent / -surface / -border / -radius / -muted', 'Shared theme tokens']],
+    methods: [
+      ['value', 'Get/set the ISO date'],
+      ['open() / close() / toggle()', 'Programmatic control'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Calendar included',
+        text: 'The popup is a real <aurora-calendar>, so the full keyboard flow (arrows, PageUp/Down, Enter) works inside the picker for free.',
+      },
+      {
+        heading: '2 · Display vs data',
+        text: 'format="locale" shows the user their local convention; the form always receives the ISO value.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

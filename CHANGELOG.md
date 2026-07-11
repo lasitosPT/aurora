@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.20.0
+
+- `aurora-datepicker` — a date input that pops the library's own `<aurora-calendar>`
+  (first internal composition): ISO or locale display (`format`), Escape/outside-click
+  close, focus handoff into the grid and back, form-associated; emits `aurora-change`.
+  Ships with docs.
+
 ## 0.19.0
 
 - `aurora-calendar` — month-view calendar: Monday-first grid, today outline, full
