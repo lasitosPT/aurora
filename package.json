@@ -1,0 +1,73 @@
+{
+  "name": "aurora",
+  "version": "0.1.0",
+  "description": "A framework-agnostic library of animated UI components (Web Components) powered by GSAP and Three.js.",
+  "keywords": [
+    "web-components",
+    "custom-elements",
+    "ui",
+    "components",
+    "gsap",
+    "threejs",
+    "animation",
+    "design-system"
+  ],
+  "license": "MIT",
+  "author": "Pedro Lascasas Pinto",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lasitosPT/aurora.git"
+  },
+  "homepage": "https://github.com/lasitosPT/aurora#readme",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./three": {
+      "types": "./dist/three.d.ts",
+      "import": "./dist/three.js",
+      "require": "./dist/three.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "gsap": "^3.15.0",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/three": "^0.185.1",
+    "eslint": "^10.7.0",
+    "happy-dom": "^20.10.6",
+    "prettier": "^3.9.5",
+    "tsup": "^8.5.1",
+    "typescript": "5.9",
+    "typescript-eslint": "^8.63.0",
+    "vitest": "^4.1.10"
+  }
+}
