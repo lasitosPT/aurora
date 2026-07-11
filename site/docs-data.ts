@@ -224,6 +224,33 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-timepicker',
+    title: 'Time Picker',
+    category: 'Forms & Inputs',
+    summary:
+      'An HH:MM input with scrollable hour and minute columns; the minute increment is yours to set, and the current selection centers itself when the popup opens.',
+    example: `<aurora-timepicker value="14:30" step="15"></aurora-timepicker>`,
+    attributes: [
+      ['value', '24h time, "HH:MM"'],
+      ['step', 'Minute increment (default 5)'],
+      ['placeholder', 'Trigger text before a pick'],
+      ['name', 'Form field name'],
+    ],
+    events: [['aurora-change', '{ value } — "HH:MM"']],
+    cssvars: [['--aurora-accent / -surface / -border / -radius / -muted', 'Shared theme tokens']],
+    methods: [
+      ['value', 'Get/set "HH:MM"'],
+      ['open() / close() / toggle()', 'Programmatic control'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Pair it with the datepicker',
+        text: 'Datepicker + timepicker side by side cover the classic scheduling form; both submit natively.',
+        code: `<aurora-datepicker name="date"></aurora-datepicker>\n<aurora-timepicker name="time" step="15"></aurora-timepicker>`,
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

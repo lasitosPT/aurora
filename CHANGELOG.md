@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.21.0
+
+- `aurora-timepicker` — an HH:MM input with hour/minute columns in a popup: `step`
+  minute increments, selected values centered on open, Escape/outside-click close,
+  form-associated; emits `aurora-change`. Completes the core date/time suite; ships
+  with docs.
+
 ## 0.20.0
 
 - `aurora-datepicker` — a date input that pops the library's own `<aurora-calendar>`
