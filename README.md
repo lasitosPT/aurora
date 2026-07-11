@@ -7,7 +7,7 @@
 ![Three.js](https://img.shields.io/badge/Three.js-r185-000?logo=three.js&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-**🌐 [Live demo & docs → lasitospt.github.io/aurora](https://lasitospt.github.io/aurora/)**
+**🌐 [Live demo & docs → auroralib.com](https://auroralib.com)**
 
 `aurora` ships as native **Web Components** (custom elements), so it works in **any** stack — React,
 Vue, Svelte, or plain HTML — with no wrapper and no config. Styles are encapsulated in Shadow DOM and
@@ -118,7 +118,7 @@ All components respect `prefers-reduced-motion` and disable animation when the u
 ## Try the demo
 
 A full showcase with live components and copy-paste docs is deployed at
-**[lasitospt.github.io/aurora](https://lasitospt.github.io/aurora/)**.
+**[auroralib.com](https://auroralib.com)**.
 
 To run it locally:
 
