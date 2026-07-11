@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.0
+
+Imagery batch.
+
+- `aurora-lens` — an image that liquifies toward the cursor with a chromatic-aberration
+  fringe, rendered by a tiny raw-WebGL shader over a real `<img>` (so accessibility,
+  SEO and no-WebGL environments keep the plain image): `src`, `alt`, `strength`,
+  `crossorigin`; GPU work defers until visible and rebuilds on context restore
+- `aurora-wave` (`aurora/three`) — a wireframe ocean plane displaced by travelling
+  sine waves: `color`, `speed`, `amplitude`, `opacity`
+
 ## 0.6.0
 
 Accessibility pass.

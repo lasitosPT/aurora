@@ -17,7 +17,7 @@ if (nebula) {
 }
 
 /* ---------- lazy three.js demo cards ---------- */
-const threeStages = ['sceneStage', 'particlesStage']
+const threeStages = ['sceneStage', 'particlesStage', 'waveStage']
   .map((id) => document.getElementById(id))
   .filter((el): el is HTMLElement => el !== null)
 if (threeStages.length > 0) {
@@ -135,45 +135,86 @@ if (!reduced) {
     scrollTrigger: { trigger: '.hero', start: 'top top', end: '18% top', scrub: true },
   })
 
+  /* Scroll-entry effects use IntersectionObserver (like aurora-reveal in the
+     library): unlike position-based triggers, IO can't miss elements on instant
+     jumps — anchor loads, scroll restoration, programmatic scrolls. */
+  const onVisible = (el: Element, cb: () => void, threshold = 0.12): void => {
+    if (typeof IntersectionObserver === 'undefined') {
+      cb()
+      return
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          io.disconnect()
+          cb()
+        }
+      },
+      { threshold },
+    )
+    io.observe(el)
+  }
+
   /* manifesto lines — masked inner blocks (gradient-safe) */
   document.querySelectorAll<HTMLElement>('.mline .inner').forEach((inner) => {
-    gsap.from(inner, {
-      yPercent: 115,
-      duration: 1,
-      ease: 'power4.out',
-      scrollTrigger: { trigger: inner, start: 'top 88%', once: true },
-    })
+    gsap.set(inner, { yPercent: 115 })
+    onVisible(inner, () => gsap.to(inner, { yPercent: 0, duration: 1, ease: 'power4.out' }))
   })
 
-  /* generic reveals */
-  gsap.set('[data-reveal]', { autoAlpha: 0, y: 36 })
-  ScrollTrigger.batch('[data-reveal]', {
-    start: 'top 88%',
-    once: true,
-    onEnter: (batch) =>
-      gsap.to(batch, {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        stagger: 0.08,
-        overwrite: true,
-      }),
-  })
+  /* generic reveals — batched per IO flush so neighbours stagger together */
+  const revealEls = gsap.utils.toArray<HTMLElement>('[data-reveal]')
+  gsap.set(revealEls, { autoAlpha: 0, y: 36 })
+  if (typeof IntersectionObserver === 'undefined') {
+    gsap.set(revealEls, { autoAlpha: 1, y: 0 })
+  } else {
+    let queue: Element[] = []
+    let flush = 0
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            queue.push(entry.target)
+            io.unobserve(entry.target)
+          }
+        }
+        if (queue.length > 0 && !flush) {
+          flush = window.setTimeout(() => {
+            gsap.to(queue, {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.9,
+              ease: 'power3.out',
+              stagger: 0.08,
+              overwrite: true,
+            })
+            queue = []
+            flush = 0
+          }, 60)
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px' },
+    )
+    revealEls.forEach((el) => io.observe(el))
+  }
 
   /* stat counters are <aurora-counter> components — no site code needed */
 
   /* footer giant */
   const giant = new SplitText('.giant', { type: 'chars' })
-  gsap.from(giant.chars, {
-    yPercent: 118,
-    duration: 1,
-    ease: 'power4.out',
-    stagger: 0.03,
-    scrollTrigger: { trigger: '.giant', start: 'top 88%', once: true },
-  })
+  gsap.set(giant.chars, { yPercent: 118 })
+  const giantEl = document.querySelector('.giant')
+  if (giantEl) {
+    onVisible(giantEl, () =>
+      gsap.to(giant.chars, {
+        yPercent: 0,
+        duration: 1,
+        ease: 'power4.out',
+        stagger: 0.03,
+      }),
+    )
+  }
 
-  /* keep trigger positions honest once fonts/layout settle */
+  /* keep the parallax scrub honest once fonts/layout settle */
   void document.fonts?.ready.then(() => ScrollTrigger.refresh())
 } else {
   /* reduced motion: everything visible (the components handle their own fallbacks) */

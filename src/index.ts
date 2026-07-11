@@ -17,6 +17,7 @@ export { AuroraCursor } from './components/cursor'
 export { AuroraNebula } from './components/nebula'
 export { AuroraScramble } from './components/scramble'
 export { AuroraTypewriter } from './components/typewriter'
+export { AuroraLens } from './components/lens'
 
 export { AuroraElement } from './core/base'
 export { register } from './core/register'

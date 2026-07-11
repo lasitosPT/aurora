@@ -57,7 +57,7 @@
       <aurora-nebula class="gl" speed="1" aria-hidden="true"></aurora-nebula>
       <div class="hero-inner">
         <p class="eyebrow" data-intro>
-          <span class="dot"></span> Open source · MIT · 20 components
+          <span class="dot"></span> Open source · MIT · 22 components
         </p>
         <h1 class="hero-title">
           <span class="line">Motion,</span>
@@ -121,11 +121,11 @@
         <!-- The numbers below are live <aurora-counter> components -->
         <div class="wrap stats-grid">
           <div class="stat">
-            <aurora-counter class="num" value="20"></aurora-counter>
+            <aurora-counter class="num" value="22"></aurora-counter>
             <span class="stat-label">Components</span>
           </div>
           <div class="stat">
-            <aurora-counter class="num" value="11"></aurora-counter><span class="suffix">kB</span>
+            <aurora-counter class="num" value="12"></aurora-counter><span class="suffix">kB</span>
             <span class="stat-label">Core, gzipped</span>
           </div>
           <div class="stat">
@@ -188,7 +188,7 @@
         <div class="wrap gallery">
           <aside class="gallery-side">
             <p class="kicker" data-reveal>03 · Components</p>
-            <h2 class="section-title" data-reveal>Twenty components.<br />One import.</h2>
+            <h2 class="section-title" data-reveal>Twenty-two components.<br />One import.</h2>
             <p class="side-sub" data-reveal>
               Everything below is live — hover, click, drag. Each card ships with its markup, ready
               to paste.
@@ -580,6 +580,31 @@
               </div>
             </article>
 
+            <!-- Lens -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Lens</h3>
+                <code>&lt;aurora-lens&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Move your cursor over the image — it liquifies toward the pointer with a chromatic
+                fringe. A real <code>&lt;img&gt;</code> underneath keeps a11y, SEO and no-WebGL
+                environments intact.
+              </div>
+              <div class="stage scene">
+                <aurora-lens
+                  src="./og.jpg"
+                  alt="The aurora hero artwork"
+                  style="position: absolute; inset: 0"
+                ></aurora-lens>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-lens src="/hero.jpg" alt="…" strength="1"&gt;&lt;/aurora-lens&gt;</pre>
+              </div>
+            </article>
+
             <!-- 3D scene (lazy) -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -627,6 +652,30 @@ import 'aurora/three' // opt-in entry
                 <pre>
 &lt;aurora-particles count="2200" color="#6d5cff" color2="#22d3ee"&gt;
 &lt;/aurora-particles&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Wave (lazy) -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Wave</h3>
+                <code>&lt;aurora-wave&gt;</code>
+              </div>
+              <div class="demo-desc">
+                A wireframe ocean — travelling sine waves across a displaced plane, viewed from a
+                low angle. On the <code>aurora/three</code> entry.
+              </div>
+              <div class="stage scene" id="waveStage">
+                <aurora-wave
+                  speed="1"
+                  amplitude="0.4"
+                  style="position: absolute; inset: 0"
+                ></aurora-wave>
+                <span class="scene-note">loading three.js…</span>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>&lt;aurora-wave color="#6d5cff" amplitude="0.4"&gt;&lt;/aurora-wave&gt;</pre>
               </div>
             </article>
           </div>
@@ -745,7 +794,7 @@ export function Hero() {
     <footer>
       <div class="wrap footer-cta">
         <h2 class="giant">Ship motion.</h2>
-        <p class="footer-sub" data-reveal>MIT licensed. Twenty components. One import away.</p>
+        <p class="footer-sub" data-reveal>MIT licensed. Twenty-two components. One import away.</p>
         <div class="footer-buttons" data-reveal>
           <aurora-magnetic strength="0.4">
             <a href="https://github.com/lasitosPT/aurora"

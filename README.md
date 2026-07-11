@@ -66,8 +66,10 @@ Because they're standard custom elements, you write them the same way in JSX, Vu
 | `aurora-counter`     | Count-up number on scroll into view      | `value`, `from`, `duration`, `decimals`         |
 | `aurora-cursor`      | Trailing cursor glow ring                | `--aurora-cursor-size/-color/-active`           |
 | `aurora-nebula`      | Aurora-borealis WebGL backdrop (~2 kB)   | `color`, `color2`, `color3`, `speed`, `glow`    |
+| `aurora-lens`        | Cursor-warped image w/ chromatic fringe  | `src`, `alt`, `strength`, `crossorigin`         |
 | `aurora-scene` ⬦     | Animated 3D wireframe backdrop           | `color`, `detail`, `speed`                      |
 | `aurora-particles` ⬦ | Drifting GPU particle field              | `count`, `color`, `color2`, `size`, `speed`     |
+| `aurora-wave` ⬦      | Wireframe ocean plane                    | `color`, `speed`, `amplitude`, `opacity`        |
 
 ⬦ imported from `aurora/three`.
 
