@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.10.0
+
+Product UI batch.
+
+- `aurora-menu` — animated, accessible dropdown: child `<button>`s as items (`data-value`,
+  `<hr>` separators), arrow-key roving, Home/End, Escape-with-focus-restore, outside-click
+  close, `align="end"`; emits `aurora-select`
+- `aurora-compare` — before/after slider: `slot="before"` / `slot="after"`, draggable
+  divider with a keyboard-accessible handle (`role="slider"`); emits `aurora-change`
+- `aurora-flip` — 3D flip card: `slot="front"` / `slot="back"`, `trigger="hover|click|manual"`,
+  `flip()`; emits `aurora-flip`
+- `aurora-skeleton` — shimmer loading placeholder: block, `circle`, or `lines="n"`
+- `aurora-confetti` — celebration cannon on a full-viewport 2D canvas:
+  `AuroraConfetti.burst({ x, y, count, colors })`; gravity, drag and spin; self-stopping;
+  no-op under `prefers-reduced-motion`
+
 ## 0.9.0
 
 Motion utilities batch + toast redesign.

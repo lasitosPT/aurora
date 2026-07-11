@@ -808,6 +808,25 @@ html.js .features:not(.is-live) .ico :is(path, circle, rect) {
   background: var(--accent-2);
   box-shadow: 0 0 12px rgba(34, 211, 238, 0.8);
 }
+.flip-face {
+  width: 240px;
+  height: 140px;
+  display: grid;
+  place-items: center;
+  padding: 0 20px;
+  text-align: center;
+  font-weight: 600;
+  border: 1px solid var(--border-strong);
+  border-radius: 16px;
+  background: linear-gradient(160deg, #1c1c2c, #111119);
+}
+.flip-face.back {
+  width: auto;
+  height: auto;
+  background: linear-gradient(160deg, #241a44, #12101f);
+  border-color: rgba(109, 92, 255, 0.5);
+  color: #a99bff;
+}
 
 /* ---------- Gallery ---------- */
 .gallery {

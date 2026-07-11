@@ -73,6 +73,11 @@ Because they're standard custom elements, you write them the same way in JSX, Vu
 | `aurora-orbit`       | Children revolve around a center         | `radius`, `speed`, `reverse`                          |
 | `aurora-glitch`      | RGB-split glitch burst on text           | `hover`; `play()`; `--aurora-glitch-a/-b`             |
 | `aurora-progress`    | Scroll-progress hairline                 | `--aurora-progress-height/-z`                         |
+| `aurora-menu`        | Accessible animated dropdown             | `label`, `align`; `aurora-select` event               |
+| `aurora-compare`     | Before/after comparison slider           | `value`; slots `before`/`after`                       |
+| `aurora-flip`        | 3D flip card                             | `trigger` (hover/click/manual); `flip()`              |
+| `aurora-skeleton`    | Shimmer loading placeholder              | `lines`, `circle`; `--aurora-skeleton-*`              |
+| `aurora-confetti`    | Celebration burst cannon                 | `burst({x, y, count, colors})` / static `burst()`     |
 | `aurora-nebula`      | Aurora-borealis WebGL backdrop (~2 kB)   | `color`, `color2`, `color3`, `speed`, `glow`          |
 | `aurora-lens`        | Cursor-warped image w/ chromatic fringe  | `src`, `alt`, `strength`, `crossorigin`               |
 | `aurora-scene` ⬦     | Animated 3D wireframe backdrop           | `color`, `detail`, `speed`                            |

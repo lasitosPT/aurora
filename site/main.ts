@@ -1,5 +1,5 @@
 import 'aurora'
-import { AuroraToaster } from 'aurora'
+import { AuroraConfetti, AuroraToaster } from 'aurora'
 import '@fontsource-variable/inter'
 import '@fontsource-variable/space-grotesk'
 import { gsap } from 'gsap'
@@ -103,6 +103,20 @@ document.querySelectorAll<HTMLElement>('.toast-btn').forEach((btn) => {
       variant: (btn.dataset.variant as 'success' | 'error' | undefined) ?? 'default',
     })
   })
+})
+
+/* ---------- menu + confetti demos ---------- */
+document.getElementById('demoMenu')?.addEventListener('aurora-select', (event) => {
+  const { value } = (event as CustomEvent<{ value: string }>).detail
+  AuroraToaster.show(`"${value}" selected from the menu.`, {
+    title: 'aurora-select',
+    variant: value === 'Delete' ? 'error' : 'default',
+  })
+})
+document.getElementById('confettiBtn')?.addEventListener('click', (event) => {
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
+  AuroraConfetti.burst({ x: rect.left + rect.width / 2, y: rect.top, count: 130 })
+  AuroraToaster.show('v0.10.0 is out the door.', { title: 'Shipped', variant: 'success' })
 })
 
 /* ---------- nav state ---------- */
