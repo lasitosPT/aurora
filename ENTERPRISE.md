@@ -18,20 +18,20 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ planned
 
 ## Editors
 
-| Component                                            | Status | aurora element                           |
-| ---------------------------------------------------- | ------ | ---------------------------------------- |
-| TextBox / TextArea                                   | 🔶     | `aurora-input`                           |
-| Switch / Checkbox / RadioGroup                       | 🔶     | `aurora-switch` (checkbox/radio planned) |
-| Slider / RangeSlider                                 | 🔶     | `aurora-slider` (range planned)          |
-| AutoComplete / ComboBox / DropDownList / MultiSelect | ⬜     | next up                                  |
-| NumericTextBox / MaskedTextBox / OTP Input           | ⬜     |                                          |
-| DatePicker / DateInput / TimePicker / DateTimePicker | ⬜     |                                          |
-| ColorPicker / ColorGradient                          | ⬜     |                                          |
-| Rating / Signature / Rich Text Editor                | ⬜     |                                          |
+| Component                                  | Status | aurora element                                     |
+| ------------------------------------------ | ------ | -------------------------------------------------- |
+| TextBox / TextArea                         | 🔶     | `aurora-input`                                     |
+| Switch / Checkbox / RadioGroup             | 🔶     | `aurora-switch` (checkbox/radio planned)           |
+| Slider / RangeSlider                       | 🔶     | `aurora-slider` (range planned)                    |
+| AutoComplete / DropDownList / MultiSelect  | ✅     | `aurora-autocomplete` / `-select` / `-multiselect` |
+| NumericTextBox / MaskedTextBox / OTP Input | ⬜     |                                                    |
+| Calendar / DatePicker / TimePicker         | ✅     | `aurora-calendar` / `-datepicker` / `-timepicker`  |
+| ColorPicker / ColorGradient                | ⬜     |                                                    |
+| Rating / Signature / Rich Text Editor      | ⬜     |                                                    |
 
 ## Scheduling
 
-Calendar → DateRangePicker → Scheduler → Gantt: ⬜ (after the editor batch)
+Calendar ✅ · DateRangePicker → Scheduler → Gantt: ⬜
 
 ## Navigation
 

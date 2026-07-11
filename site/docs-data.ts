@@ -282,6 +282,64 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-modal',
+    title: 'Modal',
+    category: 'Overlays & Feedback',
+    summary:
+      'An animated dialog with real focus discipline: focus moves in on open, Tab is trapped at shadow-host granularity, Escape and backdrop clicks close, and focus returns to the opener.',
+    example: `<aurora-button onclick="document.getElementById('docdlg').show()">Open modal</aurora-button>\n<aurora-modal id="docdlg">\n  <h2 style="margin-top:0">Hello</h2>\n  <p>Press Escape or click the backdrop.</p>\n</aurora-modal>`,
+    attributes: [['open', 'Present while shown (toggle it or use the methods)']],
+    events: [['aurora-open / aurora-close', 'Lifecycle']],
+    cssvars: [
+      [
+        '--aurora-modal-z / -backdrop / -padding, --aurora-surface / -radius-lg',
+        'Layering and panel style',
+      ],
+    ],
+    methods: [['show() / hide()', 'Programmatic control']],
+    tutorial: [
+      {
+        heading: '1 · Content is yours',
+        text: 'Anything slotted becomes the dialog body; the first focusable element receives focus on open.',
+      },
+      {
+        heading: '2 · Accessibility included',
+        text: 'role=dialog, aria-modal, Tab trap and focus restore are built in — no wiring.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-command',
+    title: 'Command Palette',
+    category: 'Actions & Navigation',
+    summary:
+      'A ⌘K command palette: global hotkey, type-to-filter over labels and keywords, arrow/Enter/Escape flow, hover-to-activate, and focus restore. This site runs on one.',
+    example: `<aurora-button onclick="document.getElementById('sitePalette') ? document.getElementById('sitePalette').show() : AuroraToaster.show('Palette lives on the main pages — press Ctrl+K there.')">Try the palette</aurora-button>`,
+    attributes: [
+      ['hotkey', 'Cmd/Ctrl + this key opens it (default "k"; "none" disables)'],
+      ['placeholder', 'Search input placeholder'],
+    ],
+    events: [
+      ['aurora-select', '{ value } of the chosen command'],
+      ['aurora-open / aurora-close', 'Lifecycle'],
+    ],
+    cssvars: [
+      ['--aurora-command-z, --aurora-surface / -border / -muted', 'Layering and panel style'],
+    ],
+    methods: [['show() / hide() / toggle()', 'Programmatic control']],
+    tutorial: [
+      {
+        heading: '1 · Commands are buttons',
+        text: 'Child <button data-value data-keywords> elements are the commands; filtering searches both label and keywords.',
+      },
+      {
+        heading: '2 · Route the selection',
+        text: 'One aurora-select listener switches on value — navigate, toast, celebrate.',
+        code: `palette.addEventListener('aurora-select', (e) => run(e.detail.value))`,
+      },
+    ],
+  },
+  {
     tag: 'aurora-nebula',
     title: 'Nebula',
     category: 'Visual & 3D',
