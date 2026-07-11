@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.0
+
+Accessibility pass.
+
+- All components attach their shadow root with `delegatesFocus`, so `host.focus()`
+  reaches the first focusable shadow element and components behave like native controls
+- `aurora-tabs` implements the WAI-ARIA tabs keyboard pattern: Arrow keys move and
+  select, Home/End jump, and the tab bar keeps a roving tabindex
+- `aurora-modal` now moves focus into the dialog on open (first focusable, falling
+  back to the panel), traps Tab / Shift+Tab while open, and restores focus to the
+  opener on close
+
 ## 0.5.0
 
 Text motion batch.

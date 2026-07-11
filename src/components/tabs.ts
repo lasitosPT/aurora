@@ -71,7 +71,26 @@ export class AuroraTabs extends AuroraElement {
     this.tabs = Array.from(this.root.querySelectorAll<HTMLElement>('.tab'))
     this.indicator = this.root.querySelector('.indicator')
     this.tabs.forEach((tab, i) => tab.addEventListener('click', () => this.select(i)))
+    this.root
+      .querySelector('.tablist')
+      ?.addEventListener('keydown', this.onKeydown as EventListener)
     this.select(this.numberAttr('active', 0))
+  }
+
+  /** WAI-ARIA tabs pattern: arrows move + select, Home/End jump, roving tabindex. */
+  private readonly onKeydown = (event: KeyboardEvent): void => {
+    const count = this.tabs.length
+    if (count === 0) return
+    const current = this.tabs.findIndex((tab) => tab.getAttribute('aria-selected') === 'true')
+    let next: number | null = null
+    if (event.key === 'ArrowRight') next = (current + 1) % count
+    else if (event.key === 'ArrowLeft') next = (current - 1 + count) % count
+    else if (event.key === 'Home') next = 0
+    else if (event.key === 'End') next = count - 1
+    if (next === null) return
+    event.preventDefault()
+    this.select(next)
+    this.tabs[next]?.focus()
   }
 
   select(index: number): void {
@@ -80,7 +99,10 @@ export class AuroraTabs extends AuroraElement {
       if (i === index) panel.setAttribute('active', '')
       else panel.removeAttribute('active')
     })
-    this.tabs.forEach((tab, i) => tab.setAttribute('aria-selected', String(i === index)))
+    this.tabs.forEach((tab, i) => {
+      tab.setAttribute('aria-selected', String(i === index))
+      tab.tabIndex = i === index ? 0 : -1
+    })
     this.moveIndicator(index)
     this.dispatchEvent(new CustomEvent('aurora-tab-change', { detail: { index } }))
   }

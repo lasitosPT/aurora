@@ -42,4 +42,22 @@ describe('aurora-tabs', () => {
     expect(panels[1]?.hasAttribute('active')).toBe(true)
     tabs.remove()
   })
+
+  it('moves selection with arrow keys and keeps a roving tabindex', () => {
+    const tabs = buildTabs()
+    const tablist = tabs.shadowRoot?.querySelector('.tablist')
+    const buttons = tabs.shadowRoot?.querySelectorAll<HTMLElement>('.tab')
+
+    expect(buttons?.[0]?.tabIndex).toBe(0)
+    expect(buttons?.[1]?.tabIndex).toBe(-1)
+
+    tablist?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
+    expect(buttons?.[1]?.getAttribute('aria-selected')).toBe('true')
+    expect(buttons?.[1]?.tabIndex).toBe(0)
+    expect(buttons?.[0]?.tabIndex).toBe(-1)
+
+    tablist?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Home', bubbles: true }))
+    expect(buttons?.[0]?.getAttribute('aria-selected')).toBe('true')
+    tabs.remove()
+  })
 })

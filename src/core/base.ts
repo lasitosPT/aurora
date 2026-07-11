@@ -9,7 +9,9 @@ export abstract class AuroraElement extends HTMLElement {
 
   constructor() {
     super()
-    this.root = this.attachShadow({ mode: 'open' })
+    // delegatesFocus makes host.focus() forward into the first focusable shadow
+    // element, so components behave like native focusable controls.
+    this.root = this.attachShadow({ mode: 'open', delegatesFocus: true })
   }
 
   /** Read a numeric attribute, falling back to `fallback` when absent or invalid. */

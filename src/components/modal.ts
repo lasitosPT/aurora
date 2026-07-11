@@ -28,19 +28,26 @@ const STYLE = `
   }
 `
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), ' +
+  'select:not([disabled]), [tabindex]:not([tabindex="-1"]), ' +
+  'aurora-button:not([disabled]), aurora-input, aurora-switch:not([disabled]), aurora-slider'
+
 /**
  * `<aurora-modal>` — an animated dialog. Toggle with the `open` attribute or the
  * `show()` / `hide()` methods. Closes on Escape and on backdrop click, and emits
- * `aurora-open` / `aurora-close` events.
+ * `aurora-open` / `aurora-close` events. While open, Tab is trapped inside the
+ * dialog; on close, focus returns to the element that opened it.
  */
 export class AuroraModal extends AuroraElement {
   static readonly observedAttributes = ['open']
   private backdrop: HTMLElement | null = null
   private panel: HTMLElement | null = null
   private visible = false
+  private previouslyFocused: Element | null = null
 
   connectedCallback(): void {
-    this.root.innerHTML = `<style>${STYLE}</style><div class="backdrop" part="backdrop"><div class="panel" part="panel" role="dialog" aria-modal="true"><slot></slot></div></div>`
+    this.root.innerHTML = `<style>${STYLE}</style><div class="backdrop" part="backdrop"><div class="panel" part="panel" role="dialog" aria-modal="true" tabindex="-1"><slot></slot></div></div>`
     this.backdrop = this.root.querySelector('.backdrop')
     this.panel = this.root.querySelector('.panel')
     this.backdrop?.addEventListener('pointerdown', this.onBackdrop)
@@ -70,6 +77,9 @@ export class AuroraModal extends AuroraElement {
     if (this.visible || !this.backdrop || !this.panel) return
     this.visible = true
     this.backdrop.style.display = 'flex'
+    this.previouslyFocused = document.activeElement
+    const first = this.querySelector<HTMLElement>(FOCUSABLE)
+    ;(first ?? this.panel).focus()
     this.dispatchEvent(new CustomEvent('aurora-open'))
     if (prefersReducedMotion()) return
     gsap.fromTo(this.backdrop, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power2.out' })
@@ -83,6 +93,9 @@ export class AuroraModal extends AuroraElement {
   private close(): void {
     if (!this.visible || !this.backdrop) return
     this.visible = false
+    const previous = this.previouslyFocused
+    this.previouslyFocused = null
+    if (previous instanceof HTMLElement) previous.focus()
     const done = (): void => {
       if (this.backdrop) this.backdrop.style.display = 'none'
       this.dispatchEvent(new CustomEvent('aurora-close'))
@@ -102,7 +115,34 @@ export class AuroraModal extends AuroraElement {
   }
 
   private readonly onKey = (event: KeyboardEvent): void => {
-    if (event.key === 'Escape' && this.hasAttribute('open')) this.hide()
+    if (!this.hasAttribute('open')) return
+    if (event.key === 'Escape') {
+      this.hide()
+      return
+    }
+    if (event.key !== 'Tab') return
+
+    // Trap Tab inside the dialog. document.activeElement reports shadow hosts,
+    // so aurora-* controls participate at host granularity.
+    const focusables = Array.from(this.querySelectorAll<HTMLElement>(FOCUSABLE))
+    const first = focusables[0]
+    const last = focusables[focusables.length - 1]
+    if (!first || !last) {
+      event.preventDefault()
+      this.panel?.focus()
+      return
+    }
+    const active = document.activeElement
+    if (active !== this && !this.contains(active)) {
+      event.preventDefault()
+      first.focus()
+    } else if (!event.shiftKey && active === last) {
+      event.preventDefault()
+      first.focus()
+    } else if (event.shiftKey && (active === first || active === this)) {
+      event.preventDefault()
+      last.focus()
+    }
   }
 }
 

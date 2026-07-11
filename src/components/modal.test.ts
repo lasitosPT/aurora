@@ -19,4 +19,23 @@ describe('aurora-modal', () => {
     expect(el.hasAttribute('open')).toBe(false)
     el.remove()
   })
+
+  it('restores focus to the opener on close', () => {
+    const opener = document.createElement('button')
+    document.body.append(opener)
+    const el = document.createElement('aurora-modal') as AuroraModal
+    el.innerHTML = '<button id="inside">Inside</button>'
+    document.body.append(el)
+
+    opener.focus()
+    expect(document.activeElement).toBe(opener)
+
+    el.show()
+    expect(document.activeElement).not.toBe(opener)
+
+    el.hide()
+    expect(document.activeElement).toBe(opener)
+    el.remove()
+    opener.remove()
+  })
 })
