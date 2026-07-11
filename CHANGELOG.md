@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.18.0
+
+- `aurora-multiselect` — pick-many dropdown: removable chips in the trigger, checkbox
+  listbox popup, `values` string[] API, form-associated with one FormData entry per
+  value; emits `aurora-change`. Completes the dropdown editor trio; ships with docs.
+
 ## 0.17.0
 
 - `aurora-autocomplete` — type-to-filter suggestions with match highlighting, arrow/Enter

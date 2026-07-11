@@ -138,6 +138,36 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-multiselect',
+    title: 'Multiselect',
+    category: 'Forms & Inputs',
+    summary:
+      'A pick-many dropdown: selections become removable chips, the popup is a checkbox list, and the form gets one entry per value.',
+    example: `<aurora-multiselect id="docMs" placeholder="Pick stacks…">\n  <option value="ts">TypeScript</option>\n  <option value="go">Go</option>\n  <option value="rs">Rust</option>\n</aurora-multiselect>`,
+    attributes: [
+      ['placeholder', 'Shown while nothing is selected'],
+      ['name', 'Form field name (FormData entry per value)'],
+    ],
+    events: [['aurora-change', '{ values: string[] }']],
+    cssvars: [['--aurora-accent / -surface / -border / -radius / -muted', 'Shared theme tokens']],
+    methods: [
+      ['values', 'Get/set the selection as string[]'],
+      ['options', 'Get/set as { value, label }[]'],
+      ['toggleValue(v) / open() / close()', 'Programmatic control'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Options in, chips out',
+        text: 'Child <option> elements (or the options property) define the list; every pick renders as a chip with its own remove button.',
+      },
+      {
+        heading: '2 · Real multi-value form data',
+        text: 'With a name attribute, submitting the surrounding form sends one entry per selected value — exactly like a native multiple select.',
+        code: `const data = new FormData(form)\ndata.getAll('stacks') // ['ts', 'go']`,
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Forty-three components.<br /><span class="grad">Every one of them live.</span>
+          Forty-four components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -521,6 +521,32 @@ AuroraConfetti.burst({ count: 120 })</pre>
                 <pre>
 &lt;aurora-autocomplete placeholder="Search…"&gt;&lt;/aurora-autocomplete&gt;
 ac.options = ['TypeScript', 'Go', 'Rust']</pre>
+              </div>
+            </article>
+            <!-- Multiselect -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Multiselect</h3>
+                <code>&lt;aurora-multiselect&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Pick many — chips with remove buttons, checkbox popup.
+                <a href="./docs.html?c=aurora-multiselect" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage">
+                <aurora-multiselect placeholder="Pick stacks…">
+                  <option value="ts">TypeScript</option>
+                  <option value="go">Go</option>
+                  <option value="rs">Rust</option>
+                  <option value="py">Python</option>
+                </aurora-multiselect>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-multiselect name="stacks" placeholder="Pick stacks…"&gt;
+  &lt;option value="ts"&gt;TypeScript&lt;/option&gt;
+&lt;/aurora-multiselect&gt;</pre>
               </div>
             </article>
           </div>
