@@ -46,30 +46,34 @@ Because they're standard custom elements, you write them the same way in JSX, Vu
 
 ## Components
 
-| Element              | Description                              | Attributes                                      |
-| -------------------- | ---------------------------------------- | ----------------------------------------------- |
-| `aurora-button`      | Themeable button                         | `variant` (`primary`/`ghost`), `disabled`       |
-| `aurora-magnetic`    | Content magnetically follows the cursor  | `strength` (default `0.4`)                      |
-| `aurora-text`        | Masked text reveal on scroll into view   | `by` (`words`/`chars`), `stagger`, `delay`      |
-| `aurora-scramble`    | Glyph-scramble text decode               | `duration`, `chars`, `hover`; `play()`          |
-| `aurora-typewriter`  | Typed text behind a blinking caret       | `speed`, `delay`, `no-caret`; `start()`         |
-| `aurora-marquee`     | Seamless horizontal scroller             | `speed` (px/s, default `60`)                    |
-| `aurora-tilt`        | 3D tilt toward the cursor                | `max` degrees (default `12`)                    |
-| `aurora-modal`       | Animated dialog with backdrop            | `open`; `show()` / `hide()`                     |
-| `aurora-tooltip`     | Hover / focus tooltip                    | `text`, `position` (top/bottom/left/right)      |
-| `aurora-accordion`   | Collapsible panel with animated height   | `label`, `open`; `show()` / `hide()`            |
-| `aurora-tabs`        | Tabbed interface with animated indicator | `active`; wraps `aurora-tab-panel[label]`       |
-| `aurora-input`       | Text field with animated focus underline | `label`, `type`, `placeholder`, `value`, `name` |
-| `aurora-switch`      | Animated toggle switch                   | `checked`, `value`, `disabled`, `name`          |
-| `aurora-slider`      | Draggable range slider                   | `min`, `max`, `step`, `value`, `name`           |
-| `aurora-reveal`      | Scroll-into-view fade/rise reveal        | `y`, `duration`, `delay`, `stagger`             |
-| `aurora-counter`     | Count-up number on scroll into view      | `value`, `from`, `duration`, `decimals`         |
-| `aurora-cursor`      | Trailing cursor glow ring                | `--aurora-cursor-size/-color/-active`           |
-| `aurora-nebula`      | Aurora-borealis WebGL backdrop (~2 kB)   | `color`, `color2`, `color3`, `speed`, `glow`    |
-| `aurora-lens`        | Cursor-warped image w/ chromatic fringe  | `src`, `alt`, `strength`, `crossorigin`         |
-| `aurora-scene` ⬦     | Animated 3D wireframe backdrop           | `color`, `detail`, `speed`                      |
-| `aurora-particles` ⬦ | Drifting GPU particle field              | `count`, `color`, `color2`, `size`, `speed`     |
-| `aurora-wave` ⬦      | Wireframe ocean plane                    | `color`, `speed`, `amplitude`, `opacity`        |
+| Element              | Description                              | Attributes                                         |
+| -------------------- | ---------------------------------------- | -------------------------------------------------- |
+| `aurora-button`      | Themeable button                         | `variant` (`primary`/`ghost`), `disabled`          |
+| `aurora-magnetic`    | Content magnetically follows the cursor  | `strength` (default `0.4`)                         |
+| `aurora-text`        | Masked text reveal on scroll into view   | `by` (`words`/`chars`), `stagger`, `delay`         |
+| `aurora-scramble`    | Glyph-scramble text decode               | `duration`, `chars`, `hover`; `play()`             |
+| `aurora-typewriter`  | Typed text behind a blinking caret       | `speed`, `delay`, `no-caret`; `start()`            |
+| `aurora-marquee`     | Seamless horizontal scroller             | `speed` (px/s, default `60`)                       |
+| `aurora-tilt`        | 3D tilt toward the cursor                | `max` degrees (default `12`)                       |
+| `aurora-modal`       | Animated dialog with backdrop            | `open`; `show()` / `hide()`                        |
+| `aurora-tooltip`     | Hover / focus tooltip                    | `text`, `position` (top/bottom/left/right)         |
+| `aurora-accordion`   | Collapsible panel with animated height   | `label`, `open`; `show()` / `hide()`               |
+| `aurora-tabs`        | Tabbed interface with animated indicator | `active`; wraps `aurora-tab-panel[label]`          |
+| `aurora-input`       | Text field with animated focus underline | `label`, `type`, `placeholder`, `value`, `name`    |
+| `aurora-switch`      | Animated toggle switch                   | `checked`, `value`, `disabled`, `name`             |
+| `aurora-slider`      | Draggable range slider                   | `min`, `max`, `step`, `value`, `name`              |
+| `aurora-reveal`      | Scroll-into-view fade/rise reveal        | `y`, `duration`, `delay`, `stagger`                |
+| `aurora-counter`     | Count-up number on scroll into view      | `value`, `from`, `duration`, `decimals`            |
+| `aurora-cursor`      | Trailing cursor glow ring                | `--aurora-cursor-size/-color/-active`              |
+| `aurora-toaster`     | Animated toast stack                     | `position`, `duration`; `show()` / static `show()` |
+| `aurora-spotlight`   | Cursor spotlight + border-beam card      | `--aurora-spotlight-size/-color/-beam`             |
+| `aurora-dock`        | Magnifying macOS-style dock              | `max`, `range`, `lift`                             |
+| `aurora-ripple`      | Pointer ripple on press                  | `--aurora-ripple-color`                            |
+| `aurora-nebula`      | Aurora-borealis WebGL backdrop (~2 kB)   | `color`, `color2`, `color3`, `speed`, `glow`       |
+| `aurora-lens`        | Cursor-warped image w/ chromatic fringe  | `src`, `alt`, `strength`, `crossorigin`            |
+| `aurora-scene` ⬦     | Animated 3D wireframe backdrop           | `color`, `detail`, `speed`                         |
+| `aurora-particles` ⬦ | Drifting GPU particle field              | `count`, `color`, `color2`, `size`, `speed`        |
+| `aurora-wave` ⬦      | Wireframe ocean plane                    | `color`, `speed`, `amplitude`, `opacity`           |
 
 ⬦ imported from `aurora/three`.
 

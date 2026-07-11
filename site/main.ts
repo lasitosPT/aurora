@@ -1,4 +1,5 @@
 import 'aurora'
+import { AuroraToaster } from 'aurora'
 import '@fontsource-variable/inter'
 import '@fontsource-variable/space-grotesk'
 import { gsap } from 'gsap'
@@ -62,20 +63,7 @@ document.querySelectorAll<HTMLButtonElement>('.replay').forEach((btn) => {
   })
 })
 
-/* ---------- feature bento: cursor spotlight + border beam ---------- */
-const bentos = Array.from(document.querySelectorAll<HTMLElement>('.bento'))
-document.querySelector('.features')?.addEventListener(
-  'pointermove',
-  (e) => {
-    const { clientX, clientY } = e as PointerEvent
-    for (const card of bentos) {
-      const rect = card.getBoundingClientRect()
-      card.style.setProperty('--mx', `${clientX - rect.left}px`)
-      card.style.setProperty('--my', `${clientY - rect.top}px`)
-    }
-  },
-  { passive: true },
-)
+/* ---------- feature bento: spotlight + beam are <aurora-spotlight> cards ---------- */
 
 /* ---------- feature bento: live theme swatches ---------- */
 document.querySelectorAll<HTMLButtonElement>('.swatch').forEach((btn) => {
@@ -106,6 +94,15 @@ if (features) {
     io.observe(features)
   }
 }
+
+/* ---------- toast demo buttons ---------- */
+document.querySelectorAll<HTMLElement>('.toast-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    AuroraToaster.show(btn.dataset.msg ?? 'Hello from aurora', {
+      variant: (btn.dataset.variant as 'success' | 'error' | undefined) ?? 'default',
+    })
+  })
+})
 
 /* ---------- nav state ---------- */
 const nav = document.querySelector('.nav')

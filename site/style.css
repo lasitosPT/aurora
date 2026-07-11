@@ -536,49 +536,7 @@ html.js:not(.reduced) .scroll-hint i::after {
   background: linear-gradient(180deg, var(--panel), rgba(11, 11, 18, 0.4));
   overflow: hidden;
 }
-/* interior spotlight following the cursor */
-.bento::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    340px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(109, 92, 255, 0.09),
-    transparent 65%
-  );
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-}
-/* border beam lighting up near the cursor */
-.bento::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: radial-gradient(
-    220px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(169, 155, 255, 0.85),
-    rgba(34, 211, 238, 0.25) 55%,
-    transparent 75%
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  pointer-events: none;
-}
-.bento:hover::before,
-.bento:hover::after {
-  opacity: 1;
-}
+/* spotlight + border beam come from <aurora-spotlight> — the cards ARE the component */
 .b-head {
   display: flex;
   align-items: flex-start;
@@ -767,6 +725,50 @@ html.js .features:not(.is-live) .ico :is(path, circle, rect) {
   border-bottom-width: 2px;
   border-radius: 8px;
   background: linear-gradient(180deg, #1a1a28, #101018);
+}
+
+/* ---------- interaction demos ---------- */
+.spot-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 30px 34px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel-2);
+}
+.spot-demo span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.dock-tile {
+  all: unset;
+  cursor: pointer;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  font-size: 1.05rem;
+  color: #a99bff;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #1b1b2a, #12121c);
+  will-change: transform;
+}
+.dock-tile:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+.ripple-demo {
+  border-radius: 16px;
+}
+.ripple-pad {
+  padding: 34px 46px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel-2);
+  cursor: pointer;
+  user-select: none;
 }
 
 /* ---------- Gallery ---------- */

@@ -57,7 +57,7 @@
       <aurora-nebula class="gl" speed="1" aria-hidden="true"></aurora-nebula>
       <div class="hero-inner">
         <p class="eyebrow" data-intro>
-          <span class="dot"></span> Open source · MIT · 22 components
+          <span class="dot"></span> Open source · MIT · 26 components
         </p>
         <h1 class="hero-title">
           <span class="line">Motion,</span>
@@ -121,11 +121,11 @@
         <!-- The numbers below are live <aurora-counter> components -->
         <div class="wrap stats-grid">
           <div class="stat">
-            <aurora-counter class="num" value="22"></aurora-counter>
+            <aurora-counter class="num" value="26"></aurora-counter>
             <span class="stat-label">Components</span>
           </div>
           <div class="stat">
-            <aurora-counter class="num" value="12"></aurora-counter><span class="suffix">kB</span>
+            <aurora-counter class="num" value="14"></aurora-counter><span class="suffix">kB</span>
             <span class="stat-label">Core, gzipped</span>
           </div>
           <div class="stat">
@@ -158,7 +158,7 @@
 
           <div class="features">
             <!-- 01 · Framework-agnostic (hero cell) -->
-            <article class="bento b-agnostic" data-reveal>
+            <aurora-spotlight role="article" class="bento b-agnostic" data-reveal>
               <div class="b-head">
                 <svg class="ico" viewBox="0 0 28 28" aria-hidden="true">
                   <circle cx="14" cy="5" r="2.6" pathLength="100" />
@@ -182,10 +182,10 @@
               <div class="fw-chips" aria-hidden="true">
                 <span>React</span><span>Vue</span><span>Svelte</span><span>HTML</span>
               </div>
-            </article>
+            </aurora-spotlight>
 
             <!-- 02 · GSAP -->
-            <article class="bento b-gsap" data-reveal>
+            <aurora-spotlight role="article" class="bento b-gsap" data-reveal>
               <div class="b-head">
                 <svg class="ico" viewBox="0 0 28 28" aria-hidden="true">
                   <path pathLength="100" d="M3 19c4 0 4-10 8-10s4 10 8 10 3-3.5 5.5-5.5" />
@@ -196,10 +196,10 @@
               <h3>Industrial-grade motion.</h3>
               <p>Every interaction runs on GSAP — interruptible, springy, 60&nbsp;fps.</p>
               <div class="b-demo eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-            </article>
+            </aurora-spotlight>
 
             <!-- 03 · Three.js -->
-            <article class="bento b-three" data-reveal>
+            <aurora-spotlight role="article" class="bento b-three" data-reveal>
               <div class="b-head">
                 <svg class="ico" viewBox="0 0 28 28" aria-hidden="true">
                   <path pathLength="100" d="M14 3.5l9 5v11l-9 5-9-5v-11z" />
@@ -210,10 +210,10 @@
               <h3>3D on your terms.</h3>
               <p>Three.js lives behind a separate entry. Skip it, and it never ships.</p>
               <code class="b-code">import 'aurora/three'</code>
-            </article>
+            </aurora-spotlight>
 
             <!-- 04 · Forms -->
-            <article class="bento b-forms" data-reveal>
+            <aurora-spotlight role="article" class="bento b-forms" data-reveal>
               <div class="b-head">
                 <svg class="ico" viewBox="0 0 28 28" aria-hidden="true">
                   <rect x="3.5" y="9" width="21" height="10" rx="5" pathLength="100" />
@@ -235,10 +235,10 @@
                   aria-label="Demo slider"
                 ></aurora-slider>
               </div>
-            </article>
+            </aurora-spotlight>
 
             <!-- 05 · Theming -->
-            <article class="bento b-theme" data-reveal>
+            <aurora-spotlight role="article" class="bento b-theme" data-reveal>
               <div class="b-head">
                 <svg class="ico" viewBox="0 0 28 28" aria-hidden="true">
                   <path
@@ -287,10 +287,10 @@
                 </div>
                 <aurora-button>Instantly themed</aurora-button>
               </div>
-            </article>
+            </aurora-spotlight>
 
             <!-- 06 · A11y -->
-            <article class="bento b-a11y" data-reveal>
+            <aurora-spotlight role="article" class="bento b-a11y" data-reveal>
               <div class="b-head">
                 <svg class="ico" viewBox="0 0 28 28" aria-hidden="true">
                   <circle cx="14" cy="14" r="10.5" pathLength="100" />
@@ -310,7 +310,7 @@
               <div class="b-demo keycaps" aria-hidden="true">
                 <kbd>Tab</kbd><kbd>⇥</kbd><kbd>Esc</kbd><kbd>←</kbd><kbd>→</kbd><kbd>⏎</kbd>
               </div>
-            </article>
+            </aurora-spotlight>
           </div>
         </div>
       </section>
@@ -320,7 +320,7 @@
         <div class="wrap gallery">
           <aside class="gallery-side">
             <p class="kicker" data-reveal>03 · Components</p>
-            <h2 class="section-title" data-reveal>Twenty-two components.<br />One import.</h2>
+            <h2 class="section-title" data-reveal>Twenty-six components.<br />One import.</h2>
             <p class="side-sub" data-reveal>
               Everything below is live — hover, click, drag. Each card ships with its markup, ready
               to paste.
@@ -712,6 +712,120 @@
               </div>
             </article>
 
+            <!-- Toaster -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Toasts</h3>
+                <code>&lt;aurora-toaster&gt;</code>
+              </div>
+              <div class="demo-desc">
+                An animated notification stack — toasts spring in, pause on hover, dismiss on click.
+                One line: <code>AuroraToaster.show(…)</code>.
+              </div>
+              <div class="stage">
+                <aurora-button class="toast-btn" data-msg="Changes saved." data-variant="success"
+                  >Success</aurora-button
+                >
+                <aurora-button
+                  class="toast-btn"
+                  variant="ghost"
+                  data-msg="Deploy started — hold tight."
+                  >Default</aurora-button
+                >
+                <aurora-button
+                  class="toast-btn"
+                  variant="ghost"
+                  data-msg="Build failed on main."
+                  data-variant="error"
+                  >Error</aurora-button
+                >
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+import { AuroraToaster } from 'aurora'
+
+AuroraToaster.show('Changes saved.', { variant: 'success' })</pre>
+              </div>
+            </article>
+
+            <!-- Spotlight -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Spotlight</h3>
+                <code>&lt;aurora-spotlight&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Cursor-tracking interior glow and a 1px border beam — the feature cards on this page
+                are this component.
+              </div>
+              <div class="stage">
+                <aurora-spotlight class="spot-demo">
+                  <strong>Move your cursor over me</strong>
+                  <span>The glow and the border beam follow it.</span>
+                </aurora-spotlight>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-spotlight class="card"&gt;
+  Your content
+&lt;/aurora-spotlight&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Dock -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Dock</h3>
+                <code>&lt;aurora-dock&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Children magnify as the cursor approaches — the macOS dock, one wrapper element.
+              </div>
+              <div class="stage tall">
+                <aurora-dock max="1.7" range="120">
+                  <button class="dock-tile" aria-label="Item one">✦</button>
+                  <button class="dock-tile" aria-label="Item two">◆</button>
+                  <button class="dock-tile" aria-label="Item three">●</button>
+                  <button class="dock-tile" aria-label="Item four">▲</button>
+                  <button class="dock-tile" aria-label="Item five">✕</button>
+                  <button class="dock-tile" aria-label="Item six">➜</button>
+                </aurora-dock>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-dock max="1.7" range="120"&gt;
+  &lt;button&gt;…&lt;/button&gt;
+&lt;/aurora-dock&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Ripple -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Ripple</h3>
+                <code>&lt;aurora-ripple&gt;</code>
+              </div>
+              <div class="demo-desc">
+                A soft ripple from the pointer on press, clipped to the wrapper's radius. Click
+                around:
+              </div>
+              <div class="stage">
+                <aurora-ripple class="ripple-demo">
+                  <div class="ripple-pad">Click me — anywhere</div>
+                </aurora-ripple>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-ripple&gt;
+  &lt;button&gt;Click me&lt;/button&gt;
+&lt;/aurora-ripple&gt;</pre>
+              </div>
+            </article>
+
             <!-- Lens -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -926,7 +1040,7 @@ export function Hero() {
     <footer>
       <div class="wrap footer-cta">
         <h2 class="giant">Ship motion.</h2>
-        <p class="footer-sub" data-reveal>MIT licensed. Twenty-two components. One import away.</p>
+        <p class="footer-sub" data-reveal>MIT licensed. Twenty-six components. One import away.</p>
         <div class="footer-buttons" data-reveal>
           <aurora-magnetic strength="0.4">
             <a href="https://github.com/lasitosPT/aurora"

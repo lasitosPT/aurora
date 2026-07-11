@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.8.0
+
+Interaction batch.
+
+- `aurora-toaster` — animated toast stack: `show(message, { variant, duration })` on an
+  element you place, or `AuroraToaster.show(...)` to use a shared auto-created one;
+  toasts spring in, pause their timer on hover, dismiss on click; `position` attribute
+  for the four corners; `aria-live` region baked in
+- `aurora-spotlight` — the cursor-tracking interior glow + 1px border beam from
+  auroralib.com's feature grid, as a wrapper for any card; layers inherit the host's
+  border-radius; themed via `--aurora-spotlight-*`
+- `aurora-dock` — children magnify as the cursor approaches, macOS-dock style:
+  `max`, `range`, `lift`
+- `aurora-ripple` — a soft pointer ripple on press, clipped to the host's radius:
+  `--aurora-ripple-color`
+
 ## 0.7.0
 
 Imagery batch.
