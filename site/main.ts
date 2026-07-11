@@ -155,10 +155,15 @@ if (!reduced) {
     io.observe(el)
   }
 
-  /* manifesto lines — masked inner blocks (gradient-safe) */
-  document.querySelectorAll<HTMLElement>('.mline .inner').forEach((inner) => {
+  /* manifesto lines — masked inner blocks (gradient-safe). Observe the in-flow
+     .mline wrapper, NOT the inner: the inner starts translated outside its
+     overflow-hidden parent, so its own intersection area is zero and an
+     observer on it would never fire. */
+  document.querySelectorAll<HTMLElement>('.mline').forEach((line) => {
+    const inner = line.querySelector('.inner')
+    if (!inner) return
     gsap.set(inner, { yPercent: 115 })
-    onVisible(inner, () => gsap.to(inner, { yPercent: 0, duration: 1, ease: 'power4.out' }))
+    onVisible(line, () => gsap.to(inner, { yPercent: 0, duration: 1, ease: 'power4.out' }))
   })
 
   /* generic reveals — batched per IO flush so neighbours stagger together */
