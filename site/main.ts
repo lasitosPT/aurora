@@ -137,6 +137,27 @@ palette?.addEventListener('aurora-select', (event) => {
   else if (value === 'confetti') AuroraConfetti.burst({ count: 130 })
 })
 
+/* ---------- data grid demo ---------- */
+import type { AuroraGrid } from 'aurora'
+const demoGrid = document.getElementById('demoGrid') as AuroraGrid | null
+if (demoGrid) {
+  demoGrid.columns = [
+    { field: 'name', title: 'Project', width: '32%' },
+    { field: 'lang', title: 'Language' },
+    { field: 'stars', title: 'Stars', align: 'right', formatter: (v) => `★ ${String(v)}` },
+    { field: 'status', title: 'Status' },
+  ]
+  demoGrid.data = [
+    { name: 'pulse', lang: 'TypeScript', stars: 412, status: 'stable' },
+    { name: 'aurora', lang: 'TypeScript', stars: 951, status: 'active' },
+    { name: 'volley', lang: 'Go', stars: 187, status: 'stable' },
+    { name: 'statelet', lang: 'TypeScript', stars: 240, status: 'stable' },
+    { name: 'critique', lang: 'TypeScript', stars: 305, status: 'active' },
+    { name: 'devnotes', lang: 'Markdown', stars: 96, status: 'archive' },
+    { name: 'nebula-kit', lang: 'GLSL', stars: 78, status: 'active' },
+  ]
+}
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()

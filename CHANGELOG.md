@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.12.0
+
+Enterprise track begins — see [ENTERPRISE.md](ENTERPRISE.md) for the Kendo-class roadmap.
+
+- `aurora-grid` — the flagship data grid: assign `columns`
+  (`title`/`width`/`align`/`sortable`/`filterable`/`formatter`) and `data`, get
+  click-to-sort headers cycling asc/desc/off (numeric-aware, `aria-sort`), a per-column
+  filter row (`filterable`), paging (`page-size` + pager with range readout), and row
+  selection (`selectable="single|multiple"` with checkboxes and select-all). `striped`,
+  `dense`, sticky header inside `--aurora-grid-height`, empty state, `refresh()`,
+  `selected` getter; emits `aurora-sort` / `aurora-filter` / `aurora-page` /
+  `aurora-selection`
+
 ## 0.11.0
 
 Command & ambient batch.

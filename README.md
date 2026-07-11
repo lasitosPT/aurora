@@ -78,6 +78,7 @@ Because they're standard custom elements, you write them the same way in JSX, Vu
 | `aurora-flip`        | 3D flip card                             | `trigger` (hover/click/manual); `flip()`              |
 | `aurora-skeleton`    | Shimmer loading placeholder              | `lines`, `circle`; `--aurora-skeleton-*`              |
 | `aurora-confetti`    | Celebration burst cannon                 | `burst({x, y, count, colors})` / static `burst()`     |
+| `aurora-grid`        | Enterprise data grid                     | sort/filter/page/select; `columns`, `data`            |
 | `aurora-command`     | ⌘K command palette                       | `hotkey`, `placeholder`; `aurora-select` event        |
 | `aurora-drawer`      | Slide-in side panel                      | `open`, `side`; `show()` / `hide()`                   |
 | `aurora-beam`        | Border beam travelling a card edge       | `speed`; `--aurora-beam-*`                            |
