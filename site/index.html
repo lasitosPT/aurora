@@ -37,26 +37,27 @@
       </div>
     </div>
 
-    <!-- ---------- Cursor glow (desktop only) ---------- -->
-    <div class="cursor" aria-hidden="true"></div>
+    <!-- ---------- Cursor glow: an aurora component (desktop only) ---------- -->
+    <aurora-cursor></aurora-cursor>
 
     <!-- ---------- Nav ---------- -->
     <nav class="nav">
-      <a class="brand" href="#top" data-hover><span class="mark">✦</span> aurora</a>
+      <a class="brand" href="#top"><span class="mark">✦</span> aurora</a>
       <div class="nav-links">
-        <a href="#components" class="hide-sm" data-hover>Components</a>
-        <a href="#install" data-hover>Install</a>
-        <a href="#theming" class="hide-sm" data-hover>Theming</a>
-        <a class="ext" href="https://github.com/lasitosPT/aurora" data-hover>GitHub</a>
+        <a href="#components" class="hide-sm">Components</a>
+        <a href="#install">Install</a>
+        <a href="#theming" class="hide-sm">Theming</a>
+        <a class="ext" href="https://github.com/lasitosPT/aurora">GitHub</a>
       </div>
     </nav>
 
     <!-- ---------- Hero ---------- -->
     <header class="hero" id="top">
-      <canvas class="gl" aria-hidden="true"></canvas>
+      <!-- The hero background is itself a library component -->
+      <aurora-nebula class="gl" speed="1" aria-hidden="true"></aurora-nebula>
       <div class="hero-inner">
         <p class="eyebrow" data-intro>
-          <span class="dot"></span> Open source · MIT · 13 components
+          <span class="dot"></span> Open source · MIT · 18 components
         </p>
         <h1 class="hero-title">
           <span class="line">Motion,</span>
@@ -69,15 +70,15 @@
         </p>
         <div class="hero-cta" data-intro>
           <aurora-magnetic strength="0.4">
-            <a href="#components" data-hover><aurora-button>Explore components</aurora-button></a>
+            <a href="#components"><aurora-button>Explore components</aurora-button></a>
           </aurora-magnetic>
-          <a href="https://github.com/lasitosPT/aurora" data-hover
+          <a href="https://github.com/lasitosPT/aurora"
             ><aurora-button variant="ghost">Star on GitHub</aurora-button></a
           >
         </div>
         <div class="install-pill" data-intro>
           <span><span class="prompt">$</span> npm install aurora</span>
-          <button class="copy" aria-label="Copy install command" data-hover>Copy</button>
+          <button class="copy" aria-label="Copy install command">Copy</button>
           <pre hidden>npm install aurora</pre>
         </div>
       </div>
@@ -117,21 +118,22 @@
 
       <!-- ---------- Stats ---------- -->
       <section class="stats" data-reveal>
+        <!-- The numbers below are live <aurora-counter> components -->
         <div class="wrap stats-grid">
           <div class="stat">
-            <span class="num" data-count="13">0</span>
+            <aurora-counter class="num" value="18"></aurora-counter>
             <span class="stat-label">Components</span>
           </div>
           <div class="stat">
-            <span class="num" data-count="35">0</span><span class="suffix">kB</span>
+            <aurora-counter class="num" value="10"></aurora-counter><span class="suffix">kB</span>
             <span class="stat-label">Core, gzipped</span>
           </div>
           <div class="stat">
-            <span class="num" data-count="60">0</span><span class="suffix">fps</span>
+            <aurora-counter class="num" value="60"></aurora-counter><span class="suffix">fps</span>
             <span class="stat-label">GSAP motion</span>
           </div>
           <div class="stat">
-            <span class="num" data-count="1">0</span>
+            <aurora-counter class="num" value="1"></aurora-counter>
             <span class="stat-label">Import</span>
           </div>
         </div>
@@ -186,13 +188,13 @@
         <div class="wrap gallery">
           <aside class="gallery-side">
             <p class="kicker" data-reveal>03 · Components</p>
-            <h2 class="section-title" data-reveal>Thirteen components.<br />One import.</h2>
+            <h2 class="section-title" data-reveal>Eighteen components.<br />One import.</h2>
             <p class="side-sub" data-reveal>
               Everything below is live — hover, click, drag. Each card ships with its markup, ready
               to paste.
             </p>
             <div class="side-cta" data-reveal>
-              <a href="https://github.com/lasitosPT/aurora" data-hover
+              <a href="https://github.com/lasitosPT/aurora"
                 ><aurora-button variant="ghost">Read the docs ↗</aurora-button></a
               >
             </div>
@@ -207,11 +209,11 @@
               </div>
               <div class="demo-desc">Themeable button with primary and ghost variants.</div>
               <div class="stage">
-                <aurora-button data-hover>Primary</aurora-button>
-                <aurora-button variant="ghost" data-hover>Ghost</aurora-button>
+                <aurora-button>Primary</aurora-button>
+                <aurora-button variant="ghost">Ghost</aurora-button>
               </div>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 &lt;aurora-button&gt;Primary&lt;/aurora-button&gt;
 &lt;aurora-button variant="ghost"&gt;Ghost&lt;/aurora-button&gt;</pre>
@@ -227,11 +229,11 @@
               <div class="demo-desc">Content is pulled toward the cursor as it approaches.</div>
               <div class="stage">
                 <aurora-magnetic strength="0.6">
-                  <aurora-button data-hover>Hover near me</aurora-button>
+                  <aurora-button>Hover near me</aurora-button>
                 </aurora-magnetic>
               </div>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 &lt;aurora-magnetic strength="0.6"&gt;
   &lt;aurora-button&gt;Hover near me&lt;/aurora-button&gt;
@@ -252,7 +254,7 @@
                 </aurora-tilt>
               </div>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 &lt;aurora-tilt max="16"&gt;
   &lt;div class="card"&gt;Tilt me&lt;/div&gt;
@@ -271,10 +273,10 @@
                 <aurora-text stagger="0.06" style="font-size: 1.5rem; font-weight: 700">
                   Motion, built in.
                 </aurora-text>
-                <button class="replay" data-hover aria-label="Replay animation">↻ Replay</button>
+                <button class="replay" aria-label="Replay animation">↻ Replay</button>
               </div>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 &lt;aurora-text stagger="0.06"&gt;
   Motion, built in.
@@ -291,7 +293,7 @@
               <div class="demo-desc">Animated dialog; hover the button for a tooltip.</div>
               <div class="stage">
                 <aurora-tooltip text="Opens a dialog" position="top">
-                  <aurora-button data-hover onclick="document.getElementById('demoModal').show()"
+                  <aurora-button onclick="document.getElementById('demoModal').show()"
                     >Open modal</aurora-button
                   >
                 </aurora-tooltip>
@@ -306,7 +308,7 @@
                 </aurora-modal>
               </div>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 &lt;aurora-tooltip text="Opens a dialog"&gt;
   &lt;aurora-button onclick="dlg.show()"&gt;Open&lt;/aurora-button&gt;
@@ -331,7 +333,7 @@
                 >
               </div>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 &lt;aurora-accordion label="What is aurora?" open&gt;
   A set of animated web components.
@@ -356,7 +358,7 @@
                 </aurora-tabs>
               </div>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 &lt;aurora-tabs active="0"&gt;
   &lt;aurora-tab-panel label="Overview"&gt;…&lt;/aurora-tab-panel&gt;
@@ -378,7 +380,7 @@
                 </aurora-marquee>
               </div>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 &lt;aurora-marquee speed="70"&gt;
   GSAP · Three.js · Web Components ·
@@ -403,22 +405,122 @@
                   placeholder="you@example.com"
                 ></aurora-input>
                 <label class="row">
-                  <aurora-switch checked data-hover></aurora-switch>
+                  <aurora-switch checked></aurora-switch>
                   <span>Subscribe to the newsletter</span>
                 </label>
                 <div>
                   <span class="mini-label">Volume</span>
-                  <aurora-slider min="0" max="100" value="70" data-hover></aurora-slider>
+                  <aurora-slider min="0" max="100" value="70"></aurora-slider>
                 </div>
               </div>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 &lt;form&gt;
   &lt;aurora-input  name="email"      label="Email" type="email"&gt;&lt;/aurora-input&gt;
   &lt;aurora-switch name="newsletter" checked&gt;&lt;/aurora-switch&gt;
   &lt;aurora-slider name="volume" min="0" max="100" value="70"&gt;&lt;/aurora-slider&gt;
 &lt;/form&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Reveal -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Scroll reveal</h3>
+                <code>&lt;aurora-reveal&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Fades and rises content into view on scroll — with an optional stagger for children.
+                IntersectionObserver, zero scroll listeners.
+              </div>
+              <div class="stage">
+                <aurora-reveal stagger="0.12" style="display: flex; gap: 14px; flex-wrap: wrap">
+                  <div class="chip">Native</div>
+                  <div class="chip">Animated</div>
+                  <div class="chip">Accessible</div>
+                </aurora-reveal>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-reveal stagger="0.12"&gt;
+  &lt;div class="card"&gt;One&lt;/div&gt;
+  &lt;div class="card"&gt;Two&lt;/div&gt;
+&lt;/aurora-reveal&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Counter -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Counter</h3>
+                <code>&lt;aurora-counter&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Counts up when it enters the viewport — the stats band on this page is made of
+                these. Changing <code>value</code> re-tweens live.
+              </div>
+              <div class="stage">
+                <div style="font-family: var(--font-display); font-size: 2.6rem; font-weight: 700">
+                  <aurora-counter value="4821"></aurora-counter>
+                </div>
+                <aurora-button
+                  variant="ghost"
+                  onclick="
+                    const c = this.closest('.stage').querySelector('aurora-counter')
+                    c.setAttribute('value', String(Math.floor(Math.random() * 9000) + 500))
+                  "
+                  >Randomize</aurora-button
+                >
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>&lt;aurora-counter value="4821" duration="1.6"&gt;&lt;/aurora-counter&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Cursor -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Cursor glow</h3>
+                <code>&lt;aurora-cursor&gt;</code>
+              </div>
+              <div class="demo-desc">
+                The ring following your pointer on this page. Grows over interactive elements, never
+                hides the system cursor, and stays off touch devices — drop it in once.
+              </div>
+              <div class="stage">
+                <div class="chip" data-cursor>It's already live — hover me</div>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-cursor&gt;&lt;/aurora-cursor&gt;
+
+/* theme it */
+:root { --aurora-cursor-color: rgba(169, 155, 255, 0.55); }</pre>
+              </div>
+            </article>
+
+            <!-- Nebula -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Nebula</h3>
+                <code>&lt;aurora-nebula&gt;</code>
+              </div>
+              <div class="demo-desc">
+                The hero of this page — an aurora-borealis backdrop as a ~2&nbsp;kB raw-WebGL
+                shader. No 3D library, DPR-capped, pauses off-screen, still frame under
+                <code>prefers-reduced-motion</code>.
+              </div>
+              <div class="stage scene">
+                <aurora-nebula speed="1.4" style="position: absolute; inset: 0"></aurora-nebula>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-nebula color="#6d5cff" color2="#22d3ee" speed="1"&gt;&lt;/aurora-nebula&gt;</pre>
               </div>
             </article>
 
@@ -437,11 +539,38 @@
                 <span class="scene-note">loading three.js…</span>
               </div>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 import 'aurora/three' // opt-in entry
 
 &lt;aurora-scene color="#6d5cff" speed="1.2"&gt;&lt;/aurora-scene&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Particles (lazy) -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Particles</h3>
+                <code>&lt;aurora-particles&gt;</code>
+              </div>
+              <div class="demo-desc">
+                A drifting GPU particle field with additive glow and pointer parallax, colored along
+                a two-tone gradient. Also on the <code>aurora/three</code> entry.
+              </div>
+              <div class="stage scene" id="particlesStage">
+                <aurora-particles
+                  count="2200"
+                  color="#6d5cff"
+                  color2="#22d3ee"
+                  style="position: absolute; inset: 0"
+                ></aurora-particles>
+                <span class="scene-note">loading three.js…</span>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-particles count="2200" color="#6d5cff" color2="#22d3ee"&gt;
+&lt;/aurora-particles&gt;</pre>
               </div>
             </article>
           </div>
@@ -458,11 +587,11 @@ import 'aurora/three' // opt-in entry
               <h3>Install &amp; import</h3>
               <p>Components register themselves on import.</p>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>npm install aurora</pre>
               </div>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 // registers the core components
 import 'aurora'
@@ -475,7 +604,7 @@ import 'aurora/three'</pre>
               <h3>Use anywhere</h3>
               <p>Standard custom elements — the markup is identical across frameworks.</p>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 // React — no wrapper needed
 export function Hero() {
@@ -504,7 +633,7 @@ export function Hero() {
                 override what you need.
               </p>
               <div class="code">
-                <button class="copy" data-hover>Copy</button>
+                <button class="copy">Copy</button>
                 <pre>
 :root {
   --aurora-accent: #6d5cff;
@@ -560,27 +689,23 @@ export function Hero() {
     <footer>
       <div class="wrap footer-cta">
         <h2 class="giant">Ship motion.</h2>
-        <p class="footer-sub" data-reveal>MIT licensed. Thirteen components. One import away.</p>
+        <p class="footer-sub" data-reveal>MIT licensed. Eighteen components. One import away.</p>
         <div class="footer-buttons" data-reveal>
           <aurora-magnetic strength="0.4">
-            <a href="https://github.com/lasitosPT/aurora" data-hover
+            <a href="https://github.com/lasitosPT/aurora"
               ><aurora-button>Star on GitHub</aurora-button></a
             >
           </aurora-magnetic>
-          <a href="#install" data-hover
-            ><aurora-button variant="ghost">Get started</aurora-button></a
-          >
+          <a href="#install"><aurora-button variant="ghost">Get started</aurora-button></a>
         </div>
       </div>
       <div class="wrap foot">
         <div><span class="mark">✦</span> aurora — built with the components on this page.</div>
         <div class="foot-links">
-          <a href="https://github.com/lasitosPT/aurora" data-hover>GitHub</a>
-          <a href="https://github.com/lasitosPT/aurora/blob/main/README.md" data-hover>Docs</a>
-          <a href="https://github.com/lasitosPT/aurora/blob/main/CHANGELOG.md" data-hover
-            >Changelog</a
-          >
-          <a href="#top" data-hover>Top ↑</a>
+          <a href="https://github.com/lasitosPT/aurora">GitHub</a>
+          <a href="https://github.com/lasitosPT/aurora/blob/main/README.md">Docs</a>
+          <a href="https://github.com/lasitosPT/aurora/blob/main/CHANGELOG.md">Changelog</a>
+          <a href="#top">Top ↑</a>
         </div>
         <div class="foot-copy">© <span id="year">2026</span> · MIT</div>
       </div>

@@ -8,31 +8,33 @@ import { SplitText } from 'gsap/SplitText'
 gsap.registerPlugin(ScrollTrigger, SplitText)
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-const finePointer = window.matchMedia('(pointer: fine)').matches
 if (reduced) document.documentElement.classList.add('reduced')
 
-/* ---------- WebGL aurora hero (lazy, ~3 kB) ---------- */
-const glCanvas = document.querySelector<HTMLCanvasElement>('.gl')
-if (glCanvas) {
-  void import('./aurora-bg').then(({ mountAurora }) => {
-    mountAurora(glCanvas, { still: reduced })
-    gsap.to(glCanvas, { opacity: 1, duration: reduced ? 0 : 1.8, ease: 'power2.out', delay: 0.15 })
-  })
+/* ---------- hero backdrop: <aurora-nebula> from the library ---------- */
+const nebula = document.querySelector<HTMLElement>('.gl')
+if (nebula) {
+  gsap.to(nebula, { opacity: 1, duration: reduced ? 0 : 1.8, ease: 'power2.out', delay: 0.15 })
 }
 
-/* ---------- lazy three.js demo card ---------- */
-const sceneStage = document.getElementById('sceneStage')
-if (sceneStage) {
+/* ---------- lazy three.js demo cards ---------- */
+const threeStages = ['sceneStage', 'particlesStage']
+  .map((id) => document.getElementById(id))
+  .filter((el): el is HTMLElement => el !== null)
+if (threeStages.length > 0) {
+  let loaded = false
   const io = new IntersectionObserver(
     (entries) => {
-      if (entries.some((e) => e.isIntersecting)) {
+      if (!loaded && entries.some((e) => e.isIntersecting)) {
+        loaded = true
         io.disconnect()
-        void import('aurora/three').then(() => sceneStage.classList.add('is-loaded'))
+        void import('aurora/three').then(() =>
+          threeStages.forEach((stage) => stage.classList.add('is-loaded')),
+        )
       }
     },
     { rootMargin: '600px' },
   )
-  io.observe(sceneStage)
+  threeStages.forEach((stage) => io.observe(stage))
 }
 
 /* ---------- copy buttons ---------- */
@@ -67,29 +69,6 @@ if (year) year.textContent = String(new Date().getFullYear())
 
 /* ---------- motion choreography ---------- */
 if (!reduced) {
-  /* cursor glow (desktop) */
-  if (finePointer) {
-    const cursor = document.querySelector<HTMLElement>('.cursor')
-    if (cursor) {
-      const xTo = gsap.quickTo(cursor, 'x', { duration: 0.35, ease: 'power3' })
-      const yTo = gsap.quickTo(cursor, 'y', { duration: 0.35, ease: 'power3' })
-      let shown = false
-      window.addEventListener('pointermove', (e) => {
-        if (!shown) {
-          shown = true
-          gsap.set(cursor, { x: e.clientX, y: e.clientY })
-          gsap.to(cursor, { opacity: 1, duration: 0.4 })
-        }
-        xTo(e.clientX)
-        yTo(e.clientY)
-      })
-      document.addEventListener('mouseover', (e) => {
-        const target = e.target as Element | null
-        cursor.classList.toggle('is-active', Boolean(target?.closest?.('[data-hover]')))
-      })
-    }
-  }
-
   /* hero title: chars for plain lines, a masked block for the gradient line
      (SplitText chars would break background-clip: text) */
   const split = new SplitText('.hero-title .line:not(.line-grad)', { type: 'chars' })
@@ -178,20 +157,7 @@ if (!reduced) {
       }),
   })
 
-  /* stat counters */
-  document.querySelectorAll<HTMLElement>('.num').forEach((el) => {
-    const target = Number(el.dataset.count ?? '0')
-    const state = { v: 0 }
-    gsap.to(state, {
-      v: target,
-      duration: 1.6,
-      ease: 'power2.out',
-      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-      onUpdate: () => {
-        el.textContent = String(Math.round(state.v))
-      },
-    })
-  })
+  /* stat counters are <aurora-counter> components — no site code needed */
 
   /* footer giant */
   const giant = new SplitText('.giant', { type: 'chars' })
@@ -206,10 +172,7 @@ if (!reduced) {
   /* keep trigger positions honest once fonts/layout settle */
   void document.fonts?.ready.then(() => ScrollTrigger.refresh())
 } else {
-  /* reduced motion: everything visible, counters set instantly */
-  document.querySelectorAll<HTMLElement>('.num').forEach((el) => {
-    el.textContent = el.dataset.count ?? el.textContent
-  })
+  /* reduced motion: everything visible (the components handle their own fallbacks) */
   const loader = document.querySelector<HTMLElement>('.loader')
   if (loader) loader.style.display = 'none'
 }

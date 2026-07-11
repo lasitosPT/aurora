@@ -121,36 +121,9 @@ html.js .loader {
   transform-origin: left;
 }
 
-/* ---------- Cursor glow ---------- */
-.cursor {
-  display: none;
-}
-@media (pointer: fine) {
-  html.js .cursor {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 36px;
-    height: 36px;
-    margin: -18px 0 0 -18px;
-    border: 1px solid rgba(169, 155, 255, 0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 190;
-    opacity: 0;
-    transition:
-      width 0.25s ease,
-      height 0.25s ease,
-      margin 0.25s ease,
-      border-color 0.25s ease;
-  }
-  html.js .cursor.is-active {
-    width: 56px;
-    height: 56px;
-    margin: -28px 0 0 -28px;
-    border-color: rgba(34, 211, 238, 0.7);
-  }
+/* ---------- Cursor glow: <aurora-cursor> (library component) ---------- */
+:root {
+  --aurora-cursor-z: 190;
 }
 
 /* ---------- Grain ---------- */
@@ -696,6 +669,13 @@ html.js:not(.reduced) .scroll-hint i::after {
   background: linear-gradient(135deg, #191927, #10101a);
   border: 1px solid var(--border);
   max-width: 260px;
+}
+.chip {
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: linear-gradient(135deg, #191927, #10101a);
+  font-size: 0.92rem;
 }
 .replay {
   all: unset;

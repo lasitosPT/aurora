@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.4.0
+
+Motion & visuals batch — the aurorae from [auroralib.com](https://auroralib.com) as components.
+
+- `aurora-nebula` — animated aurora-borealis backdrop as a tiny raw-WebGL fragment shader
+  (~2 kB, no 3D library): `color`/`color2`/`color3`, `speed`, `glow`, `still`; DPR capped at 2,
+  pauses off-screen and in hidden tabs, still frame under `prefers-reduced-motion`
+- `aurora-reveal` — scroll-into-view fade/rise for any content, optional `stagger` for children
+  (IntersectionObserver, no scroll listeners)
+- `aurora-counter` — count-up number on scroll into view; re-tweens when `value` changes;
+  `from`, `duration`, `decimals`; emits `aurora-complete`
+- `aurora-cursor` — trailing cursor glow ring that grows over interactive elements; fine
+  pointers only, never hides the system cursor; themed via `--aurora-cursor-*`
+- `aurora-particles` (`aurora/three`) — drifting GPU particle field with additive glow,
+  two-tone gradient and pointer parallax: `count`, `color`, `color2`, `size`, `speed`
+- new `whenVisible` helper exported from the package root
+
 ## 0.3.0
 
 Forms batch — all three are form-associated via `ElementInternals`, so they submit
