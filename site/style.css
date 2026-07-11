@@ -490,55 +490,283 @@ html.js:not(.reduced) .scroll-hint i::after {
   }
 }
 
-/* ---------- Features ---------- */
+/* ---------- Features (bento) ---------- */
 .features {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 16px;
   margin-top: 46px;
 }
-.feature {
-  padding: 30px 28px;
+.b-agnostic {
+  grid-column: span 4;
+}
+.b-gsap {
+  grid-column: span 2;
+}
+.b-three {
+  grid-column: span 2;
+}
+.b-forms {
+  grid-column: span 4;
+}
+.b-theme {
+  grid-column: span 3;
+}
+.b-a11y {
+  grid-column: span 3;
+}
+@media (max-width: 1000px) {
+  .features > .bento {
+    grid-column: span 3;
+  }
+}
+@media (max-width: 640px) {
+  .features > .bento {
+    grid-column: span 6;
+  }
+}
+
+.bento {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: linear-gradient(180deg, var(--panel), transparent);
-  transition:
-    border-color 0.3s ease,
-    transform 0.3s ease;
+  background: linear-gradient(180deg, var(--panel), rgba(11, 11, 18, 0.4));
+  overflow: hidden;
 }
-.feature:hover {
-  border-color: var(--border-strong);
-  transform: translateY(-4px);
+/* interior spotlight following the cursor */
+.bento::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(109, 92, 255, 0.09),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
 }
-.feature .ico {
-  font-size: 1.5rem;
-  margin-bottom: 16px;
+/* border beam lighting up near the cursor */
+.bento::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    220px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(169, 155, 255, 0.85),
+    rgba(34, 211, 238, 0.25) 55%,
+    transparent 75%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
 }
-.feature h3 {
+.bento:hover::before,
+.bento:hover::after {
+  opacity: 1;
+}
+.b-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.b-num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  opacity: 0.7;
+}
+.bento h3 {
   font-family: var(--font-display);
   margin: 0 0 8px;
-  font-size: 1.1rem;
-  letter-spacing: -0.01em;
+  font-size: 1.2rem;
+  letter-spacing: -0.015em;
 }
-.feature p {
+.bento p {
   margin: 0;
   color: var(--muted);
   font-size: 0.94rem;
+  max-width: 52ch;
 }
-.feature code {
+.bento p code {
   font-family: var(--font-mono);
   font-size: 0.85em;
   color: var(--accent-2);
 }
-@media (max-width: 900px) {
-  .features {
-    grid-template-columns: 1fr 1fr;
+.b-demo {
+  margin-top: auto;
+  padding-top: 22px;
+}
+
+/* hand-drawn icons: gradient stroke, self-drawing on reveal */
+.ico {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: url(#icoGrad);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ico :is(path, circle, rect) {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+}
+html.js .features:not(.is-live) .ico :is(path, circle, rect) {
+  stroke-dashoffset: 100;
+}
+.features.is-live .ico :is(path, circle, rect) {
+  animation: ico-draw 1.3s ease forwards;
+}
+.features.is-live .bento:nth-child(2) .ico :is(path, circle, rect) {
+  animation-delay: 0.12s;
+}
+.features.is-live .bento:nth-child(3) .ico :is(path, circle, rect) {
+  animation-delay: 0.24s;
+}
+.features.is-live .bento:nth-child(4) .ico :is(path, circle, rect) {
+  animation-delay: 0.36s;
+}
+.features.is-live .bento:nth-child(5) .ico :is(path, circle, rect) {
+  animation-delay: 0.48s;
+}
+.features.is-live .bento:nth-child(6) .ico :is(path, circle, rect) {
+  animation-delay: 0.6s;
+}
+@keyframes ico-draw {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
   }
 }
-@media (max-width: 620px) {
-  .features {
-    grid-template-columns: 1fr;
+@media (prefers-reduced-motion: reduce) {
+  html.js .features:not(.is-live) .ico :is(path, circle, rect) {
+    stroke-dashoffset: 0;
   }
+  .features.is-live .ico :is(path, circle, rect) {
+    animation: none;
+  }
+}
+
+/* in-card demos */
+.type-demo {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--accent-2);
+  min-height: 1.6em;
+}
+.fw-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.fw-chips span {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 30px;
+}
+.eq i {
+  width: 4px;
+  height: 28px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #22d3ee, #6d5cff);
+  transform-origin: bottom;
+}
+.b-code {
+  margin-top: auto;
+  padding-top: 22px;
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--accent-2);
+}
+.forms-demo {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.forms-demo aurora-slider {
+  flex: 1;
+  max-width: 220px;
+}
+.theme-demo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.swatches {
+  display: flex;
+  gap: 10px;
+}
+.swatch {
+  all: unset;
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.swatch:hover {
+  transform: scale(1.15);
+}
+.swatch.is-active {
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 0 0 4px rgba(255, 255, 255, 0.55);
+}
+.swatch:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+}
+.keycaps {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.keycaps kbd {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--fg);
+  padding: 6px 11px;
+  border: 1px solid var(--border-strong);
+  border-bottom-width: 2px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #1a1a28, #101018);
 }
 
 /* ---------- Gallery ---------- */

@@ -62,6 +62,51 @@ document.querySelectorAll<HTMLButtonElement>('.replay').forEach((btn) => {
   })
 })
 
+/* ---------- feature bento: cursor spotlight + border beam ---------- */
+const bentos = Array.from(document.querySelectorAll<HTMLElement>('.bento'))
+document.querySelector('.features')?.addEventListener(
+  'pointermove',
+  (e) => {
+    const { clientX, clientY } = e as PointerEvent
+    for (const card of bentos) {
+      const rect = card.getBoundingClientRect()
+      card.style.setProperty('--mx', `${clientX - rect.left}px`)
+      card.style.setProperty('--my', `${clientY - rect.top}px`)
+    }
+  },
+  { passive: true },
+)
+
+/* ---------- feature bento: live theme swatches ---------- */
+document.querySelectorAll<HTMLButtonElement>('.swatch').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const demo = btn.closest<HTMLElement>('.theme-demo')
+    if (!demo) return
+    demo.style.setProperty('--aurora-accent', btn.dataset.accent ?? '#6d5cff')
+    demo.style.setProperty('--aurora-accent-hover', btn.dataset.accentHover ?? '#5a49e0')
+    demo.querySelectorAll('.swatch').forEach((s) => s.classList.toggle('is-active', s === btn))
+  })
+})
+
+/* ---------- feature bento: draw the icons when the grid enters view ---------- */
+const features = document.querySelector('.features')
+if (features) {
+  if (typeof IntersectionObserver === 'undefined') {
+    features.classList.add('is-live')
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          io.disconnect()
+          features.classList.add('is-live')
+        }
+      },
+      { threshold: 0.15 },
+    )
+    io.observe(features)
+  }
+}
+
 /* ---------- nav state ---------- */
 const nav = document.querySelector('.nav')
 window.addEventListener('scroll', () => nav?.classList.toggle('is-scrolled', window.scrollY > 24), {
@@ -203,6 +248,16 @@ if (!reduced) {
   }
 
   /* stat counters are <aurora-counter> components — no site code needed */
+
+  /* feature bento: equalizer bars */
+  gsap.to('.eq i', {
+    scaleY: 0.3,
+    duration: 0.5,
+    ease: 'sine.inOut',
+    repeat: -1,
+    yoyo: true,
+    stagger: { each: 0.13, from: 'center' },
+  })
 
   /* footer giant */
   const giant = new SplitText('.giant', { type: 'chars' })
