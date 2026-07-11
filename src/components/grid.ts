@@ -112,6 +112,11 @@ const STYLE = `
     background: rgba(109, 92, 255, 0.08);
   }
   .order { font-size: 0.66em; vertical-align: super; color: var(--aurora-accent, #6d5cff); }
+  th { position: relative; }
+  .rz { position: absolute; top: 0; right: -4px; width: 8px; height: 100%; cursor: col-resize; user-select: none; z-index: 1; }
+  .rz:hover, .rz.is-active { background: linear-gradient(180deg, transparent, var(--aurora-accent, #6d5cff), transparent); }
+  th.drag-over { border-bottom: 2px solid var(--aurora-accent, #6d5cff); }
+  td[tabindex]:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); outline-offset: -2px; }
 `
 
 export interface GridColumn<T = Record<string, unknown>> {
@@ -153,6 +158,8 @@ export class AuroraGrid extends AuroraElement {
   private selectedRows = new Set<Row>()
   private collapsed = new Set<string>()
   private expanded = new Set<Row>()
+  private widths = new Map<string, number>()
+  private draggedField: string | null = null
   #groupBy: string | null = null
   #detail: ((row: Row) => string) | null = null
 
@@ -339,13 +346,20 @@ export class AuroraGrid extends AuroraElement {
         const dir = sorted ? this.sorts[idx]?.dir : undefined
         const ariaSort = sorted ? (dir === 'asc' ? 'ascending' : 'descending') : 'none'
         const label = col.title ?? col.field
-        const width = col.width ? ` style="width:${col.width}"` : ''
+        const px = this.widths.get(col.field)
+        const width = px ? ` style="width:${px}px"` : col.width ? ` style="width:${col.width}"` : ''
         const order = sorted && this.sorts.length > 1 ? `<span class="order">${idx + 1}</span>` : ''
         const inner =
           col.sortable === false
             ? label
             : `<button class="sort-btn" data-sort="${col.field}" title="Click to sort, Shift+click for multi-sort">${label}<span class="arrow" aria-hidden="true">${dir === 'desc' ? '▼' : '▲'}</span>${order}</button>`
-        return `<th role="columnheader" aria-sort="${ariaSort}"${cls(col)}${width}>${inner}</th>`
+        const rz = this.hasAttribute('resizable')
+          ? `<span class="rz" data-rz="${col.field}" aria-hidden="true"></span>`
+          : ''
+        const drag = this.hasAttribute('reorderable')
+          ? ` draggable="true" data-col="${col.field}"`
+          : ''
+        return `<th role="columnheader" aria-sort="${ariaSort}"${cls(col)}${width}${drag}>${inner}${rz}</th>`
       })
       .join('')
 
@@ -363,7 +377,7 @@ export class AuroraGrid extends AuroraElement {
       const raw = row[col.field]
       const text = col.formatter ? col.formatter(raw, row) : String(raw ?? '')
       const edit = editable && col.editable !== false ? ` data-edit="${col.field}"` : ''
-      return `<td${cls(col)}${edit}>${text}</td>`
+      return `<td${cls(col)}${edit} tabindex="-1" data-cell>${text}</td>`
     }
 
     const rowHtml = (row: Row, i: number): string => {
@@ -580,6 +594,90 @@ export class AuroraGrid extends AuroraElement {
         this.render()
         this.dispatchEvent(new CustomEvent('aurora-page', { detail: { page: this.page } }))
       })
+    })
+
+    if (this.hasAttribute('resizable')) {
+      this.root.querySelectorAll<HTMLElement>('.rz').forEach((handle) => {
+        handle.addEventListener('pointerdown', (event) => {
+          event.preventDefault()
+          event.stopPropagation()
+          const th = handle.closest('th')
+          const field = handle.dataset.rz ?? ''
+          if (!th) return
+          handle.classList.add('is-active')
+          handle.setPointerCapture(event.pointerId)
+          const startX = event.clientX
+          const startW = th.offsetWidth
+          const onMove = (move: PointerEvent): void => {
+            th.style.width = `${Math.max(startW + move.clientX - startX, 48)}px`
+          }
+          const onUp = (): void => {
+            handle.removeEventListener('pointermove', onMove)
+            handle.removeEventListener('pointerup', onUp)
+            handle.classList.remove('is-active')
+            this.widths.set(field, th.offsetWidth)
+            this.dispatchEvent(
+              new CustomEvent('aurora-resize', { detail: { field, width: th.offsetWidth } }),
+            )
+          }
+          handle.addEventListener('pointermove', onMove)
+          handle.addEventListener('pointerup', onUp)
+        })
+      })
+    }
+    if (this.hasAttribute('reorderable')) {
+      this.root.querySelectorAll<HTMLElement>('th[data-col]').forEach((th) => {
+        th.addEventListener('dragstart', () => {
+          this.draggedField = th.dataset.col ?? null
+        })
+        th.addEventListener('dragover', (event) => {
+          event.preventDefault()
+          th.classList.add('drag-over')
+        })
+        th.addEventListener('dragleave', () => th.classList.remove('drag-over'))
+        th.addEventListener('drop', (event) => {
+          event.preventDefault()
+          const target = th.dataset.col
+          const from = this.draggedField
+          this.draggedField = null
+          if (!from || !target || from === target) return
+          const cols = this.#columns
+          const fi = cols.findIndex((c) => c.field === from)
+          const ti = cols.findIndex((c) => c.field === target)
+          if (fi < 0 || ti < 0) return
+          const moved = cols.splice(fi, 1)[0]
+          if (moved) cols.splice(ti, 0, moved)
+          this.render()
+          this.dispatchEvent(
+            new CustomEvent('aurora-reorder', { detail: { order: cols.map((c) => c.field) } }),
+          )
+        })
+      })
+    }
+    const cells = Array.from(this.root.querySelectorAll<HTMLElement>('td[data-cell]'))
+    if (cells[0]) cells[0].tabIndex = 0
+    this.root.querySelector('tbody')?.addEventListener('keydown', (event) => {
+      const key = (event as KeyboardEvent).key
+      const active = event.target as HTMLElement
+      if (!active.matches('td[data-cell]')) return
+      const colCount = this.visibleColumns().length
+      const i = cells.indexOf(active)
+      let next = -1
+      if (key === 'ArrowRight') next = i + 1
+      else if (key === 'ArrowLeft') next = i - 1
+      else if (key === 'ArrowDown') next = i + colCount
+      else if (key === 'ArrowUp') next = i - colCount
+      else if (key === 'Enter' && active.dataset.edit !== undefined) {
+        event.preventDefault()
+        active.dispatchEvent(new MouseEvent('dblclick'))
+        return
+      }
+      const target = cells[next]
+      if (next < 0 || !target) return
+      event.preventDefault()
+      active.tabIndex = -1
+      target.tabIndex = 0
+      target.focus()
     })
 
     const selectable = this.getAttribute('selectable')

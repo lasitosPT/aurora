@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.14.0
+
+Grid parity wave 2.
+
+- Column resizing: `resizable` adds drag handles on header edges (min 48px), persists
+  widths across re-renders; emits `aurora-resize`
+- Column reordering: `reorderable` makes headers draggable — drop one on another to move
+  it; emits `aurora-reorder` with the new field order
+- Keyboard cell navigation: roving tabindex over data cells, arrow keys move focus,
+  Enter starts editing an editable cell
+
 ## 0.13.0
 
 Grid parity wave 1 (Kendo feature chase).

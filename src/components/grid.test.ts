@@ -185,3 +185,35 @@ describe('aurora-grid (kendo parity wave 1)', () => {
     grid.remove()
   })
 })
+
+describe('aurora-grid (kendo parity wave 2)', () => {
+  it('renders resize handles with resizable', () => {
+    const grid = buildGrid({ resizable: '' })
+    expect(grid.shadowRoot?.querySelectorAll('.rz').length).toBe(3)
+    grid.remove()
+  })
+
+  it('reorders columns by drag and drop', () => {
+    const grid = buildGrid({ reorderable: '' })
+    let order: string[] = []
+    grid.addEventListener('aurora-reorder', (e) => {
+      order = (e as CustomEvent<{ order: string[] }>).detail.order
+    })
+    const ths = grid.shadowRoot?.querySelectorAll<HTMLElement>('th[data-col]')
+    ths?.[2]?.dispatchEvent(new Event('dragstart'))
+    ths?.[0]?.dispatchEvent(new Event('drop'))
+    expect(order).toEqual(['lang', 'name', 'stars'])
+    expect(grid.shadowRoot?.querySelector('th')?.textContent).toContain('Language')
+    grid.remove()
+  })
+
+  it('navigates cells with arrow keys', () => {
+    const grid = buildGrid()
+    const cells = grid.shadowRoot?.querySelectorAll<HTMLElement>('td[data-cell]')
+    expect(cells?.[0]?.tabIndex).toBe(0)
+    cells?.[0]?.focus()
+    cells?.[0]?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
+    expect(grid.shadowRoot?.activeElement).toBe(cells?.[1])
+    grid.remove()
+  })
+})
