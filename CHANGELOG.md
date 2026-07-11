@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.19.0
+
+- `aurora-calendar` — month-view calendar: Monday-first grid, today outline, full
+  keyboard flow (arrows move by day/week, PageUp/PageDown by month, Enter picks),
+  ISO `value`, form-associated; emits `aurora-change`. Ships with docs.
+
 ## 0.18.0
 
 - `aurora-multiselect` — pick-many dropdown: removable chips in the trigger, checkbox

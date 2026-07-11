@@ -168,6 +168,32 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-calendar',
+    title: 'Calendar',
+    category: 'Forms & Inputs',
+    summary:
+      'A month-view calendar with a Monday-first grid, an outlined today, ISO value, and a complete keyboard flow — the base of the date/time suite.',
+    example: `<aurora-calendar value="2026-07-11"></aurora-calendar>`,
+    attributes: [
+      ['value', 'ISO date (yyyy-mm-dd)'],
+      ['name', 'Form field name'],
+    ],
+    events: [['aurora-change', '{ value } — ISO date on pick']],
+    cssvars: [['--aurora-accent / -accent2 / -surface / -border / -muted', 'Shared theme tokens']],
+    methods: [['value', 'Get/set the ISO date (moves the visible month)']],
+    tutorial: [
+      {
+        heading: '1 · Keyboard first',
+        text: 'Arrows move by day and week, PageUp/PageDown flip months, Enter picks — focus follows the roving date.',
+      },
+      {
+        heading: '2 · Forms, as always',
+        text: 'With a name attribute the picked ISO date submits natively.',
+        code: `<form>\n  <aurora-calendar name="due"></aurora-calendar>\n</form>`,
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
