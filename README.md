@@ -78,6 +78,11 @@ Because they're standard custom elements, you write them the same way in JSX, Vu
 | `aurora-flip`        | 3D flip card                             | `trigger` (hover/click/manual); `flip()`              |
 | `aurora-skeleton`    | Shimmer loading placeholder              | `lines`, `circle`; `--aurora-skeleton-*`              |
 | `aurora-confetti`    | Celebration burst cannon                 | `burst({x, y, count, colors})` / static `burst()`     |
+| `aurora-command`     | ⌘K command palette                       | `hotkey`, `placeholder`; `aurora-select` event        |
+| `aurora-drawer`      | Slide-in side panel                      | `open`, `side`; `show()` / `hide()`                   |
+| `aurora-beam`        | Border beam travelling a card edge       | `speed`; `--aurora-beam-*`                            |
+| `aurora-parallax`    | Pointer-depth layers                     | `strength`; children use `data-depth`                 |
+| `aurora-shine`       | Looping text highlight sweep             | `speed`; `--aurora-shine-*`                           |
 | `aurora-nebula`      | Aurora-borealis WebGL backdrop (~2 kB)   | `color`, `color2`, `color3`, `speed`, `glow`          |
 | `aurora-lens`        | Cursor-warped image w/ chromatic fringe  | `src`, `alt`, `strength`, `crossorigin`               |
 | `aurora-scene` ⬦     | Animated 3D wireframe backdrop           | `color`, `detail`, `speed`                            |

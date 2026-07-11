@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.11.0
+
+Command & ambient batch.
+
+- `aurora-command` — a ⌘K command palette: child `<button>`s as commands
+  (`data-value`, `data-keywords`), global Cmd/Ctrl+K hotkey (`hotkey` attribute),
+  type-to-filter with an empty state, arrow/Enter/Escape keyboard flow, hover-to-activate,
+  focus restore, key hints footer; emits `aurora-select`
+- `aurora-drawer` — a side panel sliding from the right (or `side="left"`): `open`
+  attribute / `show()` / `hide()`, Escape + backdrop close, Tab trap, focus restore
+- `aurora-beam` — a luminous beam travelling the border of any card
+  (`speed`, `--aurora-beam-color/-color2/-thickness`)
+- `aurora-parallax` — children with `data-depth` drift toward the pointer at their own depth
+- `aurora-shine` — a soft highlight sweeping across text on a loop
+- the modal/drawer focus-trap now lives in a shared `trapTab` helper, exported with
+  `FOCUSABLE` from the package root
+
 ## 0.10.0
 
 Product UI batch.

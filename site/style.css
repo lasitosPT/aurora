@@ -827,6 +827,44 @@ html.js .features:not(.is-live) .ico :is(path, circle, rect) {
   border-color: rgba(109, 92, 255, 0.5);
   color: #a99bff;
 }
+.beam-demo {
+  border-radius: 16px;
+}
+.beam-inner {
+  padding: 34px 46px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--panel-2);
+  font-weight: 600;
+}
+.parallax-demo {
+  width: 100%;
+  max-width: 360px;
+  height: 150px;
+  display: grid;
+  place-items: center;
+}
+.px-dot {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.7;
+  box-shadow: 0 0 16px rgba(109, 92, 255, 0.8);
+}
+.px-dot.a {
+  top: 18px;
+  left: 12%;
+  background: var(--accent-2);
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.8);
+  width: 12px;
+  height: 12px;
+}
+.px-dot.b {
+  bottom: 14px;
+  right: 14%;
+}
 
 /* ---------- Gallery ---------- */
 .gallery {

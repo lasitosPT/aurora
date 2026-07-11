@@ -9,33 +9,35 @@ const STYLE = `
   .backdrop {
     position: fixed;
     inset: 0;
-    z-index: var(--aurora-modal-z, 1000);
+    z-index: var(--aurora-drawer-z, 1000);
     display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
     background: var(--aurora-modal-backdrop, rgba(0, 0, 0, 0.5));
   }
   .panel {
-    background: var(--aurora-surface, #fff);
-    color: var(--aurora-fg, #111);
-    border-radius: var(--aurora-radius-lg, 1rem);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
-    max-width: min(90vw, 32rem);
-    max-height: 85vh;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: min(88vw, var(--aurora-drawer-width, 360px));
+    z-index: calc(var(--aurora-drawer-z, 1000) + 1);
+    display: none;
     overflow: auto;
-    padding: var(--aurora-modal-padding, 1.5rem);
-    will-change: transform, opacity;
+    padding: var(--aurora-drawer-padding, 1.5rem);
+    background: var(--aurora-surface, #16161f);
+    color: var(--aurora-fg, #ececf2);
+    box-shadow: 0 0 90px rgba(0, 0, 0, 0.55);
+    will-change: transform;
   }
+  :host([side='left']) .panel { left: 0; right: auto; }
 `
 
 /**
- * `<aurora-modal>` — an animated dialog. Toggle with the `open` attribute or the
- * `show()` / `hide()` methods. Closes on Escape and on backdrop click, and emits
- * `aurora-open` / `aurora-close` events. While open, Tab is trapped inside the
- * dialog; on close, focus returns to the element that opened it.
+ * `<aurora-drawer>` — a side panel that slides in from the right (or
+ * `side="left"`). Toggle with the `open` attribute or `show()` / `hide()`.
+ * Escape and backdrop clicks close it; Tab is trapped while open and focus
+ * returns to the opener on close. Emits `aurora-open` / `aurora-close`.
  */
-export class AuroraModal extends AuroraElement {
+export class AuroraDrawer extends AuroraElement {
   static readonly observedAttributes = ['open']
   private backdrop: HTMLElement | null = null
   private panel: HTMLElement | null = null
@@ -43,10 +45,10 @@ export class AuroraModal extends AuroraElement {
   private previouslyFocused: Element | null = null
 
   connectedCallback(): void {
-    this.root.innerHTML = `<style>${STYLE}</style><div class="backdrop" part="backdrop"><div class="panel" part="panel" role="dialog" aria-modal="true" tabindex="-1"><slot></slot></div></div>`
+    this.root.innerHTML = `<style>${STYLE}</style><div class="backdrop" part="backdrop"></div><div class="panel" part="panel" role="dialog" aria-modal="true" tabindex="-1"><slot></slot></div>`
     this.backdrop = this.root.querySelector('.backdrop')
     this.panel = this.root.querySelector('.panel')
-    this.backdrop?.addEventListener('pointerdown', this.onBackdrop)
+    this.backdrop?.addEventListener('pointerdown', () => this.hide())
     document.addEventListener('keydown', this.onKey)
     if (this.hasAttribute('open')) this.open()
   }
@@ -56,7 +58,7 @@ export class AuroraModal extends AuroraElement {
   }
 
   attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
-    if (name !== 'open' || oldValue === newValue || !this.backdrop) return
+    if (name !== 'open' || oldValue === newValue || !this.panel) return
     if (newValue !== null) this.open()
     else this.close()
   }
@@ -72,42 +74,36 @@ export class AuroraModal extends AuroraElement {
   private open(): void {
     if (this.visible || !this.backdrop || !this.panel) return
     this.visible = true
-    this.backdrop.style.display = 'flex'
+    this.backdrop.style.display = 'block'
+    this.panel.style.display = 'block'
     this.previouslyFocused = document.activeElement
     const first = this.querySelector<HTMLElement>(FOCUSABLE)
     ;(first ?? this.panel).focus()
     this.dispatchEvent(new CustomEvent('aurora-open'))
     if (prefersReducedMotion()) return
+    const from = this.getAttribute('side') === 'left' ? -100 : 100
     gsap.fromTo(this.backdrop, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power2.out' })
-    gsap.fromTo(
-      this.panel,
-      { opacity: 0, y: 24, scale: 0.96 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'back.out(1.4)' },
-    )
+    gsap.fromTo(this.panel, { xPercent: from }, { xPercent: 0, duration: 0.45, ease: 'power3.out' })
   }
 
   private close(): void {
-    if (!this.visible || !this.backdrop) return
+    if (!this.visible || !this.backdrop || !this.panel) return
     this.visible = false
     const previous = this.previouslyFocused
     this.previouslyFocused = null
     if (previous instanceof HTMLElement) previous.focus()
     const done = (): void => {
       if (this.backdrop) this.backdrop.style.display = 'none'
+      if (this.panel) this.panel.style.display = 'none'
       this.dispatchEvent(new CustomEvent('aurora-close'))
     }
     if (prefersReducedMotion()) {
       done()
       return
     }
-    if (this.panel) {
-      gsap.to(this.panel, { opacity: 0, y: 16, scale: 0.97, duration: 0.2, ease: 'power2.in' })
-    }
-    gsap.to(this.backdrop, { opacity: 0, duration: 0.2, onComplete: done })
-  }
-
-  private readonly onBackdrop = (event: Event): void => {
-    if (event.target === this.backdrop) this.hide()
+    const to = this.getAttribute('side') === 'left' ? -100 : 100
+    gsap.to(this.panel, { xPercent: to, duration: 0.32, ease: 'power2.in' })
+    gsap.to(this.backdrop, { opacity: 0, duration: 0.32, onComplete: done })
   }
 
   private readonly onKey = (event: KeyboardEvent): void => {
@@ -121,4 +117,4 @@ export class AuroraModal extends AuroraElement {
   }
 }
 
-register('aurora-modal', AuroraModal)
+register('aurora-drawer', AuroraDrawer)

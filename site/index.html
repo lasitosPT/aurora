@@ -40,6 +40,18 @@
     <!-- ---------- Cursor glow + scroll progress: aurora components ---------- -->
     <aurora-cursor></aurora-cursor>
     <aurora-progress></aurora-progress>
+    <aurora-command id="sitePalette" placeholder="What do you need?">
+      <button data-value="top" data-keywords="home hero start">✦&ensp;Back to top</button>
+      <button data-value="components" data-keywords="gallery demos">
+        🧩&ensp;Browse components
+      </button>
+      <button data-value="install" data-keywords="npm setup docs">📦&ensp;Install aurora</button>
+      <button data-value="github" data-keywords="source code repo star">
+        ⭐&ensp;Star on GitHub
+      </button>
+      <button data-value="toast" data-keywords="notification demo">💬&ensp;Show a toast</button>
+      <button data-value="confetti" data-keywords="party celebrate">🎉&ensp;Celebrate</button>
+    </aurora-command>
 
     <!-- ---------- Nav ---------- -->
     <nav class="nav">
@@ -58,7 +70,7 @@
       <aurora-nebula class="gl" speed="1" aria-hidden="true"></aurora-nebula>
       <div class="hero-inner">
         <p class="eyebrow" data-intro>
-          <span class="dot"></span> Open source · MIT · 35 components
+          <span class="dot"></span> Open source · MIT · 40 components
         </p>
         <h1 class="hero-title">
           <span class="line">Motion,</span>
@@ -122,11 +134,11 @@
         <!-- The numbers below are live <aurora-counter> components -->
         <div class="wrap stats-grid">
           <div class="stat">
-            <aurora-counter class="num" value="35"></aurora-counter>
+            <aurora-counter class="num" value="40"></aurora-counter>
             <span class="stat-label">Components</span>
           </div>
           <div class="stat">
-            <aurora-counter class="num" value="21"></aurora-counter><span class="suffix">kB</span>
+            <aurora-counter class="num" value="24"></aurora-counter><span class="suffix">kB</span>
             <span class="stat-label">Core, gzipped</span>
           </div>
           <div class="stat">
@@ -321,7 +333,7 @@
         <div class="wrap gallery">
           <aside class="gallery-side">
             <p class="kicker" data-reveal>03 · Components</p>
-            <h2 class="section-title" data-reveal>Thirty-five components.<br />One import.</h2>
+            <h2 class="section-title" data-reveal>Forty components.<br />One import.</h2>
             <p class="side-sub" data-reveal>
               Everything below is live — hover, click, drag. Each card ships with its markup, ready
               to paste.
@@ -1075,6 +1087,139 @@ AuroraConfetti.burst({ count: 120 })</pre>
               </div>
             </article>
 
+            <!-- Command palette -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Command palette</h3>
+                <code>&lt;aurora-command&gt;</code>
+              </div>
+              <div class="demo-desc">
+                The full ⌘K experience: global hotkey, type-to-filter, arrow keys, Enter to run,
+                focus restore. Try <kbd style="font-family: var(--font-mono)">⌘K</kbd> right now —
+                it drives this page.
+              </div>
+              <div class="stage">
+                <aurora-button id="cmdBtn"
+                  >Open palette&ensp;<span
+                    style="opacity: 0.7; font-family: var(--font-mono); font-size: 0.85em"
+                    >⌘K</span
+                  ></aurora-button
+                >
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-command hotkey="k"&gt;
+  &lt;button data-value="docs" data-keywords="manual"&gt;📖 Open docs&lt;/button&gt;
+  &lt;button data-value="deploy"&gt;🚀 Deploy&lt;/button&gt;
+&lt;/aurora-command&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Drawer -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Drawer</h3>
+                <code>&lt;aurora-drawer&gt;</code>
+              </div>
+              <div class="demo-desc">
+                A side panel with the same focus discipline as the modal: Tab trapped, Escape
+                closes, focus returns to the opener.
+              </div>
+              <div class="stage">
+                <aurora-button id="drawerBtn">Open drawer</aurora-button>
+                <aurora-drawer id="demoDrawer">
+                  <h2 style="margin-top: 0; font-family: var(--font-display)">✦ aurora</h2>
+                  <p style="color: var(--muted)">
+                    Forty components, one import. This drawer traps Tab, closes on Escape, and hands
+                    focus back when it leaves.
+                  </p>
+                  <aurora-button onclick="document.getElementById('demoDrawer').hide()"
+                    >Close</aurora-button
+                  >
+                </aurora-drawer>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-drawer id="panel" side="right"&gt;…&lt;/aurora-drawer&gt;
+&lt;button onclick="panel.show()"&gt;Open&lt;/button&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Beam -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Border beam</h3>
+                <code>&lt;aurora-beam&gt;</code>
+              </div>
+              <div class="demo-desc">
+                A luminous beam endlessly travelling the card's edge — no cursor required.
+              </div>
+              <div class="stage">
+                <aurora-beam speed="4" class="beam-demo">
+                  <div class="beam-inner">Always in motion.</div>
+                </aurora-beam>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-beam speed="4"&gt;
+  &lt;div class="card"&gt;Always in motion.&lt;/div&gt;
+&lt;/aurora-beam&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Parallax -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Parallax</h3>
+                <code>&lt;aurora-parallax&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Layers drift toward your pointer at their own <code>data-depth</code>.
+              </div>
+              <div class="stage tall">
+                <aurora-parallax strength="30" class="parallax-demo">
+                  <span class="px-dot a" data-depth="0.3" aria-hidden="true"></span>
+                  <span class="px-dot b" data-depth="0.9" aria-hidden="true"></span>
+                  <strong
+                    data-depth="0.6"
+                    style="font-family: var(--font-display); font-size: 1.4rem"
+                    >Move around me</strong
+                  >
+                </aurora-parallax>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-parallax strength="30"&gt;
+  &lt;img data-depth="0.3" /&gt;
+  &lt;h2 data-depth="0.8"&gt;Title&lt;/h2&gt;
+&lt;/aurora-parallax&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Shine -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Shine</h3>
+                <code>&lt;aurora-shine&gt;</code>
+              </div>
+              <div class="demo-desc">A soft highlight sweeps across the text on a loop.</div>
+              <div class="stage">
+                <aurora-shine
+                  speed="2.6"
+                  style="font-family: var(--font-display); font-size: 1.9rem; font-weight: 700"
+                  >Polished by default.</aurora-shine
+                >
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>&lt;aurora-shine speed="2.6"&gt;Polished by default.&lt;/aurora-shine&gt;</pre>
+              </div>
+            </article>
+
             <!-- Lens -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -1289,7 +1434,7 @@ export function Hero() {
     <footer>
       <div class="wrap footer-cta">
         <h2 class="giant">Ship motion.</h2>
-        <p class="footer-sub" data-reveal>MIT licensed. Thirty-five components. One import away.</p>
+        <p class="footer-sub" data-reveal>MIT licensed. Forty components. One import away.</p>
         <div class="footer-buttons" data-reveal>
           <aurora-magnetic strength="0.4">
             <a href="https://github.com/lasitosPT/aurora"

@@ -119,6 +119,29 @@ document.getElementById('confettiBtn')?.addEventListener('click', (event) => {
   AuroraToaster.show('v0.10.0 is out the door.', { title: 'Shipped', variant: 'success' })
 })
 
+/* ---------- command palette: drives the page ---------- */
+const palette = document.getElementById('sitePalette')
+document.getElementById('cmdBtn')?.addEventListener('click', () => {
+  ;(palette as (HTMLElement & { show(): void }) | null)?.show()
+})
+palette?.addEventListener('aurora-select', (event) => {
+  const { value } = (event as CustomEvent<{ value: string }>).detail
+  if (value === 'top') window.scrollTo({ top: 0, behavior: 'smooth' })
+  else if (value === 'components')
+    document.getElementById('components')?.scrollIntoView({ behavior: 'smooth' })
+  else if (value === 'install')
+    document.getElementById('install')?.scrollIntoView({ behavior: 'smooth' })
+  else if (value === 'github') window.open('https://github.com/lasitosPT/aurora', '_blank')
+  else if (value === 'toast')
+    AuroraToaster.show('Summoned from the palette.', { title: '⌘K', variant: 'default' })
+  else if (value === 'confetti') AuroraConfetti.burst({ count: 130 })
+})
+
+/* ---------- drawer demo ---------- */
+document.getElementById('drawerBtn')?.addEventListener('click', () => {
+  ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
+})
+
 /* ---------- nav state ---------- */
 const nav = document.querySelector('.nav')
 window.addEventListener('scroll', () => nav?.classList.toggle('is-scrolled', window.scrollY > 24), {
