@@ -145,7 +145,13 @@ if (demoGrid) {
   demoGrid.columns = [
     { field: 'name', title: 'Project', width: '32%' },
     { field: 'lang', title: 'Language' },
-    { field: 'stars', title: 'Stars', align: 'right', formatter: (v) => `★ ${String(v)}` },
+    {
+      field: 'stars',
+      title: 'Stars',
+      align: 'right',
+      aggregate: 'sum',
+      formatter: (v) => `★ ${String(v)}`,
+    },
     { field: 'status', title: 'Status' },
   ]
   demoGrid.data = [
@@ -157,6 +163,8 @@ if (demoGrid) {
     { name: 'devnotes', lang: 'Markdown', stars: 96, status: 'archive' },
     { name: 'nebula-kit', lang: 'GLSL', stars: 78, status: 'active' },
   ]
+  demoGrid.detail = (row) =>
+    `<strong>${String(row.name)}</strong> — ${String(row.lang)}, ${String(row.stars)} stars, ${String(row.status)}. Double-click any cell to edit it.`
 }
 
 /* ---------- drawer demo ---------- */

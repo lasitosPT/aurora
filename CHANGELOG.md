@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.13.0
+
+Grid parity wave 1 (Kendo feature chase).
+
+- Multi-column sorting: Shift+click adds/toggles secondary sorts, with order badges
+- Global search toolbar (`searchable`) across all visible columns
+- Grouping: `grid.groupBy = 'field'` renders collapsible group headers with counts and
+  per-group aggregates
+- Aggregates: column `aggregate: 'sum'|'avg'|'min'|'max'|'count'` rendered per group and
+  in a footer row over the full filtered view
+- Inline editing: `editable` grid + per-column `editable` — double-click a cell,
+  Enter/blur commits (numbers stay numbers), Escape cancels; emits `aurora-edit`
+- Row detail templates: `grid.detail = (row) => html` adds an expander column
+- Pager page-size selector via `page-sizes="4,8,16"`
+- Column hiding: column `hidden` + `toggleColumn(field)`
+- CSV export: `exportable` toolbar button, `toCsv()` / `exportCsv(filename)`
+
 ## 0.12.0
 
 Enterprise track begins — see [ENTERPRISE.md](ENTERPRISE.md) for the Kendo-class roadmap.

@@ -9,12 +9,12 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ planned
 
 ## Data Management
 
-| Component                                                    | Status | aurora element           |
-| ------------------------------------------------------------ | ------ | ------------------------ |
-| Data Grid (sorting, filtering, paging, selection, templates) | ✅     | `aurora-grid`            |
-| TreeList / PivotGrid / Spreadsheet / PropertyGrid            | ⬜     |                          |
-| Filter / Pager (standalone)                                  | 🔶     | built into `aurora-grid` |
-| ListView                                                     | ⬜     |                          |
+| Component                                                                                                                            | Status | aurora element                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------ | ------ | ---------------------------------------------------------------- |
+| Data Grid (multi-sort, filter, search, paging, selection, grouping, aggregates, inline edit, detail rows, column hiding, CSV export) | ✅     | `aurora-grid`                                                    |
+| TreeList / PivotGrid / Spreadsheet / PropertyGrid                                                                                    | ⬜     | grid next: virtualization, column resize/reorder, frozen columns |
+| Filter / Pager (standalone)                                                                                                          | 🔶     | built into `aurora-grid`                                         |
+| ListView                                                                                                                             | ⬜     |                                                                  |
 
 ## Editors
 

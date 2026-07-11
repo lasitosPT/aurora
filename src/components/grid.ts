@@ -80,6 +80,38 @@ const STYLE = `
   .pager button:disabled { opacity: 0.35; cursor: default; }
   .pager button:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); }
   input[type='checkbox'] { accent-color: var(--aurora-accent, #6d5cff); cursor: pointer; }
+  .toolbar {
+    display: flex; align-items: center; gap: 10px; padding: 0.55rem 0.9rem;
+    border-bottom: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.08));
+  }
+  .toolbar input {
+    all: unset; box-sizing: border-box; flex: 1; max-width: 260px; font: inherit; font-size: 0.88em;
+    color: inherit; padding: 0.35rem 0.6rem; border-radius: 8px;
+    border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.1)); background: rgba(255,255,255,0.03);
+  }
+  .toolbar input:focus { border-color: var(--aurora-accent, #6d5cff); }
+  .toolbar .tool-btn {
+    all: unset; cursor: pointer; font-size: 0.82em; padding: 0.32rem 0.75rem; border-radius: 8px;
+    border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.12)); color: var(--aurora-muted, #9a98b3);
+  }
+  .toolbar .tool-btn:hover { border-color: var(--aurora-accent, #6d5cff); color: inherit; }
+  tr.group-row td {
+    background: rgba(109, 92, 255, 0.07); font-weight: 600; cursor: pointer;
+  }
+  tr.group-row .caret { display: inline-block; margin-right: 8px; transition: transform 0.2s ease; }
+  tr.group-row.is-collapsed .caret { transform: rotate(-90deg); }
+  tr.group-row .agg { color: var(--aurora-muted, #9a98b3); font-weight: 400; margin-left: 10px; font-size: 0.86em; }
+  tfoot td { font-weight: 600; border-top: 1px solid var(--aurora-border, rgba(255,255,255,0.14)); }
+  .expander { all: unset; cursor: pointer; padding: 0 6px; color: var(--aurora-muted, #9a98b3); }
+  .expander:hover { color: inherit; }
+  tr.detail-row td { background: rgba(255, 255, 255, 0.02); white-space: normal; color: var(--aurora-muted, #a7a5bd); }
+  td.editing { padding: 0.3rem 0.5rem; }
+  td.editing input {
+    all: unset; box-sizing: border-box; width: 100%; font: inherit; color: inherit;
+    padding: 0.3rem 0.4rem; border-radius: 6px; border: 1px solid var(--aurora-accent, #6d5cff);
+    background: rgba(109, 92, 255, 0.08);
+  }
+  .order { font-size: 0.66em; vertical-align: super; color: var(--aurora-accent, #6d5cff); }
 `
 
 export interface GridColumn<T = Record<string, unknown>> {
@@ -89,28 +121,109 @@ export interface GridColumn<T = Record<string, unknown>> {
   align?: 'left' | 'right' | 'center'
   sortable?: boolean
   filterable?: boolean
+  editable?: boolean
+  hidden?: boolean
+  aggregate?: 'sum' | 'avg' | 'min' | 'max' | 'count'
   formatter?: (value: unknown, row: T) => string
 }
 
 type Row = Record<string, unknown>
 
 /**
- * `<aurora-grid>` — an enterprise data grid. Assign `columns` and `data`, get
- * sorting (click headers to cycle asc/desc/off), per-column filtering, paging,
- * and row selection. Attributes: `page-size`, `selectable` (`single`|`multiple`
- * with checkboxes + select-all), `striped`, `dense`, `filterable`. Column
- * options: `title`, `width`, `align`, `sortable`, `filterable`, `formatter`.
- * Emits `aurora-sort`, `aurora-filter`, `aurora-page`, `aurora-selection`.
- * Theme via `--aurora-grid-height/-radius` and the shared aurora variables.
+ * `<aurora-grid>` — an enterprise data grid. Assign `columns` and `data`, get:
+ * multi-column sorting (Shift+click), per-column filters, global search
+ * (`searchable`), paging with a page-size selector (`page-size`,
+ * `page-sizes="5,10,25"`), row selection (`selectable="single|multiple"`),
+ * grouping with collapsible headers and per-group aggregates (`groupBy`),
+ * footer aggregates (column `aggregate: sum|avg|min|max|count`), inline cell
+ * editing (`editable` + column `editable`, dblclick → Enter/blur commits,
+ * Escape cancels), row detail templates (`detail = (row) => html`), column
+ * hiding (`hidden`, `toggleColumn()`), and CSV export (`exportable`,
+ * `toCsv()`/`exportCsv()`). Emits `aurora-sort`, `aurora-filter`,
+ * `aurora-page`, `aurora-selection`, `aurora-edit`.
  */
 export class AuroraGrid extends AuroraElement {
   #columns: GridColumn[] = []
   #data: Row[] = []
-  private sortField: string | null = null
-  private sortDir: 'asc' | 'desc' = 'asc'
+  private sorts: { field: string; dir: 'asc' | 'desc' }[] = []
   private filters = new Map<string, string>()
+  private search = ''
   private page = 0
+  private pageSize = -1
   private selectedRows = new Set<Row>()
+  private collapsed = new Set<string>()
+  private expanded = new Set<Row>()
+  #groupBy: string | null = null
+  #detail: ((row: Row) => string) | null = null
+
+  /** Group rows by a field (null to ungroup). */
+  get groupBy(): string | null {
+    return this.#groupBy
+  }
+
+  set groupBy(field: string | null) {
+    this.#groupBy = field
+    this.collapsed.clear()
+    this.render()
+  }
+
+  /** Row detail template: return HTML for an expandable detail row. */
+  get detail(): ((row: Row) => string) | null {
+    return this.#detail
+  }
+
+  set detail(fn: ((row: Row) => string) | null) {
+    this.#detail = fn
+    this.render()
+  }
+
+  /** Show/hide a column by field. */
+  toggleColumn(field: string): void {
+    const col = this.#columns.find((c) => c.field === field)
+    if (col) {
+      col.hidden = !col.hidden
+      this.render()
+    }
+  }
+
+  /** CSV of the current filtered + sorted view (all pages). */
+  toCsv(): string {
+    const cols = this.visibleColumns()
+    const esc = (v: unknown): string => `"${String(v ?? '').replace(/"/g, '""')}"`
+    const head = cols.map((c) => esc(c.title ?? c.field)).join(',')
+    const body = this.processed()
+      .map((row) => cols.map((c) => esc(row[c.field])).join(','))
+      .join('\n')
+    return `${head}\n${body}`
+  }
+
+  /** Download the current view as CSV. */
+  exportCsv(filename = 'grid.csv'): void {
+    const blob = new Blob([this.toCsv()], { type: 'text/csv' })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = filename
+    a.click()
+    URL.revokeObjectURL(a.href)
+  }
+
+  private visibleColumns(): GridColumn[] {
+    return this.#columns.filter((c) => !c.hidden)
+  }
+
+  private aggregate(
+    kind: NonNullable<GridColumn['aggregate']>,
+    rows: Row[],
+    field: string,
+  ): string {
+    const nums = rows.map((r) => Number(r[field])).filter((n) => Number.isFinite(n))
+    if (kind === 'count') return String(rows.length)
+    if (nums.length === 0) return ''
+    if (kind === 'sum') return String(nums.reduce((a, b) => a + b, 0))
+    if (kind === 'avg') return (nums.reduce((a, b) => a + b, 0) / nums.length).toFixed(1)
+    if (kind === 'min') return String(Math.min(...nums))
+    return String(Math.max(...nums))
+  }
 
   get columns(): GridColumn[] {
     return this.#columns
@@ -146,8 +259,19 @@ export class AuroraGrid extends AuroraElement {
     this.render()
   }
 
-  private view(): { rows: Row[]; total: number; pages: number; pageSize: number } {
+  private processed(): Row[] {
     let rows = this.#data
+    if (this.search) {
+      const q = this.search.toLowerCase()
+      const fields = this.visibleColumns().map((c) => c.field)
+      rows = rows.filter((row) =>
+        fields.some((f) =>
+          String(row[f] ?? '')
+            .toLowerCase()
+            .includes(q),
+        ),
+      )
+    }
     for (const [field, query] of this.filters) {
       if (!query) continue
       const q = query.toLowerCase()
@@ -157,18 +281,30 @@ export class AuroraGrid extends AuroraElement {
           .includes(q),
       )
     }
-    if (this.sortField) {
-      const field = this.sortField
-      const dir = this.sortDir === 'asc' ? 1 : -1
+    const sorts = [...this.sorts]
+    if (this.#groupBy) sorts.unshift({ field: this.#groupBy, dir: 'asc' })
+    if (sorts.length > 0) {
       rows = [...rows].sort((a, b) => {
-        const va = a[field]
-        const vb = b[field]
-        if (typeof va === 'number' && typeof vb === 'number') return (va - vb) * dir
-        return String(va ?? '').localeCompare(String(vb ?? '')) * dir
+        for (const s of sorts) {
+          const va = a[s.field]
+          const vb = b[s.field]
+          const dir = s.dir === 'asc' ? 1 : -1
+          let cmp: number
+          if (typeof va === 'number' && typeof vb === 'number') cmp = (va - vb) * dir
+          else cmp = String(va ?? '').localeCompare(String(vb ?? '')) * dir
+          if (cmp !== 0) return cmp
+        }
+        return 0
       })
     }
+    return rows
+  }
+
+  private view(): { rows: Row[]; total: number; pages: number; pageSize: number } {
+    let rows = this.processed()
     const total = rows.length
-    const pageSize = this.numberAttr('page-size', 0)
+    if (this.pageSize < 0) this.pageSize = this.numberAttr('page-size', 0)
+    const pageSize = this.pageSize
     const pages = pageSize > 0 ? Math.max(Math.ceil(total / pageSize), 1) : 1
     this.page = clamp(this.page, 0, pages - 1)
     if (pageSize > 0) rows = rows.slice(this.page * pageSize, (this.page + 1) * pageSize)
@@ -180,25 +316,41 @@ export class AuroraGrid extends AuroraElement {
     const selectable = this.getAttribute('selectable')
     const multi = selectable === 'multiple'
     const filterable = this.hasAttribute('filterable')
+    const editable = this.hasAttribute('editable')
+    const cols = this.visibleColumns()
+    const extraCols = (multi ? 1 : 0) + (this.#detail ? 1 : 0)
+    const span = cols.length + extraCols
     const cls = (col: GridColumn): string =>
       col.align === 'right' ? ' class="num"' : col.align === 'center' ? ' class="center"' : ''
 
-    const head = this.#columns
+    const toolbar =
+      this.hasAttribute('searchable') || this.hasAttribute('exportable')
+        ? `<div class="toolbar" part="toolbar">${
+            this.hasAttribute('searchable')
+              ? `<input data-search type="search" placeholder="Search…" aria-label="Search all columns" value="${this.search}" />`
+              : ''
+          }${this.hasAttribute('exportable') ? '<button class="tool-btn" data-export>Export CSV</button>' : ''}</div>`
+        : ''
+
+    const head = cols
       .map((col) => {
-        const sorted = this.sortField === col.field
-        const ariaSort = sorted ? (this.sortDir === 'asc' ? 'ascending' : 'descending') : 'none'
+        const idx = this.sorts.findIndex((s) => s.field === col.field)
+        const sorted = idx >= 0
+        const dir = sorted ? this.sorts[idx]?.dir : undefined
+        const ariaSort = sorted ? (dir === 'asc' ? 'ascending' : 'descending') : 'none'
         const label = col.title ?? col.field
         const width = col.width ? ` style="width:${col.width}"` : ''
+        const order = sorted && this.sorts.length > 1 ? `<span class="order">${idx + 1}</span>` : ''
         const inner =
           col.sortable === false
             ? label
-            : `<button class="sort-btn" data-sort="${col.field}">${label}<span class="arrow" aria-hidden="true">${sorted && this.sortDir === 'desc' ? '▼' : '▲'}</span></button>`
+            : `<button class="sort-btn" data-sort="${col.field}" title="Click to sort, Shift+click for multi-sort">${label}<span class="arrow" aria-hidden="true">${dir === 'desc' ? '▼' : '▲'}</span>${order}</button>`
         return `<th role="columnheader" aria-sort="${ariaSort}"${cls(col)}${width}>${inner}</th>`
       })
       .join('')
 
     const filterRow = filterable
-      ? `<tr class="filters">${multi ? '<th></th>' : ''}${this.#columns
+      ? `<tr class="filters">${multi ? '<th></th>' : ''}${this.#detail ? '<th></th>' : ''}${cols
           .map((col) =>
             col.filterable === false
               ? '<th></th>'
@@ -207,36 +359,93 @@ export class AuroraGrid extends AuroraElement {
           .join('')}</tr>`
       : ''
 
-    const body =
-      rows.length === 0
-        ? ''
-        : rows
-            .map((row, i) => {
-              const cells = this.#columns
-                .map((col) => {
-                  const raw = row[col.field]
-                  const text = col.formatter ? col.formatter(raw, row) : String(raw ?? '')
-                  return `<td${cls(col)}>${text}</td>`
-                })
-                .join('')
-              const check = multi
-                ? `<td class="center"><input type="checkbox" data-row="${i}" aria-label="Select row" ${this.selectedRows.has(row) ? 'checked' : ''}/></td>`
-                : ''
-              return `<tr data-index="${i}" aria-selected="${this.selectedRows.has(row)}">${check}${cells}</tr>`
-            })
-            .join('')
+    const cell = (row: Row, col: GridColumn): string => {
+      const raw = row[col.field]
+      const text = col.formatter ? col.formatter(raw, row) : String(raw ?? '')
+      const edit = editable && col.editable !== false ? ` data-edit="${col.field}"` : ''
+      return `<td${cls(col)}${edit}>${text}</td>`
+    }
+
+    const rowHtml = (row: Row, i: number): string => {
+      const check = multi
+        ? `<td class="center"><input type="checkbox" data-row="${i}" aria-label="Select row" ${this.selectedRows.has(row) ? 'checked' : ''}/></td>`
+        : ''
+      const exp = this.#detail
+        ? `<td class="center"><button class="expander" data-expand="${i}" aria-label="Toggle details" aria-expanded="${this.expanded.has(row)}">${this.expanded.has(row) ? '▾' : '▸'}</button></td>`
+        : ''
+      const detail =
+        this.#detail && this.expanded.has(row)
+          ? `<tr class="detail-row"><td colspan="${span}">${this.#detail(row)}</td></tr>`
+          : ''
+      return `<tr data-index="${i}" aria-selected="${this.selectedRows.has(row)}">${check}${exp}${row === undefined ? '' : cols.map((c) => cell(row, c)).join('')}</tr>${detail}`
+    }
+
+    let body = ''
+    if (this.#groupBy) {
+      const groups = new Map<string, { row: Row; i: number }[]>()
+      rows.forEach((row, i) => {
+        const key = String(row[this.#groupBy as string] ?? '')
+        if (!groups.has(key)) groups.set(key, [])
+        groups.get(key)?.push({ row, i })
+      })
+      for (const [key, members] of groups) {
+        const collapsed = this.collapsed.has(key)
+        const aggs = cols
+          .filter((c) => c.aggregate)
+          .map(
+            (c) =>
+              `${c.title ?? c.field} ${c.aggregate}: ${this.aggregate(
+                c.aggregate as NonNullable<GridColumn['aggregate']>,
+                members.map((m) => m.row),
+                c.field,
+              )}`,
+          )
+          .join(' · ')
+        body += `<tr class="group-row${collapsed ? ' is-collapsed' : ''}" data-group="${key}"><td colspan="${span}"><span class="caret">▾</span>${this.#groupBy}: ${key} (${members.length})${aggs ? `<span class="agg">${aggs}</span>` : ''}</td></tr>`
+        if (!collapsed) body += members.map(({ row, i }) => rowHtml(row, i)).join('')
+      }
+    } else {
+      body = rows.map((row, i) => rowHtml(row, i)).join('')
+    }
+
+    const footAggs = cols.filter((c) => c.aggregate)
+    const foot =
+      footAggs.length > 0 && rows.length > 0
+        ? `<tfoot><tr>${multi ? '<td></td>' : ''}${this.#detail ? '<td></td>' : ''}${cols
+            .map((c) =>
+              c.aggregate
+                ? `<td${cls(c)}>${c.aggregate}: ${this.aggregate(c.aggregate, this.processed(), c.field)}</td>`
+                : '<td></td>',
+            )
+            .join('')}</tr></tfoot>`
+        : ''
 
     const allChecked = rows.length > 0 && rows.every((row) => this.selectedRows.has(row))
     const selectHead = multi
       ? `<th class="center" style="width:36px"><input type="checkbox" data-all aria-label="Select all rows" ${allChecked ? 'checked' : ''}/></th>`
       : ''
+    const expandHead = this.#detail ? '<th style="width:34px"></th>' : ''
 
-    const pager =
-      pageSize > 0 && total > pageSize
-        ? `<div class="pager" part="pager"><span>${this.page * pageSize + 1}–${Math.min((this.page + 1) * pageSize, total)} of ${total}</span><span><button data-page="prev" ${this.page === 0 ? 'disabled' : ''} aria-label="Previous page">‹</button> ${this.page + 1} / ${pages} <button data-page="next" ${this.page >= pages - 1 ? 'disabled' : ''} aria-label="Next page">›</button></span></div>`
+    const sizes = (this.getAttribute('page-sizes') ?? '')
+      .split(',')
+      .map((s) => Number(s.trim()))
+      .filter((n) => n > 0)
+    const sizeSelect =
+      sizes.length > 0
+        ? `<select data-size aria-label="Rows per page">${sizes
+            .map(
+              (s) =>
+                `<option value="${s}" ${s === pageSize ? 'selected' : ''}>${s} / page</option>`,
+            )
+            .join('')}</select>`
         : ''
 
-    this.root.innerHTML = `<style>${STYLE}</style><div class="viewport"><table role="grid" aria-rowcount="${total}"><thead><tr>${selectHead}${head}</tr>${filterRow}</thead><tbody>${body}</tbody></table>${rows.length === 0 ? '<div class="empty">No matching rows.</div>' : ''}</div>${pager}`
+    const pager =
+      pageSize > 0 && (total > pageSize || sizes.length > 0)
+        ? `<div class="pager" part="pager"><span>${total === 0 ? 0 : this.page * pageSize + 1}–${Math.min((this.page + 1) * pageSize, total)} of ${total}</span><span style="display:inline-flex;gap:8px;align-items:center">${sizeSelect}<button data-page="prev" ${this.page === 0 ? 'disabled' : ''} aria-label="Previous page">‹</button> ${this.page + 1} / ${pages} <button data-page="next" ${this.page >= pages - 1 ? 'disabled' : ''} aria-label="Next page">›</button></span></div>`
+        : ''
+
+    this.root.innerHTML = `<style>${STYLE}</style>${toolbar}<div class="viewport"><table role="grid" aria-rowcount="${total}"><thead><tr>${selectHead}${expandHead}${head}</tr>${filterRow}</thead><tbody>${body}</tbody>${foot}</table>${rows.length === 0 ? '<div class="empty">No matching rows.</div>' : ''}</div>${pager}`
 
     this.wire(rows)
     if (!prefersReducedMotion() && rows.length > 0) {
@@ -250,23 +459,105 @@ export class AuroraGrid extends AuroraElement {
 
   private wire(rows: Row[]): void {
     this.root.querySelectorAll<HTMLButtonElement>('[data-sort]').forEach((btn) => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (event) => {
         const field = btn.dataset.sort ?? ''
-        if (this.sortField === field) {
-          if (this.sortDir === 'asc') this.sortDir = 'desc'
-          else this.sortField = null
+        const existing = this.sorts.findIndex((s) => s.field === field)
+        if (event.shiftKey) {
+          if (existing < 0) this.sorts.push({ field, dir: 'asc' })
+          else if (this.sorts[existing]?.dir === 'asc')
+            this.sorts[existing] = { field, dir: 'desc' }
+          else this.sorts.splice(existing, 1)
         } else {
-          this.sortField = field
-          this.sortDir = 'asc'
+          const current = existing >= 0 ? this.sorts[existing] : undefined
+          if (!current) this.sorts = [{ field, dir: 'asc' }]
+          else if (current.dir === 'asc') this.sorts = [{ field, dir: 'desc' }]
+          else this.sorts = []
         }
         this.render()
-        this.dispatchEvent(
-          new CustomEvent('aurora-sort', {
-            detail: { field: this.sortField, dir: this.sortField ? this.sortDir : null },
-          }),
-        )
+        this.dispatchEvent(new CustomEvent('aurora-sort', { detail: { sorts: [...this.sorts] } }))
       })
     })
+
+    const searchBox = this.root.querySelector<HTMLInputElement>('[data-search]')
+    searchBox?.addEventListener('input', () => {
+      this.search = searchBox.value
+      this.page = 0
+      this.render()
+      const next = this.root.querySelector<HTMLInputElement>('[data-search]')
+      next?.focus()
+      next?.setSelectionRange(next.value.length, next.value.length)
+    })
+    this.root.querySelector('[data-export]')?.addEventListener('click', () => this.exportCsv())
+    this.root.querySelector<HTMLSelectElement>('[data-size]')?.addEventListener('change', (e) => {
+      this.pageSize = Number((e.target as HTMLSelectElement).value)
+      this.page = 0
+      this.render()
+      this.dispatchEvent(
+        new CustomEvent('aurora-page', { detail: { page: 0, pageSize: this.pageSize } }),
+      )
+    })
+    this.root.querySelectorAll<HTMLElement>('tr.group-row').forEach((tr) => {
+      tr.addEventListener('click', () => {
+        const key = tr.dataset.group ?? ''
+        if (this.collapsed.has(key)) this.collapsed.delete(key)
+        else this.collapsed.add(key)
+        this.render()
+      })
+    })
+    this.root.querySelectorAll<HTMLButtonElement>('[data-expand]').forEach((btn) => {
+      btn.addEventListener('click', (event) => {
+        event.stopPropagation()
+        const row = rows[Number(btn.dataset.expand)]
+        if (!row) return
+        if (this.expanded.has(row)) this.expanded.delete(row)
+        else this.expanded.add(row)
+        this.render()
+      })
+    })
+    this.root.querySelectorAll<HTMLElement>('[data-edit]').forEach((td) => {
+      td.addEventListener('dblclick', () => {
+        if (td.classList.contains('editing')) return
+        const tr = td.closest('tr')
+        const row = rows[Number(tr?.dataset.index)]
+        const field = td.dataset.edit ?? ''
+        if (!row) return
+        const oldValue = row[field]
+        td.classList.add('editing')
+        td.innerHTML = '<input type="text" />'
+        const input = td.querySelector('input')
+        if (!input) return
+        input.value = String(oldValue ?? '')
+        input.focus()
+        input.select()
+        let done = false
+        const commit = (): void => {
+          if (done) return
+          done = true
+          const next: unknown =
+            typeof oldValue === 'number' &&
+            input.value.trim() !== '' &&
+            Number.isFinite(Number(input.value))
+              ? Number(input.value)
+              : input.value
+          if (next !== oldValue) {
+            row[field] = next
+            this.dispatchEvent(
+              new CustomEvent('aurora-edit', { detail: { row, field, value: next, oldValue } }),
+            )
+          }
+          this.render()
+        }
+        input.addEventListener('blur', commit)
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') commit()
+          else if (e.key === 'Escape') {
+            done = true
+            this.render()
+          }
+        })
+      })
+    })
+
     this.root.querySelectorAll<HTMLInputElement>('[data-filter]').forEach((input) => {
       input.addEventListener('input', () => {
         this.filters.set(input.dataset.filter ?? '', input.value)
