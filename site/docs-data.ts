@@ -106,6 +106,38 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-autocomplete',
+    title: 'Autocomplete',
+    category: 'Forms & Inputs',
+    summary:
+      'A type-to-filter suggestion input: matches highlight as you type, arrows and Enter select, Escape closes. Form-associated like every aurora input.',
+    example: `<aurora-autocomplete id="docAc" placeholder="Search a language…"></aurora-autocomplete>`,
+    attributes: [
+      ['placeholder', 'Input placeholder'],
+      ['min-chars', 'Characters before suggestions appear (default 1)'],
+      ['name', 'Form field name'],
+    ],
+    events: [['aurora-change', '{ value } on selection']],
+    cssvars: [['--aurora-accent / -surface / -border / -radius / -muted', 'Shared theme tokens']],
+    methods: [
+      ['options', 'Get/set suggestions as string[]'],
+      ['value', 'Get/set the input value'],
+      ['close()', 'Hide the suggestion list'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Feed it suggestions',
+        text: 'Any string array works — from a constant to a fetch response.',
+        code: `ac.options = ['TypeScript', 'JavaScript', 'Go', 'Rust']`,
+      },
+      {
+        heading: '2 · React to selection',
+        text: 'aurora-change fires when a suggestion is chosen by click or Enter.',
+        code: `ac.addEventListener('aurora-change', (e) => query(e.detail.value))`,
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

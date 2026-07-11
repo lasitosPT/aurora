@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Forty-two components.<br /><span class="grad">Every one of them live.</span>
+          Forty-three components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -498,6 +498,29 @@ AuroraConfetti.burst({ count: 120 })</pre>
   &lt;option value="ts"&gt;TypeScript&lt;/option&gt;
   &lt;option value="go"&gt;Go&lt;/option&gt;
 &lt;/aurora-select&gt;</pre>
+              </div>
+            </article>
+            <!-- Autocomplete -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Autocomplete</h3>
+                <code>&lt;aurora-autocomplete&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Type-to-filter suggestions with highlighted matches — try "script".
+                <a href="./docs.html?c=aurora-autocomplete" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage">
+                <aurora-autocomplete
+                  id="catAc"
+                  placeholder="Search a language…"
+                ></aurora-autocomplete>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-autocomplete placeholder="Search…"&gt;&lt;/aurora-autocomplete&gt;
+ac.options = ['TypeScript', 'Go', 'Rust']</pre>
               </div>
             </article>
           </div>

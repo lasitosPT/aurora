@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.17.0
+
+- `aurora-autocomplete` — type-to-filter suggestions with match highlighting, arrow/Enter
+  selection, Escape close, `min-chars`, form-associated; options from a string[] property
+  or child `<option>`s; emits `aurora-change`. Ships with its docs page.
+
 ## 0.16.0
 
 Dropdown editors begin.

@@ -168,6 +168,9 @@ if (demoGrid) {
     `<strong>${String(row.name)}</strong> — ${String(row.lang)}, ${String(row.stars)} stars, ${String(row.status)}. Double-click any cell to edit it.`
 }
 
+const catAc = document.getElementById('catAc') as (HTMLElement & { options: string[] }) | null
+if (catAc) catAc.options = ['TypeScript', 'JavaScript', 'Go', 'Rust', 'Python', 'Zig']
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -435,6 +438,8 @@ if (docRoot) {
             `<h3 style="font-family:var(--font-display);margin:26px 0 8px">${t.heading}</h3><p style="color:var(--muted);max-width:70ch">${t.text}</p>${t.code ? `<div class="code" style="margin-top:10px"><button class="copy">Copy</button><pre>${esc(t.code)}</pre></div>` : ''}`,
         )
         .join('')
+    const ac = document.getElementById('docAc') as (HTMLElement & { options: string[] }) | null
+    if (ac) ac.options = ['TypeScript', 'JavaScript', 'Go', 'Rust', 'Python', 'Zig']
     if (doc.tag === 'aurora-grid') {
       const g = document.getElementById('docGrid') as AuroraGrid | null
       if (g) {
