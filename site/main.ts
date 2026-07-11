@@ -99,6 +99,7 @@ if (features) {
 document.querySelectorAll<HTMLElement>('.toast-btn').forEach((btn) => {
   btn.addEventListener('click', () => {
     AuroraToaster.show(btn.dataset.msg ?? 'Hello from aurora', {
+      title: btn.dataset.title,
       variant: (btn.dataset.variant as 'success' | 'error' | undefined) ?? 'default',
     })
   })

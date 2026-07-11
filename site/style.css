@@ -770,6 +770,44 @@ html.js .features:not(.is-live) .ico :is(path, circle, rect) {
   cursor: pointer;
   user-select: none;
 }
+.slide {
+  width: 150px;
+  height: 110px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #a99bff;
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  background: linear-gradient(160deg, #1b1b2c, #101019);
+}
+.slide:nth-child(even) {
+  color: var(--accent-2);
+}
+.orbit-demo {
+  width: 200px;
+  height: 200px;
+}
+.orbit-core {
+  font-size: 1.7rem;
+  color: var(--accent);
+  text-shadow: 0 0 18px rgba(109, 92, 255, 0.8);
+}
+.orbit-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(109, 92, 255, 0.8);
+}
+.orbit-dot.alt {
+  width: 8px;
+  height: 8px;
+  background: var(--accent-2);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.8);
+}
 
 /* ---------- Gallery ---------- */
 .gallery {
@@ -859,6 +897,7 @@ html.js .features:not(.is-live) .ico :is(path, circle, rect) {
 .stage.stack {
   align-items: stretch;
   flex-direction: column;
+  flex-wrap: nowrap;
 }
 .stage.roomy {
   gap: 26px;

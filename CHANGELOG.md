@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.9.0
+
+Motion utilities batch + toast redesign.
+
+- `aurora-toaster` redesigned: glassmorphic panels with a tinted glow per variant,
+  self-drawing icon badges, an optional `title`, and a progress hairline that _is_ the
+  timer — hovering pauses both; dismissal now collapses the toast so the stack reflows
+- `aurora-carousel` — drag/swipe carousel with GSAP inertia and slide snapping,
+  arrow-key support and `next()`/`prev()`/`goTo(i)`; emits `aurora-slide-change`
+- `aurora-orbit` — children revolve around optional `slot="center"` content
+  (`radius`, `speed`, `reverse`)
+- `aurora-glitch` — RGB-split, slice-clipped glitch burst on scroll into view and on
+  hover (`hover`, `play()`, `--aurora-glitch-a/-b`)
+- `aurora-progress` — fixed scroll-progress hairline for the top of the page
+
 ## 0.8.0
 
 Interaction batch.

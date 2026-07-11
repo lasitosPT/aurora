@@ -11,13 +11,15 @@ describe('aurora-toaster', () => {
     const el = document.createElement('aurora-toaster') as AuroraToaster
     document.body.append(el)
 
-    const toast = el.show('Saved!', { variant: 'success', duration: 0 })
+    const toast = el.show('Saved!', { variant: 'success', duration: 0, title: 'Done' })
     expect(el.shadowRoot?.querySelectorAll('.toast').length).toBe(1)
     expect(toast.classList.contains('success')).toBe(true)
     expect(toast.textContent).toContain('Saved!')
+    expect(toast.querySelector('.title')?.textContent).toBe('Done')
+    expect(toast.querySelector('.badge svg')).not.toBeNull()
 
     el.dismiss(toast)
-    await new Promise((resolve) => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     expect(el.shadowRoot?.querySelectorAll('.toast').length).toBe(0)
     el.remove()
   })

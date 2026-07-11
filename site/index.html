@@ -37,8 +37,9 @@
       </div>
     </div>
 
-    <!-- ---------- Cursor glow: an aurora component (desktop only) ---------- -->
+    <!-- ---------- Cursor glow + scroll progress: aurora components ---------- -->
     <aurora-cursor></aurora-cursor>
+    <aurora-progress></aurora-progress>
 
     <!-- ---------- Nav ---------- -->
     <nav class="nav">
@@ -57,7 +58,7 @@
       <aurora-nebula class="gl" speed="1" aria-hidden="true"></aurora-nebula>
       <div class="hero-inner">
         <p class="eyebrow" data-intro>
-          <span class="dot"></span> Open source · MIT · 26 components
+          <span class="dot"></span> Open source · MIT · 30 components
         </p>
         <h1 class="hero-title">
           <span class="line">Motion,</span>
@@ -121,11 +122,11 @@
         <!-- The numbers below are live <aurora-counter> components -->
         <div class="wrap stats-grid">
           <div class="stat">
-            <aurora-counter class="num" value="26"></aurora-counter>
+            <aurora-counter class="num" value="30"></aurora-counter>
             <span class="stat-label">Components</span>
           </div>
           <div class="stat">
-            <aurora-counter class="num" value="14"></aurora-counter><span class="suffix">kB</span>
+            <aurora-counter class="num" value="17"></aurora-counter><span class="suffix">kB</span>
             <span class="stat-label">Core, gzipped</span>
           </div>
           <div class="stat">
@@ -320,7 +321,7 @@
         <div class="wrap gallery">
           <aside class="gallery-side">
             <p class="kicker" data-reveal>03 · Components</p>
-            <h2 class="section-title" data-reveal>Twenty-six components.<br />One import.</h2>
+            <h2 class="section-title" data-reveal>Thirty components.<br />One import.</h2>
             <p class="side-sub" data-reveal>
               Everything below is live — hover, click, drag. Each card ships with its markup, ready
               to paste.
@@ -723,19 +724,25 @@
                 One line: <code>AuroraToaster.show(…)</code>.
               </div>
               <div class="stage">
-                <aurora-button class="toast-btn" data-msg="Changes saved." data-variant="success"
+                <aurora-button
+                  class="toast-btn"
+                  data-msg="Everything is deployed and live."
+                  data-title="Changes saved"
+                  data-variant="success"
                   >Success</aurora-button
                 >
                 <aurora-button
                   class="toast-btn"
                   variant="ghost"
                   data-msg="Deploy started — hold tight."
+                  data-title="In progress"
                   >Default</aurora-button
                 >
                 <aurora-button
                   class="toast-btn"
                   variant="ghost"
-                  data-msg="Build failed on main."
+                  data-msg="Type error in src/index.ts."
+                  data-title="Build failed"
                   data-variant="error"
                   >Error</aurora-button
                 >
@@ -745,7 +752,10 @@
                 <pre>
 import { AuroraToaster } from 'aurora'
 
-AuroraToaster.show('Changes saved.', { variant: 'success' })</pre>
+AuroraToaster.show('Everything is live.', {
+  title: 'Changes saved',
+  variant: 'success',
+})</pre>
               </div>
             </article>
 
@@ -823,6 +833,106 @@ AuroraToaster.show('Changes saved.', { variant: 'success' })</pre>
 &lt;aurora-ripple&gt;
   &lt;button&gt;Click me&lt;/button&gt;
 &lt;/aurora-ripple&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Carousel -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Carousel</h3>
+                <code>&lt;aurora-carousel&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Drag or swipe — GSAP inertia, snap-to-slide, arrow keys. Slides are plain children.
+              </div>
+              <div class="stage stack">
+                <aurora-carousel>
+                  <div class="slide">01</div>
+                  <div class="slide">02</div>
+                  <div class="slide">03</div>
+                  <div class="slide">04</div>
+                  <div class="slide">05</div>
+                  <div class="slide">06</div>
+                </aurora-carousel>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-carousel&gt;
+  &lt;div class="slide"&gt;01&lt;/div&gt;
+  &lt;div class="slide"&gt;02&lt;/div&gt;
+&lt;/aurora-carousel&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Orbit -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Orbit</h3>
+                <code>&lt;aurora-orbit&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Children revolve around the center slot. Pure decoration, zero effort.
+              </div>
+              <div class="stage scene">
+                <aurora-orbit radius="72" speed="12" class="orbit-demo">
+                  <span slot="center" class="orbit-core">✦</span>
+                  <span class="orbit-dot"></span>
+                  <span class="orbit-dot alt"></span>
+                  <span class="orbit-dot"></span>
+                  <span class="orbit-dot alt"></span>
+                </aurora-orbit>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-orbit radius="72" speed="12"&gt;
+  &lt;span slot="center"&gt;✦&lt;/span&gt;
+  &lt;span class="dot"&gt;&lt;/span&gt;…
+&lt;/aurora-orbit&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Glitch -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Glitch</h3>
+                <code>&lt;aurora-glitch&gt;</code>
+              </div>
+              <div class="demo-desc">
+                An RGB-split, slice-clipped burst — on scroll into view, and on hover. Try it.
+              </div>
+              <div class="stage">
+                <aurora-glitch
+                  hover
+                  style="font-family: var(--font-display); font-size: 2.1rem; font-weight: 700"
+                  >SIGNAL LOST</aurora-glitch
+                >
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>&lt;aurora-glitch hover&gt;SIGNAL LOST&lt;/aurora-glitch&gt;</pre>
+              </div>
+            </article>
+
+            <!-- Progress -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Scroll progress</h3>
+                <code>&lt;aurora-progress&gt;</code>
+              </div>
+              <div class="demo-desc">
+                The gradient hairline at the very top of this page — drop it in once and it tracks
+                your reading position.
+              </div>
+              <div class="stage">
+                <span style="color: var(--muted); font-size: 0.92rem"
+                  >↑ It's live up there right now.</span
+                >
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>&lt;aurora-progress&gt;&lt;/aurora-progress&gt;</pre>
               </div>
             </article>
 
@@ -1040,7 +1150,7 @@ export function Hero() {
     <footer>
       <div class="wrap footer-cta">
         <h2 class="giant">Ship motion.</h2>
-        <p class="footer-sub" data-reveal>MIT licensed. Twenty-six components. One import away.</p>
+        <p class="footer-sub" data-reveal>MIT licensed. Thirty components. One import away.</p>
         <div class="footer-buttons" data-reveal>
           <aurora-magnetic strength="0.4">
             <a href="https://github.com/lasitosPT/aurora"
