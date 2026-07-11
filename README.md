@@ -7,6 +7,8 @@
 ![Three.js](https://img.shields.io/badge/Three.js-r185-000?logo=three.js&logoColor=white)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
+**🌐 [Live demo & docs → lasitospt.github.io/aurora](https://lasitospt.github.io/aurora/)**
+
 `aurora` ships as native **Web Components** (custom elements), so it works in **any** stack — React,
 Vue, Svelte, or plain HTML — with no wrapper and no config. Styles are encapsulated in Shadow DOM and
 themed with CSS variables; motion is powered by GSAP, and the 3D component uses Three.js.
@@ -115,8 +117,20 @@ All components respect `prefers-reduced-motion` and disable animation when the u
 
 ## Try the demo
 
+A full showcase with live components and copy-paste docs is deployed at
+**[lasitospt.github.io/aurora](https://lasitospt.github.io/aurora/)**.
+
+To run it locally:
+
 ```bash
-npm run build
+cd site
+npm install
+npm run dev
+```
+
+Or open the standalone example (after `npm run build` at the root):
+
+```bash
 npx serve   # then open examples/index.html
 ```
 
