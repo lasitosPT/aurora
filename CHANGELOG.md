@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.22.0
+
+- `aurora-rating` — star rating with a pop on pick: `max`, `value`, `char`, `readonly`,
+  arrow-key rating, radiogroup ARIA, form-associated; themed via
+  `--aurora-rating-on/-off/-size`; emits `aurora-change`. Ships with docs.
+
 ## 0.21.0
 
 - `aurora-timepicker` — an HH:MM input with hour/minute columns in a popup: `step`

@@ -251,6 +251,34 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-rating',
+    title: 'Rating',
+    category: 'Forms & Inputs',
+    summary:
+      'A star rating that pops as you pick. Any glyph, any scale, keyboard-rateable, and it submits its number with the form.',
+    example: `<aurora-rating value="3" max="5"></aurora-rating>`,
+    attributes: [
+      ['value / max', 'Current rating and scale (default 5)'],
+      ['char', 'Glyph to repeat (default ★)'],
+      ['readonly', 'Display only'],
+      ['name', 'Form field name'],
+    ],
+    events: [['aurora-change', '{ value }']],
+    cssvars: [['--aurora-rating-on / -off / -size', 'Colors and glyph size']],
+    methods: [['value', 'Get/set the rating']],
+    tutorial: [
+      {
+        heading: '1 · Rate with the keyboard',
+        text: 'Focus a star and use the arrow keys — the group follows the radiogroup pattern.',
+      },
+      {
+        heading: '2 · Make it yours',
+        text: 'char="♥" and --aurora-rating-on: #f472b6 turn it into hearts.',
+        code: `<aurora-rating char="♥" style="--aurora-rating-on:#f472b6"></aurora-rating>`,
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

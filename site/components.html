@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Forty-seven components.<br /><span class="grad">Every one of them live.</span>
+          Forty-eight components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -603,6 +603,31 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>&lt;aurora-timepicker name="time" step="15"&gt;&lt;/aurora-timepicker&gt;</pre>
+              </div>
+            </article>
+            <!-- Rating -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Rating</h3>
+                <code>&lt;aurora-rating&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Stars that pop when you pick — arrow keys work too.
+                <a href="./docs.html?c=aurora-rating" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage">
+                <aurora-rating value="3" max="5"></aurora-rating>
+                <aurora-rating
+                  char="♥"
+                  value="2"
+                  max="5"
+                  style="--aurora-rating-on: #f472b6"
+                ></aurora-rating>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-rating name="stars" value="3" max="5"&gt;&lt;/aurora-rating&gt;</pre>
               </div>
             </article>
           </div>
