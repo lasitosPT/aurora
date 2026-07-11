@@ -57,7 +57,7 @@
     <nav class="nav">
       <a class="brand" href="#top"><span class="mark">✦</span> aurora</a>
       <div class="nav-links">
-        <a href="#components" class="hide-sm">Components</a>
+        <a href="./components.html" class="hide-sm">Components</a>
         <a href="#install">Install</a>
         <a href="#theming" class="hide-sm">Theming</a>
         <a class="ext" href="https://github.com/lasitosPT/aurora">GitHub</a>
@@ -335,396 +335,74 @@
             <p class="kicker" data-reveal>03 · Components</p>
             <h2 class="section-title" data-reveal>Forty-one components.<br />One import.</h2>
             <p class="side-sub" data-reveal>
-              Everything below is live — hover, click, drag. Each card ships with its markup, ready
-              to paste.
+              A taste of the catalogue — every demo live. The other thirty-three have a page of
+              their own.
             </p>
             <div class="side-cta" data-reveal>
-              <a href="https://github.com/lasitosPT/aurora"
-                ><aurora-button variant="ghost">Read the docs ↗</aurora-button></a
-              >
+              <a href="./components.html"><aurora-button>View all 41 →</aurora-button></a>
             </div>
           </aside>
 
           <div class="demos">
-            <!-- Button -->
+            <!-- Grid (enterprise) -->
             <article class="demo" data-reveal>
               <div class="demo-head">
-                <h3>Button</h3>
-                <code>&lt;aurora-button&gt;</code>
-              </div>
-              <div class="demo-desc">Themeable button with primary and ghost variants.</div>
-              <div class="stage">
-                <aurora-button>Primary</aurora-button>
-                <aurora-button variant="ghost">Ghost</aurora-button>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-button&gt;Primary&lt;/aurora-button&gt;
-&lt;aurora-button variant="ghost"&gt;Ghost&lt;/aurora-button&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Magnetic -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Magnetic</h3>
-                <code>&lt;aurora-magnetic&gt;</code>
-              </div>
-              <div class="demo-desc">Content is pulled toward the cursor as it approaches.</div>
-              <div class="stage">
-                <aurora-magnetic strength="0.6">
-                  <aurora-button>Hover near me</aurora-button>
-                </aurora-magnetic>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-magnetic strength="0.6"&gt;
-  &lt;aurora-button&gt;Hover near me&lt;/aurora-button&gt;
-&lt;/aurora-magnetic&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Tilt -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Tilt</h3>
-                <code>&lt;aurora-tilt&gt;</code>
-              </div>
-              <div class="demo-desc">3D tilt that follows the pointer across the surface.</div>
-              <div class="stage">
-                <aurora-tilt max="16">
-                  <div class="card">Tilt me toward your cursor.</div>
-                </aurora-tilt>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-tilt max="16"&gt;
-  &lt;div class="card"&gt;Tilt me&lt;/div&gt;
-&lt;/aurora-tilt&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Text -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Text reveal</h3>
-                <code>&lt;aurora-text&gt;</code>
+                <h3>Data grid</h3>
+                <code>&lt;aurora-grid&gt;</code>
               </div>
               <div class="demo-desc">
-                Masked rise on scroll into view — <code>by="chars"</code> for a per-character
-                headline cascade, <code>by="words"</code> (default) for word blocks.
+                The first of the enterprise track: click headers to sort (asc → desc → off), type in
+                the filter row, page through, select rows with checkboxes.
               </div>
-              <div class="stage">
-                <aurora-text by="chars" stagger="0.03" style="font-size: 1.6rem; font-weight: 700">
-                  Motion, built in.
-                </aurora-text>
-                <button class="replay" aria-label="Replay animation">↻ Replay</button>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-text by="chars" stagger="0.03"&gt;
-  Motion, built in.
-&lt;/aurora-text&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Scramble -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Scramble</h3>
-                <code>&lt;aurora-scramble&gt;</code>
-              </div>
-              <div class="demo-desc">
-                Decodes through random glyphs, left to right. With <code>hover</code> it replays on
-                pointer enter — try it.
-              </div>
-              <div class="stage">
-                <aurora-scramble
-                  hover
-                  duration="1.2"
-                  style="font-family: var(--font-mono); font-size: 1.15rem"
-                  >TRANSMISSION DECODED</aurora-scramble
-                >
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-scramble hover duration="1.2"&gt;
-  TRANSMISSION DECODED
-&lt;/aurora-scramble&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Typewriter -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Typewriter</h3>
-                <code>&lt;aurora-typewriter&gt;</code>
-              </div>
-              <div class="demo-desc">
-                Types behind a blinking accent caret when it enters the viewport.
-              </div>
-              <div class="stage">
-                <aurora-typewriter
-                  speed="18"
-                  style="font-family: var(--font-mono); font-size: 1.05rem"
-                  >The platform types for itself.</aurora-typewriter
-                >
-                <button class="replay" aria-label="Replay animation">↻ Replay</button>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-typewriter speed="18"&gt;
-  The platform types for itself.
-&lt;/aurora-typewriter&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Modal + Tooltip -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Modal &amp; Tooltip</h3>
-                <code>&lt;aurora-modal&gt;</code>
-              </div>
-              <div class="demo-desc">Animated dialog; hover the button for a tooltip.</div>
-              <div class="stage">
-                <aurora-tooltip text="Opens a dialog" position="top">
-                  <aurora-button onclick="document.getElementById('demoModal').show()"
-                    >Open modal</aurora-button
-                  >
-                </aurora-tooltip>
-                <aurora-modal id="demoModal">
-                  <h2 style="margin-top: 0">Hello from aurora</h2>
-                  <p style="color: var(--muted)">
-                    A self-contained dialog animated with GSAP. Press Escape or click the backdrop.
-                  </p>
-                  <aurora-button onclick="document.getElementById('demoModal').hide()"
-                    >Close</aurora-button
-                  >
-                </aurora-modal>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-tooltip text="Opens a dialog"&gt;
-  &lt;aurora-button onclick="dlg.show()"&gt;Open&lt;/aurora-button&gt;
-&lt;/aurora-tooltip&gt;
-&lt;aurora-modal id="dlg"&gt;…&lt;/aurora-modal&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Accordion -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Accordion</h3>
-                <code>&lt;aurora-accordion&gt;</code>
-              </div>
-              <div class="demo-desc">Collapsible panels with animated height.</div>
               <div class="stage stack">
-                <aurora-accordion label="What is aurora?" open
-                  >A framework-agnostic set of animated web components.</aurora-accordion
-                >
-                <aurora-accordion label="Does it work in React?"
-                  >Yes — they are standard custom elements.</aurora-accordion
-                >
+                <aurora-grid
+                  id="demoGrid"
+                  filterable
+                  striped
+                  selectable="multiple"
+                  page-size="4"
+                ></aurora-grid>
               </div>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>
-&lt;aurora-accordion label="What is aurora?" open&gt;
-  A set of animated web components.
-&lt;/aurora-accordion&gt;</pre>
+&lt;aurora-grid filterable striped selectable="multiple" page-size="4"&gt;&lt;/aurora-grid&gt;
+
+grid.columns = [
+  { field: 'name', title: 'Project' },
+  { field: 'stars', title: 'Stars', align: 'right', formatter: (v) =&gt; `★ ${v}` },
+]
+grid.data = rows</pre>
               </div>
             </article>
-
-            <!-- Tabs -->
+            <!-- Command palette -->
             <article class="demo" data-reveal>
               <div class="demo-head">
-                <h3>Tabs</h3>
-                <code>&lt;aurora-tabs&gt;</code>
-              </div>
-              <div class="demo-desc">Tabbed panels with an animated active indicator.</div>
-              <div class="stage stack">
-                <aurora-tabs active="0">
-                  <aurora-tab-panel label="Overview"
-                    >Animated components as native web components.</aurora-tab-panel
-                  >
-                  <aurora-tab-panel label="Install">npm install aurora</aurora-tab-panel>
-                  <aurora-tab-panel label="License">MIT — use it anywhere.</aurora-tab-panel>
-                </aurora-tabs>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-tabs active="0"&gt;
-  &lt;aurora-tab-panel label="Overview"&gt;…&lt;/aurora-tab-panel&gt;
-  &lt;aurora-tab-panel label="Install"&gt;…&lt;/aurora-tab-panel&gt;
-&lt;/aurora-tabs&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Marquee -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Marquee</h3>
-                <code>&lt;aurora-marquee&gt;</code>
-              </div>
-              <div class="demo-desc">Seamless, infinite horizontal scroller.</div>
-              <div class="stage">
-                <aurora-marquee speed="70" style="font-weight: 700; color: var(--muted)"
-                  >GSAP · Three.js · Web Components · Zero config ·
-                </aurora-marquee>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-marquee speed="70"&gt;
-  GSAP · Three.js · Web Components ·
-&lt;/aurora-marquee&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Forms -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Form controls</h3>
-                <code>&lt;aurora-input&gt; &lt;aurora-switch&gt; &lt;aurora-slider&gt;</code>
+                <h3>Command palette</h3>
+                <code>&lt;aurora-command&gt;</code>
               </div>
               <div class="demo-desc">
-                Form-associated via <code>ElementInternals</code> — they submit with a real
-                <code>&lt;form&gt;</code>.
-              </div>
-              <div class="stage stack roomy">
-                <aurora-input
-                  label="Email"
-                  type="email"
-                  placeholder="you@example.com"
-                ></aurora-input>
-                <label class="row">
-                  <aurora-switch checked></aurora-switch>
-                  <span>Subscribe to the newsletter</span>
-                </label>
-                <div>
-                  <span class="mini-label">Volume</span>
-                  <aurora-slider min="0" max="100" value="70"></aurora-slider>
-                </div>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;form&gt;
-  &lt;aurora-input  name="email"      label="Email" type="email"&gt;&lt;/aurora-input&gt;
-  &lt;aurora-switch name="newsletter" checked&gt;&lt;/aurora-switch&gt;
-  &lt;aurora-slider name="volume" min="0" max="100" value="70"&gt;&lt;/aurora-slider&gt;
-&lt;/form&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Reveal -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Scroll reveal</h3>
-                <code>&lt;aurora-reveal&gt;</code>
-              </div>
-              <div class="demo-desc">
-                Fades and rises content into view on scroll — with an optional stagger for children.
-                IntersectionObserver, zero scroll listeners.
+                The full ⌘K experience: global hotkey, type-to-filter, arrow keys, Enter to run,
+                focus restore. Try <kbd style="font-family: var(--font-mono)">⌘K</kbd> right now —
+                it drives this page.
               </div>
               <div class="stage">
-                <aurora-reveal stagger="0.12" style="display: flex; gap: 14px; flex-wrap: wrap">
-                  <div class="chip">Native</div>
-                  <div class="chip">Animated</div>
-                  <div class="chip">Accessible</div>
-                </aurora-reveal>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-reveal stagger="0.12"&gt;
-  &lt;div class="card"&gt;One&lt;/div&gt;
-  &lt;div class="card"&gt;Two&lt;/div&gt;
-&lt;/aurora-reveal&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Counter -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Counter</h3>
-                <code>&lt;aurora-counter&gt;</code>
-              </div>
-              <div class="demo-desc">
-                Counts up when it enters the viewport — the stats band on this page is made of
-                these. Changing <code>value</code> re-tweens live.
-              </div>
-              <div class="stage">
-                <div style="font-family: var(--font-display); font-size: 2.6rem; font-weight: 700">
-                  <aurora-counter value="4821"></aurora-counter>
-                </div>
-                <aurora-button
-                  variant="ghost"
-                  onclick="
-                    const c = this.closest('.stage').querySelector('aurora-counter')
-                    c.setAttribute('value', String(Math.floor(Math.random() * 9000) + 500))
-                  "
-                  >Randomize</aurora-button
+                <aurora-button id="cmdBtn"
+                  >Open palette&ensp;<span
+                    style="opacity: 0.7; font-family: var(--font-mono); font-size: 0.85em"
+                    >⌘K</span
+                  ></aurora-button
                 >
               </div>
               <div class="code">
                 <button class="copy">Copy</button>
-                <pre>&lt;aurora-counter value="4821" duration="1.6"&gt;&lt;/aurora-counter&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Cursor -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Cursor glow</h3>
-                <code>&lt;aurora-cursor&gt;</code>
-              </div>
-              <div class="demo-desc">
-                The ring following your pointer on this page. Grows over interactive elements, never
-                hides the system cursor, and stays off touch devices — drop it in once.
-              </div>
-              <div class="stage">
-                <div class="chip" data-cursor>It's already live — hover me</div>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
                 <pre>
-&lt;aurora-cursor&gt;&lt;/aurora-cursor&gt;
-
-/* theme it */
-:root { --aurora-cursor-color: rgba(169, 155, 255, 0.55); }</pre>
+&lt;aurora-command hotkey="k"&gt;
+  &lt;button data-value="docs" data-keywords="manual"&gt;📖 Open docs&lt;/button&gt;
+  &lt;button data-value="deploy"&gt;🚀 Deploy&lt;/button&gt;
+&lt;/aurora-command&gt;</pre>
               </div>
             </article>
-
-            <!-- Nebula -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Nebula</h3>
-                <code>&lt;aurora-nebula&gt;</code>
-              </div>
-              <div class="demo-desc">
-                The hero of this page — an aurora-borealis backdrop as a ~2&nbsp;kB raw-WebGL
-                shader. No 3D library, DPR-capped, pauses off-screen, still frame under
-                <code>prefers-reduced-motion</code>.
-              </div>
-              <div class="stage scene">
-                <aurora-nebula speed="1.4" style="position: absolute; inset: 0"></aurora-nebula>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-nebula color="#6d5cff" color2="#22d3ee" speed="1"&gt;&lt;/aurora-nebula&gt;</pre>
-              </div>
-            </article>
-
             <!-- Toaster -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -770,488 +448,26 @@ AuroraToaster.show('Everything is live.', {
 })</pre>
               </div>
             </article>
-
-            <!-- Spotlight -->
+            <!-- Nebula -->
             <article class="demo" data-reveal>
               <div class="demo-head">
-                <h3>Spotlight</h3>
-                <code>&lt;aurora-spotlight&gt;</code>
+                <h3>Nebula</h3>
+                <code>&lt;aurora-nebula&gt;</code>
               </div>
               <div class="demo-desc">
-                Cursor-tracking interior glow and a 1px border beam — the feature cards on this page
-                are this component.
-              </div>
-              <div class="stage">
-                <aurora-spotlight class="spot-demo">
-                  <strong>Move your cursor over me</strong>
-                  <span>The glow and the border beam follow it.</span>
-                </aurora-spotlight>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-spotlight class="card"&gt;
-  Your content
-&lt;/aurora-spotlight&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Dock -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Dock</h3>
-                <code>&lt;aurora-dock&gt;</code>
-              </div>
-              <div class="demo-desc">
-                Children magnify as the cursor approaches — the macOS dock, one wrapper element.
-              </div>
-              <div class="stage tall">
-                <aurora-dock max="1.7" range="120">
-                  <button class="dock-tile" aria-label="Item one">✦</button>
-                  <button class="dock-tile" aria-label="Item two">◆</button>
-                  <button class="dock-tile" aria-label="Item three">●</button>
-                  <button class="dock-tile" aria-label="Item four">▲</button>
-                  <button class="dock-tile" aria-label="Item five">✕</button>
-                  <button class="dock-tile" aria-label="Item six">➜</button>
-                </aurora-dock>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-dock max="1.7" range="120"&gt;
-  &lt;button&gt;…&lt;/button&gt;
-&lt;/aurora-dock&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Ripple -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Ripple</h3>
-                <code>&lt;aurora-ripple&gt;</code>
-              </div>
-              <div class="demo-desc">
-                A soft ripple from the pointer on press, clipped to the wrapper's radius. Click
-                around:
-              </div>
-              <div class="stage">
-                <aurora-ripple class="ripple-demo">
-                  <div class="ripple-pad">Click me — anywhere</div>
-                </aurora-ripple>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-ripple&gt;
-  &lt;button&gt;Click me&lt;/button&gt;
-&lt;/aurora-ripple&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Carousel -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Carousel</h3>
-                <code>&lt;aurora-carousel&gt;</code>
-              </div>
-              <div class="demo-desc">
-                Drag or swipe — GSAP inertia, snap-to-slide, arrow keys. Slides are plain children.
-              </div>
-              <div class="stage stack">
-                <aurora-carousel>
-                  <div class="slide">01</div>
-                  <div class="slide">02</div>
-                  <div class="slide">03</div>
-                  <div class="slide">04</div>
-                  <div class="slide">05</div>
-                  <div class="slide">06</div>
-                </aurora-carousel>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-carousel&gt;
-  &lt;div class="slide"&gt;01&lt;/div&gt;
-  &lt;div class="slide"&gt;02&lt;/div&gt;
-&lt;/aurora-carousel&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Orbit -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Orbit</h3>
-                <code>&lt;aurora-orbit&gt;</code>
-              </div>
-              <div class="demo-desc">
-                Children revolve around the center slot. Pure decoration, zero effort.
+                The hero of this page — an aurora-borealis backdrop as a ~2&nbsp;kB raw-WebGL
+                shader. No 3D library, DPR-capped, pauses off-screen, still frame under
+                <code>prefers-reduced-motion</code>.
               </div>
               <div class="stage scene">
-                <aurora-orbit radius="72" speed="12" class="orbit-demo">
-                  <span slot="center" class="orbit-core">✦</span>
-                  <span class="orbit-dot"></span>
-                  <span class="orbit-dot alt"></span>
-                  <span class="orbit-dot"></span>
-                  <span class="orbit-dot alt"></span>
-                </aurora-orbit>
+                <aurora-nebula speed="1.4" style="position: absolute; inset: 0"></aurora-nebula>
               </div>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>
-&lt;aurora-orbit radius="72" speed="12"&gt;
-  &lt;span slot="center"&gt;✦&lt;/span&gt;
-  &lt;span class="dot"&gt;&lt;/span&gt;…
-&lt;/aurora-orbit&gt;</pre>
+&lt;aurora-nebula color="#6d5cff" color2="#22d3ee" speed="1"&gt;&lt;/aurora-nebula&gt;</pre>
               </div>
             </article>
-
-            <!-- Glitch -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Glitch</h3>
-                <code>&lt;aurora-glitch&gt;</code>
-              </div>
-              <div class="demo-desc">
-                An RGB-split, slice-clipped burst — on scroll into view, and on hover. Try it.
-              </div>
-              <div class="stage">
-                <aurora-glitch
-                  hover
-                  style="font-family: var(--font-display); font-size: 2.1rem; font-weight: 700"
-                  >SIGNAL LOST</aurora-glitch
-                >
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>&lt;aurora-glitch hover&gt;SIGNAL LOST&lt;/aurora-glitch&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Progress -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Scroll progress</h3>
-                <code>&lt;aurora-progress&gt;</code>
-              </div>
-              <div class="demo-desc">
-                The gradient hairline at the very top of this page — drop it in once and it tracks
-                your reading position.
-              </div>
-              <div class="stage">
-                <span style="color: var(--muted); font-size: 0.92rem"
-                  >↑ It's live up there right now.</span
-                >
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>&lt;aurora-progress&gt;&lt;/aurora-progress&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Menu -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Menu</h3>
-                <code>&lt;aurora-menu&gt;</code>
-              </div>
-              <div class="demo-desc">
-                An accessible dropdown: arrow keys rove, Escape restores focus, outside clicks
-                close. Selecting fires a toast here.
-              </div>
-              <div class="stage">
-                <aurora-menu label="Actions" id="demoMenu">
-                  <button data-value="Edit">Edit</button>
-                  <button data-value="Duplicate">Duplicate</button>
-                  <hr />
-                  <button data-value="Delete">Delete</button>
-                </aurora-menu>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-menu label="Actions"&gt;
-  &lt;button data-value="edit"&gt;Edit&lt;/button&gt;
-  &lt;hr /&gt;
-  &lt;button data-value="delete"&gt;Delete&lt;/button&gt;
-&lt;/aurora-menu&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Compare -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Compare</h3>
-                <code>&lt;aurora-compare&gt;</code>
-              </div>
-              <div class="demo-desc">
-                Drag the divider (or focus the handle and use arrow keys) to sweep between two
-                layers.
-              </div>
-              <div class="stage scene">
-                <aurora-compare value="50" style="position: absolute; inset: 0">
-                  <img
-                    slot="before"
-                    src="./og.jpg"
-                    alt="Monochrome artwork"
-                    style="filter: grayscale(1)"
-                  />
-                  <img slot="after" src="./og.jpg" alt="Color artwork" />
-                </aurora-compare>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-compare value="50"&gt;
-  &lt;img slot="before" src="/before.jpg" /&gt;
-  &lt;img slot="after" src="/after.jpg" /&gt;
-&lt;/aurora-compare&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Flip -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Flip card</h3>
-                <code>&lt;aurora-flip&gt;</code>
-              </div>
-              <div class="demo-desc">A 3D flip between two faces — hover it.</div>
-              <div class="stage tall">
-                <aurora-flip>
-                  <div slot="front" class="flip-face">Hover to flip ✦</div>
-                  <div slot="back" class="flip-face back">Native web components.</div>
-                </aurora-flip>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-flip trigger="hover"&gt;
-  &lt;div slot="front"&gt;Front&lt;/div&gt;
-  &lt;div slot="back"&gt;Back&lt;/div&gt;
-&lt;/aurora-flip&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Skeleton -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Skeleton</h3>
-                <code>&lt;aurora-skeleton&gt;</code>
-              </div>
-              <div class="demo-desc">
-                Shimmering placeholders: a circle, a block, or <code>lines="n"</code> paragraphs.
-              </div>
-              <div class="stage">
-                <div
-                  style="
-                    display: flex;
-                    gap: 16px;
-                    align-items: flex-start;
-                    width: 100%;
-                    max-width: 380px;
-                  "
-                >
-                  <aurora-skeleton
-                    circle
-                    style="width: 48px; height: 48px; flex: none"
-                  ></aurora-skeleton>
-                  <aurora-skeleton lines="3" style="flex: 1"></aurora-skeleton>
-                </div>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-skeleton circle style="width: 48px; height: 48px"&gt;&lt;/aurora-skeleton&gt;
-&lt;aurora-skeleton lines="3"&gt;&lt;/aurora-skeleton&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Confetti -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Confetti</h3>
-                <code>&lt;aurora-confetti&gt;</code>
-              </div>
-              <div class="demo-desc">
-                A celebration cannon with gravity, drag and spin — the loop stops itself when the
-                last piece settles.
-              </div>
-              <div class="stage">
-                <aurora-button id="confettiBtn">Ship it 🎉</aurora-button>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-import { AuroraConfetti } from 'aurora'
-
-AuroraConfetti.burst({ count: 120 })</pre>
-              </div>
-            </article>
-
-            <!-- Command palette -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Command palette</h3>
-                <code>&lt;aurora-command&gt;</code>
-              </div>
-              <div class="demo-desc">
-                The full ⌘K experience: global hotkey, type-to-filter, arrow keys, Enter to run,
-                focus restore. Try <kbd style="font-family: var(--font-mono)">⌘K</kbd> right now —
-                it drives this page.
-              </div>
-              <div class="stage">
-                <aurora-button id="cmdBtn"
-                  >Open palette&ensp;<span
-                    style="opacity: 0.7; font-family: var(--font-mono); font-size: 0.85em"
-                    >⌘K</span
-                  ></aurora-button
-                >
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-command hotkey="k"&gt;
-  &lt;button data-value="docs" data-keywords="manual"&gt;📖 Open docs&lt;/button&gt;
-  &lt;button data-value="deploy"&gt;🚀 Deploy&lt;/button&gt;
-&lt;/aurora-command&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Drawer -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Drawer</h3>
-                <code>&lt;aurora-drawer&gt;</code>
-              </div>
-              <div class="demo-desc">
-                A side panel with the same focus discipline as the modal: Tab trapped, Escape
-                closes, focus returns to the opener.
-              </div>
-              <div class="stage">
-                <aurora-button id="drawerBtn">Open drawer</aurora-button>
-                <aurora-drawer id="demoDrawer">
-                  <h2 style="margin-top: 0; font-family: var(--font-display)">✦ aurora</h2>
-                  <p style="color: var(--muted)">
-                    Forty components, one import. This drawer traps Tab, closes on Escape, and hands
-                    focus back when it leaves.
-                  </p>
-                  <aurora-button onclick="document.getElementById('demoDrawer').hide()"
-                    >Close</aurora-button
-                  >
-                </aurora-drawer>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-drawer id="panel" side="right"&gt;…&lt;/aurora-drawer&gt;
-&lt;button onclick="panel.show()"&gt;Open&lt;/button&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Beam -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Border beam</h3>
-                <code>&lt;aurora-beam&gt;</code>
-              </div>
-              <div class="demo-desc">
-                A luminous beam endlessly travelling the card's edge — no cursor required.
-              </div>
-              <div class="stage">
-                <aurora-beam speed="4" class="beam-demo">
-                  <div class="beam-inner">Always in motion.</div>
-                </aurora-beam>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-beam speed="4"&gt;
-  &lt;div class="card"&gt;Always in motion.&lt;/div&gt;
-&lt;/aurora-beam&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Parallax -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Parallax</h3>
-                <code>&lt;aurora-parallax&gt;</code>
-              </div>
-              <div class="demo-desc">
-                Layers drift toward your pointer at their own <code>data-depth</code>.
-              </div>
-              <div class="stage tall">
-                <aurora-parallax strength="30" class="parallax-demo">
-                  <span class="px-dot a" data-depth="0.3" aria-hidden="true"></span>
-                  <span class="px-dot b" data-depth="0.9" aria-hidden="true"></span>
-                  <strong
-                    data-depth="0.6"
-                    style="font-family: var(--font-display); font-size: 1.4rem"
-                    >Move around me</strong
-                  >
-                </aurora-parallax>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-parallax strength="30"&gt;
-  &lt;img data-depth="0.3" /&gt;
-  &lt;h2 data-depth="0.8"&gt;Title&lt;/h2&gt;
-&lt;/aurora-parallax&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Shine -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Shine</h3>
-                <code>&lt;aurora-shine&gt;</code>
-              </div>
-              <div class="demo-desc">A soft highlight sweeps across the text on a loop.</div>
-              <div class="stage">
-                <aurora-shine
-                  speed="2.6"
-                  style="font-family: var(--font-display); font-size: 1.9rem; font-weight: 700"
-                  >Polished by default.</aurora-shine
-                >
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>&lt;aurora-shine speed="2.6"&gt;Polished by default.&lt;/aurora-shine&gt;</pre>
-              </div>
-            </article>
-
-            <!-- Grid (enterprise) -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Data grid</h3>
-                <code>&lt;aurora-grid&gt;</code>
-              </div>
-              <div class="demo-desc">
-                The first of the enterprise track: click headers to sort (asc → desc → off), type in
-                the filter row, page through, select rows with checkboxes.
-              </div>
-              <div class="stage stack">
-                <aurora-grid
-                  id="demoGrid"
-                  filterable
-                  striped
-                  selectable="multiple"
-                  page-size="4"
-                ></aurora-grid>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>
-&lt;aurora-grid filterable striped selectable="multiple" page-size="4"&gt;&lt;/aurora-grid&gt;
-
-grid.columns = [
-  { field: 'name', title: 'Project' },
-  { field: 'stars', title: 'Stars', align: 'right', formatter: (v) =&gt; `★ ${v}` },
-]
-grid.data = rows</pre>
-              </div>
-            </article>
-
             <!-- Lens -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -1276,30 +492,65 @@ grid.data = rows</pre>
 &lt;aurora-lens src="/hero.jpg" alt="…" strength="1"&gt;&lt;/aurora-lens&gt;</pre>
               </div>
             </article>
-
-            <!-- 3D scene (lazy) -->
+            <!-- Text -->
             <article class="demo" data-reveal>
               <div class="demo-head">
-                <h3>3D scene</h3>
-                <code>&lt;aurora-scene&gt;</code>
+                <h3>Text reveal</h3>
+                <code>&lt;aurora-text&gt;</code>
               </div>
               <div class="demo-desc">
-                Lives on the <code>aurora/three</code> entry — this card lazy-loads Three.js as it
-                scrolls into view, exactly like your app would.
+                Masked rise on scroll into view — <code>by="chars"</code> for a per-character
+                headline cascade, <code>by="words"</code> (default) for word blocks.
               </div>
-              <div class="stage scene" id="sceneStage">
-                <aurora-scene color="#6d5cff" speed="1.2"></aurora-scene>
-                <span class="scene-note">loading three.js…</span>
+              <div class="stage">
+                <aurora-text by="chars" stagger="0.03" style="font-size: 1.6rem; font-weight: 700">
+                  Motion, built in.
+                </aurora-text>
+                <button class="replay" aria-label="Replay animation">↻ Replay</button>
               </div>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>
-import 'aurora/three' // opt-in entry
-
-&lt;aurora-scene color="#6d5cff" speed="1.2"&gt;&lt;/aurora-scene&gt;</pre>
+&lt;aurora-text by="chars" stagger="0.03"&gt;
+  Motion, built in.
+&lt;/aurora-text&gt;</pre>
               </div>
             </article>
-
+            <!-- Forms -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Form controls</h3>
+                <code>&lt;aurora-input&gt; &lt;aurora-switch&gt; &lt;aurora-slider&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Form-associated via <code>ElementInternals</code> — they submit with a real
+                <code>&lt;form&gt;</code>.
+              </div>
+              <div class="stage stack roomy">
+                <aurora-input
+                  label="Email"
+                  type="email"
+                  placeholder="you@example.com"
+                ></aurora-input>
+                <label class="row">
+                  <aurora-switch checked></aurora-switch>
+                  <span>Subscribe to the newsletter</span>
+                </label>
+                <div>
+                  <span class="mini-label">Volume</span>
+                  <aurora-slider min="0" max="100" value="70"></aurora-slider>
+                </div>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;form&gt;
+  &lt;aurora-input  name="email"      label="Email" type="email"&gt;&lt;/aurora-input&gt;
+  &lt;aurora-switch name="newsletter" checked&gt;&lt;/aurora-switch&gt;
+  &lt;aurora-slider name="volume" min="0" max="100" value="70"&gt;&lt;/aurora-slider&gt;
+&lt;/form&gt;</pre>
+              </div>
+            </article>
             <!-- Particles (lazy) -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -1326,30 +577,10 @@ import 'aurora/three' // opt-in entry
 &lt;/aurora-particles&gt;</pre>
               </div>
             </article>
-
-            <!-- Wave (lazy) -->
-            <article class="demo" data-reveal>
-              <div class="demo-head">
-                <h3>Wave</h3>
-                <code>&lt;aurora-wave&gt;</code>
-              </div>
-              <div class="demo-desc">
-                A wireframe ocean — travelling sine waves across a displaced plane, viewed from a
-                low angle. On the <code>aurora/three</code> entry.
-              </div>
-              <div class="stage scene" id="waveStage">
-                <aurora-wave
-                  speed="1"
-                  amplitude="0.4"
-                  style="position: absolute; inset: 0"
-                ></aurora-wave>
-                <span class="scene-note">loading three.js…</span>
-              </div>
-              <div class="code">
-                <button class="copy">Copy</button>
-                <pre>&lt;aurora-wave color="#6d5cff" amplitude="0.4"&gt;&lt;/aurora-wave&gt;</pre>
-              </div>
-            </article>
+            <a class="view-all" href="./components.html" data-reveal>
+              <strong>View all 41 components →</strong>
+              <span>The full catalogue, grouped by category — every demo live.</span>
+            </a>
           </div>
         </div>
       </section>

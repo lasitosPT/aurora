@@ -1115,6 +1115,121 @@ html.js .features:not(.is-live) .ico :is(path, circle, rect) {
   border: 1px solid var(--border-strong);
 }
 
+/* ---------- Components catalogue page ---------- */
+.view-all {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 30px 34px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(109, 92, 255, 0.08), transparent);
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease;
+}
+.view-all:hover {
+  border-color: var(--accent);
+  background: linear-gradient(160deg, rgba(109, 92, 255, 0.14), transparent);
+}
+.view-all strong {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+}
+.view-all span {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.catalog-page {
+  padding-top: 64px;
+}
+.cat-hero {
+  padding: clamp(48px, 8vh, 90px) 0 30px;
+}
+.cat-search {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  width: min(100%, 440px);
+  margin-top: 26px;
+  padding: 12px 18px;
+  font: inherit;
+  color: var(--fg);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--panel);
+}
+.cat-search:focus {
+  border-color: var(--accent);
+}
+.cat-search::placeholder {
+  color: var(--muted);
+}
+.cat-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+  padding-bottom: 100px;
+}
+.cat-nav {
+  position: sticky;
+  top: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+}
+.cat-nav a {
+  padding: 7px 12px;
+  border-radius: 9px;
+  color: var(--muted);
+  border-left: 2px solid transparent;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+.cat-nav a:hover {
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.04);
+}
+@media (max-width: 900px) {
+  .cat-layout {
+    grid-template-columns: 1fr;
+  }
+  .cat-nav {
+    position: static;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+.cat-section {
+  padding-top: 18px;
+  margin-bottom: 46px;
+  scroll-margin-top: 80px;
+}
+.cat-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  margin: 0 0 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.catalog-demos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(420px, 100%), 1fr));
+  gap: 20px;
+}
+.catalog-demos .demo {
+  min-width: 0;
+}
+.cat-none {
+  color: var(--muted);
+  padding: 30px 0;
+}
+
 /* ---------- Footer ---------- */
 footer {
   position: relative;

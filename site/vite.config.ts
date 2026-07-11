@@ -5,6 +5,14 @@ import { defineConfig } from 'vite'
 // (lasitosPT.github.io/aurora/) and at the custom domain root.
 export default defineConfig({
   base: './',
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        components: resolve(__dirname, 'components.html'),
+      },
+    },
+  },
   resolve: {
     // Import the library straight from source and let Vite bundle gsap/three.
     // Order matters: the more specific alias must come first. gsap/three are

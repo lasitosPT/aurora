@@ -127,11 +127,12 @@ document.getElementById('cmdBtn')?.addEventListener('click', () => {
 palette?.addEventListener('aurora-select', (event) => {
   const { value } = (event as CustomEvent<{ value: string }>).detail
   if (value === 'top') window.scrollTo({ top: 0, behavior: 'smooth' })
-  else if (value === 'components')
-    document.getElementById('components')?.scrollIntoView({ behavior: 'smooth' })
-  else if (value === 'install')
-    document.getElementById('install')?.scrollIntoView({ behavior: 'smooth' })
-  else if (value === 'github') window.open('https://github.com/lasitosPT/aurora', '_blank')
+  else if (value === 'components') location.href = './components.html'
+  else if (value === 'install') {
+    const target = document.getElementById('install')
+    if (target) target.scrollIntoView({ behavior: 'smooth' })
+    else location.href = './#install'
+  } else if (value === 'github') window.open('https://github.com/lasitosPT/aurora', '_blank')
   else if (value === 'toast')
     AuroraToaster.show('Summoned from the palette.', { title: '⌘K', variant: 'default' })
   else if (value === 'confetti') AuroraConfetti.burst({ count: 130 })
@@ -173,7 +174,8 @@ const year = document.getElementById('year')
 if (year) year.textContent = String(new Date().getFullYear())
 
 /* ---------- motion choreography ---------- */
-if (!reduced) {
+const hasHero = Boolean(document.querySelector('.hero-title'))
+if (!reduced && hasHero) {
   /* hero title: chars for plain lines, a masked block for the gradient line
      (SplitText chars would break background-clip: text) */
   const split = new SplitText('.hero-title .line:not(.line-grad)', { type: 'chars' })
@@ -316,10 +318,10 @@ if (!reduced) {
   })
 
   /* footer giant */
-  const giant = new SplitText('.giant', { type: 'chars' })
-  gsap.set(giant.chars, { yPercent: 118 })
   const giantEl = document.querySelector('.giant')
-  if (giantEl) {
+  const giant = giantEl ? new SplitText(giantEl, { type: 'chars' }) : null
+  if (giant) gsap.set(giant.chars, { yPercent: 118 })
+  if (giantEl && giant) {
     onVisible(giantEl, () =>
       gsap.to(giant.chars, {
         yPercent: 0,
@@ -336,4 +338,50 @@ if (!reduced) {
   /* reduced motion: everything visible (the components handle their own fallbacks) */
   const loader = document.querySelector<HTMLElement>('.loader')
   if (loader) loader.style.display = 'none'
+}
+
+/* ---------- components catalogue page ---------- */
+const catalog = document.getElementById('catalog')
+if (catalog) {
+  if (!reduced && !hasHero) {
+    const revealEls = gsap.utils.toArray<HTMLElement>('#catalog [data-reveal], #catalog .demo')
+    gsap.set(revealEls, { autoAlpha: 0, y: 24 })
+    if (typeof IntersectionObserver === 'undefined') {
+      gsap.set(revealEls, { autoAlpha: 1, y: 0 })
+    } else {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              io.unobserve(entry.target)
+              gsap.to(entry.target, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' })
+            }
+          }
+        },
+        { rootMargin: '0px 0px -8% 0px' },
+      )
+      revealEls.forEach((el) => io.observe(el))
+    }
+  }
+
+  const search = document.getElementById('catalogSearch') as HTMLInputElement | null
+  const none = document.getElementById('catalogNone')
+  search?.addEventListener('input', () => {
+    const q = search.value.trim().toLowerCase()
+    let any = false
+    document.querySelectorAll<HTMLElement>('.cat-section').forEach((section) => {
+      let visible = 0
+      section.querySelectorAll<HTMLElement>('.demo').forEach((card) => {
+        const hay = `${card.querySelector('.demo-head')?.textContent ?? ''} ${
+          card.querySelector('.demo-desc')?.textContent ?? ''
+        } ${section.querySelector('.cat-title')?.textContent ?? ''}`.toLowerCase()
+        const show = !q || hay.includes(q)
+        card.style.display = show ? '' : 'none'
+        if (show) visible++
+      })
+      section.style.display = visible > 0 ? '' : 'none'
+      if (visible > 0) any = true
+    })
+    if (none) none.hidden = any
+  })
 }
