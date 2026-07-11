@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.23.0
+
+- `aurora-numeric` — numeric spinner: −/+ with a pop, typed values clamped to min/max
+  and snapped to step on commit, ArrowUp/Down steps, `decimals` fixed-point display,
+  form-associated; emits `aurora-change`. Ships with docs.
+
 ## 0.22.0
 
 - `aurora-rating` — star rating with a pop on pick: `max`, `value`, `char`, `readonly`,

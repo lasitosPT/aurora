@@ -279,6 +279,29 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-numeric',
+    title: 'Numeric Input',
+    category: 'Forms & Inputs',
+    summary:
+      'A numeric spinner with honest math: typed values are clamped to min/max and snapped to the step on commit, arrows step, and the number pops as it changes.',
+    example: `<aurora-numeric value="5" min="0" max="10" step="1"></aurora-numeric>`,
+    attributes: [
+      ['value / min / max / step', 'The numbers (step also snaps typed input)'],
+      ['decimals', 'Fixed-point display places'],
+      ['label / name / disabled', 'A11y label, form field, disabled state'],
+    ],
+    events: [['aurora-change', '{ value } after clamp + snap']],
+    cssvars: [['--aurora-accent / -border / -radius / -muted', 'Shared theme tokens']],
+    methods: [['value', 'Get/set the number (clamped + snapped)']],
+    tutorial: [
+      {
+        heading: '1 · Trust the commit',
+        text: 'Type anything — Enter or blur clamps to bounds and snaps to the step, so the value is always valid.',
+        code: `<aurora-numeric name="qty" min="0" max="100" step="5"></aurora-numeric>`,
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
