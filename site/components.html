@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Fifty-six components.<br /><span class="grad">Every one of them live.</span>
+          Fifty-seven components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -140,6 +140,30 @@ grid.data = rows</pre>
                 <pre>
 &lt;aurora-sparkline type="area"&gt;&lt;/aurora-sparkline&gt;
 spark.data = [3, 7, 4, 9, 6, 12]</pre>
+              </div>
+            </article>
+            <!-- Chart -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Chart</h3>
+                <code>&lt;aurora-chart&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Grouped bars with gridlines, legend, and hover tooltips — animated in.
+                <a href="./docs.html?c=aurora-chart" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-chart
+                  id="catChart"
+                  type="bar"
+                  style="--aurora-chart-height: 210px; width: 100%"
+                ></aurora-chart>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+chart.labels = ['Q1', 'Q2', 'Q3', 'Q4']
+chart.series = [{ label: 'Stars', data: [120, 260, 410, 640] }]</pre>
               </div>
             </article>
           </div>
@@ -1047,7 +1071,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
                 layers.
               </div>
               <div class="stage scene">
-                <aurora-compare value="56" style="position: absolute; inset: 0">
+                <aurora-compare value="57" style="position: absolute; inset: 0">
                   <img
                     slot="before"
                     src="./og.jpg"
@@ -1060,7 +1084,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>
-&lt;aurora-compare value="56"&gt;
+&lt;aurora-compare value="57"&gt;
   &lt;img slot="before" src="/before.jpg" /&gt;
   &lt;img slot="after" src="/after.jpg" /&gt;
 &lt;/aurora-compare&gt;</pre>

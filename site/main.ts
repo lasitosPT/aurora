@@ -198,6 +198,16 @@ document.querySelectorAll('.catSpark').forEach((el, i) => {
     i === 0 ? [4, 9, 5, 12, 8, 15, 11, 18, 14, 22] : [6, 3, 8, 5, 11, 7, 13, 9, 16, 12]
 })
 
+const catChart = document.getElementById('catChart') as
+  (HTMLElement & { labels: string[]; series: unknown[] }) | null
+if (catChart) {
+  catChart.labels = ['Q1', 'Q2', 'Q3', 'Q4']
+  catChart.series = [
+    { label: 'Stars', data: [120, 260, 410, 640] },
+    { label: 'Forks', data: [40, 90, 150, 210] },
+  ]
+}
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -488,6 +498,15 @@ if (docRoot) {
       ]
     const spark = document.getElementById('docSpark') as (HTMLElement & { data: number[] }) | null
     if (spark) spark.data = [4, 9, 5, 12, 8, 15, 11, 18, 14, 22]
+    const chart = document.getElementById('docChart') as
+      (HTMLElement & { labels: string[]; series: unknown[] }) | null
+    if (chart) {
+      chart.labels = ['Q1', 'Q2', 'Q3', 'Q4']
+      chart.series = [
+        { label: 'Stars', data: [120, 260, 410, 640] },
+        { label: 'Forks', data: [40, 90, 150, 210] },
+      ]
+    }
     const ac = document.getElementById('docAc') as (HTMLElement & { options: string[] }) | null
     if (ac) ac.options = ['TypeScript', 'JavaScript', 'Go', 'Rust', 'Python', 'Zig']
     if (doc.tag === 'aurora-grid') {

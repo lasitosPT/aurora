@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.30.0
+
+- `aurora-chart` — a full 2D-canvas chart: grouped `bar`, multi-series `line`, and
+  `donut` types with gridlines and y-ticks, category labels, an HTML legend, hover
+  tooltips per category, and an animated intro on scroll into view. `labels` +
+  `series` ({ label, data, color? }[]), height via `--aurora-chart-height`. Ships
+  with docs.
+
 ## 0.29.0
 
 Charts begin.

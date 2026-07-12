@@ -485,6 +485,35 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-chart',
+    title: 'Chart',
+    category: 'Enterprise & Data',
+    summary:
+      'Grouped bars, multi-series lines, and donuts on a DPR-aware canvas — gridlines, y-ticks, category labels, an HTML legend, hover tooltips, and an animated intro.',
+    example: `<aurora-chart id="docChart" type="bar" style="--aurora-chart-height:220px"></aurora-chart>`,
+    attributes: [
+      ['type', '"bar" (grouped), "line" (multi-series), "donut" (first series)'],
+      ['aria-label', 'Describe the chart (role="img")'],
+    ],
+    events: [],
+    cssvars: [['--aurora-chart-height', 'Canvas height (default 240px)']],
+    methods: [
+      ['labels', 'string[] category names'],
+      ['series', '{ label, data, color? }[] — palette colors by default'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Two properties, whole chart',
+        text: 'Labels are the x-axis; each series becomes a color with a legend key and tooltip line.',
+        code: `chart.labels = ['Q1', 'Q2', 'Q3', 'Q4']\nchart.series = [\n  { label: 'Stars', data: [120, 260, 410, 640] },\n  { label: 'Forks', data: [40, 90, 150, 210] },\n]`,
+      },
+      {
+        heading: '2 · Hover for detail',
+        text: 'The tooltip follows the pointer and reads every series at that category.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
