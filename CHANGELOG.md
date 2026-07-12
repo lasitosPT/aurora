@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.33.0
+
+Component #60 — the layout trio is complete.
+
+- `aurora-popover` — an anchored floating panel: `slot="trigger"` + content, four
+  placements, click toggle or `hover`, Escape/outside-click close, scale-in animation;
+  emits `aurora-open`/`aurora-close`. Ships with docs.
+
 ## 0.32.0
 
 - `aurora-window` — a floating, draggable window: grab the title bar to move (clamped

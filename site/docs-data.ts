@@ -559,6 +559,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-popover',
+    title: 'Popover',
+    category: 'Overlays & Feedback',
+    summary:
+      'An anchored floating panel for rich contextual content — four placements, click or hover triggering, and polite dismissal.',
+    example: `<aurora-popover placement="bottom">\n  <aurora-button slot="trigger" variant="ghost">What is this?</aurora-button>\n  <strong>Popover</strong><br />Anchored content with any markup inside.\n</aurora-popover>`,
+    attributes: [
+      ['placement', 'bottom (default) / top / left / right'],
+      ['hover', 'Open on pointer enter instead of click'],
+    ],
+    events: [['aurora-open / aurora-close', 'Lifecycle']],
+    cssvars: [['--aurora-surface / -border / -menu-z', 'Panel style and layering']],
+    methods: [['open() / close() / toggle()', 'Programmatic control']],
+    tutorial: [
+      {
+        heading: '1 · Tooltip’s bigger sibling',
+        text: 'Where aurora-tooltip is one line of text, the popover holds real markup — forms, links, images.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

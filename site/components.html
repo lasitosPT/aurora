@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Fifty-nine components.<br /><span class="grad">Every one of them live.</span>
+          Sixty components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -510,6 +510,32 @@ tree.items = [
                 <pre>
 &lt;aurora-window id="win" title="Inspector"&gt;…&lt;/aurora-window&gt;
 &lt;button onclick="win.show()"&gt;Open&lt;/button&gt;</pre>
+              </div>
+            </article>
+            <!-- Popover -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Popover</h3>
+                <code>&lt;aurora-popover&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Anchored rich content — click the trigger; Escape or click away to dismiss.
+                <a href="./docs.html?c=aurora-popover" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage">
+                <aurora-popover placement="bottom">
+                  <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
+                  <strong>Sixty components.</strong><br />
+                  <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
+                </aurora-popover>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-popover placement="bottom"&gt;
+  &lt;button slot="trigger"&gt;Info&lt;/button&gt;
+  Any markup here.
+&lt;/aurora-popover&gt;</pre>
               </div>
             </article>
             <!-- Toaster -->
@@ -1136,7 +1162,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
                 layers.
               </div>
               <div class="stage scene">
-                <aurora-compare value="59" style="position: absolute; inset: 0">
+                <aurora-compare value="60" style="position: absolute; inset: 0">
                   <img
                     slot="before"
                     src="./og.jpg"
@@ -1149,7 +1175,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>
-&lt;aurora-compare value="59"&gt;
+&lt;aurora-compare value="60"&gt;
   &lt;img slot="before" src="/before.jpg" /&gt;
   &lt;img slot="after" src="/after.jpg" /&gt;
 &lt;/aurora-compare&gt;</pre>
