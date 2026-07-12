@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Fifty-three components.<br /><span class="grad">Every one of them live.</span>
+          Fifty-five components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -218,6 +218,33 @@ tree.items = [
   &lt;option&gt;Account&lt;/option&gt;
   &lt;option&gt;Billing&lt;/option&gt;
 &lt;/aurora-stepper&gt;</pre>
+              </div>
+            </article>
+            <!-- Breadcrumb + Chips -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Breadcrumb &amp; Chips</h3>
+                <code>&lt;aurora-breadcrumb&gt; &lt;aurora-chips&gt;</code>
+              </div>
+              <div class="demo-desc">
+                The small navigation pair — a trail and selectable filter chips.
+                <a href="./docs.html?c=aurora-breadcrumb" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack" style="gap: 20px">
+                <aurora-breadcrumb id="catCrumb"></aurora-breadcrumb>
+                <aurora-chips selectable="multiple">
+                  <option value="ts">TypeScript</option>
+                  <option value="go">Go</option>
+                  <option value="rs">Rust</option>
+                  <option value="glsl">GLSL</option>
+                </aurora-chips>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-chips selectable="multiple"&gt;
+  &lt;option value="ts"&gt;TypeScript&lt;/option&gt;
+&lt;/aurora-chips&gt;</pre>
               </div>
             </article>
             <!-- Command palette -->
@@ -991,7 +1018,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
                 layers.
               </div>
               <div class="stage scene">
-                <aurora-compare value="53" style="position: absolute; inset: 0">
+                <aurora-compare value="55" style="position: absolute; inset: 0">
                   <img
                     slot="before"
                     src="./og.jpg"
@@ -1004,7 +1031,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>
-&lt;aurora-compare value="53"&gt;
+&lt;aurora-compare value="55"&gt;
   &lt;img slot="before" src="/before.jpg" /&gt;
   &lt;img slot="after" src="/after.jpg" /&gt;
 &lt;/aurora-compare&gt;</pre>

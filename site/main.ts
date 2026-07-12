@@ -185,6 +185,14 @@ if (catTree)
     { label: 'README.md' },
   ]
 
+const catCrumb = document.getElementById('catCrumb') as (HTMLElement & { items: unknown[] }) | null
+if (catCrumb)
+  catCrumb.items = [
+    { label: 'Home', href: './' },
+    { label: 'Components', href: './components.html' },
+    { label: 'Navigation' },
+  ]
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -465,6 +473,13 @@ if (docRoot) {
         },
         { label: 'site', children: [{ label: 'index.html' }] },
         { label: 'README.md' },
+      ]
+    const crumb = document.getElementById('docCrumb') as (HTMLElement & { items: unknown[] }) | null
+    if (crumb)
+      crumb.items = [
+        { label: 'Home', href: './' },
+        { label: 'Components', href: './components.html' },
+        { label: 'Breadcrumb' },
       ]
     const ac = document.getElementById('docAc') as (HTMLElement & { options: string[] }) | null
     if (ac) ac.options = ['TypeScript', 'JavaScript', 'Go', 'Rust', 'Python', 'Zig']

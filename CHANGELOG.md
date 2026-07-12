@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.28.0
+
+Navigation pair.
+
+- `aurora-breadcrumb` — trail from `items` ({ label, href? }[]), custom `separator`,
+  last item as `aria-current="page"`; hrefless crumbs emit `aurora-select`
+- `aurora-chips` — chip list from `<option>`s or `options`: `selectable`
+  (`single`|`multiple`) with a pop and `aria-pressed`, `removable` ✕ buttons,
+  `values` getter; emits `aurora-change` / `aurora-remove`. Both ship with docs.
+
 ## 0.27.0
 
 - `aurora-stepper` — multi-step progress: `steps` string[] or child `<option>`s,

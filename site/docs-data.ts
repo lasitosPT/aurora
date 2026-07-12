@@ -419,6 +419,50 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-breadcrumb',
+    title: 'Breadcrumb',
+    category: 'Actions & Navigation',
+    summary:
+      'A breadcrumb trail with a custom separator; the last item is the current page and hrefless crumbs act as buttons.',
+    example: `<aurora-breadcrumb id="docCrumb"></aurora-breadcrumb>`,
+    attributes: [['separator', 'Between crumbs (default ›)']],
+    events: [['aurora-select', '{ label, index } for hrefless crumbs']],
+    cssvars: [['--aurora-accent / -fg / -muted', 'Link, current, separator colors']],
+    methods: [['items', '{ label, href? }[] — last renders as aria-current=page']],
+    tutorial: [
+      {
+        heading: '1 · Links or actions',
+        text: 'Crumbs with href navigate; without one they emit aurora-select for SPA routing.',
+        code: `crumb.items = [\n  { label: 'Home', href: '/' },\n  { label: 'Library' }, // emits aurora-select\n  { label: 'Grid' },    // current page\n]`,
+      },
+    ],
+  },
+  {
+    tag: 'aurora-chips',
+    title: 'Chips',
+    category: 'Actions & Navigation',
+    summary:
+      'A chip list for filters and tags: single or multiple selection with a pop, optional remove buttons, and clean change events.',
+    example: `<aurora-chips selectable="multiple">\n  <option value="ts">TypeScript</option>\n  <option value="go">Go</option>\n  <option value="rs">Rust</option>\n</aurora-chips>`,
+    attributes: [
+      ['selectable', '"single" or "multiple" (aria-pressed reflects state)'],
+      ['removable', 'Adds ✕ buttons that remove chips'],
+    ],
+    events: [
+      ['aurora-change', '{ values }'],
+      ['aurora-remove', '{ value }'],
+    ],
+    cssvars: [['--aurora-accent / -accent2 / -border / -fg', 'Selection tint, focus, borders']],
+    methods: [['options / values', 'Chip definitions and current selection']],
+    tutorial: [
+      {
+        heading: '1 · Filters in one line',
+        text: 'Wire aurora-change straight into your list filter.',
+        code: `chips.addEventListener('aurora-change', (e) => filterBy(e.detail.values))`,
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
