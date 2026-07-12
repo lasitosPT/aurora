@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.24.0
+
+Component #50.
+
+- `aurora-masked` — pattern-masked text input: `#` digit, `A` letter, `*` alphanumeric,
+  literals auto-typed; wrong character classes are skipped; the `complete` attribute
+  reflects a fully filled mask; submits the raw characters; emits `aurora-change` with
+  `{ value, raw, complete }`. Ships with docs.
+
 ## 0.23.0
 
 - `aurora-numeric` — numeric spinner: −/+ with a pop, typed values clamped to min/max

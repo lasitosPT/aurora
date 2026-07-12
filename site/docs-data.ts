@@ -302,6 +302,42 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-masked',
+    title: 'Masked Input',
+    category: 'Forms & Inputs',
+    summary:
+      'A pattern-masked input: define the shape once (# digit, A letter, * alphanumeric), literals type themselves, wrong characters never land, and completeness is reflected as an attribute.',
+    example: `<aurora-masked mask="(###) ###-####"></aurora-masked>`,
+    attributes: [
+      ['mask', '# digit · A letter · * alphanumeric · anything else literal'],
+      [
+        'value / placeholder / label / name',
+        'Initial text, hint (defaults to the mask), a11y label, form field',
+      ],
+      ['complete (reflected)', 'Present when every slot is filled — style it or read it'],
+    ],
+    events: [['aurora-change', '{ value, raw, complete }']],
+    cssvars: [
+      [
+        '--aurora-accent / -border / -radius / -success',
+        'Theme; the border turns success when complete',
+      ],
+    ],
+    methods: [['value / raw', 'Display text vs. user characters only (raw is what submits)']],
+    tutorial: [
+      {
+        heading: '1 · Phone, licence, IBAN — one attribute',
+        text: 'The mask is the whole configuration.',
+        code: `<aurora-masked name="phone" mask="(###) ###-####"></aurora-masked>\n<aurora-masked name="plate" mask="AA-##-AA"></aurora-masked>`,
+      },
+      {
+        heading: '2 · Gate on completeness',
+        text: 'Enable the submit button only when the mask is filled.',
+        code: `masked.addEventListener('aurora-change', (e) => {\n  submit.disabled = !e.detail.complete\n})`,
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
