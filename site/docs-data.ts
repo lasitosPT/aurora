@@ -536,6 +536,29 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-window',
+    title: 'Window',
+    category: 'Overlays & Feedback',
+    summary:
+      'A floating window you can drag by its title bar — viewport-clamped, bring-to-front on click, with the same focus discipline as the modal.',
+    example: `<aurora-button onclick="document.getElementById('docWin').show()">Open window</aurora-button>\n<aurora-window id="docWin" title="Inspector">\n  <p style="margin-top:0">Drag me by the title bar.</p>\n  <aurora-button onclick="document.getElementById('docWin').hide()">Close</aurora-button>\n</aurora-window>`,
+    attributes: [
+      ['title', 'Title-bar text and aria-label'],
+      ['open', 'Present while shown'],
+    ],
+    events: [['aurora-open / aurora-close', 'Lifecycle']],
+    cssvars: [
+      ['--aurora-window-width / -z, --aurora-surface / -border', 'Size, layering, panel style'],
+    ],
+    methods: [['show() / hide()', 'Programmatic control']],
+    tutorial: [
+      {
+        heading: '1 · Multiple windows coexist',
+        text: 'Each window brings itself to front on pointer-down — open two and click between them.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

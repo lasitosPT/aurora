@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.32.0
+
+- `aurora-window` — a floating, draggable window: grab the title bar to move (clamped
+  to the viewport), click to bring to front, ✕/Escape close, Tab trap and focus
+  restore via the shared helper, spring-in animation. Ships with docs.
+
 ## 0.31.0
 
 Layout trio begins.
