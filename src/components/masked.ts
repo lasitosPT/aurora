@@ -80,7 +80,7 @@ export class AuroraMasked extends AuroraElement {
     }
     this.input.value = out
     const slots = [...mask].filter((m) => RULES[m]).length
-    const filled = [...out].filter((ch, i) => RULES[mask[i] ?? ''] !== undefined).length
+    const filled = [...out].filter((_, i) => RULES[mask[i] ?? ''] !== undefined).length
     const complete = slots > 0 && filled === slots
     this.toggleAttribute('complete', complete)
     this.internals?.setFormValue(this.raw)
