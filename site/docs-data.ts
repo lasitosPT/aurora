@@ -338,6 +338,36 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-otp',
+    title: 'OTP Input',
+    category: 'Forms & Inputs',
+    summary:
+      'A segmented code input that behaves the way users expect: typing advances, Backspace retreats, pasting fills every cell, and completion pops with a success border.',
+    example: `<aurora-otp length="6"></aurora-otp>`,
+    attributes: [
+      ['length', 'Number of cells (default 6)'],
+      ['alphanumeric', 'Allow letters as well as digits'],
+      ['name', 'Form field name'],
+      ['complete (reflected)', 'Present when every cell is filled'],
+    ],
+    events: [['aurora-complete', '{ value } when the last cell lands']],
+    cssvars: [
+      ['--aurora-accent / -border / -radius / -success', 'Theme; success border on completion'],
+    ],
+    methods: [['value', 'Get/set the code']],
+    tutorial: [
+      {
+        heading: '1 · Verify on complete',
+        text: 'No submit button needed — fire the check the moment the code is full.',
+        code: `otp.addEventListener('aurora-complete', (e) => verify(e.detail.value))`,
+      },
+      {
+        heading: '2 · SMS autofill friendly',
+        text: 'The first cell carries autocomplete="one-time-code", and pasting a whole code distributes it across the cells.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

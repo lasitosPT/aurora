@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.25.0
+
+- `aurora-otp` — segmented one-time-code input: auto-advance, Backspace steps back,
+  arrows move, pasting distributes the code, `autocomplete="one-time-code"` on the
+  first cell, reflected `complete` with a success pop; `alphanumeric` mode;
+  form-associated; emits `aurora-complete`. Completes the inputs cluster; ships with
+  docs.
+
 ## 0.24.0
 
 Component #50.
