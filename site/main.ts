@@ -193,6 +193,11 @@ if (catCrumb)
     { label: 'Navigation' },
   ]
 
+document.querySelectorAll('.catSpark').forEach((el, i) => {
+  ;(el as HTMLElement & { data: number[] }).data =
+    i === 0 ? [4, 9, 5, 12, 8, 15, 11, 18, 14, 22] : [6, 3, 8, 5, 11, 7, 13, 9, 16, 12]
+})
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -481,6 +486,8 @@ if (docRoot) {
         { label: 'Components', href: './components.html' },
         { label: 'Breadcrumb' },
       ]
+    const spark = document.getElementById('docSpark') as (HTMLElement & { data: number[] }) | null
+    if (spark) spark.data = [4, 9, 5, 12, 8, 15, 11, 18, 14, 22]
     const ac = document.getElementById('docAc') as (HTMLElement & { options: string[] }) | null
     if (ac) ac.options = ['TypeScript', 'JavaScript', 'Go', 'Rust', 'Python', 'Zig']
     if (doc.tag === 'aurora-grid') {

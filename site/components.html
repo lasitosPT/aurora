@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Fifty-five components.<br /><span class="grad">Every one of them live.</span>
+          Fifty-six components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -111,6 +111,35 @@ grid.columns = [
   { field: 'stars', title: 'Stars', align: 'right', formatter: (v) =&gt; `★ ${v}` },
 ]
 grid.data = rows</pre>
+              </div>
+            </article>
+            <!-- Sparkline -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Sparkline</h3>
+                <code>&lt;aurora-sparkline&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Inline trends that draw themselves into view — line, area, or bars.
+                <a href="./docs.html?c=aurora-sparkline" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage" style="gap: 26px">
+                <aurora-sparkline
+                  class="catSpark"
+                  type="area"
+                  style="width: 180px; height: 52px"
+                ></aurora-sparkline>
+                <aurora-sparkline
+                  class="catSpark"
+                  type="bars"
+                  style="width: 180px; height: 52px; --aurora-spark-color: #22d3ee"
+                ></aurora-sparkline>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-sparkline type="area"&gt;&lt;/aurora-sparkline&gt;
+spark.data = [3, 7, 4, 9, 6, 12]</pre>
               </div>
             </article>
           </div>
@@ -1018,7 +1047,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
                 layers.
               </div>
               <div class="stage scene">
-                <aurora-compare value="55" style="position: absolute; inset: 0">
+                <aurora-compare value="56" style="position: absolute; inset: 0">
                   <img
                     slot="before"
                     src="./og.jpg"
@@ -1031,7 +1060,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>
-&lt;aurora-compare value="55"&gt;
+&lt;aurora-compare value="56"&gt;
   &lt;img slot="before" src="/before.jpg" /&gt;
   &lt;img slot="after" src="/after.jpg" /&gt;
 &lt;/aurora-compare&gt;</pre>

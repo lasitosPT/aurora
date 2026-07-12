@@ -463,6 +463,28 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-sparkline',
+    title: 'Sparkline',
+    category: 'Enterprise & Data',
+    summary:
+      'A tiny inline chart that draws itself into view — line, area, or bars on a DPR-aware 2D canvas, sized purely by CSS.',
+    example: `<aurora-sparkline id="docSpark" type="area" style="width:220px;height:56px"></aurora-sparkline>`,
+    attributes: [
+      ['type', '"line" (default), "area", "bars"'],
+      ['aria-label', 'Describe the metric (role="img")'],
+    ],
+    events: [],
+    cssvars: [['--aurora-spark-color / --aurora-spark-fill', 'Stroke and area fill']],
+    methods: [['data', 'number[] — the series']],
+    tutorial: [
+      {
+        heading: '1 · Numbers in, trend out',
+        text: 'Size the host with CSS; the canvas tracks it at device pixel ratio.',
+        code: `spark.data = [3, 7, 4, 9, 6, 12, 8]`,
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

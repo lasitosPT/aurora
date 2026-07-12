@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.29.0
+
+Charts begin.
+
+- `aurora-sparkline` — a tiny inline chart on a 2D canvas: `line`, `area`, or `bars`,
+  self-drawing when scrolled into view, DPR-aware, colored via
+  `--aurora-spark-color/-fill`, `role="img"` with a label. Ships with docs.
+
 ## 0.28.0
 
 Navigation pair.
