@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.27.0
+
+- `aurora-stepper` — multi-step progress: `steps` string[] or child `<option>`s,
+  accent-filled connectors, checkmarked done steps, a pop on advance, jump-back on
+  completed dots (`linear="false"` for free jumping), `next()`/`prev()`/`value`;
+  emits `aurora-change`. Ships with docs.
+
 ## 0.26.0
 
 - `aurora-treeview` — hierarchical navigation from nested `items`

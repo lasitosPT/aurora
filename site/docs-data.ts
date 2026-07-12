@@ -394,6 +394,31 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-stepper',
+    title: 'Stepper',
+    category: 'Actions & Navigation',
+    summary:
+      'Multi-step progress with accent-filled connectors, checkmarked completed steps, and a pop on advance. Completed dots jump back; linear="false" frees navigation entirely.',
+    example: `<aurora-stepper id="docStep" value="1" style="width:100%">\n  <option>Account</option>\n  <option>Billing</option>\n  <option>Review</option>\n  <option>Done</option>\n</aurora-stepper>`,
+    attributes: [
+      ['value', 'Current step index'],
+      ['linear', '"false" allows jumping to any step'],
+    ],
+    events: [['aurora-change', '{ value, label }']],
+    cssvars: [['--aurora-accent / -accent2 / -surface / -border / -muted', 'Shared theme tokens']],
+    methods: [
+      ['steps', 'string[] labels'],
+      ['next() / prev() / value', 'Navigation'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Drive it from your wizard',
+        text: 'Call next()/prev() as your form advances; listen for aurora-change to sync panels.',
+        code: `continueBtn.onclick = () => stepper.next()`,
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

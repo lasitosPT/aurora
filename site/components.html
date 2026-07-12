@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Fifty-two components.<br /><span class="grad">Every one of them live.</span>
+          Fifty-three components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -183,6 +183,41 @@ grid.data = rows</pre>
 tree.items = [
   { label: 'src', open: true, children: [{ label: 'index.ts' }] },
 ]</pre>
+              </div>
+            </article>
+            <!-- Stepper -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Stepper</h3>
+                <code>&lt;aurora-stepper&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Wizard progress — click a completed dot to jump back.
+                <a href="./docs.html?c=aurora-stepper" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-stepper id="catStep" value="1">
+                  <option>Account</option>
+                  <option>Billing</option>
+                  <option>Review</option>
+                  <option>Done</option>
+                </aurora-stepper>
+                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 14px">
+                  <aurora-button variant="ghost" onclick="document.getElementById('catStep').prev()"
+                    >Back</aurora-button
+                  >
+                  <aurora-button onclick="document.getElementById('catStep').next()"
+                    >Continue</aurora-button
+                  >
+                </div>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-stepper value="1"&gt;
+  &lt;option&gt;Account&lt;/option&gt;
+  &lt;option&gt;Billing&lt;/option&gt;
+&lt;/aurora-stepper&gt;</pre>
               </div>
             </article>
             <!-- Command palette -->
@@ -956,7 +991,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
                 layers.
               </div>
               <div class="stage scene">
-                <aurora-compare value="52" style="position: absolute; inset: 0">
+                <aurora-compare value="53" style="position: absolute; inset: 0">
                   <img
                     slot="before"
                     src="./og.jpg"
@@ -969,7 +1004,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>
-&lt;aurora-compare value="52"&gt;
+&lt;aurora-compare value="53"&gt;
   &lt;img slot="before" src="/before.jpg" /&gt;
   &lt;img slot="after" src="/after.jpg" /&gt;
 &lt;/aurora-compare&gt;</pre>
