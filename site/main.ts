@@ -171,6 +171,20 @@ if (demoGrid) {
 const catAc = document.getElementById('catAc') as (HTMLElement & { options: string[] }) | null
 if (catAc) catAc.options = ['TypeScript', 'JavaScript', 'Go', 'Rust', 'Python', 'Zig']
 
+const catTree = document.getElementById('catTree') as (HTMLElement & { items: unknown[] }) | null
+if (catTree)
+  catTree.items = [
+    {
+      label: 'src',
+      open: true,
+      children: [
+        { label: 'components', children: [{ label: 'grid.ts' }, { label: 'otp.ts' }] },
+        { label: 'index.ts' },
+      ],
+    },
+    { label: 'README.md' },
+  ]
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -438,6 +452,20 @@ if (docRoot) {
             `<h3 style="font-family:var(--font-display);margin:26px 0 8px">${t.heading}</h3><p style="color:var(--muted);max-width:70ch">${t.text}</p>${t.code ? `<div class="code" style="margin-top:10px"><button class="copy">Copy</button><pre>${esc(t.code)}</pre></div>` : ''}`,
         )
         .join('')
+    const tree = document.getElementById('docTree') as (HTMLElement & { items: unknown[] }) | null
+    if (tree)
+      tree.items = [
+        {
+          label: 'src',
+          open: true,
+          children: [
+            { label: 'components', children: [{ label: 'grid.ts' }, { label: 'select.ts' }] },
+            { label: 'index.ts' },
+          ],
+        },
+        { label: 'site', children: [{ label: 'index.html' }] },
+        { label: 'README.md' },
+      ]
     const ac = document.getElementById('docAc') as (HTMLElement & { options: string[] }) | null
     if (ac) ac.options = ['TypeScript', 'JavaScript', 'Go', 'Rust', 'Python', 'Zig']
     if (doc.tag === 'aurora-grid') {

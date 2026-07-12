@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.26.0
+
+- `aurora-treeview` — hierarchical navigation from nested `items`
+  (`{ label, value?, open?, children? }`): animated expand/collapse with staggered
+  child reveals, ARIA tree keyboard pattern (Up/Down over visible rows, Right expands,
+  Left collapses, Enter selects), roving tabindex; emits `aurora-select` and
+  `aurora-toggle`. Ships with docs.
+
 ## 0.25.0
 
 - `aurora-otp` — segmented one-time-code input: auto-advance, Backspace steps back,

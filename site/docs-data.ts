@@ -368,6 +368,32 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-treeview',
+    title: 'Tree View',
+    category: 'Actions & Navigation',
+    summary:
+      'Hierarchical navigation from a nested items array — branches expand with a staggered reveal, and the full ARIA tree keyboard pattern is wired in.',
+    example: `<aurora-treeview id="docTree" style="min-width:230px"></aurora-treeview>`,
+    attributes: [],
+    events: [
+      ['aurora-select', '{ value } when a leaf is chosen'],
+      ['aurora-toggle', '{ value, open } when a branch flips'],
+    ],
+    cssvars: [['--aurora-accent / -border / -muted', 'Highlight, guides, carets']],
+    methods: [['items', 'Nested { label, value?, open?, children? }[]']],
+    tutorial: [
+      {
+        heading: '1 · Data in, tree out',
+        text: 'Branches are nodes with children; open controls the initial state.',
+        code: `tree.items = [\n  { label: 'src', open: true, children: [\n    { label: 'index.ts' },\n  ]},\n]`,
+      },
+      {
+        heading: '2 · Navigate by keyboard',
+        text: 'Up/Down walk the visible rows, Right expands, Left collapses, Enter selects — the WAI-ARIA tree pattern.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

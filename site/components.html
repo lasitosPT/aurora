@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Fifty-one components.<br /><span class="grad">Every one of them live.</span>
+          Fifty-two components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -162,6 +162,27 @@ grid.data = rows</pre>
   &lt;hr /&gt;
   &lt;button data-value="delete"&gt;Delete&lt;/button&gt;
 &lt;/aurora-menu&gt;</pre>
+              </div>
+            </article>
+            <!-- Treeview -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Tree view</h3>
+                <code>&lt;aurora-treeview&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Nested data with animated branches and the full ARIA tree keyboard flow.
+                <a href="./docs.html?c=aurora-treeview" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-treeview id="catTree"></aurora-treeview>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+tree.items = [
+  { label: 'src', open: true, children: [{ label: 'index.ts' }] },
+]</pre>
               </div>
             </article>
             <!-- Command palette -->
@@ -935,7 +956,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
                 layers.
               </div>
               <div class="stage scene">
-                <aurora-compare value="51" style="position: absolute; inset: 0">
+                <aurora-compare value="52" style="position: absolute; inset: 0">
                   <img
                     slot="before"
                     src="./og.jpg"
@@ -948,7 +969,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>
-&lt;aurora-compare value="51"&gt;
+&lt;aurora-compare value="52"&gt;
   &lt;img slot="before" src="/before.jpg" /&gt;
   &lt;img slot="after" src="/after.jpg" /&gt;
 &lt;/aurora-compare&gt;</pre>
