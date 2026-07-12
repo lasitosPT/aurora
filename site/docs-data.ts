@@ -580,6 +580,32 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-upload',
+    title: 'Upload',
+    category: 'Forms & Inputs',
+    summary:
+      'A drag-and-drop file zone with keyboard browsing, animated per-file rows, size limits with error events, and native multi-file form submission.',
+    example: `<aurora-upload multiple label="Drop files here or click to browse"></aurora-upload>`,
+    attributes: [
+      ['multiple / accept', 'Allow several files; native accept filter'],
+      ['max-size', 'Bytes — larger files fire aurora-error instead of adding'],
+      ['label / name', 'Zone text; form field (FormData entry per file)'],
+    ],
+    events: [
+      ['aurora-change', '{ files: File[] }'],
+      ['aurora-error', '{ file, reason } on rejection'],
+    ],
+    cssvars: [['--aurora-accent / -border / -error / -muted', 'Zone and row styling']],
+    methods: [['files / addFiles(File[]) / removeFile(i)', 'Read and manage the selection']],
+    tutorial: [
+      {
+        heading: '1 · Wire the rejection path',
+        text: 'max-size keeps oversized files out of the form; toast the reason.',
+        code: `up.addEventListener('aurora-error', (e) =>\n  AuroraToaster.show(\`\${e.detail.file.name} is too large\`, { variant: 'error' }))`,
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

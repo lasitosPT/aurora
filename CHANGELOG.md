@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.34.0
+
+- `aurora-upload` — drag-and-drop file zone: click/keyboard browse or drop, staggered
+  per-file rows with size and remove buttons, `multiple`, `accept`, `max-size`
+  rejections via `aurora-error`, form-associated with one FormData entry per file;
+  `files` getter and `addFiles()`; emits `aurora-change`. Ships with docs.
+
 ## 0.33.0
 
 Component #60 — the layout trio is complete.

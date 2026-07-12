@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Sixty components.<br /><span class="grad">Every one of them live.</span>
+          Sixty-one components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -525,7 +525,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Sixty components.</strong><br />
+                  <strong>Sixty-one components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
@@ -913,6 +913,25 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
                 <pre>&lt;aurora-otp name="code" length="6"&gt;&lt;/aurora-otp&gt;</pre>
               </div>
             </article>
+            <!-- Upload -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Upload</h3>
+                <code>&lt;aurora-upload&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Drop files or click to browse — rows animate in with sizes and remove buttons.
+                <a href="./docs.html?c=aurora-upload" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-upload multiple></aurora-upload>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-upload name="attachments" multiple max-size="5242880"&gt;&lt;/aurora-upload&gt;</pre>
+              </div>
+            </article>
           </div>
         </section>
         <section class="cat-section" id="text-typography">
@@ -1162,7 +1181,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
                 layers.
               </div>
               <div class="stage scene">
-                <aurora-compare value="60" style="position: absolute; inset: 0">
+                <aurora-compare value="61" style="position: absolute; inset: 0">
                   <img
                     slot="before"
                     src="./og.jpg"
@@ -1175,7 +1194,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>
-&lt;aurora-compare value="60"&gt;
+&lt;aurora-compare value="61"&gt;
   &lt;img slot="before" src="/before.jpg" /&gt;
   &lt;img slot="after" src="/after.jpg" /&gt;
 &lt;/aurora-compare&gt;</pre>
