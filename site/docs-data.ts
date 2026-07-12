@@ -514,6 +514,28 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-splitter',
+    title: 'Splitter',
+    category: 'Overlays & Feedback',
+    summary:
+      'Two resizable panes and a draggable divider — horizontal or vertical, bounded by a min percentage, keyboard-nudgeable, and lit accent while dragging.',
+    example: `<aurora-splitter position="40" style="height:160px;border:1px solid rgba(255,255,255,.1);border-radius:12px">\n  <div slot="a" style="padding:16px">Pane A</div>\n  <div slot="b" style="padding:16px">Pane B</div>\n</aurora-splitter>`,
+    attributes: [
+      ['position', 'Initial split (% of the first pane, default 50)'],
+      ['vertical', 'Stack panes and drag up/down'],
+      ['min', 'Minimum % for either side (default 15)'],
+    ],
+    events: [['aurora-resize', '{ position }']],
+    cssvars: [['--aurora-accent / -accent2 / -border', 'Divider colors and focus ring']],
+    methods: [['position', 'Get/set the split percentage']],
+    tutorial: [
+      {
+        heading: '1 · IDE layouts in one tag',
+        text: 'Nest a vertical splitter inside pane B of a horizontal one for a classic three-pane layout.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.31.0
+
+Layout trio begins.
+
+- `aurora-splitter` — two resizable panes (`slot="a"`/`slot="b"`) with a draggable
+  divider, horizontal or `vertical`, `min` (%) bounds, arrow-key nudging on the
+  focusable separator, accent highlight while dragging; emits `aurora-resize`.
+  Ships with docs.
+
 ## 0.30.0
 
 - `aurora-chart` — a full 2D-canvas chart: grouped `bar`, multi-series `line`, and

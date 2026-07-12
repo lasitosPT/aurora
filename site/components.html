@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Fifty-seven components.<br /><span class="grad">Every one of them live.</span>
+          Fifty-eight components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -445,6 +445,41 @@ tree.items = [
                 <pre>
 &lt;aurora-drawer id="panel" side="right"&gt;…&lt;/aurora-drawer&gt;
 &lt;button onclick="panel.show()"&gt;Open&lt;/button&gt;</pre>
+              </div>
+            </article>
+            <!-- Splitter -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Splitter</h3>
+                <code>&lt;aurora-splitter&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Drag the divider (or focus it and use arrows) to resize the panes.
+                <a href="./docs.html?c=aurora-splitter" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-splitter
+                  position="42"
+                  style="
+                    height: 150px;
+                    border: 1px solid var(--border);
+                    border-radius: 12px;
+                    background: var(--panel-2);
+                  "
+                >
+                  <div slot="a" style="padding: 16px; color: var(--muted)">
+                    Pane A — drag the divider →
+                  </div>
+                  <div slot="b" style="padding: 16px; color: var(--muted)">Pane B</div>
+                </aurora-splitter>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-splitter position="40" min="20"&gt;
+  &lt;div slot="a"&gt;…&lt;/div&gt;
+  &lt;div slot="b"&gt;…&lt;/div&gt;
+&lt;/aurora-splitter&gt;</pre>
               </div>
             </article>
             <!-- Toaster -->
@@ -1071,7 +1106,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
                 layers.
               </div>
               <div class="stage scene">
-                <aurora-compare value="57" style="position: absolute; inset: 0">
+                <aurora-compare value="58" style="position: absolute; inset: 0">
                   <img
                     slot="before"
                     src="./og.jpg"
@@ -1084,7 +1119,7 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>
-&lt;aurora-compare value="57"&gt;
+&lt;aurora-compare value="58"&gt;
   &lt;img slot="before" src="/before.jpg" /&gt;
   &lt;img slot="after" src="/after.jpg" /&gt;
 &lt;/aurora-compare&gt;</pre>
