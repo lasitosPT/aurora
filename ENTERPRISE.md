@@ -59,7 +59,7 @@ TaskBoard 🔶 (compose `aurora-sortable`) · CircularProgressBar ✅ (`aurora-g
 
 ## Charts & Visualization
 
-Sparkline ✅ · Chart (bar / multi-line / donut) ✅ · Gauges (arc / circular / linear) ✅ ·
+Sparkline ✅ · Chart (bar / stacked bar / line / area / donut / pie / scatter) ✅ · Gauges (arc / circular / linear) ✅ ·
 Map / Diagram / OrgChart ⬜
 
 ## Media / Files / Misc

@@ -27,10 +27,11 @@ export interface ChartSeries {
 }
 
 /**
- * `<aurora-chart type="bar|line|donut">` — a 2D-canvas chart with axes,
- * gridlines, an HTML legend, hover tooltips, and an animated intro. Assign
- * `labels` (string[] categories) and `series` (`{ label, data, color? }[]`;
- * donut uses the first series). Height via `--aurora-chart-height`.
+ * `<aurora-chart type="bar|line|area|donut|pie|scatter">` — a 2D-canvas
+ * chart with axes, gridlines, an HTML legend, hover tooltips, and an
+ * animated intro. Assign `labels` (string[] categories) and `series`
+ * (`{ label, data, color? }[]`; donut/pie use the first series). Bars can
+ * `stacked`; height via `--aurora-chart-height`.
  */
 export class AuroraChart extends AuroraElement {
   #series: ChartSeries[] = []
@@ -78,10 +79,18 @@ export class AuroraChart extends AuroraElement {
     if (this.#series.length === 0) return
     const legend = this.root.querySelector('.legend')
     if (legend) {
-      legend.innerHTML = this.#series
+      const type = this.getAttribute('type') ?? 'bar'
+      const keys =
+        type === 'donut' || type === 'pie'
+          ? this.#labels.map((label, i) => ({
+              label,
+              color: PALETTE[i % PALETTE.length] ?? '#6d5cff',
+            }))
+          : this.#series.map((s, i) => ({ label: s.label, color: this.color(i) }))
+      legend.innerHTML = keys
         .map(
-          (s, i) =>
-            `<span class="key"><span class="swab" style="background:${this.color(i)}"></span>${escapeHtml(s.label)}</span>`,
+          (k) =>
+            `<span class="key"><span class="swab" style="background:${k.color}"></span>${escapeHtml(k.label)}</span>`,
         )
         .join('')
     }
@@ -123,12 +132,20 @@ export class AuroraChart extends AuroraElement {
     if (!ctx) return
     ctx.clearRect(0, 0, w, h)
     const type = this.getAttribute('type') ?? 'bar'
-    if (type === 'donut') {
-      this.drawDonut(ctx, w, h)
+    if (type === 'donut' || type === 'pie') {
+      this.drawDonut(ctx, w, h, type === 'donut' ? 0.62 : 0)
       return
     }
-    const all = this.#series.flatMap((s) => s.data)
-    const max = Math.max(...all, 1)
+    const stacked = type === 'bar' && this.hasAttribute('stacked')
+    const n0 = Math.max(...this.#series.map((s) => s.data.length), 1)
+    const max = stacked
+      ? Math.max(
+          ...Array.from({ length: n0 }, (_, i) =>
+            this.#series.reduce((sum, s) => sum + (s.data[i] ?? 0), 0),
+          ),
+          1,
+        )
+      : Math.max(...this.#series.flatMap((s) => s.data), 1)
     const n = Math.max(...this.#series.map((s) => s.data.length), 1)
     const x0 = pad + 8
     const plotW = w - x0 - 8
@@ -150,33 +167,67 @@ export class AuroraChart extends AuroraElement {
     this.#labels.slice(0, n).forEach((label, i) => {
       ctx.fillText(label, x0 + ((i + 0.5) / n) * plotW, h - 6)
     })
+    const stackBase = new Array<number>(n).fill(0)
     this.#series.forEach((s, si) => {
       ctx.fillStyle = this.color(si)
       ctx.strokeStyle = this.color(si)
-      if (type === 'bar') {
+      if (type === 'bar' && stacked) {
+        const group = plotW / n
+        const bw = group * 0.55
+        s.data.forEach((v, i) => {
+          const bh = (v / max) * plotH * this.progress
+          const y = 6 + plotH - ((stackBase[i] ?? 0) / max) * plotH * this.progress - bh
+          ctx.fillRect(x0 + i * group + group * 0.225, y, bw, bh)
+          stackBase[i] = (stackBase[i] ?? 0) + v
+        })
+      } else if (type === 'bar') {
         const group = plotW / n
         const bw = (group * 0.7) / this.#series.length
         s.data.forEach((v, i) => {
           const bh = (v / max) * plotH * this.progress
           ctx.fillRect(x0 + i * group + group * 0.15 + si * bw, 6 + plotH - bh, bw - 2, bh)
         })
+      } else if (type === 'scatter') {
+        s.data.forEach((v, i) => {
+          const x = x0 + ((i + 0.5) / n) * plotW
+          const y = 6 + plotH - (v / max) * plotH
+          ctx.beginPath()
+          ctx.arc(x, y, 4.5 * this.progress, 0, Math.PI * 2)
+          ctx.globalAlpha = 0.85
+          ctx.fill()
+          ctx.globalAlpha = 1
+        })
       } else {
         ctx.lineWidth = 2
         ctx.lineJoin = 'round'
-        ctx.beginPath()
         const upto = Math.max(Math.floor((s.data.length - 1) * this.progress), 1)
-        s.data.slice(0, upto + 1).forEach((v, i) => {
-          const x = x0 + ((i + 0.5) / n) * plotW
-          const y = 6 + plotH - (v / max) * plotH
-          if (i === 0) ctx.moveTo(x, y)
-          else ctx.lineTo(x, y)
+        const pts = s.data.slice(0, upto + 1).map((v, i) => ({
+          x: x0 + ((i + 0.5) / n) * plotW,
+          y: 6 + plotH - (v / max) * plotH,
+        }))
+        ctx.beginPath()
+        pts.forEach((p, i) => {
+          if (i === 0) ctx.moveTo(p.x, p.y)
+          else ctx.lineTo(p.x, p.y)
         })
         ctx.stroke()
+        if (type === 'area' && pts.length > 1) {
+          const first = pts[0]
+          const last = pts[pts.length - 1]
+          if (first && last) {
+            ctx.lineTo(last.x, 6 + plotH)
+            ctx.lineTo(first.x, 6 + plotH)
+            ctx.closePath()
+            ctx.globalAlpha = 0.16
+            ctx.fill()
+            ctx.globalAlpha = 1
+          }
+        }
       }
     })
   }
 
-  private drawDonut(ctx: CanvasRenderingContext2D, w: number, h: number): void {
+  private drawDonut(ctx: CanvasRenderingContext2D, w: number, h: number, inner: number): void {
     const data = this.#series[0]?.data ?? []
     const total = data.reduce((a, b) => a + b, 0) || 1
     const cx = w / 2
@@ -186,8 +237,13 @@ export class AuroraChart extends AuroraElement {
     data.forEach((v, i) => {
       const slice = (v / total) * Math.PI * 2 * this.progress
       ctx.beginPath()
-      ctx.arc(cx, cy, r, angle, angle + slice)
-      ctx.arc(cx, cy, r * 0.62, angle + slice, angle, true)
+      if (inner > 0) {
+        ctx.arc(cx, cy, r, angle, angle + slice)
+        ctx.arc(cx, cy, r * inner, angle + slice, angle, true)
+      } else {
+        ctx.moveTo(cx, cy)
+        ctx.arc(cx, cy, r, angle, angle + slice)
+      }
       ctx.closePath()
       ctx.fillStyle = PALETTE[i % PALETTE.length] ?? '#6d5cff'
       ctx.fill()
@@ -201,7 +257,35 @@ export class AuroraChart extends AuroraElement {
     const rect = canvas.getBoundingClientRect()
     const type = this.getAttribute('type') ?? 'bar'
     const n = Math.max(...this.#series.map((s) => s.data.length), 1)
-    if (type === 'donut') {
+    if (type === 'donut' || type === 'pie') {
+      const cx = rect.width / 2
+      const cy = rect.height / 2
+      const dx = e.clientX - rect.left - cx
+      const dy = e.clientY - rect.top - cy
+      const r = Math.min(rect.width, rect.height) / 2 - 12
+      const dist = Math.hypot(dx, dy)
+      const innerR = type === 'donut' ? r * 0.62 : 0
+      if (dist > r || dist < innerR) {
+        this.tip(null, 0, 0)
+        return
+      }
+      const data = this.#series[0]?.data ?? []
+      const total = data.reduce((a, b) => a + b, 0) || 1
+      let theta = Math.atan2(dy, dx) + Math.PI / 2
+      if (theta < 0) theta += Math.PI * 2
+      let acc = 0
+      for (let i = 0; i < data.length; i++) {
+        acc += ((data[i] ?? 0) / total) * Math.PI * 2
+        if (theta <= acc) {
+          const pct = Math.round(((data[i] ?? 0) / total) * 100)
+          this.tip(
+            `<strong>${escapeHtml(this.#labels[i] ?? String(i))}</strong>: ${data[i]} (${pct}%)`,
+            e.clientX - rect.left,
+            e.clientY - rect.top,
+          )
+          return
+        }
+      }
       this.tip(null, 0, 0)
       return
     }

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.60.0
+
+Chart types wave.
+
+- `aurora-chart` grows `area` (filled line), `pie` (full disc with slice-percentage
+  tooltips), `scatter` (scale-in points), and `stacked` bars (column-sum scaling).
+  Donut and pie now legend by category labels and answer hover with the slice value
+  and percentage.
+
 ## 0.59.0
 
 Tools in a row.

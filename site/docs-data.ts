@@ -492,7 +492,8 @@ export const DOCS: ComponentDoc[] = [
       'Grouped bars, multi-series lines, and donuts on a DPR-aware canvas — gridlines, y-ticks, category labels, an HTML legend, hover tooltips, and an animated intro.',
     example: `<aurora-chart id="docChart" type="bar" style="--aurora-chart-height:220px"></aurora-chart>`,
     attributes: [
-      ['type', '"bar" (grouped), "line" (multi-series), "donut" (first series)'],
+      ['type', '"bar" (grouped or stacked), "line", "area", "donut", "pie", "scatter"'],
+      ['stacked', 'Stack bar series instead of grouping'],
       ['aria-label', 'Describe the chart (role="img")'],
     ],
     events: [],

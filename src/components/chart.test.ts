@@ -21,3 +21,42 @@ describe('aurora-chart', () => {
     el.remove()
   })
 })
+
+describe('chart type wave', () => {
+  const series = [{ label: 'Revenue', data: [4, 8, 6, 10] }]
+  const labels = ['Q1', 'Q2', 'Q3', 'Q4']
+
+  it('renders area, pie, scatter, and stacked variants without error', () => {
+    for (const type of ['area', 'pie', 'scatter']) {
+      const el = document.createElement('aurora-chart') as AuroraChart
+      el.setAttribute('type', type)
+      document.body.append(el)
+      el.labels = labels
+      el.series = series
+      expect(el.shadowRoot?.querySelector('canvas')).not.toBeNull()
+      el.remove()
+    }
+    const stacked = document.createElement('aurora-chart') as AuroraChart
+    stacked.setAttribute('stacked', '')
+    document.body.append(stacked)
+    stacked.labels = labels
+    stacked.series = [
+      { label: 'A', data: [1, 2, 3, 4] },
+      { label: 'B', data: [4, 3, 2, 1] },
+    ]
+    expect(stacked.shadowRoot?.querySelectorAll('.key').length).toBe(2)
+    stacked.remove()
+  })
+
+  it('legends pie/donut charts by category labels, not series', () => {
+    const el = document.createElement('aurora-chart') as AuroraChart
+    el.setAttribute('type', 'pie')
+    document.body.append(el)
+    el.labels = labels
+    el.series = series
+    const keys = el.shadowRoot?.querySelectorAll('.key')
+    expect(keys?.length).toBe(4)
+    expect(keys?.[0]?.textContent).toBe('Q1')
+    el.remove()
+  })
+})
