@@ -1804,6 +1804,35 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-textarea',
+    title: 'Text Area',
+    category: 'Forms & Inputs',
+    summary:
+      'A textarea that grows with its content and counts characters live against maxlength — form-associated, with input/change crossing the shadow boundary.',
+    example: `<aurora-textarea label="Bio" placeholder="Tell us about yourself…" maxlength="280"></aurora-textarea>`,
+    attributes: [
+      ['label / placeholder / value', 'Caption, hint, seed content'],
+      ['maxlength', 'Enables the live counter'],
+      ['resizable', 'Restore the manual drag handle'],
+      ['name', 'Form field name'],
+    ],
+    events: [['input / change', 'Native events, re-emitted composed']],
+    cssvars: [
+      ['--aurora-textarea-rows', 'Minimum height in rows (default 3)'],
+      ['--aurora-field / -border / -accent', 'Field styling'],
+    ],
+    methods: [
+      ['value', 'Get/set'],
+      ['focus()', 'Focus the inner control'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Tweets and bios',
+        text: 'The counter turns red at the limit; the field never scrolls internally, so the page grows naturally with the content.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

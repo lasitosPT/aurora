@@ -21,7 +21,7 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 
 | Component                                  | Status | aurora element                                     |
 | ------------------------------------------ | ------ | -------------------------------------------------- |
-| TextBox / TextArea                         | 🔶     | `aurora-input`                                     |
+| TextBox / TextArea                         | ✅     | `aurora-input` / `aurora-textarea`                 |
 | Switch / Checkbox / RadioGroup             | ✅     | `aurora-switch` / `-checkbox` / `-radiogroup`      |
 | Slider / RangeSlider                       | 🔶     | `aurora-slider` (range planned)                    |
 | AutoComplete / DropDownList / MultiSelect  | ✅     | `aurora-autocomplete` / `-select` / `-multiselect` |

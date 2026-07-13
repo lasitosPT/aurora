@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.53.0
+
+Long-form text.
+
+- `aurora-textarea` — auto-grows with its content (no scrollbar jumps), live
+  character counter against `maxlength` with an over-limit state, label, seeded
+  `value`, `resizable` opt-in, form-associated, and `input`/`change` re-emitted
+  across the shadow boundary. Ships with docs.
+
 ## 0.52.0
 
 The missing primitives.
