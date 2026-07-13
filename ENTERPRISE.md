@@ -5,10 +5,10 @@ Legend: ✅ dedicated component · 🔶 covered by an equivalent · ⬜ open · 
 
 ## AI Interface
 
-| Kendo                                  | Status | aurora                                                                                           |
-| -------------------------------------- | ------ | ------------------------------------------------------------------------------------------------ |
-| AIPrompt / Inline AIPrompt / PromptBox | ⬜     | planned: `aurora-promptbox` (suggestion chips + composer + output view; backend-agnostic events) |
-| SmartPasteButton                       | ⬜     | planned (clipboard → form-field mapping over `aurora-form`)                                      |
+| Kendo                                  | Status | aurora                                                                                        |
+| -------------------------------------- | ------ | --------------------------------------------------------------------------------------------- |
+| AIPrompt / Inline AIPrompt / PromptBox | ✅     | `aurora-promptbox` (chips + composer + busy shimmer + output w/ copy/retry; backend-agnostic) |
+| SmartPasteButton                       | ✅     | `aurora-smartpaste` (heuristic clipboard → named-field mapping, custom `map` override)        |
 
 ## Navigation
 

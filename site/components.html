@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          One hundred and eight components.<br /><span class="grad">Every one of them live.</span>
+          One hundred and ten components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -177,6 +177,35 @@ list.data = people</pre>
                 <pre>
 chat.add({ text: 'Hi!', who: 'them', name: 'Ada' })
 chat.addEventListener('aurora-send', (e) => bot.reply(e.detail.text))</pre>
+              </div>
+            </article>
+            <!-- PromptBox + SmartPaste -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>PromptBox &amp; SmartPaste</h3>
+                <code>&lt;aurora-promptbox&gt; &lt;aurora-smartpaste&gt;</code>
+              </div>
+              <div class="demo-desc">
+                The AI interface, backend-agnostic — ask the demo bot something.
+                <a href="./docs.html?c=aurora-promptbox" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-promptbox
+                  id="catPrompt"
+                  placeholder="Ask the demo bot…"
+                  style="max-width: 520px"
+                >
+                  <option>What is aurora?</option>
+                  <option>How many components?</option>
+                </aurora-promptbox>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+box.addEventListener('aurora-send', async (e) => {
+  box.setAttribute('busy', '')
+  box.output = await llm(e.detail.prompt)
+})</pre>
               </div>
             </article>
             <!-- TileLayout -->
@@ -1025,7 +1054,7 @@ sheet.show()</pre>
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>One hundred and eight components.</strong><br />
+                  <strong>One hundred and ten components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

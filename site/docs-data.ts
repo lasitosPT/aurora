@@ -2428,6 +2428,58 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-promptbox',
+    title: 'PromptBox',
+    category: 'Enterprise & Data',
+    summary:
+      'An AI prompt surface with no backend opinion — chips, composer, busy shimmer, and an output view with Copy and Retry. Bring any model.',
+    example: `<aurora-promptbox id="docPrompt" placeholder="Ask the demo bot…">\n  <option>Summarize this page</option>\n  <option>Draft a release note</option>\n</aurora-promptbox>`,
+    attributes: [
+      ['option children', 'Suggestion chips'],
+      ['busy', 'Shimmer state while your model thinks'],
+      ['placeholder', 'Composer hint'],
+    ],
+    events: [
+      ['aurora-send', '{ prompt, retry? } — wire this to your backend'],
+      ['aurora-copy', '{ output }'],
+    ],
+    cssvars: [['--aurora-accent / -surface / -field', 'Chrome']],
+    methods: [['output', 'Set the answer (clears busy, fades in)']],
+    tutorial: [
+      {
+        heading: '1 · Three lines to any model',
+        text: 'on aurora-send: set busy, call your API, assign output. The component handles chips, retry, and copy.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-smartpaste',
+    title: 'SmartPasteButton',
+    category: 'Forms & Inputs',
+    summary:
+      'One click reads the clipboard and fills the form — emails, phones, URLs, dates, and names land in the right fields by name heuristics.',
+    example: `<aurora-smartpaste for="signupForm"></aurora-smartpaste>`,
+    attributes: [
+      ['for', 'Target container id (defaults to the enclosing aurora-form)'],
+      ['label', 'Button text'],
+    ],
+    events: [
+      ['aurora-paste', '{ values } — what was applied'],
+      ['aurora-error', 'Clipboard permission denied'],
+    ],
+    cssvars: [['--aurora-accent', 'Button color']],
+    methods: [
+      ['paste(text)', 'Programmatic path'],
+      ['map', 'Custom (text) => { field: value } mapper'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Signatures to signups',
+        text: 'Users copy an email signature, click once, and name/email/phone land in the right fields — attach a map function for domain-specific formats.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

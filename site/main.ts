@@ -558,6 +558,34 @@ function wireBoard(b: AuroraTaskboard | null): void {
 }
 wireBoard(document.getElementById('catBoard') as AuroraTaskboard | null)
 
+/* ---------- promptbox demo ---------- */
+import type { AuroraPromptbox } from 'aurora'
+function wirePrompt(box: AuroraPromptbox | null): void {
+  if (!box) return
+  const answers: [RegExp, string][] = [
+    [
+      /what is aurora/i,
+      'aurora is a library of 110 animated Web Components — data grids to gauges — powered by GSAP. MIT licensed, zero wrappers.',
+    ],
+    [
+      /how many/i,
+      'One hundred and ten components, each with docs, tests, and a live demo on this site.',
+    ],
+    [
+      /.*/,
+      'This demo box has no model behind it — wire aurora-send to yours and set output. Three lines.',
+    ],
+  ]
+  box.addEventListener('aurora-send', (e) => {
+    const { prompt } = (e as CustomEvent<{ prompt: string }>).detail
+    box.setAttribute('busy', '')
+    window.setTimeout(() => {
+      box.output = answers.find(([rx]) => rx.test(prompt))?.[1] ?? ''
+    }, 1100)
+  })
+}
+wirePrompt(document.getElementById('catPrompt') as AuroraPromptbox | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -879,6 +907,7 @@ if (docRoot) {
     wireMcc(document.getElementById('docMcc') as AuroraMulticolumncombobox | null)
     wireOrg(document.getElementById('docOrg') as AuroraOrgchart | null)
     wireBoard(document.getElementById('docBoard') as AuroraTaskboard | null)
+    wirePrompt(document.getElementById('docPrompt') as AuroraPromptbox | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

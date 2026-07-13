@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.81.0
+
+The AI interface, backend-agnostic.
+
+- `aurora-promptbox` — suggestion chips, an auto-growing composer, shimmer lines
+  while `busy`, and an output view with Copy and Retry; wire `aurora-send` to any
+  model and set `output` when it answers
+- `aurora-smartpaste` — one click reads the clipboard and distributes emails, phones,
+  URLs, dates, postal codes, and names into named fields by heuristics, or defer to a
+  custom `map` function. Both ship with docs.
+
 ## 0.80.0
 
 Kanban.
