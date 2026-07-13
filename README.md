@@ -118,6 +118,8 @@ Every component has a [documentation and tutorial page](https://auroralib.com/do
 | `<aurora-textarea>` [↗](https://auroralib.com/docs.html?c=aurora-textarea)                       | A textarea that grows with its content and counts characters live against maxlength           |
 | `<aurora-timepicker>` [↗](https://auroralib.com/docs.html?c=aurora-timepicker)                   | An HH:MM input with scrollable hour and minute columns; the minute increment is yours to set… |
 | `<aurora-upload>` [↗](https://auroralib.com/docs.html?c=aurora-upload)                           | A drag-and-drop file zone with keyboard browsing, animated per-file rows, size limits with e… |
+| `<aurora-rangeslider>` [↗](https://auroralib.com/docs.html?c=aurora-rangeslider)                 | Two thumbs, one range                                                                         |
+| `<aurora-combobox>` [↗](https://auroralib.com/docs.html?c=aurora-combobox)                       | Between a select and an autocomplete: filter the list as you type, or let users commit value… |
 
 ### Actions & Navigation
 
