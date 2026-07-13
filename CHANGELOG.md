@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.75.0
+
+Grid wave 5.
+
+- `aurora-grid` — column `validator` functions gate in-cell edits: bad values keep the
+  editor open with a red ring and an inline error bubble and emit `aurora-invalid`
+  instead of committing; column `group` strings render spanning multi-column header
+  groups (frozen-aware).
+
 ## 0.74.0
 
 Media.

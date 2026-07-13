@@ -9,14 +9,14 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 
 ## Data Management
 
-| Component                                                                                                                                                                                           | Status | aurora element                      |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ----------------------------------- |
-| Data Grid — multi-sort, operator filters, search, paging, selection, grouping, aggregates, inline edit, detail rows, column hide/resize/reorder, frozen columns, virtualization, CSV + Excel export | ✅     | `aurora-grid`                       |
-| TreeList (hierarchical grid, flat or nested data, sibling-group sorting)                                                                                                                            | ✅     | `aurora-treelist`                   |
-| ListView (templated rows, paging, selection)                                                                                                                                                        | ✅     | `aurora-listview`                   |
-| Filter / Pager (standalone)                                                                                                                                                                         | 🔶     | built into grid, treelist, listview |
-| PivotGrid (two-level rows, five aggregates, totals)                                                                                                                                                 | ✅     | `aurora-pivotgrid`                  |
-| Spreadsheet / PropertyGrid                                                                                                                                                                          | ⬜     |                                     |
+| Component                                                                                                                                                                                                                                  | Status | aurora element                      |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ----------------------------------- |
+| Data Grid — multi-sort, operator filters, search, paging, selection, grouping, aggregates, inline edit, detail rows, column hide/resize/reorder, frozen columns, multi-column headers, edit validation, virtualization, CSV + Excel export | ✅     | `aurora-grid`                       |
+| TreeList (hierarchical grid, flat or nested data, sibling-group sorting)                                                                                                                                                                   | ✅     | `aurora-treelist`                   |
+| ListView (templated rows, paging, selection)                                                                                                                                                                                               | ✅     | `aurora-listview`                   |
+| Filter / Pager (standalone)                                                                                                                                                                                                                | 🔶     | built into grid, treelist, listview |
+| PivotGrid (two-level rows, five aggregates, totals)                                                                                                                                                                                        | ✅     | `aurora-pivotgrid`                  |
+| Spreadsheet / PropertyGrid                                                                                                                                                                                                                 | ⬜     |                                     |
 
 ## Editors
 
@@ -75,7 +75,7 @@ Chat ✅ · MediaPlayer ✅ (`aurora-videoplayer`) · PDF Viewer ⬜
 
 ## Remaining candidates
 
-Map/Diagram · PDF Viewer · Spreadsheet · gantt drag-edit · grid popup edit
+Map/Diagram · PDF Viewer · Spreadsheet · gantt drag-edit
 
 Out of scope for now (rationale): **Map** needs tile providers or geo data (an external
 service, against the zero-dependency principle); **Diagram** (free-form node graphs)

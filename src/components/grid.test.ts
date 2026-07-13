@@ -309,3 +309,60 @@ describe('grid wave 4', () => {
     el.remove()
   })
 })
+
+describe('grid wave 5', () => {
+  it('blocks invalid edits with an inline error and emits aurora-invalid', () => {
+    const el = document.createElement('aurora-grid') as AuroraGrid
+    el.setAttribute('editable', '')
+    document.body.append(el)
+    el.columns = [
+      {
+        field: 'stars',
+        title: 'Stars',
+        validator: (v) => (Number(v) < 0 ? 'Stars cannot be negative' : null),
+      },
+    ]
+    el.data = [{ stars: 10 }]
+    let invalid: { message: string } | null = null
+    let edited = false
+    el.addEventListener('aurora-invalid', (e) => {
+      invalid = (e as CustomEvent<{ message: string }>).detail
+    })
+    el.addEventListener('aurora-edit', () => {
+      edited = true
+    })
+    const td = el.shadowRoot?.querySelector<HTMLElement>('[data-edit]')
+    td?.dispatchEvent(new Event('dblclick'))
+    const input = td?.querySelector('input')
+    if (!input) throw new Error('no editor')
+    input.value = '-5'
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
+    expect(invalid).toEqual(expect.objectContaining({ message: 'Stars cannot be negative' }))
+    expect(edited).toBe(false)
+    expect(td?.querySelector('.cell-error')?.textContent).toBe('Stars cannot be negative')
+    expect(el.data[0]?.stars).toBe(10)
+    input.value = '25'
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }))
+    expect(edited).toBe(true)
+    expect(el.data[0]?.stars).toBe(25)
+    el.remove()
+  })
+
+  it('renders spanning header groups above grouped columns', () => {
+    const el = document.createElement('aurora-grid') as AuroraGrid
+    document.body.append(el)
+    el.columns = [
+      { field: 'name', title: 'Name' },
+      { field: 'q1', title: 'Q1', group: 'Revenue' },
+      { field: 'q2', title: 'Q2', group: 'Revenue' },
+      { field: 'status', title: 'Status' },
+    ]
+    el.data = [{ name: 'x', q1: 1, q2: 2, status: 'ok' }]
+    const groups = el.shadowRoot?.querySelector('thead tr.groups')
+    expect(groups).not.toBeNull()
+    const span = groups?.querySelector('th[colspan="2"]')
+    expect(span?.textContent).toBe('Revenue')
+    expect(groups?.querySelectorAll('th').length).toBe(3)
+    el.remove()
+  })
+})

@@ -64,6 +64,15 @@ const STYLE = `
   tbody tr:hover .fz { background: color-mix(in srgb, var(--aurora-surface, #14141f) 90%, white); }
   tbody tr[aria-selected='true'] .fz { background: color-mix(in srgb, var(--aurora-surface, #14141f) 82%, var(--aurora-accent, #6d5cff)); }
   .fz-edge { box-shadow: inset -7px 0 7px -7px rgba(0, 0, 0, 0.6); }
+  td.editing input.invalid { outline: 2px solid var(--aurora-danger, #f43f5e); border-radius: 5px; }
+  .cell-error {
+    position: absolute; z-index: 5; margin-top: 2px; padding: 3px 9px; font-size: 0.74rem;
+    color: #fff; background: var(--aurora-danger, #f43f5e); border-radius: 7px; white-space: nowrap;
+  }
+  thead tr.groups th {
+    text-align: center; font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--aurora-muted, #9a98b3); border-bottom: none; padding-bottom: 0.2rem;
+  }
   .filters th { padding: 0.45rem 0.9rem; }
   tbody tr { transition: background 0.15s ease; }
   tbody tr:hover { background: rgba(255, 255, 255, 0.035); }
@@ -145,6 +154,8 @@ export interface GridColumn<T = Record<string, unknown>> {
   editable?: boolean
   hidden?: boolean
   frozen?: boolean
+  group?: string
+  validator?: (value: unknown, row: T) => string | null
   aggregate?: 'sum' | 'avg' | 'min' | 'max' | 'count'
   formatter?: (value: unknown, row: T) => string
 }
@@ -168,7 +179,9 @@ const FILTER_OPS: { op: FilterOp; sym: string; label: string }[] = [
  * `page-sizes="5,10,25"`), row selection (`selectable="single|multiple"`),
  * grouping with collapsible headers and per-group aggregates (`groupBy`),
  * footer aggregates (column `aggregate: sum|avg|min|max|count`), inline cell
- * editing (`editable` + column `editable`, dblclick → Enter/blur commits,
+ * editing (`editable` + column `editable`, dblclick → Enter/blur commits, a
+ * column `validator` blocks bad commits with an inline error, column `group`
+ * strings render spanning header groups,
  * Escape cancels), row detail templates (`detail = (row) => html`), column
  * hiding (`hidden`, `toggleColumn()`), and CSV export (`exportable`,
  * `toCsv()`/`exportCsv()`). Emits `aurora-sort`, `aurora-filter`,
@@ -475,6 +488,29 @@ export class AuroraGrid extends AuroraElement {
       .join('')
 
     const fzu = hasFrozen ? ' class="fz"' : ''
+    const hasGroups = cols.some((c) => c.group)
+    let groupRow = ''
+    if (hasGroups) {
+      const cells: string[] = []
+      if (multi) cells.push(`<th${fzu}></th>`)
+      if (this.#detail) cells.push(`<th${fzu}></th>`)
+      let i = 0
+      while (i < cols.length) {
+        const g = cols[i]?.group
+        let span = 1
+        while (i + span < cols.length && cols[i + span]?.group === g && g !== undefined) span++
+        if (g === undefined) {
+          for (let k = 0; k < span; k++)
+            cells.push(`<th${cols[i + k]?.frozen ? ' class="fz"' : ''}></th>`)
+        } else {
+          cells.push(
+            `<th colspan="${span}"${cols[i]?.frozen ? ' class="fz"' : ''}>${escapeHtml(g)}</th>`,
+          )
+        }
+        i += span
+      }
+      groupRow = `<tr class="groups">${cells.join('')}</tr>`
+    }
     const filterRow = filterable
       ? `<tr class="filters">${multi ? `<th${fzu}></th>` : ''}${this.#detail ? `<th${fzu}></th>` : ''}${cols
           .map((col) => {
@@ -583,7 +619,7 @@ export class AuroraGrid extends AuroraElement {
         `<tr aria-hidden="true" style="height:${below * rowH}px"></tr>`
     }
     const vh = virtual ? ' style="max-height: var(--aurora-grid-height, 420px)"' : ''
-    this.root.innerHTML = `<style>${STYLE}</style>${toolbar}<div class="viewport"${vh}><table role="grid" aria-rowcount="${total}"><thead><tr>${selectHead}${expandHead}${head}</tr>${filterRow}</thead><tbody>${body}</tbody>${foot}</table>${rows.length === 0 ? '<div class="empty">No matching rows.</div>' : ''}</div>${pager}`
+    this.root.innerHTML = `<style>${STYLE}</style>${toolbar}<div class="viewport"${vh}><table role="grid" aria-rowcount="${total}"><thead>${groupRow}<tr>${selectHead}${expandHead}${head}</tr>${filterRow}</thead><tbody>${body}</tbody>${foot}</table>${rows.length === 0 ? '<div class="empty">No matching rows.</div>' : ''}</div>${pager}`
 
     if (virtual) {
       const vp = this.root.querySelector<HTMLElement>('.viewport')
@@ -712,13 +748,30 @@ export class AuroraGrid extends AuroraElement {
         let done = false
         const commit = (): void => {
           if (done) return
-          done = true
           const next: unknown =
             typeof oldValue === 'number' &&
             input.value.trim() !== '' &&
             Number.isFinite(Number(input.value))
               ? Number(input.value)
               : input.value
+          const col = this.#columns.find((c) => c.field === field)
+          const message = col?.validator ? col.validator(next, row) : null
+          if (message) {
+            input.classList.add('invalid')
+            input.setAttribute('aria-invalid', 'true')
+            td.querySelector('.cell-error')?.remove()
+            const note = document.createElement('div')
+            note.className = 'cell-error'
+            note.setAttribute('role', 'alert')
+            note.textContent = message
+            td.appendChild(note)
+            input.focus()
+            this.dispatchEvent(
+              new CustomEvent('aurora-invalid', { detail: { row, field, value: next, message } }),
+            )
+            return
+          }
+          done = true
           if (next !== oldValue) {
             row[field] = next
             this.dispatchEvent(
