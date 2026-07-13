@@ -1601,6 +1601,32 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-signature',
+    title: 'Signature',
+    category: 'Forms & Inputs',
+    summary:
+      'A signature pad that draws smoothed SVG strokes and submits them with your form as a data URL — resolution-independent ink with clear, undo, and restore.',
+    example: `<aurora-signature name="signature"></aurora-signature>`,
+    attributes: [
+      ['name', 'Form field name (submits an SVG data URL)'],
+      ['placeholder', 'Hint text (default "Sign here")'],
+      ['stroke-width', 'Ink width (default 2.5)'],
+    ],
+    events: [['aurora-change', '{ value, strokes } after each stroke, undo, or clear']],
+    cssvars: [['--aurora-signature-color / -field / -border', 'Ink and pad styling']],
+    methods: [
+      ['clear() / undo()', 'Ctrl+Z works too'],
+      ['addStroke(points) / strokes', 'Restore or read ink (400×160 space)'],
+      ['toSvg() / toDataUrl()', 'Serialize'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Contracts and consent',
+        text: 'The submitted value is a self-contained SVG data URL — store it as text, render it anywhere with an <img>, no raster blur at any size.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

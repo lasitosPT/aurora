@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.45.0
+
+Ink.
+
+- `aurora-signature` — a signature pad: pointer strokes captured into a fixed 400×160
+  coordinate space, smoothed with quadratic midpoints, rendered as SVG. Form-associated
+  (submits an image/svg+xml data URL), `clear()`/`undo()` (with Ctrl+Z),
+  `addStroke()` for restoring saved ink, `toSvg()`/`toDataUrl()`, a `signed` reflected
+  attribute, dashed baseline and hint. Ships with docs.
+
 ## 0.44.0
 
 Guided flows.
