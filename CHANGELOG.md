@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.38.0
+
+The button family.
+
+- `aurora-buttongroup` — a segmented control from `<option>`s: one active segment with
+  aria-pressed and a pop on change; emits `aurora-change`
+- `aurora-splitbutton` — a primary action with an attached dropdown of alternatives:
+  main emits `aurora-click`, menu items emit `aurora-select`, Escape/outside close.
+  Both ship with docs.
+
 ## 0.37.0
 
 Gauges.

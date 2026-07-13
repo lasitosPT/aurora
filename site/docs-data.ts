@@ -1387,6 +1387,48 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-buttongroup',
+    title: 'Button Group',
+    category: 'Actions & Navigation',
+    summary:
+      'A segmented control: options in, one active segment out, with aria-pressed state and a pop on change.',
+    example: `<aurora-buttongroup value="week">\n  <option value="day">Day</option>\n  <option value="week">Week</option>\n  <option value="month">Month</option>\n</aurora-buttongroup>`,
+    attributes: [['value', 'Initially active segment']],
+    events: [['aurora-change', '{ value }']],
+    cssvars: [['--aurora-accent / -border / -radius / -muted', 'Segment styling']],
+    methods: [['value', 'Get/set the active segment']],
+    tutorial: [
+      {
+        heading: '1 · View switchers',
+        text: 'Day/Week/Month over a scheduler, grid density toggles — anywhere a radio group wants to look like buttons.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-splitbutton',
+    title: 'Split Button',
+    category: 'Actions & Navigation',
+    summary:
+      'A primary action with an attached dropdown of alternatives — deploy now, or pick a variant from the arrow.',
+    example: `<aurora-splitbutton label="Deploy">\n  <option value="staging">Deploy to staging</option>\n  <option value="canary">Canary release</option>\n  <option value="rollback">Rollback</option>\n</aurora-splitbutton>`,
+    attributes: [
+      ['label', 'Main button text'],
+      ['value', 'Payload for aurora-click (defaults to the label)'],
+    ],
+    events: [
+      ['aurora-click', 'Main action'],
+      ['aurora-select', '{ value } from the menu'],
+    ],
+    cssvars: [['--aurora-accent / -accent-hover / -surface / -radius', 'Button and panel styling']],
+    methods: [['open() / close() / toggle()', 'Menu control']],
+    tutorial: [
+      {
+        heading: '1 · Default + variants',
+        text: 'Wire aurora-click to the common case and aurora-select to the alternatives — one element, whole deploy menu.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

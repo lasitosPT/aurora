@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Sixty-four components.<br /><span class="grad">Every one of them live.</span>
+          Sixty-six components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -334,6 +334,35 @@ tree.items = [
 &lt;/aurora-stepper&gt;</pre>
               </div>
             </article>
+            <!-- Button family -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Button group &amp; Split button</h3>
+                <code>&lt;aurora-buttongroup&gt; &lt;aurora-splitbutton&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Segmented views and a primary-action-with-alternatives.
+                <a href="./docs.html?c=aurora-buttongroup" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage" style="gap: 22px">
+                <aurora-buttongroup value="week">
+                  <option value="day">Day</option>
+                  <option value="week">Week</option>
+                  <option value="month">Month</option>
+                </aurora-buttongroup>
+                <aurora-splitbutton label="Deploy">
+                  <option value="staging">Deploy to staging</option>
+                  <option value="canary">Canary release</option>
+                  <option value="rollback">Rollback</option>
+                </aurora-splitbutton>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-buttongroup value="week"&gt;…&lt;/aurora-buttongroup&gt;
+&lt;aurora-splitbutton label="Deploy"&gt;…&lt;/aurora-splitbutton&gt;</pre>
+              </div>
+            </article>
             <!-- Breadcrumb + Chips -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -586,7 +615,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Sixty-four components.</strong><br />
+                  <strong>Sixty-six components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
