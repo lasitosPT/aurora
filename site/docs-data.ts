@@ -2083,6 +2083,29 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-pivotgrid',
+    title: 'PivotGrid',
+    category: 'Enterprise & Data',
+    summary:
+      'Cross flat records into a matrix — two-level collapsible row groups, five aggregates, row and column totals, and a grand total, all computed in the component.',
+    example: `<aurora-pivotgrid id="docPivot" aggregate="sum" style="width:100%"></aurora-pivotgrid>`,
+    attributes: [
+      ['data (property)', 'Flat row objects'],
+      ['rows (property)', 'One or two field names — two nests with subtotals'],
+      ['cols / measure (properties)', 'Pivot column field and the value field'],
+      ['aggregate', '"sum" (default), "avg", "count", "min", "max"'],
+    ],
+    events: [['aurora-select', '{ row, col, value } — the clicked intersection']],
+    cssvars: [['--aurora-grid-height / -radius', 'Shared grid theming']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · From grid to pivot',
+        text: 'Feed it the same flat rows as aurora-grid — region × quarter, product × month. Click a group caret to collapse its detail into the subtotal.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

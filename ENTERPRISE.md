@@ -15,7 +15,8 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 | TreeList (hierarchical grid, flat or nested data, sibling-group sorting)                                                                                                                            | ✅     | `aurora-treelist`                   |
 | ListView (templated rows, paging, selection)                                                                                                                                                        | ✅     | `aurora-listview`                   |
 | Filter / Pager (standalone)                                                                                                                                                                         | 🔶     | built into grid, treelist, listview |
-| PivotGrid / Spreadsheet / PropertyGrid                                                                                                                                                              | ⬜     |                                     |
+| PivotGrid (two-level rows, five aggregates, totals)                                                                                                                                                 | ✅     | `aurora-pivotgrid`                  |
+| Spreadsheet / PropertyGrid                                                                                                                                                                          | ⬜     |                                     |
 
 ## Editors
 
@@ -69,4 +70,4 @@ Chat ✅ · PDF Viewer ⬜
 
 ## Remaining candidates
 
-PivotGrid · Rich Text Editor · Map/Diagram · PDF Viewer · gantt drag-edit · grid popup edit
+Rich Text Editor · Map/Diagram · PDF Viewer · Spreadsheet · gantt drag-edit · grid popup edit

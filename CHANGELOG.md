@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.66.0
+
+The last data rock: PivotGrid.
+
+- `aurora-pivotgrid` — cross flat data into a matrix: one or two row fields (two-level
+  rows collapse under subtotal groups), a pivot column field, a measure, and
+  sum/avg/count/min/max aggregation, with row totals, column totals, and a grand
+  total. Sticky headers both ways; emits `aurora-select` with the clicked
+  intersection. Ships with docs.
+
 ## 0.65.0
 
 Project timelines.

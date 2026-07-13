@@ -384,6 +384,27 @@ function wireGantt(g: AuroraGantt | null): void {
 }
 wireGantt(document.getElementById('catGantt') as AuroraGantt | null)
 
+/* ---------- pivot demo ---------- */
+import type { AuroraPivotgrid } from 'aurora'
+const PIVOT_DATA = [
+  { region: 'EU', product: 'Grid', quarter: 'Q1', amount: 42 },
+  { region: 'EU', product: 'Grid', quarter: 'Q2', amount: 55 },
+  { region: 'EU', product: 'Charts', quarter: 'Q1', amount: 18 },
+  { region: 'EU', product: 'Charts', quarter: 'Q2', amount: 26 },
+  { region: 'US', product: 'Grid', quarter: 'Q1', amount: 61 },
+  { region: 'US', product: 'Grid', quarter: 'Q2', amount: 78 },
+  { region: 'US', product: 'Charts', quarter: 'Q1', amount: 22 },
+  { region: 'APAC', product: 'Grid', quarter: 'Q2', amount: 31 },
+]
+function wirePivot(p: AuroraPivotgrid | null): void {
+  if (!p) return
+  p.rows = ['region', 'product']
+  p.cols = 'quarter'
+  p.measure = 'amount'
+  p.data = PIVOT_DATA
+}
+wirePivot(document.getElementById('catPivot') as AuroraPivotgrid | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -700,6 +721,7 @@ if (docRoot) {
     wireChat(document.getElementById('docChat') as AuroraChat | null)
     wireForm(document.getElementById('docForm') as AuroraForm | null)
     wireGantt(document.getElementById('docGantt') as AuroraGantt | null)
+    wirePivot(document.getElementById('docPivot') as AuroraPivotgrid | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL
