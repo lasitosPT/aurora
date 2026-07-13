@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.41.0
+
+Identity chrome.
+
+- `aurora-avatar` — image avatars that degrade gracefully to initials on a gradient
+  derived deterministically from the name; status dot, square variant, size var
+- `aurora-badge` — notification badges: overlaid count pill on wrapped content or an
+  inline standalone pill, "99+" capping, zero-hiding, dot mode, tones, and a pop on
+  count changes. Both ship with docs.
+
 ## 0.40.0
 
 QR codes, from scratch.

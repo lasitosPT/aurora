@@ -1472,6 +1472,53 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-avatar',
+    title: 'Avatar',
+    category: 'Overlays & Feedback',
+    summary:
+      'Image avatars that never break: no src (or a failed load) falls back to initials on a gradient derived from the name, so the same person always gets the same color.',
+    example: `<div style="display:flex;gap:14px;align-items:center">\n  <aurora-avatar name="Ada Lovelace" status="online"></aurora-avatar>\n  <aurora-avatar name="Grace Hopper" status="busy" square></aurora-avatar>\n  <aurora-avatar name="Alan Turing" style="--aurora-avatar-size:56px"></aurora-avatar>\n</div>`,
+    attributes: [
+      ['name', 'Initials source + deterministic gradient hue'],
+      ['src', 'Image URL (falls back to initials on error)'],
+      ['status', '"online", "away", "busy", "offline" dot'],
+      ['square', 'Rounded-square shape'],
+    ],
+    events: [],
+    cssvars: [['--aurora-avatar-size', 'Diameter (default 44px)']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · People everywhere',
+        text: 'Drop avatars in grid cells, scheduler events, and comment threads — the deterministic hue keeps each person recognizable without any image at all.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-badge',
+    title: 'Badge',
+    category: 'Overlays & Feedback',
+    summary:
+      'Notification badges that pop when the count changes — overlay a pill on anything you wrap, cap at "99+", hide at zero, or go minimal with a dot.',
+    example: `<div style="display:flex;gap:26px;align-items:center">\n  <aurora-badge value="7"><button class="btn">Inbox</button></aurora-badge>\n  <aurora-badge value="120" tone="danger"><button class="btn">Alerts</button></aurora-badge>\n  <aurora-badge dot tone="success"><button class="btn">Chat</button></aurora-badge>\n  <aurora-badge value="NEW" tone="warn"></aurora-badge>\n</div>`,
+    attributes: [
+      ['value', 'Count or text (numbers above max show "max+")'],
+      ['max', 'Cap (default 99)'],
+      ['dot', 'Tiny dot instead of a pill'],
+      ['tone', '"accent", "success", "danger", "warn", "neutral"'],
+      ['show-zero', 'Keep the pill visible at 0'],
+    ],
+    events: [],
+    cssvars: [['--aurora-bg', 'Ring color around overlaid pills']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Live counts',
+        text: 'Update the value attribute from your socket handler — the badge re-renders and pops on every change, and disappears at zero.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

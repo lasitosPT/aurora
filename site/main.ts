@@ -222,6 +222,13 @@ if (catSched)
     { title: 'Ship v1', start: '2026-07-17T16:00', end: '2026-07-17T17:00', color: '#34d399' },
   ]
 
+/* ---------- badge demo ---------- */
+const catBadge = document.getElementById('catBadge')
+document.getElementById('catBadgeBtn')?.addEventListener('click', () => {
+  const next = Number(catBadge?.getAttribute('value') ?? '0') + 1
+  catBadge?.setAttribute('value', String(next))
+})
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
