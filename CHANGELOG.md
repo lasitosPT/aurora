@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.50.0
+
+Grid wave 4 + npm.
+
+- `aurora-grid` — frozen columns (`frozen: true` floats them left and pins them with
+  computed sticky offsets, utility columns included), per-column filter operator menus
+  (contains / equals / starts with / greater / less — cycle the ≈ button or call
+  `setFilterOp()`), and Excel export: `toExcel()`/`exportExcel()` build a real .xlsx
+  through an in-house, dependency-free OOXML + ZIP writer (validated with openpyxl).
+- Published surface renamed to `@lasitospt/aurora`; README gains a full catalogue table.
+
 ## 0.49.0
 
 Waiting, beautifully.

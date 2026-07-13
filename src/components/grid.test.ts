@@ -236,3 +236,76 @@ describe('aurora-grid (virtualization)', () => {
     grid.remove()
   })
 })
+
+describe('grid wave 4', () => {
+  const cols = [
+    { field: 'name', title: 'Name', frozen: true },
+    { field: 'stars', title: 'Stars' },
+    { field: 'lang', title: 'Lang' },
+  ]
+  const data = [
+    { name: 'pulse', stars: 412, lang: 'TypeScript' },
+    { name: 'aurora', stars: 951, lang: 'TypeScript' },
+    { name: 'volley', stars: 187, lang: 'Go' },
+  ]
+
+  it('marks frozen columns sticky and orders them first', () => {
+    const el = document.createElement('aurora-grid') as AuroraGrid
+    document.body.append(el)
+    el.columns = [
+      { field: 'stars', title: 'Stars' },
+      { field: 'name', title: 'Name', frozen: true },
+    ]
+    el.data = data
+    const ths = el.shadowRoot?.querySelectorAll('thead th')
+    expect(ths?.[0]?.textContent).toContain('Name')
+    expect(ths?.[0]?.classList.contains('fz')).toBe(true)
+    expect(ths?.[1]?.classList.contains('fz')).toBe(false)
+    expect(el.shadowRoot?.querySelector('tbody td')?.classList.contains('fz')).toBe(true)
+    el.remove()
+  })
+
+  it('applies filter operators: equals, gt, and cycling via the op button', () => {
+    const el = document.createElement('aurora-grid') as AuroraGrid
+    el.setAttribute('filterable', '')
+    document.body.append(el)
+    el.columns = cols
+    el.data = data
+    const input = el.shadowRoot?.querySelector<HTMLInputElement>('[data-filter="stars"]')
+    if (!input) throw new Error('no filter input')
+    input.value = '400'
+    input.dispatchEvent(new Event('input'))
+    expect(el.shadowRoot?.querySelectorAll('tbody tr[data-index]').length).toBe(0)
+    el.setFilterOp('stars', 'gt')
+    expect(el.shadowRoot?.querySelectorAll('tbody tr[data-index]').length).toBe(2)
+    el.setFilterOp('name', 'equals')
+    const nameInput = el.shadowRoot?.querySelector<HTMLInputElement>('[data-filter="name"]')
+    if (nameInput) {
+      nameInput.value = 'pulse'
+      nameInput.dispatchEvent(new Event('input'))
+    }
+    expect(el.shadowRoot?.querySelectorAll('tbody tr[data-index]').length).toBe(1)
+    const fop = el.shadowRoot?.querySelector<HTMLButtonElement>('[data-fop="stars"]')
+    expect(fop?.textContent).toBe('>')
+    fop?.click()
+    expect(el.shadowRoot?.querySelector<HTMLButtonElement>('[data-fop="stars"]')?.textContent).toBe(
+      '<',
+    )
+    el.remove()
+  })
+
+  it('exports a valid xlsx zip with the visible view', () => {
+    const el = document.createElement('aurora-grid') as AuroraGrid
+    document.body.append(el)
+    el.columns = cols
+    el.data = data
+    const bytes = el.toExcel()
+    expect(bytes[0]).toBe(0x50)
+    expect(bytes[1]).toBe(0x4b)
+    const text = new TextDecoder().decode(bytes)
+    expect(text).toContain('xl/worksheets/sheet1.xml')
+    expect(text).toContain('aurora')
+    expect(text).toContain('<v>951</v>')
+    el.remove()
+  })
+})

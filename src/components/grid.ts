@@ -1,7 +1,9 @@
 import { gsap } from 'gsap'
 import { AuroraElement } from '../core/base'
+import { escapeHtml } from '../core/html'
 import { clamp, prefersReducedMotion } from '../core/motion'
 import { register } from '../core/register'
+import { makeXlsx } from '../core/xlsx'
 
 const STYLE = `
   :host {
@@ -48,6 +50,20 @@ const STYLE = `
     background: rgba(255, 255, 255, 0.03);
   }
   .filters input:focus { border-color: var(--aurora-accent, #6d5cff); }
+  .fwrap { display: flex; align-items: center; gap: 4px; }
+  .fop {
+    all: unset; cursor: pointer; flex: none; width: 20px; height: 22px;
+    display: inline-grid; place-items: center; border-radius: 6px;
+    font-size: 0.8em; color: var(--aurora-muted, #9a98b3);
+    border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.1));
+  }
+  .fop:hover { color: var(--aurora-fg, #ececf2); border-color: var(--aurora-accent, #6d5cff); }
+  .fop:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); }
+  .fz { position: sticky; z-index: 1; background: var(--aurora-surface, #14141f); }
+  thead .fz { z-index: 3; }
+  tbody tr:hover .fz { background: color-mix(in srgb, var(--aurora-surface, #14141f) 90%, white); }
+  tbody tr[aria-selected='true'] .fz { background: color-mix(in srgb, var(--aurora-surface, #14141f) 82%, var(--aurora-accent, #6d5cff)); }
+  .fz-edge { box-shadow: inset -7px 0 7px -7px rgba(0, 0, 0, 0.6); }
   .filters th { padding: 0.45rem 0.9rem; }
   tbody tr { transition: background 0.15s ease; }
   tbody tr:hover { background: rgba(255, 255, 255, 0.035); }
@@ -128,11 +144,22 @@ export interface GridColumn<T = Record<string, unknown>> {
   filterable?: boolean
   editable?: boolean
   hidden?: boolean
+  frozen?: boolean
   aggregate?: 'sum' | 'avg' | 'min' | 'max' | 'count'
   formatter?: (value: unknown, row: T) => string
 }
 
 type Row = Record<string, unknown>
+
+export type FilterOp = 'contains' | 'equals' | 'starts' | 'gt' | 'lt'
+
+const FILTER_OPS: { op: FilterOp; sym: string; label: string }[] = [
+  { op: 'contains', sym: '≈', label: 'contains' },
+  { op: 'equals', sym: '=', label: 'equals' },
+  { op: 'starts', sym: '^', label: 'starts with' },
+  { op: 'gt', sym: '>', label: 'greater than' },
+  { op: 'lt', sym: '<', label: 'less than' },
+]
 
 /**
  * `<aurora-grid>` — an enterprise data grid. Assign `columns` and `data`, get:
@@ -155,6 +182,7 @@ export class AuroraGrid extends AuroraElement {
   #data: Row[] = []
   private sorts: { field: string; dir: 'asc' | 'desc' }[] = []
   private filters = new Map<string, string>()
+  private ops = new Map<string, FilterOp>()
   private search = ''
   private page = 0
   private pageSize = -1
@@ -220,8 +248,63 @@ export class AuroraGrid extends AuroraElement {
     URL.revokeObjectURL(a.href)
   }
 
+  /** The current view as .xlsx bytes (dependency-free writer). */
+  toExcel(): Uint8Array {
+    const cols = this.visibleColumns()
+    return makeXlsx(
+      cols.map((c) => c.title ?? c.field),
+      this.processed().map((row) => cols.map((c) => row[c.field])),
+      'Grid',
+    )
+  }
+
+  /** Download the current view as an Excel workbook. */
+  exportExcel(filename = 'grid.xlsx'): void {
+    const bytes = this.toExcel()
+    const blob = new Blob([bytes.buffer as ArrayBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = filename
+    a.click()
+    URL.revokeObjectURL(a.href)
+  }
+
+  /** Set a column's filter operator programmatically. */
+  setFilterOp(field: string, op: FilterOp): void {
+    this.ops.set(field, op)
+    this.page = 0
+    this.render()
+  }
+
+  private applyFrozen(): void {
+    const headRow = this.root.querySelector('thead tr')
+    if (!headRow) return
+    const ths = Array.from(headRow.children).filter((c): c is HTMLElement =>
+      c.classList.contains('fz'),
+    )
+    if (!ths.length) return
+    const lefts: number[] = []
+    let acc = 0
+    for (const th of ths) {
+      lefts.push(acc)
+      acc += th.offsetWidth
+    }
+    this.root.querySelectorAll('tr').forEach((tr) => {
+      const cells = Array.from(tr.children).filter((c): c is HTMLElement =>
+        c.classList.contains('fz'),
+      )
+      cells.forEach((cellEl, i) => {
+        cellEl.style.left = `${lefts[i] ?? 0}px`
+        cellEl.classList.toggle('fz-edge', i === cells.length - 1)
+      })
+    })
+  }
+
   private visibleColumns(): GridColumn[] {
-    return this.#columns.filter((c) => !c.hidden)
+    const vis = this.#columns.filter((c) => !c.hidden)
+    return [...vis.filter((c) => c.frozen), ...vis.filter((c) => !c.frozen)]
   }
 
   private aggregate(
@@ -288,11 +371,20 @@ export class AuroraGrid extends AuroraElement {
     for (const [field, query] of this.filters) {
       if (!query) continue
       const q = query.toLowerCase()
-      rows = rows.filter((row) =>
-        String(row[field] ?? '')
-          .toLowerCase()
-          .includes(q),
-      )
+      const op = this.ops.get(field) ?? 'contains'
+      rows = rows.filter((row) => {
+        const raw = row[field]
+        const s = String(raw ?? '').toLowerCase()
+        if (op === 'equals') return s === q
+        if (op === 'starts') return s.startsWith(q)
+        if (op === 'gt' || op === 'lt') {
+          const a = Number(raw)
+          const b = Number(query)
+          if (!Number.isNaN(a) && !Number.isNaN(b)) return op === 'gt' ? a > b : a < b
+          return op === 'gt' ? s > q : s < q
+        }
+        return s.includes(q)
+      })
     }
     const sorts = [...this.sorts]
     if (this.#groupBy) sorts.unshift({ field: this.#groupBy, dir: 'asc' })
@@ -340,8 +432,14 @@ export class AuroraGrid extends AuroraElement {
     const cols = this.visibleColumns()
     const extraCols = (multi ? 1 : 0) + (this.#detail ? 1 : 0)
     const span = cols.length + extraCols
-    const cls = (col: GridColumn): string =>
-      col.align === 'right' ? ' class="num"' : col.align === 'center' ? ' class="center"' : ''
+    const hasFrozen = cols.some((c) => c.frozen)
+    const cls = (col: GridColumn): string => {
+      const parts = [
+        col.align === 'right' ? 'num' : col.align === 'center' ? 'center' : '',
+        col.frozen ? 'fz' : '',
+      ].filter(Boolean)
+      return parts.length ? ` class="${parts.join(' ')}"` : ''
+    }
 
     const toolbar =
       this.hasAttribute('searchable') || this.hasAttribute('exportable')
@@ -349,7 +447,7 @@ export class AuroraGrid extends AuroraElement {
             this.hasAttribute('searchable')
               ? `<input data-search type="search" placeholder="Search…" aria-label="Search all columns" value="${this.search}" />`
               : ''
-          }${this.hasAttribute('exportable') ? '<button class="tool-btn" data-export>Export CSV</button>' : ''}</div>`
+          }${this.hasAttribute('exportable') ? '<button class="tool-btn" data-export>Export CSV</button><button class="tool-btn" data-export-xlsx>Export Excel</button>' : ''}</div>`
         : ''
 
     const head = cols
@@ -376,13 +474,16 @@ export class AuroraGrid extends AuroraElement {
       })
       .join('')
 
+    const fzu = hasFrozen ? ' class="fz"' : ''
     const filterRow = filterable
-      ? `<tr class="filters">${multi ? '<th></th>' : ''}${this.#detail ? '<th></th>' : ''}${cols
-          .map((col) =>
-            col.filterable === false
-              ? '<th></th>'
-              : `<th><input data-filter="${col.field}" aria-label="Filter ${col.title ?? col.field}" value="${this.filters.get(col.field) ?? ''}" /></th>`,
-          )
+      ? `<tr class="filters">${multi ? `<th${fzu}></th>` : ''}${this.#detail ? `<th${fzu}></th>` : ''}${cols
+          .map((col) => {
+            if (col.filterable === false) return `<th${col.frozen ? ' class="fz"' : ''}></th>`
+            const cur =
+              FILTER_OPS.find((o) => o.op === (this.ops.get(col.field) ?? 'contains')) ??
+              FILTER_OPS[0]
+            return `<th${col.frozen ? ' class="fz"' : ''}><div class="fwrap"><button class="fop" data-fop="${col.field}" title="Filter: ${cur?.label}" aria-label="Filter operator for ${col.title ?? col.field}: ${cur?.label}">${escapeHtml(cur?.sym ?? '')}</button><input data-filter="${col.field}" aria-label="Filter ${col.title ?? col.field}" value="${this.filters.get(col.field) ?? ''}" /></div></th>`
+          })
           .join('')}</tr>`
       : ''
 
@@ -395,10 +496,10 @@ export class AuroraGrid extends AuroraElement {
 
     const rowHtml = (row: Row, i: number): string => {
       const check = multi
-        ? `<td class="center"><input type="checkbox" data-row="${i}" aria-label="Select row" ${this.selectedRows.has(row) ? 'checked' : ''}/></td>`
+        ? `<td class="center${hasFrozen ? ' fz' : ''}"><input type="checkbox" data-row="${i}" aria-label="Select row" ${this.selectedRows.has(row) ? 'checked' : ''}/></td>`
         : ''
       const exp = this.#detail
-        ? `<td class="center"><button class="expander" data-expand="${i}" aria-label="Toggle details" aria-expanded="${this.expanded.has(row)}">${this.expanded.has(row) ? '▾' : '▸'}</button></td>`
+        ? `<td class="center${hasFrozen ? ' fz' : ''}"><button class="expander" data-expand="${i}" aria-label="Toggle details" aria-expanded="${this.expanded.has(row)}">${this.expanded.has(row) ? '▾' : '▸'}</button></td>`
         : ''
       const detail =
         this.#detail && this.expanded.has(row)
@@ -438,7 +539,7 @@ export class AuroraGrid extends AuroraElement {
     const footAggs = cols.filter((c) => c.aggregate)
     const foot =
       footAggs.length > 0 && rows.length > 0
-        ? `<tfoot><tr>${multi ? '<td></td>' : ''}${this.#detail ? '<td></td>' : ''}${cols
+        ? `<tfoot><tr>${multi ? `<td${fzu}></td>` : ''}${this.#detail ? `<td${fzu}></td>` : ''}${cols
             .map((c) =>
               c.aggregate
                 ? `<td${cls(c)}>${c.aggregate}: ${this.aggregate(c.aggregate, this.processed(), c.field)}</td>`
@@ -449,9 +550,9 @@ export class AuroraGrid extends AuroraElement {
 
     const allChecked = rows.length > 0 && rows.every((row) => this.selectedRows.has(row))
     const selectHead = multi
-      ? `<th class="center" style="width:36px"><input type="checkbox" data-all aria-label="Select all rows" ${allChecked ? 'checked' : ''}/></th>`
+      ? `<th class="center${hasFrozen ? ' fz' : ''}" style="width:36px"><input type="checkbox" data-all aria-label="Select all rows" ${allChecked ? 'checked' : ''}/></th>`
       : ''
-    const expandHead = this.#detail ? '<th style="width:34px"></th>' : ''
+    const expandHead = this.#detail ? `<th${fzu} style="width:34px"></th>` : ''
 
     const sizes = (this.getAttribute('page-sizes') ?? '')
       .split(',')
@@ -511,6 +612,7 @@ export class AuroraGrid extends AuroraElement {
     }
 
     this.wire(rows)
+    this.applyFrozen()
     if (!prefersReducedMotion() && rows.length > 0 && !virtual) {
       gsap.fromTo(
         this.root.querySelectorAll('tbody tr'),
@@ -551,6 +653,21 @@ export class AuroraGrid extends AuroraElement {
       next?.setSelectionRange(next.value.length, next.value.length)
     })
     this.root.querySelector('[data-export]')?.addEventListener('click', () => this.exportCsv())
+    this.root
+      .querySelector('[data-export-xlsx]')
+      ?.addEventListener('click', () => this.exportExcel())
+    this.root.querySelectorAll<HTMLButtonElement>('[data-fop]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const field = btn.dataset.fop ?? ''
+        const cur = this.ops.get(field) ?? 'contains'
+        const idx = FILTER_OPS.findIndex((o) => o.op === cur)
+        const next = FILTER_OPS[(idx + 1) % FILTER_OPS.length]
+        if (next) this.ops.set(field, next.op)
+        this.page = 0
+        this.render()
+        this.root.querySelector<HTMLButtonElement>(`[data-fop="${field}"]`)?.focus()
+      })
+    })
     this.root.querySelector<HTMLSelectElement>('[data-size]')?.addEventListener('change', (e) => {
       this.pageSize = Number((e.target as HTMLSelectElement).value)
       this.page = 0

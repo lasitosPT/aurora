@@ -144,7 +144,7 @@ import type { AuroraGrid } from 'aurora'
 const demoGrid = document.getElementById('demoGrid') as AuroraGrid | null
 if (demoGrid) {
   demoGrid.columns = [
-    { field: 'name', title: 'Project', width: '32%' },
+    { field: 'name', title: 'Project', width: '32%', frozen: true },
     { field: 'lang', title: 'Language' },
     {
       field: 'stars',
