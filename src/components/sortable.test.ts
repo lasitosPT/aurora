@@ -34,6 +34,21 @@ describe('aurora-sortable', () => {
     el.remove()
   })
 
+  it('lifts the pressed child on pointerdown and settles on pointerup', () => {
+    const el = makeSortable()
+    const a = el.querySelector<HTMLElement>('#a')
+    a?.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }))
+    expect(a?.classList.contains('aurora-dragging')).toBe(true)
+    let dropped = false
+    el.addEventListener('aurora-reorder', () => {
+      dropped = true
+    })
+    el.dispatchEvent(new MouseEvent('pointerup', { bubbles: true }))
+    expect(a?.classList.contains('aurora-dragging')).toBe(false)
+    expect(dropped).toBe(true)
+    el.remove()
+  })
+
   it('moves the focused item with Ctrl+arrows and clamps at the edges', () => {
     const el = makeSortable()
     const b = el.querySelector<HTMLElement>('#b')

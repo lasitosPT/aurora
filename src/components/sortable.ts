@@ -85,8 +85,9 @@ export class AuroraSortable extends AuroraElement {
   }
 
   private onDown(e: PointerEvent): void {
-    const item = (e.target as HTMLElement).closest?.(':scope > *') as HTMLElement | null
-    const target = item && this.items().includes(item) ? item : null
+    let node = e.target as HTMLElement | null
+    while (node && node.parentElement !== this) node = node.parentElement
+    const target = node && this.items().includes(node) ? node : null
     if (!target) return
     this.dragEl = target
     this.startY = e.clientY
@@ -107,17 +108,20 @@ export class AuroraSortable extends AuroraElement {
       const elIdx = this.items().indexOf(el)
       const sibIdx = this.items().indexOf(sib)
       if (sibIdx > elIdx && e.clientY > mid) {
-        const base = el.getBoundingClientRect().top - Number(gsap.getProperty(el, 'y'))
-        this.flip(() => sib.after(el), el)
-        this.startY += el.getBoundingClientRect().top - Number(gsap.getProperty(el, 'y')) - base
-        gsap.set(el, { y: e.clientY - this.startY })
+        this.shift(el, () => sib.after(el), e.clientY)
+        break
       } else if (sibIdx < elIdx && e.clientY < mid) {
-        const base = el.getBoundingClientRect().top - Number(gsap.getProperty(el, 'y'))
-        this.flip(() => sib.before(el), el)
-        this.startY += el.getBoundingClientRect().top - Number(gsap.getProperty(el, 'y')) - base
-        gsap.set(el, { y: e.clientY - this.startY })
+        this.shift(el, () => sib.before(el), e.clientY)
+        break
       }
     }
+  }
+
+  private shift(el: HTMLElement, mutate: () => void, pointerY: number): void {
+    const base = el.getBoundingClientRect().top - Number(gsap.getProperty(el, 'y'))
+    this.flip(mutate, el)
+    this.startY += el.getBoundingClientRect().top - Number(gsap.getProperty(el, 'y')) - base
+    gsap.set(el, { y: pointerY - this.startY })
   }
 
   private onUp(): void {

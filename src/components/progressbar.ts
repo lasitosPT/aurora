@@ -65,7 +65,6 @@ export class AuroraProgressbar extends AuroraElement {
 
   private animateTo(target: number): void {
     const max = this.numberAttr('max', 100)
-    const frac = clamp(target / (max || 1), 0, 1)
     const fill = this.root.querySelector<HTMLElement>('.fill')
     const pct = this.root.querySelector('.pct')
     const apply = (v: number): void => {
@@ -88,7 +87,6 @@ export class AuroraProgressbar extends AuroraElement {
         apply(state.v)
       },
     })
-    void frac
   }
 }
 
