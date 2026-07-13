@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Sixty-six components.<br /><span class="grad">Every one of them live.</span>
+          Sixty-seven components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -615,7 +615,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Sixty-six components.</strong><br />
+                  <strong>Sixty-seven components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
@@ -938,6 +938,29 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>&lt;aurora-daterange name="stay"&gt;&lt;/aurora-daterange&gt;</pre>
+              </div>
+            </article>
+            <!-- Color picker -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Color picker</h3>
+                <code>&lt;aurora-colorpicker&gt;</code>
+              </div>
+              <div class="demo-desc">
+                HSV area, hue strip, hex field, swatches — form-associated.
+                <a href="./docs.html?c=aurora-colorpicker" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage">
+                <aurora-colorpicker
+                  id="catColor"
+                  value="#6d5cff"
+                  swatches="#6d5cff,#22d3ee,#34d399,#fbbf24,#f43f5e"
+                ></aurora-colorpicker>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-colorpicker value="#6d5cff" swatches="#6d5cff,#22d3ee"&gt;&lt;/aurora-colorpicker&gt;</pre>
               </div>
             </article>
             <!-- Rating -->

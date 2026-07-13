@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.39.0
+
+Color.
+
+- `aurora-colorpicker` — an HSV picker: CSS-gradient saturation/value area and hue strip
+  (no canvas), draggable and keyboard-adjustable handles, hex field with garbage
+  rejection, live preview, optional swatch presets with a pop on pick. Emits
+  `aurora-change` with the 6-digit hex and is form-associated via ElementInternals.
+  Ships with docs.
+
 ## 0.38.0
 
 The button family.

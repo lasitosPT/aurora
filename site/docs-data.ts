@@ -1429,6 +1429,28 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-colorpicker',
+    title: 'Color Picker',
+    category: 'Forms & Inputs',
+    summary:
+      'A full HSV picker built from CSS gradients — drag the area and hue strip, type a hex, or tap a swatch preset. Form-associated, keyboard-adjustable.',
+    example: `<aurora-colorpicker value="#6d5cff" swatches="#6d5cff,#22d3ee,#34d399,#fbbf24,#f43f5e"></aurora-colorpicker>`,
+    attributes: [
+      ['value', 'Initial 6-digit hex'],
+      ['swatches', 'Comma-separated hex presets'],
+      ['name', 'Form field name (submits the hex)'],
+    ],
+    events: [['aurora-change', '{ value } — on drag, arrows, hex commit, swatch']],
+    cssvars: [['--aurora-field / -border / -accent', 'Field and focus styling']],
+    methods: [['value', 'Get/set the current hex']],
+    tutorial: [
+      {
+        heading: '1 · Theme pickers',
+        text: 'Wire aurora-change to a CSS variable — document.documentElement.style.setProperty("--aurora-accent", e.detail.value) — and the whole library re-themes live.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
