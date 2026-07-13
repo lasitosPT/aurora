@@ -42,7 +42,7 @@ Calendar ✅ · DateRangePicker ✅ · Scheduler ✅ (`aurora-scheduler`, week v
 
 Button ✅ · ButtonGroup/SplitButton ✅ · Menu ✅ · Drawer ✅ · TreeView ✅ ·
 Stepper ✅ · Wizard ✅ · Breadcrumb ✅ · Chip/ChipList ✅ (`aurora-chips`) ·
-ContextMenu ✅ · AppBar/Toolbar ⬜
+ContextMenu ✅ · ToolBar ✅ (`aurora-toolbar`) · AppBar ⬜
 
 ## Layout
 
@@ -69,4 +69,4 @@ Chat ✅ · PDF Viewer ⬜
 
 ## Remaining candidates
 
-PivotGrid · Gantt · Rich Text Editor · AppBar/Toolbar · TileLayout · Map/Diagram · PDF Viewer
+PivotGrid · Gantt · Rich Text Editor · AppBar · TileLayout · Map/Diagram · PDF Viewer

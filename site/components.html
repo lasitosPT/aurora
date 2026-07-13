@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Eighty-eight components.<br /><span class="grad">Every one of them live.</span>
+          Eighty-nine components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -520,6 +520,36 @@ tree.items = [
 &lt;/aurora-contextmenu&gt;</pre>
               </div>
             </article>
+            <!-- ToolBar -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>ToolBar</h3>
+                <code>&lt;aurora-toolbar&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Separators, arrow-key roving, and a ⋯ overflow when space runs out.
+                <a href="./docs.html?c=aurora-toolbar" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-toolbar style="width: 100%; max-width: 460px">
+                  <aurora-button>Save</aurora-button>
+                  <aurora-button variant="ghost">Preview</aurora-button>
+                  <hr />
+                  <aurora-button variant="ghost">Export</aurora-button>
+                  <aurora-button variant="ghost">Share</aurora-button>
+                  <aurora-button variant="ghost">History</aurora-button>
+                </aurora-toolbar>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-toolbar&gt;
+  &lt;aurora-button&gt;Save&lt;/aurora-button&gt;
+  &lt;hr /&gt;
+  &lt;aurora-button variant="ghost"&gt;Export&lt;/aurora-button&gt;
+&lt;/aurora-toolbar&gt;</pre>
+              </div>
+            </article>
             <!-- Breadcrumb + Chips -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -772,7 +802,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Eighty-eight components.</strong><br />
+                  <strong>Eighty-nine components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

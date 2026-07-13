@@ -1971,6 +1971,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-toolbar',
+    title: 'ToolBar',
+    category: 'Actions & Navigation',
+    summary:
+      'A responsive toolbar — separators, arrow-key roving, and items that overflow into a "⋯" panel by slot reassignment, so nothing loses its event listeners.',
+    example: `<aurora-toolbar style="max-width:420px">\n  <aurora-button>Save</aurora-button>\n  <aurora-button variant="ghost">Preview</aurora-button>\n  <hr />\n  <aurora-button variant="ghost">Export</aurora-button>\n  <aurora-button variant="ghost">Share</aurora-button>\n</aurora-toolbar>`,
+    attributes: [
+      ['hr children', 'Vertical separators'],
+      ['overflowing (reflected)', 'Present while the ⋯ panel holds items'],
+    ],
+    events: [],
+    cssvars: [['--aurora-surface / -border / -menu-z', 'Bar and panel styling']],
+    methods: [['recalc()', 'Force the overflow computation (runs on resize automatically)']],
+    tutorial: [
+      {
+        heading: '1 · Editors and headers',
+        text: 'Fill it with aurora-buttons, buttongroups, or selects — resize the window and watch the tail collapse into ⋯ without re-wiring anything.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

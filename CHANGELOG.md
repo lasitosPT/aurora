@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.59.0
+
+Tools in a row.
+
+- `aurora-toolbar` — WAI-ARIA toolbar with arrow-key roving, `<hr>` separators, and
+  responsive overflow: items that no longer fit are reassigned into a "⋯" panel via
+  slot switching (no DOM moves, so their event listeners survive). Ships with docs.
+
 ## 0.58.0
 
 The validation harness.
