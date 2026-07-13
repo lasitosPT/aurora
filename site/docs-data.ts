@@ -1550,6 +1550,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-timeline',
+    title: 'Timeline',
+    category: 'Scroll & Page',
+    summary:
+      'A vertical milestone timeline — the spine draws itself as it scrolls into view, dots pop, and each card slides in when it becomes visible.',
+    example: `<aurora-timeline>\n  <aurora-timeline-item date="Jan 2026" heading="v0.1 — foundation">Five GSAP components and a base class.</aurora-timeline-item>\n  <aurora-timeline-item date="Apr 2026" heading="The enterprise track" color="#22d3ee">Grid, editors, scheduler.</aurora-timeline-item>\n  <aurora-timeline-item date="Jul 2026" heading="Seventy-two components" color="#34d399">TreeList closes the catalogue's big rocks.</aurora-timeline-item>\n</aurora-timeline>`,
+    attributes: [
+      ['item: date / heading', 'Milestone label and title'],
+      ['item: color', 'Dot tint for that milestone'],
+    ],
+    events: [],
+    cssvars: [['--aurora-timeline-dot / -surface / -border', 'Dot and card theming']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Changelogs that sell',
+        text: 'Body content is slotted HTML — drop in links, code, even other aurora components. Each item reveals independently, so long histories stay lively.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

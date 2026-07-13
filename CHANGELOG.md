@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.43.0
+
+Milestones.
+
+- `aurora-timeline` + `aurora-timeline-item` — a vertical milestone timeline: gradient
+  spine that draws itself on scroll into view, dots that pop, cards that slide in per
+  item. Dates, headings, slotted bodies, per-item dot colors, list semantics, full
+  reduced-motion path. Ships with docs.
+
 ## 0.42.0
 
 The last big rock: TreeList.

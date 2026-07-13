@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Seventy-one components.<br /><span class="grad">Every one of them live.</span>
+          Seventy-two components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -654,7 +654,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Seventy-one components.</strong><br />
+                  <strong>Seventy-two components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
@@ -1550,6 +1550,45 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>&lt;aurora-progress&gt;&lt;/aurora-progress&gt;</pre>
+              </div>
+            </article>
+            <!-- Timeline -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Timeline</h3>
+                <code>&lt;aurora-timeline&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Milestones with a self-drawing spine — items slide in as you scroll.
+                <a href="./docs.html?c=aurora-timeline" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-timeline style="width: 100%; max-width: 460px">
+                  <aurora-timeline-item date="Jan 2026" heading="v0.1 — foundation">
+                    Five GSAP components and a base class.
+                  </aurora-timeline-item>
+                  <aurora-timeline-item
+                    date="Apr 2026"
+                    heading="The enterprise track"
+                    color="#22d3ee"
+                  >
+                    Grid, editors, calendar suite, scheduler.
+                  </aurora-timeline-item>
+                  <aurora-timeline-item
+                    date="Jul 2026"
+                    heading="Seventy-two components"
+                    color="#34d399"
+                  >
+                    TreeList closes the catalogue's big rocks.
+                  </aurora-timeline-item>
+                </aurora-timeline>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-timeline&gt;
+  &lt;aurora-timeline-item date="Jan 2026" heading="v0.1"&gt;…&lt;/aurora-timeline-item&gt;
+&lt;/aurora-timeline&gt;</pre>
               </div>
             </article>
             <!-- Cursor -->
