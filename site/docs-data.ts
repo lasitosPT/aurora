@@ -1671,6 +1671,28 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-chat',
+    title: 'Chat',
+    category: 'Enterprise & Data',
+    summary:
+      'A conversation view with sided bubbles, avatar initials, a typing indicator, and a composer — wire aurora-send to your backend and messages spring in.',
+    example: `<aurora-chat id="docChat" style="width:100%;max-width:420px"></aurora-chat>`,
+    attributes: [
+      ['messages (property)', '{ text, who: "me"|"them", name?, time? }[]'],
+      ['typing', 'Shows the bouncing indicator'],
+      ['placeholder / send-label', 'Composer text'],
+    ],
+    events: [['aurora-send', '{ text } — after local echo']],
+    cssvars: [['--aurora-chat-height / -accent / -field', 'Sizing and bubble colors']],
+    methods: [['add(msg)', 'Append one message (animates in)']],
+    tutorial: [
+      {
+        heading: '1 · Bots and support',
+        text: 'On aurora-send, POST to your backend, flip the typing attribute on, then add() the reply and flip it off — the whole conversational loop in three lines.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

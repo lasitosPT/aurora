@@ -272,6 +272,33 @@ if (catListview) {
   catListview.data = LV_DATA
 }
 
+/* ---------- chat demo ---------- */
+import type { AuroraChat } from 'aurora'
+const CHAT_SEED = [
+  { text: 'Hey! Have you seen auroralib.com?', who: 'them' as const, name: 'Ada', time: '09:12' },
+  { text: 'Installing it right now.', who: 'me' as const, time: '09:13' },
+]
+const CHAT_REPLIES = [
+  'Nice — try dragging the Sortable cards.',
+  'The QR encoder is written from scratch, scan it!',
+  'Seventy-seven components and counting.',
+  'Everything animates. Everything.',
+]
+function wireChat(chat: AuroraChat | null): void {
+  if (!chat) return
+  chat.messages = [...CHAT_SEED]
+  let i = 0
+  chat.addEventListener('aurora-send', () => {
+    chat.setAttribute('typing', '')
+    window.setTimeout(() => {
+      chat.removeAttribute('typing')
+      chat.add({ text: CHAT_REPLIES[i % CHAT_REPLIES.length] ?? '', who: 'them', name: 'Ada' })
+      i++
+    }, 900)
+  })
+}
+wireChat(document.getElementById('catChat') as AuroraChat | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -585,6 +612,7 @@ if (docRoot) {
         },
         { title: 'Ship v1', start: '2026-07-17T16:00', end: '2026-07-17T17:00', color: '#34d399' },
       ]
+    wireChat(document.getElementById('docChat') as AuroraChat | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

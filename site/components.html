@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Seventy-six components.<br /><span class="grad">Every one of them live.</span>
+          Seventy-seven components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -157,6 +157,26 @@ list.data = rows // nested children or flat id/parentId</pre>
                 <pre>
 list.template = (row) => `&lt;strong&gt;${row.name}&lt;/strong&gt; — ${row.role}`
 list.data = people</pre>
+              </div>
+            </article>
+            <!-- Chat -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Chat</h3>
+                <code>&lt;aurora-chat&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Send a message — the demo bot types back.
+                <a href="./docs.html?c=aurora-chat" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-chat id="catChat" style="width: 100%; max-width: 460px"></aurora-chat>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+chat.add({ text: 'Hi!', who: 'them', name: 'Ada' })
+chat.addEventListener('aurora-send', (e) => bot.reply(e.detail.text))</pre>
               </div>
             </article>
             <!-- Sparkline -->
@@ -712,7 +732,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Seventy-six components.</strong><br />
+                  <strong>Seventy-seven components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.48.0
+
+Conversational UI.
+
+- `aurora-chat` — a conversation view: me/them bubbles with composed `aurora-avatar`
+  initials, names and times, a bouncing typing indicator behind the `typing`
+  attribute, auto-scroll, spring-in message entrances, and a composer that
+  locally echoes and emits `aurora-send`. Feed history via `messages`, append with
+  `add()`. Ships with docs.
+
 ## 0.47.0
 
 Drag to reorder.
