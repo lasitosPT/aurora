@@ -1858,6 +1858,31 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-combobox',
+    title: 'ComboBox',
+    category: 'Forms & Inputs',
+    summary:
+      "Between a select and an autocomplete: filter the list as you type, or let users commit values that aren't in it at all with allow-custom.",
+    example: `<aurora-combobox label="Language" placeholder="Pick or type…" allow-custom>\n  <option>TypeScript</option>\n  <option>JavaScript</option>\n  <option>Go</option>\n  <option>Rust</option>\n</aurora-combobox>`,
+    attributes: [
+      ['options (property) / option children', 'The list'],
+      ['allow-custom', 'Free text becomes a legal value'],
+      ['label / placeholder / value / name', 'Field chrome and form wiring'],
+    ],
+    events: [['aurora-change', '{ value, custom } — custom is true for free text']],
+    cssvars: [['--aurora-field / -surface / -accent2', 'Field, panel, highlight']],
+    methods: [
+      ['value / options', 'Get/set'],
+      ['open() / close()', 'Panel control'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Tags and one-offs',
+        text: 'Use allow-custom for tag pickers — known tags autocomplete, new ones commit inline, and the custom flag tells your backend which is which.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.55.0
+
+Type or pick.
+
+- `aurora-combobox` — a text input married to a dropdown: type to filter with
+  highlighted matches, pick with arrows/Enter/click, and with `allow-custom` any free
+  text commits as the value (flagged `custom` in the event). Options from `<option>`
+  children or the `options` property; form-associated. Ships with docs.
+
 ## 0.54.0
 
 Ranges.

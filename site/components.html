@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Eighty-four components.<br /><span class="grad">Every one of them live.</span>
+          Eighty-five components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -772,7 +772,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Eighty-four components.</strong><br />
+                  <strong>Eighty-five components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
@@ -1118,6 +1118,33 @@ AuroraConfetti.burst({ count: 120 })</pre>
                 <pre>
 &lt;aurora-autocomplete placeholder="Search…"&gt;&lt;/aurora-autocomplete&gt;
 ac.options = ['TypeScript', 'Go', 'Rust']</pre>
+              </div>
+            </article>
+            <!-- ComboBox -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>ComboBox</h3>
+                <code>&lt;aurora-combobox&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Filter the list or type your own — free text commits with allow-custom.
+                <a href="./docs.html?c=aurora-combobox" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage">
+                <aurora-combobox label="Language" placeholder="Pick or type…" allow-custom>
+                  <option>TypeScript</option>
+                  <option>JavaScript</option>
+                  <option>Go</option>
+                  <option>Rust</option>
+                  <option>Python</option>
+                </aurora-combobox>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-combobox allow-custom&gt;
+  &lt;option&gt;TypeScript&lt;/option&gt;
+&lt;/aurora-combobox&gt;</pre>
               </div>
             </article>
             <!-- Multiselect -->

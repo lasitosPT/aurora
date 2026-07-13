@@ -25,6 +25,7 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 | Switch / Checkbox / RadioGroup             | ✅     | `aurora-switch` / `-checkbox` / `-radiogroup`      |
 | Slider / RangeSlider                       | ✅     | `aurora-slider` / `aurora-rangeslider`             |
 | AutoComplete / DropDownList / MultiSelect  | ✅     | `aurora-autocomplete` / `-select` / `-multiselect` |
+| ComboBox (free text + list)                | ✅     | `aurora-combobox`                                  |
 | NumericTextBox / MaskedTextBox / OTP Input | ✅     | `aurora-numeric` / `-masked` / `-otp`              |
 | Calendar / DatePicker / TimePicker         | ✅     | `aurora-calendar` / `-datepicker` / `-timepicker`  |
 | DateRangePicker                            | ✅     | `aurora-daterange`                                 |
