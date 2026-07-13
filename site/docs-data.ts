@@ -1136,6 +1136,211 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-compare',
+    title: 'Compare',
+    category: 'Motion & Interaction',
+    summary: 'A before/after slider — drag the divider or drive the keyboard-accessible handle.',
+    example: `<aurora-compare value="50" style="height:200px">\n  <img slot="before" src="./og.jpg" alt="" style="filter:grayscale(1)" />\n  <img slot="after" src="./og.jpg" alt="" />\n</aurora-compare>`,
+    attributes: [['value', 'Divider position 0–100 (default 50)']],
+    events: [['aurora-change', '{ value }']],
+    cssvars: [['--aurora-accent / -surface', 'Handle styling']],
+    methods: [['value', 'Get/set the position']],
+    tutorial: [
+      {
+        heading: '1 · Any two layers',
+        text: 'Slots take any content — images, maps, themed variants of the same UI.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-flip',
+    title: 'Flip Card',
+    category: 'Motion & Interaction',
+    summary: 'A 3D flip between two faces — hover, click, or manual triggering.',
+    example: `<aurora-flip>\n  <div slot="front" class="card">Hover to flip ✦</div>\n  <div slot="back" class="card">The back.</div>\n</aurora-flip>`,
+    attributes: [['trigger', '"hover" (default), "click", or "manual"']],
+    events: [['aurora-flip', '{ flipped }']],
+    cssvars: [],
+    methods: [['flip(force?)', 'Toggle or set a side']],
+    tutorial: [
+      {
+        heading: '1 · Front sets the size',
+        text: 'The back face fills the front’s box — keep both faces similar in content volume.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-skeleton',
+    title: 'Skeleton',
+    category: 'Overlays & Feedback',
+    summary:
+      'Shimmering loading placeholders — block, circle, or paragraph lines with a short last line.',
+    example: `<div style="display:flex;gap:14px;max-width:340px">\n  <aurora-skeleton circle style="width:44px;height:44px;flex:none"></aurora-skeleton>\n  <aurora-skeleton lines="3" style="flex:1"></aurora-skeleton>\n</div>`,
+    attributes: [
+      ['lines', 'Paragraph mode with n bars'],
+      ['circle', 'Avatar mode'],
+    ],
+    events: [],
+    cssvars: [['--aurora-skeleton-base / -shine / -radius', 'Colors and shape']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Match the layout',
+        text: 'Mirror the real content’s shapes so the swap-in does not jump.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-confetti',
+    title: 'Confetti',
+    category: 'Overlays & Feedback',
+    summary:
+      'A celebration cannon on a full-viewport canvas — gravity, drag, spin, and a self-stopping loop.',
+    example: `<aurora-button onclick="AuroraConfetti.burst({ count: 120 })">Celebrate 🎉</aurora-button>`,
+    attributes: [],
+    events: [],
+    cssvars: [['--aurora-confetti-z', 'Overlay layering']],
+    methods: [
+      [
+        'burst({ x, y, count, colors }) / static AuroraConfetti.burst()',
+        'Fire from a point (defaults to upper middle)',
+      ],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Aim it',
+        text: 'Pass the button’s rect center as x/y so the burst erupts from the click.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-beam',
+    title: 'Border Beam',
+    category: 'Visual & 3D',
+    summary:
+      'A luminous beam travelling the border of any card, continuously — no cursor required.',
+    example: `<aurora-beam speed="4" style="border-radius:16px">\n  <div style="padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px">Always in motion.</div>\n</aurora-beam>`,
+    attributes: [['speed', 'Seconds per lap (default 5)']],
+    events: [],
+    cssvars: [['--aurora-beam-color / -color2 / -thickness / -angle', 'Beam palette and width']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Spotlight’s sibling',
+        text: 'Spotlight follows the cursor; the beam runs on its own — pick per context.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-parallax',
+    title: 'Parallax',
+    category: 'Motion & Interaction',
+    summary:
+      'Children with data-depth drift toward the pointer at their own depth and settle back on leave.',
+    example: `<aurora-parallax strength="30" style="height:150px;display:grid;place-items:center">\n  <span data-depth="0.3">back</span>\n  <strong data-depth="0.9">front</strong>\n</aurora-parallax>`,
+    attributes: [['strength', 'Max travel px (default 24)']],
+    events: [],
+    cssvars: [],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Depth 0–1',
+        text: 'Small depths barely move (background), 1 rides the pointer (foreground).',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-shine',
+    title: 'Shine',
+    category: 'Text & Typography',
+    summary: 'A soft highlight sweeps across text on a loop — quiet emphasis for headings.',
+    example: `<aurora-shine speed="2.6" style="font-size:1.7rem;font-weight:700">Polished by default.</aurora-shine>`,
+    attributes: [['speed', 'Seconds per sweep (default 3)']],
+    events: [],
+    cssvars: [['--aurora-shine-color / -highlight', 'Base and sweep colors']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Static under reduced motion',
+        text: 'The sweep pauses for reduced-motion users; the text stays styled.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-lens',
+    title: 'Lens',
+    category: 'Visual & 3D',
+    summary:
+      'An image that liquifies toward the cursor with a chromatic fringe — raw WebGL over a real <img> that keeps a11y, SEO, and no-WebGL environments intact.',
+    example: `<aurora-lens src="./og.jpg" alt="Aurora artwork" style="height:220px;display:block;border-radius:14px;overflow:hidden"></aurora-lens>`,
+    attributes: [
+      ['src / alt / crossorigin', 'The image (alt is required manners)'],
+      ['strength', 'Distortion multiplier'],
+    ],
+    events: [],
+    cssvars: [],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Progressive by design',
+        text: 'GPU work defers until visible and rebuilds on context restore; without WebGL, the plain image simply shows.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-scene',
+    title: '3D Scene',
+    category: 'Visual & 3D',
+    summary: 'A rotating wireframe icosahedron backdrop — the original aurora/three component.',
+    example: `<aurora-scene color="#6d5cff" speed="1.2" style="height:220px"></aurora-scene>`,
+    attributes: [['color / detail / speed', 'Wireframe styling and rotation']],
+    events: [],
+    cssvars: [],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Opt-in entry',
+        text: "import 'aurora/three' registers it — the core bundle never pays for Three.js.",
+      },
+    ],
+  },
+  {
+    tag: 'aurora-particles',
+    title: 'Particles',
+    category: 'Visual & 3D',
+    summary:
+      'A drifting GPU particle field with additive glow, a two-tone gradient, and pointer parallax.',
+    example: `<aurora-particles count="2200" color="#6d5cff" color2="#22d3ee" style="height:240px"></aurora-particles>`,
+    attributes: [['count / color / color2 / size / speed', 'Field density, palette, motion']],
+    events: [],
+    cssvars: [],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Also on aurora/three',
+        text: 'Lazy-load the entry as the section approaches — exactly what this site does.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-wave',
+    title: 'Wave',
+    category: 'Visual & 3D',
+    summary:
+      'A wireframe ocean — travelling sine waves across a displaced plane, viewed from a low angle.',
+    example: `<aurora-wave speed="1" amplitude="0.4" style="height:240px"></aurora-wave>`,
+    attributes: [['color / speed / amplitude / opacity', 'Grid palette and wave motion']],
+    events: [],
+    cssvars: [],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Hold still politely',
+        text: 'Reduced-motion users get a single displaced frame — the geometry, without the churn.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
