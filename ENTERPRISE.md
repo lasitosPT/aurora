@@ -36,7 +36,7 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 
 ## Scheduling
 
-Calendar ✅ · DateRangePicker ✅ · Scheduler ✅ (`aurora-scheduler`, week view) · Gantt ⬜
+Calendar ✅ · DateRangePicker ✅ · Scheduler ✅ (`aurora-scheduler`, day/week/month/agenda views) · Gantt ⬜
 
 ## Navigation
 

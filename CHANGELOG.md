@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.61.0
+
+Scheduler views.
+
+- `aurora-scheduler` grows `day`, `month`, and `agenda` views alongside `week`: a
+  single-column day grid, calendar cells with event chips and a "+N more" tail, and a
+  grouped fourteen-day agenda list. The toolbar switches views inline and pages by the
+  view's unit; `aurora-range` now reports `{ start, view }`.
+
 ## 0.60.0
 
 Chart types wave.
