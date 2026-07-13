@@ -66,6 +66,7 @@ const STYLE = `
  */
 export class AuroraTilelayout extends AuroraElement {
   private dragEl: HTMLElement | null = null
+  private lastSwap: HTMLElement | null = null
   private startX = 0
   private startY = 0
 
@@ -115,6 +116,17 @@ export class AuroraTilelayout extends AuroraElement {
     const el = this.dragEl
     if (!el) return
     gsap.set(el, { x: e.clientX - this.startX, y: e.clientY - this.startY })
+    if (this.lastSwap) {
+      const lr = this.lastSwap.getBoundingClientRect()
+      if (
+        e.clientX >= lr.left &&
+        e.clientX <= lr.right &&
+        e.clientY >= lr.top &&
+        e.clientY <= lr.bottom
+      )
+        return
+      this.lastSwap = null
+    }
     for (const sib of this.tiles()) {
       if (sib === el) continue
       const r = sib.getBoundingClientRect()
@@ -132,6 +144,7 @@ export class AuroraTilelayout extends AuroraElement {
       this.startX += el.getBoundingClientRect().left - Number(gsap.getProperty(el, 'x')) - baseX
       this.startY += el.getBoundingClientRect().top - Number(gsap.getProperty(el, 'y')) - baseY
       gsap.set(el, { x: e.clientX - this.startX, y: e.clientY - this.startY })
+      this.lastSwap = sib
       break
     }
   }
@@ -140,6 +153,7 @@ export class AuroraTilelayout extends AuroraElement {
     const el = this.dragEl
     if (!el) return
     this.dragEl = null
+    this.lastSwap = null
     el.classList.remove('aurora-dragging')
     if (prefersReducedMotion()) gsap.set(el, { x: 0, y: 0, scale: 1 })
     else gsap.to(el, { x: 0, y: 0, scale: 1, duration: 0.3, ease: 'power3.out' })
