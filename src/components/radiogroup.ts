@@ -76,7 +76,7 @@ export class AuroraRadiogroup extends AuroraElement {
       opt.querySelector('.dot')?.addEventListener('keydown', (e) => {
         const key = (e as KeyboardEvent).key
         const idx = this.opts.findIndex((o) => o.value === (this.current || this.opts[0]?.value))
-        let next = -1
+        let next: number
         if (key === 'ArrowDown' || key === 'ArrowRight') next = (idx + 1) % this.opts.length
         else if (key === 'ArrowUp' || key === 'ArrowLeft')
           next = (idx + this.opts.length - 1) % this.opts.length
@@ -99,9 +99,9 @@ export class AuroraRadiogroup extends AuroraElement {
     if (v === this.current) return
     this.current = v
     this.sync()
-    const dot = this.root.querySelector(`.opt[data-v="${CSS.escape(v)}"] .dot i`)
+    const dot = this.root.querySelector(`.opt[data-v="${CSS.escape(v)}"] .dot`)
     if (dot && !prefersReducedMotion())
-      gsap.fromTo(dot, { scale: 0.4 }, { scale: 1, duration: 0.28, ease: 'back.out(3)' })
+      gsap.fromTo(dot, { scale: 0.82 }, { scale: 1, duration: 0.28, ease: 'back.out(3)' })
     this.dispatchEvent(new CustomEvent('aurora-change', { detail: { value: v } }))
   }
 
