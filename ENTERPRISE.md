@@ -33,7 +33,7 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 | DateRangePicker / DateTimePicker           | ✅     | `aurora-daterange` / `aurora-datetimepicker`       |
 | ColorPicker                                | ✅     | `aurora-colorpicker`                               |
 | Rating / Signature                         | ✅     | `aurora-rating` / `aurora-signature`               |
-| Rich Text Editor                           | ⬜     |                                                    |
+| Rich Text Editor                           | ✅     | `aurora-editor`                                    |
 
 ## Scheduling
 
@@ -70,4 +70,4 @@ Chat ✅ · PDF Viewer ⬜
 
 ## Remaining candidates
 
-Rich Text Editor · Map/Diagram · PDF Viewer · Spreadsheet · gantt drag-edit · grid popup edit
+Map/Diagram · PDF Viewer · Spreadsheet · MediaPlayer · gantt drag-edit · grid popup edit

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.67.0
+
+Rich text.
+
+- `aurora-editor` — a rich text editor over contenteditable: bold, italic, underline,
+  strikethrough, headings, quotes, bullet and numbered lists, links, and clear
+  formatting, with active-state toolbar buttons, ⌘/Ctrl shortcuts, a placeholder, and
+  HTML in/out through `value`. Form-associated; emits `aurora-change` while typing.
+  Ships with docs.
+
 ## 0.66.0
 
 The last data rock: PivotGrid.

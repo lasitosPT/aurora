@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Ninety-four components.<br /><span class="grad">Every one of them live.</span>
+          Ninety-five components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -931,7 +931,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Ninety-four components.</strong><br />
+                  <strong>Ninety-five components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
@@ -1237,6 +1237,30 @@ form.addEventListener('aurora-submit', (e) => save(e.detail.data))</pre>
                 <button class="copy">Copy</button>
                 <pre>
 &lt;aurora-textarea label="Bio" maxlength="280"&gt;&lt;/aurora-textarea&gt;</pre>
+              </div>
+            </article>
+            <!-- Rich text editor -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Rich Text Editor</h3>
+                <code>&lt;aurora-editor&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Marks, headings, lists, links — select some text and try the toolbar.
+                <a href="./docs.html?c=aurora-editor" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-editor style="width: 100%; max-width: 540px">
+                  <p>
+                    Aurora now ships <b>ninety-five components</b> — select this text and make it
+                    <i>yours</i>.
+                  </p>
+                </aurora-editor>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-editor name="body" placeholder="Write…"&gt;&lt;/aurora-editor&gt;</pre>
               </div>
             </article>
             <!-- Range slider -->

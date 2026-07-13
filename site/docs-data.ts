@@ -2106,6 +2106,31 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-editor',
+    title: 'Rich Text Editor',
+    category: 'Forms & Inputs',
+    summary:
+      'A contenteditable editor with a stateful toolbar — inline marks, headings, quotes, lists, and links, submitting its HTML with your form.',
+    example: `<aurora-editor placeholder="Write your update…" style="width:100%;max-width:520px">\n  <p>Aurora now has <b>ninety-five</b> components.</p>\n</aurora-editor>`,
+    attributes: [
+      ['value / light-DOM children', 'Initial HTML'],
+      ['placeholder', 'Empty-state hint'],
+      ['name', 'Form field name (submits HTML)'],
+    ],
+    events: [['aurora-change', '{ value } — the HTML, as you type']],
+    cssvars: [['--aurora-editor-height', 'Minimum page height (default 180px)']],
+    methods: [
+      ['value', 'HTML in/out'],
+      ['format(cmd, arg?)', 'Run a command against the selection'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Comments and CMS fields',
+        text: "Toolbar buttons reflect the caret's state as you move through the document; ⌘B/⌘I/⌘U work as expected.",
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
