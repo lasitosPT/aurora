@@ -74,9 +74,13 @@ export class AuroraDaterange extends AuroraElement {
   }
 
   connectedCallback(): void {
-    this.a = this.getAttribute('start')
-    this.b = this.getAttribute('end')
-    if (this.a) this.cursor = new Date(`${this.a}T00:00`)
+    const startAttr = this.getAttribute('start')
+    const endAttr = this.getAttribute('end')
+    if (startAttr && endAttr) {
+      this.a = startAttr
+      this.b = endAttr
+    }
+    if (startAttr) this.cursor = new Date(`${startAttr}T00:00`)
     this.root.innerHTML = `<style>${STYLE}</style><button class="trigger" part="trigger" aria-haspopup="dialog" aria-expanded="false"><span class="label ph">${escapeHtml(this.getAttribute('placeholder') ?? 'Pick a range')}</span><span aria-hidden="true">▾</span></button><div class="pop" part="pop" role="dialog"></div>`
     this.root.querySelector('.trigger')?.addEventListener('click', () => this.toggle())
     this.addEventListener('keydown', (e) => {
