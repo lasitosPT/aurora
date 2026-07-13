@@ -1317,3 +1317,11 @@ footer {
     transform: none;
   }
 }
+
+.sort-card {
+  padding: 13px 17px;
+  border-radius: 12px;
+  background: var(--surface, #14141f);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  font-size: 0.93rem;
+}

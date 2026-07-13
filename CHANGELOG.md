@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.47.0
+
+Drag to reorder.
+
+- `aurora-sortable` — wraps any children in a drag-to-reorder list: pointer drags lift
+  the item (scale + shadow) while siblings FLIP out of the way, keyboard users move the
+  focused item with Ctrl/⌘ + arrows, `move(from, to)` reorders programmatically, and
+  every change emits `aurora-reorder`. Ships with docs.
+
 ## 0.46.0
 
 Lists, templated.

@@ -1650,6 +1650,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-sortable',
+    title: 'Sortable',
+    category: 'Motion & Interaction',
+    summary:
+      'Drag-to-reorder for anything — the lifted item floats with a shadow while its siblings FLIP smoothly out of the way. Keyboard: Ctrl/⌘ + arrows.',
+    example: `<aurora-sortable style="display:grid;gap:10px;width:100%;max-width:380px">\n  <div class="row-card">Design the API</div>\n  <div class="row-card">Write the tests</div>\n  <div class="row-card">Ship it</div>\n</aurora-sortable>`,
+    attributes: [],
+    events: [['aurora-reorder', '{ from, to, item } — from is -1 for pointer drops']],
+    cssvars: [],
+    methods: [
+      ['move(from, to)', 'Programmatic reorder'],
+      ['items()', 'Current order'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Task boards and playlists',
+        text: 'Persist order in the aurora-reorder handler — read items() and save their ids. Works with any child markup, cards included.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
