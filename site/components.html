@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Ninety components.<br /><span class="grad">Every one of them live.</span>
+          Ninety-one components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -585,6 +585,37 @@ tree.items = [
 &lt;/aurora-toolbar&gt;</pre>
               </div>
             </article>
+            <!-- AppBar -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>AppBar</h3>
+                <code>&lt;aurora-appbar&gt;</code>
+              </div>
+              <div class="demo-desc">
+                A frosted sticky header — elevates on scroll, optional duck-away.
+                <a href="./docs.html?c=aurora-appbar" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-appbar
+                  elevated
+                  style="position: relative; width: 100%; border-radius: 12px; overflow: hidden"
+                >
+                  <strong slot="start">aurora</strong>
+                  <span style="color: var(--muted); font-size: 0.9rem"
+                    >Docs · Components · Pricing</span
+                  >
+                  <aurora-button slot="end">Sign in</aurora-button>
+                </aurora-appbar>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-appbar hide-on-scroll&gt;
+  &lt;strong slot="start"&gt;aurora&lt;/strong&gt;
+  &lt;aurora-button slot="end"&gt;Sign in&lt;/aurora-button&gt;
+&lt;/aurora-appbar&gt;</pre>
+              </div>
+            </article>
             <!-- Breadcrumb + Chips -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -837,7 +868,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Ninety components.</strong><br />
+                  <strong>Ninety-one components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

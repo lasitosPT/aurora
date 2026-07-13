@@ -2014,6 +2014,33 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-appbar',
+    title: 'AppBar',
+    category: 'Actions & Navigation',
+    summary:
+      'A sticky frosted-glass header with three slot regions — it elevates once the page scrolls and can duck away on downward scroll.',
+    example: `<aurora-appbar style="position:relative">\n  <strong slot="start">aurora</strong>\n  <span>Docs · Components · Pricing</span>\n  <aurora-button slot="end">Sign in</aurora-button>\n</aurora-appbar>`,
+    attributes: [
+      ['slot="start" / (default) / slot="end"', 'Left, center, right regions'],
+      ['hide-on-scroll', 'Slide away scrolling down, return scrolling up'],
+      ['elevated (reflected)', 'Present once scrolled — styling hook'],
+    ],
+    events: [],
+    cssvars: [
+      [
+        '--aurora-appbar-z / -pad / -width / -center',
+        'Stacking, padding, max width, center alignment',
+      ],
+    ],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Pair with progress',
+        text: 'Drop an aurora-progress scroll hairline directly under the appbar for the classic docs-site header.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

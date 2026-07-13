@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.63.0
+
+The header.
+
+- `aurora-appbar` — a sticky frosted-glass application header with start/center/end
+  slots, an elevation shadow that appears on scroll, and `hide-on-scroll` (slides away
+  going down, returns going up). Ships with docs.
+
 ## 0.62.0
 
 Dashboards.
