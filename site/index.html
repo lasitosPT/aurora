@@ -74,13 +74,14 @@
           <span class="dot"></span> Open source · MIT · 105 components
         </p>
         <h1 class="hero-title">
-          <span class="line">Motion,</span>
-          <span class="line">built into</span>
-          <span class="line line-grad"><span class="inner grad">the platform.</span></span>
+          <span class="line">Enterprise UI</span>
+          <span class="line">that moves like</span>
+          <span class="line line-grad"><span class="inner grad">it means it.</span></span>
         </h1>
         <p class="lead" data-intro>
-          A library of animated UI components, shipped as native Web Components. GSAP motion,
-          Three.js 3D, CSS theming — in React, Vue, Svelte, or plain HTML. No wrappers. No config.
+          105 components — data grids to gauges, schedulers to signature pads — shipped as native
+          Web Components with GSAP motion built in. React, Vue, Svelte, or plain HTML. No wrappers.
+          No config.
         </p>
         <div class="hero-cta" data-intro>
           <aurora-magnetic strength="0.4">
@@ -105,8 +106,9 @@
     <!-- ---------- Marquee band ---------- -->
     <div class="band" aria-hidden="true">
       <aurora-marquee speed="60" class="outline-marquee"
-        >GSAP&ensp;✦&ensp;Three.js&ensp;✦&ensp;Web Components&ensp;✦&ensp;Zero
-        wrappers&ensp;✦&ensp;MIT&ensp;✦&ensp;</aurora-marquee
+        >Data
+        Grid&ensp;✦&ensp;Scheduler&ensp;✦&ensp;Gantt&ensp;✦&ensp;PivotGrid&ensp;✦&ensp;GSAP&ensp;✦&ensp;Three.js&ensp;✦&ensp;Web
+        Components&ensp;✦&ensp;MIT&ensp;✦&ensp;</aurora-marquee
       >
       <aurora-marquee speed="110" class="outline-marquee fill"
         >React&ensp;✦&ensp;Vue&ensp;✦&ensp;Svelte&ensp;✦&ensp;Plain
@@ -330,10 +332,67 @@
       </section>
 
       <!-- ---------- Components ---------- -->
+      <!-- ---------- Dashboard showcase ---------- -->
+      <section class="block" id="showcase">
+        <div class="inner">
+          <p class="kicker" data-reveal>03 · In practice</p>
+          <h2 class="section-title" data-reveal>One import. A whole product.</h2>
+          <p class="manifesto-sub" data-reveal style="max-width: 560px">
+            Everything below is aurora — the tiles, the grid, the chart, the gauges, the badges.
+            Drag a tile by its header. Sort the grid. It's all live.
+          </p>
+          <aurora-tilelayout columns="4" id="showcaseDash" data-reveal style="margin-top: 34px">
+            <aurora-tile heading="Revenue" colspan="2" rowspan="2">
+              <aurora-chart
+                id="showChart"
+                type="area"
+                style="--aurora-chart-height: 190px"
+              ></aurora-chart>
+            </aurora-tile>
+            <aurora-tile heading="Uptime">
+              <aurora-gauge
+                type="arc"
+                value="99"
+                unit="%"
+                style="width: 110px; margin: 0 auto"
+              ></aurora-gauge>
+            </aurora-tile>
+            <aurora-tile heading="Error budget">
+              <aurora-gauge
+                type="linear"
+                value="34"
+                unit="%"
+                style="--aurora-gauge-color: #f5b83d; width: 100%"
+              ></aurora-gauge>
+            </aurora-tile>
+            <aurora-tile heading="Traffic">
+              <aurora-sparkline
+                id="showSpark"
+                type="area"
+                style="width: 100%; height: 52px"
+              ></aurora-sparkline>
+            </aurora-tile>
+            <aurora-tile heading="Alerts">
+              <div style="display: flex; gap: 18px; align-items: center; padding-top: 4px">
+                <aurora-badge value="3" tone="danger"
+                  ><span style="color: var(--muted)">Open</span></aurora-badge
+                >
+                <aurora-badge value="12" tone="success"
+                  ><span style="color: var(--muted)">Resolved</span></aurora-badge
+                >
+              </div>
+            </aurora-tile>
+            <aurora-tile heading="Deployments" colspan="4">
+              <aurora-grid id="showGrid" dense style="--aurora-grid-height: 220px"></aurora-grid>
+            </aurora-tile>
+          </aurora-tilelayout>
+        </div>
+      </section>
+
       <section class="block" id="components">
         <div class="wrap gallery">
           <aside class="gallery-side">
-            <p class="kicker" data-reveal>03 · Components</p>
+            <p class="kicker" data-reveal>04 · Components</p>
             <h2 class="section-title" data-reveal>
               One hundred and five components.<br />One import.
             </h2>
@@ -597,7 +656,7 @@ AuroraToaster.show('Everything is live.', {
       <!-- ---------- Install ---------- -->
       <section class="block" id="install">
         <div class="wrap">
-          <p class="kicker" data-reveal>04 · Install</p>
+          <p class="kicker" data-reveal>05 · Install</p>
           <h2 class="section-title" data-reveal>Up and running in two lines.</h2>
           <div class="usage-grid">
             <div class="usage-card" data-reveal>
@@ -640,7 +699,7 @@ export function Hero() {
       <!-- ---------- Theming ---------- -->
       <section class="block" id="theming">
         <div class="wrap">
-          <p class="kicker" data-reveal>05 · Theming</p>
+          <p class="kicker" data-reveal>06 · Theming</p>
           <h2 class="section-title" data-reveal>One accent, everywhere.</h2>
           <div class="usage-grid">
             <div class="usage-card" data-reveal>

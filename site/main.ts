@@ -139,6 +139,48 @@ palette?.addEventListener('aurora-select', (event) => {
   else if (value === 'confetti') AuroraConfetti.burst({ count: 130 })
 })
 
+/* ---------- dashboard showcase (landing) ---------- */
+const showChart = document.getElementById('showChart') as
+  (HTMLElement & { labels: string[]; series: unknown[] }) | null
+if (showChart) {
+  showChart.labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
+  showChart.series = [
+    { label: 'MRR', data: [24, 28, 27, 34, 41, 46, 54] },
+    { label: 'Costs', data: [18, 19, 21, 22, 24, 25, 27], color: '#f472b6' },
+  ]
+}
+const showSpark = document.getElementById('showSpark') as (HTMLElement & { data: number[] }) | null
+if (showSpark) showSpark.data = [8, 12, 9, 16, 14, 22, 19, 28, 24, 31, 27, 36]
+const showGrid = document.getElementById('showGrid') as AuroraGrid | null
+if (showGrid) {
+  showGrid.columns = [
+    { field: 'service', title: 'Service', frozen: true },
+    { field: 'version', title: 'Version' },
+    { field: 'env', title: 'Environment' },
+    { field: 'latency', title: 'p95 (ms)', align: 'right' },
+    { field: 'status', title: 'Status' },
+  ]
+  showGrid.data = [
+    {
+      service: 'api-gateway',
+      version: 'v2.14.0',
+      env: 'production',
+      latency: 84,
+      status: 'healthy',
+    },
+    { service: 'billing', version: 'v1.9.2', env: 'production', latency: 121, status: 'healthy' },
+    {
+      service: 'notifications',
+      version: 'v3.1.0',
+      env: 'staging',
+      latency: 65,
+      status: 'deploying',
+    },
+    { service: 'search', version: 'v0.22.1', env: 'production', latency: 210, status: 'degraded' },
+    { service: 'auth', version: 'v4.0.0', env: 'production', latency: 45, status: 'healthy' },
+  ]
+}
+
 /* ---------- data grid demo ---------- */
 import type { AuroraGrid } from 'aurora'
 const demoGrid = document.getElementById('demoGrid') as AuroraGrid | null
