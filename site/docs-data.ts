@@ -1365,6 +1365,28 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-gauge',
+    title: 'Gauge',
+    category: 'Enterprise & Data',
+    summary:
+      'Arc, circular, and linear gauges in one SVG element — the value sweeps into view, re-tweens on change, and reports itself as a proper meter.',
+    example: `<div style="display:flex;gap:26px;align-items:center;flex-wrap:wrap">\n  <aurora-gauge type="arc" value="72" label="CPU" unit="%"></aurora-gauge>\n  <aurora-gauge type="circular" value="48" label="Memory" unit="%" style="--aurora-gauge-color:#22d3ee"></aurora-gauge>\n</div>`,
+    attributes: [
+      ['type', '"arc" (default), "circular", "linear"'],
+      ['value / min / max', 'The measurement (re-tweens on change)'],
+      ['label / unit', 'Caption and suffix'],
+    ],
+    events: [],
+    cssvars: [['--aurora-gauge-color / -track', 'Sweep and track colors']],
+    methods: [['value', 'Get/set (animates)']],
+    tutorial: [
+      {
+        heading: '1 · Dashboards in minutes',
+        text: 'Pair gauges with aurora-sparkline and aurora-grid — update value attributes from your poll loop and they animate themselves.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

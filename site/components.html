@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Sixty-three components.<br /><span class="grad">Every one of them live.</span>
+          Sixty-four components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -164,6 +164,39 @@ spark.data = [3, 7, 4, 9, 6, 12]</pre>
                 <pre>
 chart.labels = ['Q1', 'Q2', 'Q3', 'Q4']
 chart.series = [{ label: 'Stars', data: [120, 260, 410, 640] }]</pre>
+              </div>
+            </article>
+            <!-- Gauge -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Gauge</h3>
+                <code>&lt;aurora-gauge&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Arc, ring, or bar — the value sweeps in and re-tweens on change.
+                <a href="./docs.html?c=aurora-gauge" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage" style="gap: 30px">
+                <aurora-gauge type="arc" value="72" label="CPU" unit="%"></aurora-gauge>
+                <aurora-gauge
+                  type="circular"
+                  value="48"
+                  label="Memory"
+                  unit="%"
+                  style="--aurora-gauge-color: #22d3ee"
+                ></aurora-gauge>
+                <aurora-gauge
+                  type="linear"
+                  value="86"
+                  label="Disk"
+                  unit="%"
+                  style="--aurora-gauge-color: #34d399; width: 180px"
+                ></aurora-gauge>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-gauge type="arc" value="72" label="CPU" unit="%"&gt;&lt;/aurora-gauge&gt;</pre>
               </div>
             </article>
             <!-- Scheduler -->
@@ -553,7 +586,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Sixty-three components.</strong><br />
+                  <strong>Sixty-four components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

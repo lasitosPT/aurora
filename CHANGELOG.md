@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.37.0
+
+Gauges.
+
+- `aurora-gauge` — one element, three gauges: `arc` (semi-circle, default), `circular`
+  (full ring), `linear` (bar). SVG-rendered with a rounded track, the value sweeps in on
+  scroll into view and re-tweens on `value` changes; `min`/`max`, center number with
+  `unit` and `label`, `role="meter"` with live aria values; themed via
+  `--aurora-gauge-color/-track`. Ships with docs.
+
 ## 0.36.0
 
 - `aurora-daterange` — a date-range picker: one popup month grid, first click sets the
