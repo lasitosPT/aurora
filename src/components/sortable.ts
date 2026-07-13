@@ -28,7 +28,6 @@ const STYLE = `
 export class AuroraSortable extends AuroraElement {
   private dragEl: HTMLElement | null = null
   private startY = 0
-  private lastPointer = 0
 
   connectedCallback(): void {
     this.root.innerHTML = `<style>${STYLE}</style><slot></slot>`
@@ -91,7 +90,6 @@ export class AuroraSortable extends AuroraElement {
     if (!target) return
     this.dragEl = target
     this.startY = e.clientY
-    this.lastPointer = e.clientY
     this.setPointerCapture?.(e.pointerId)
     target.classList.add('aurora-dragging')
     if (!prefersReducedMotion()) gsap.to(target, { scale: 1.03, duration: 0.15 })
@@ -100,7 +98,6 @@ export class AuroraSortable extends AuroraElement {
   private onMove(e: PointerEvent): void {
     const el = this.dragEl
     if (!el) return
-    this.lastPointer = e.clientY
     gsap.set(el, { y: e.clientY - this.startY })
     const siblings = this.items().filter((s) => s !== el)
     for (const sib of siblings) {
