@@ -636,6 +636,110 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-tooltip',
+    title: 'Tooltip',
+    category: 'Overlays & Feedback',
+    summary:
+      'A one-line hover/focus tooltip with four placements — for anything longer, reach for the popover.',
+    example: `<aurora-tooltip text="Copied to clipboard" position="top">\n  <aurora-button variant="ghost">Hover me</aurora-button>\n</aurora-tooltip>`,
+    attributes: [
+      ['text', 'Tooltip content'],
+      ['position', 'top / bottom / left / right'],
+    ],
+    events: [],
+    cssvars: [['--aurora-surface / -border / -fg', 'Bubble style']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Focus counts too',
+        text: 'The tooltip shows on keyboard focus as well as hover — no pointer required.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-accordion',
+    title: 'Accordion',
+    category: 'Overlays & Feedback',
+    summary: 'A collapsible panel with animated height and correct aria-expanded state.',
+    example: `<aurora-accordion label="What is aurora?" open>\n  A framework-agnostic set of animated web components.\n</aurora-accordion>\n<aurora-accordion label="Does it work in React?">\n  Yes — they are standard custom elements.\n</aurora-accordion>`,
+    attributes: [
+      ['label', 'Header text'],
+      ['open', 'Expanded state (toggle or use methods)'],
+    ],
+    events: [],
+    cssvars: [['--aurora-accent / -border / -fg', 'Header and divider styling']],
+    methods: [['show() / hide()', 'Programmatic control']],
+    tutorial: [
+      {
+        heading: '1 · Stack for an FAQ',
+        text: 'Several accordions in a column give you an FAQ with zero extra wiring.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-tabs',
+    title: 'Tabs',
+    category: 'Actions & Navigation',
+    summary:
+      'Tabbed panels with an animated active indicator and the WAI-ARIA tabs keyboard pattern (arrows, Home/End, roving tabindex).',
+    example: `<aurora-tabs active="0">\n  <aurora-tab-panel label="Overview">Animated components as native web components.</aurora-tab-panel>\n  <aurora-tab-panel label="Install">npm install aurora</aurora-tab-panel>\n</aurora-tabs>`,
+    attributes: [
+      ['active', 'Initially selected index'],
+      ['label (on panels)', 'Tab button text'],
+    ],
+    events: [['aurora-tab-change', '{ index }']],
+    cssvars: [['--aurora-accent / -border / -muted', 'Indicator and tab colors']],
+    methods: [['select(i)', 'Switch programmatically']],
+    tutorial: [
+      {
+        heading: '1 · Panels are elements',
+        text: 'Wrap content in aurora-tab-panel children — the tab bar builds itself from their labels.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-drawer',
+    title: 'Drawer',
+    category: 'Overlays & Feedback',
+    summary:
+      'A side panel sliding from either edge with the modal’s focus discipline: Tab trap, Escape, focus restore.',
+    example: `<aurora-button onclick="document.getElementById('dd').show()">Open drawer</aurora-button>\n<aurora-drawer id="dd">\n  <h2 style="margin-top:0">Panel</h2>\n  <aurora-button onclick="document.getElementById('dd').hide()">Close</aurora-button>\n</aurora-drawer>`,
+    attributes: [
+      ['open', 'Present while shown'],
+      ['side', 'right (default) or left'],
+    ],
+    events: [['aurora-open / aurora-close', 'Lifecycle']],
+    cssvars: [['--aurora-drawer-width / -z / -padding', 'Size, layering, spacing']],
+    methods: [['show() / hide()', 'Programmatic control']],
+    tutorial: [
+      {
+        heading: '1 · Settings, carts, filters',
+        text: 'Anything slotted becomes the panel body; focus enters on open and returns on close.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-menu',
+    title: 'Menu',
+    category: 'Actions & Navigation',
+    summary:
+      'An animated dropdown with arrow-key roving, Escape-with-focus-restore, and outside-click close.',
+    example: `<aurora-menu label="Actions">\n  <button data-value="edit">Edit</button>\n  <button data-value="duplicate">Duplicate</button>\n  <hr />\n  <button data-value="delete">Delete</button>\n</aurora-menu>`,
+    attributes: [
+      ['label', 'Trigger text'],
+      ['align', '"end" right-aligns the panel'],
+    ],
+    events: [['aurora-select', '{ value } from data-value or the label']],
+    cssvars: [['--aurora-surface / -border / -menu-z / -radius', 'Panel style and layering']],
+    methods: [['open() / close() / toggle()', 'Programmatic control']],
+    tutorial: [
+      {
+        heading: '1 · Buttons are items',
+        text: 'Child <button data-value> elements become menuitems; <hr> draws separators.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
