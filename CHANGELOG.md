@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.57.0
+
+Date and time, one field.
+
+- `aurora-datetimepicker` — a composed `<aurora-calendar>` and a `step`-minute time
+  column in one popup; picking both halves commits `YYYY-MM-DDTHH:MM`, closes, and
+  emits `aurora-change`. Partial state shows in the field as it builds.
+  Form-associated. Ships with docs.
+
 ## 0.56.0
 
 Transfer lists.

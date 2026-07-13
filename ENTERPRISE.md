@@ -29,7 +29,7 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 | ListBox (dual-list transfer)               | ✅     | `aurora-listbox`                                   |
 | NumericTextBox / MaskedTextBox / OTP Input | ✅     | `aurora-numeric` / `-masked` / `-otp`              |
 | Calendar / DatePicker / TimePicker         | ✅     | `aurora-calendar` / `-datepicker` / `-timepicker`  |
-| DateRangePicker                            | ✅     | `aurora-daterange`                                 |
+| DateRangePicker / DateTimePicker           | ✅     | `aurora-daterange` / `aurora-datetimepicker`       |
 | ColorPicker                                | ✅     | `aurora-colorpicker`                               |
 | Rating / Signature                         | ✅     | `aurora-rating` / `aurora-signature`               |
 | Rich Text Editor                           | ⬜     |                                                    |

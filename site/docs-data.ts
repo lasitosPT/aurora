@@ -1911,6 +1911,31 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-datetimepicker',
+    title: 'DateTime Picker',
+    category: 'Forms & Inputs',
+    summary:
+      'Calendar and clock in one popup — pick a day, pick a slot, and the combined ISO datetime commits in a single change event.',
+    example: `<aurora-datetimepicker label="Kickoff" step="30"></aurora-datetimepicker>`,
+    attributes: [
+      ['value', 'ISO YYYY-MM-DDTHH:MM'],
+      ['step', 'Minutes between time slots (default 30)'],
+      ['label / placeholder / name', 'Field chrome and form wiring'],
+    ],
+    events: [['aurora-change', '{ value } — fires once both halves are chosen']],
+    cssvars: [['--aurora-field / -surface / -accent', 'Field and popup styling']],
+    methods: [
+      ['value', 'Get/set'],
+      ['open() / close()', 'Popup control'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Meetings and deadlines',
+        text: "Pairs with aurora-scheduler — feed the committed value straight into an event's start and add the duration for the end.",
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
