@@ -1,5 +1,5 @@
 {
-  "name": "aurora",
+  "name": "@lasitospt/aurora",
   "version": "0.49.0",
   "description": "A framework-agnostic library of animated UI components (Web Components) powered by GSAP and Three.js.",
   "keywords": [
@@ -20,6 +20,10 @@
   },
   "homepage": "https://auroralib.com",
   "type": "module",
+  "sideEffects": true,
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
