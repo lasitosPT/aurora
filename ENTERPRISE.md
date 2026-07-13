@@ -1,83 +1,125 @@
-# aurora enterprise track
+# aurora enterprise track — Kendo UI parity audit
 
-A Kendo-class component catalogue, built one component at a time on aurora's core
-(Web Components + GSAP, CSS-variable theming, WAI-ARIA keyboard patterns, MIT).
-Each ships with its full option surface, tests, and a
-[documentation & tutorial page](https://auroralib.com/docs.html).
+Audited 2026-07-14 against the full Kendo UI for jQuery catalogue.
+Legend: ✅ dedicated component · 🔶 covered by an equivalent · ⬜ open · 🚫 out of scope (reason given)
 
-Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
+## AI Interface
 
-## Data Management
-
-| Component                                                                                                                                                                                                                                                      | Status | aurora element                      |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ----------------------------------- |
-| Data Grid — multi-sort, operator filters, search, paging, selection, grouping, aggregates, inline edit, detail rows, column hide/resize/reorder, frozen columns, multi-column headers, inline + popup edit with validation, virtualization, CSV + Excel export | ✅     | `aurora-grid`                       |
-| TreeList (hierarchical grid, flat or nested data, sibling-group sorting)                                                                                                                                                                                       | ✅     | `aurora-treelist`                   |
-| ListView (templated rows, paging, selection)                                                                                                                                                                                                                   | ✅     | `aurora-listview`                   |
-| Filter / Pager (standalone)                                                                                                                                                                                                                                    | 🔶     | built into grid, treelist, listview |
-| PivotGrid (two-level rows, five aggregates, totals)                                                                                                                                                                                                            | ✅     | `aurora-pivotgrid`                  |
-| Spreadsheet / PropertyGrid                                                                                                                                                                                                                                     | ⬜     |                                     |
-
-## Editors
-
-| Component                                  | Status | aurora element                                     |
-| ------------------------------------------ | ------ | -------------------------------------------------- |
-| TextBox / TextArea                         | ✅     | `aurora-input` / `aurora-textarea`                 |
-| Switch / Checkbox / RadioGroup             | ✅     | `aurora-switch` / `-checkbox` / `-radiogroup`      |
-| Slider / RangeSlider                       | ✅     | `aurora-slider` / `aurora-rangeslider`             |
-| AutoComplete / DropDownList / MultiSelect  | ✅     | `aurora-autocomplete` / `-select` / `-multiselect` |
-| ComboBox (free text + list)                | ✅     | `aurora-combobox`                                  |
-| DropDownTree (tree popup select)           | ✅     | `aurora-dropdowntree`                              |
-| MultiColumnComboBox (table dropdown)       | ✅     | `aurora-multicolumncombobox`                       |
-| ListBox (dual-list transfer)               | ✅     | `aurora-listbox`                                   |
-| NumericTextBox / MaskedTextBox / OTP Input | ✅     | `aurora-numeric` / `-masked` / `-otp`              |
-| Calendar / DatePicker / TimePicker         | ✅     | `aurora-calendar` / `-datepicker` / `-timepicker`  |
-| DateRangePicker / DateTimePicker           | ✅     | `aurora-daterange` / `aurora-datetimepicker`       |
-| DateInput (segmented typing)               | ✅     | `aurora-dateinput`                                 |
-| TimeDurationPicker                         | ✅     | `aurora-durationpicker`                            |
-| ColorPicker / ColorGradient / ColorPalette | ✅     | `aurora-colorpicker` / `aurora-colorpalette`       |
-| Rating / Signature                         | ✅     | `aurora-rating` / `aurora-signature`               |
-| Rich Text Editor                           | ✅     | `aurora-editor`                                    |
-
-## Scheduling
-
-Calendar ✅ · DateRangePicker ✅ · Scheduler ✅ (`aurora-scheduler`, day/week/month/agenda views) · Gantt ✅ (`aurora-gantt`, drag-move + grip-resize)
+| Kendo                                  | Status | aurora                                                                                           |
+| -------------------------------------- | ------ | ------------------------------------------------------------------------------------------------ |
+| AIPrompt / Inline AIPrompt / PromptBox | ⬜     | planned: `aurora-promptbox` (suggestion chips + composer + output view; backend-agnostic events) |
+| SmartPasteButton                       | ⬜     | planned (clipboard → form-field mapping over `aurora-form`)                                      |
 
 ## Navigation
 
-Button ✅ · ButtonGroup/SplitButton ✅ · Menu ✅ · Drawer ✅ · TreeView ✅ ·
-Stepper ✅ · Wizard ✅ · Breadcrumb ✅ · Chip/ChipList ✅ (`aurora-chips`) ·
-ContextMenu ✅ · ToolBar ✅ (`aurora-toolbar`) · AppBar ✅ (`aurora-appbar`) ·
-FAB ✅ (`aurora-fab`) · ActionSheet ✅ (`aurora-actionsheet`) · BottomNavigation ✅ (`aurora-bottomnav`)
+ActionSheet ✅ · AppBar ✅ · BottomNavigation ✅ · Breadcrumb ✅ · Button ✅ ·
+ButtonGroup ✅ · Chip/ChipList ✅ (`aurora-chips`) · Drawer ✅ ·
+DropDownButton 🔶 (`aurora-menu` / `aurora-splitbutton`) · FAB ✅ · Menu ✅ (+ `aurora-submenu` flyouts) ·
+Segmented Control 🔶 (`aurora-buttongroup` is one) · SpeechToText Button ⬜ (planned: Web Speech API) ·
+SplitButton ✅ · Stepper ✅ · ToggleButton ✅ · Toolbar ✅ · TreeView ✅ · Wizard ✅
+
+## Data Management
+
+| Kendo                          | Status | aurora                                                                         |
+| ------------------------------ | ------ | ------------------------------------------------------------------------------ |
+| Data Grid                      | ✅     | `aurora-grid` — feature depth audited below                                    |
+| TreeList                       | ✅     | `aurora-treelist`                                                              |
+| ListView                       | ✅     | `aurora-listview`                                                              |
+| PivotGrid / PivotGrid v2       | ✅     | `aurora-pivotgrid`                                                             |
+| Filter (standalone builder UI) | ⬜     | filtering exists in-grid; standalone expression builder planned                |
+| Pager (standalone)             | ⬜     | paging exists in grid/listview; standalone planned                             |
+| PropertyGrid                   | ⬜     | planned (object → composed editor rows)                                        |
+| FileManager                    | ⬜     | planned as a composition showcase (treeview + listview + toolbar + breadcrumb) |
+| Spreadsheet                    | 🚫     | a formula engine is a product of its own                                       |
+
+## File Management / Bar codes / Documents
+
+Upload ✅ · QRCode ✅ (in-house encoder, spec-verified) · BarCode ✅ (in-house Code 128, spec-verified;
+other symbologies ⬜) · PDF Viewer 🚫 (needs a pdf.js-scale rendering engine)
+
+## Diagrams and Maps
+
+OrgChart ✅ · Diagram 🚫 (free-form node-graph editor is a product of its own) ·
+Map 🚫 (needs tile providers / geo services — against the zero-dependency principle)
+
+## Charts
+
+Charts ✅ (`aurora-chart`: bar / stacked bar / line / area / donut / pie / scatter) ·
+Sparklines ✅ · Pyramid Chart ⬜ (funnel/pyramid types planned) · Chart Wizard ⬜ (config-UI planned) ·
+Gauges: Arc ✅ / Circular ✅ / Linear ✅ / Radial 🔶 (`type="circular"`; needle variant ⬜)
+
+## Conversational UI / Media
+
+Chat ✅ · MediaPlayer ✅ (`aurora-videoplayer`) · ScrollView ✅ (`aurora-carousel`)
+
+## Editors
+
+AutoComplete ✅ · Checkbox ✅ · CheckBoxGroup ✅ · ColorGradient/ColorPicker ✅ · ColorPalette ✅ ·
+ComboBox ✅ · DateInput ✅ · DatePicker ✅ · DateTimePicker ✅ · DropDownList ✅ (`aurora-select`) ·
+DropDownTree ✅ · ListBox ✅ · MaskedTextBox ✅ · MultiColumnComboBox ✅ · MultiSelect ✅ ·
+NumericTextBox ✅ · OTP ✅ · RadioButton 🔶 / RadioGroup ✅ · RangeSlider ✅ · Rating ✅ ·
+Rich Text Editor ✅ · Signature ✅ · Slider ✅ · Switch ✅ · TextArea ✅ · TextBox ✅ ·
+TimeDurationPicker ✅ · TimePicker ✅ · Validator ✅ (`aurora-form`) ·
+Captcha ⬜ (client-side widget planned; Kendo's is server-backed) ·
+ImageEditor ⬜ (crop/rotate/flip/export planned)
+
+## Scheduling
+
+Calendar ✅ · DateRangePicker ✅ · Scheduler ✅ (day/week/month/agenda) ·
+Gantt ✅ (drag-move + grip-resize) · MultiViewCalendar ⬜ (planned: paired-month calendar)
 
 ## Layout
 
-Dialog ✅ (`aurora-modal`) · Tooltip ✅ · TabStrip ✅ (`aurora-tabs`) ·
-ExpansionPanel ✅ (`aurora-accordion`) · Notification ✅ (`aurora-toaster`) ·
-Card ✅ (`aurora-spotlight`/`aurora-beam`) · Splitter ✅ · Window ✅ ·
-PopOver ✅ · Avatar/Badge ✅ · Timeline ✅ · Form/Validator ✅ (`aurora-form`) · TileLayout ✅ (`aurora-tilelayout`)
+Avatar ✅ · Badge ✅ · Card ✅ · Dialog ✅ · ExpansionPanel ✅ · Form ✅ · Notification ✅ ·
+PanelBar 🔶 (`aurora-accordion`) · PopOver ✅ · Popup 🔶 (popover/menu primitives) ·
+ResponsivePanel ⬜ (planned: drawer-collapsing side panel) · Ripple ✅ · Splitter ✅ ·
+TabStrip ✅ · TileLayout ✅ · Timeline ✅ · Tooltip ✅ · Window ✅ ·
+DockManager 🔶 (splitter + window + tilelayout compose most of it; dedicated manager ⬜)
 
 ## Interactivity & UX
 
-Loader ✅ · ProgressBar ✅ (`aurora-progressbar`; scroll hairline: `aurora-progress`) ·
-Skeleton ✅ · Ripple ✅ · Sortable / Drag-and-Drop ✅ (`aurora-sortable`) ·
-TaskBoard 🔶 (compose `aurora-sortable`) · CircularProgressBar ✅ (`aurora-gauge type="circular"`)
+CircularProgressBar ✅ (`aurora-gauge type="circular"`) · Drag and Drop 🔶 (sortable/taskboard/tile drag;
+generic draggable primitive ⬜) · Effects 🔶 (the motion components + GSAP re-export) · Loader ✅ ·
+ProgressBar ✅ · Skeleton ✅ · Sortable ✅ · TaskBoard ✅ (`aurora-taskboard`)
 
-## Charts & Visualization
+## Framework (Kendo's jQuery-era infrastructure)
 
-Sparkline ✅ · Chart (bar / stacked bar / line / area / donut / pie / scatter) ✅ · Gauges (arc / circular / linear) ✅ ·
-OrgChart ✅ (`aurora-orgchart`) · Map / Diagram ⬜
+| Kendo           | aurora's answer                                                                            |
+| --------------- | ------------------------------------------------------------------------------------------ |
+| DataSource      | ⬜ planned: a small fetch-based remote adapter for grid/listview (sort/filter/page params) |
+| Templates       | ✅ formatter/template functions (grid, listview, timeline bodies)                          |
+| Touch           | ✅ pointer events throughout — mouse/touch/pen unified                                     |
+| MVVM            | 🚫 N/A — properties + events are the Web Components contract; frameworks bind natively     |
+| Drawing API     | 🚫 canvas/SVG drawing library is out of scope                                              |
+| PDF Export      | 🚫 CSV + Excel export are in-house; PDF needs a layout engine                              |
+| Single-Page App | 🚫 N/A — routing belongs to the host app                                                   |
 
-## Media / Files / Misc
+## Grid feature-depth audit (vs Kendo's grid feature list)
 
-Upload ✅ · ScrollView ✅ (`aurora-carousel`) · QRCode ✅ + Barcode/Code 128 ✅ (in-house encoders) ·
-Chat ✅ · MediaPlayer ✅ (`aurora-videoplayer`) · PDF Viewer ⬜
+| Kendo grid feature  | aurora-grid status                                                                    |
+| ------------------- | ------------------------------------------------------------------------------------- |
+| Data binding        | 🔶 local arrays; remote DataSource adapter ⬜                                         |
+| Editing             | ✅ inline + popup + per-column validators; batch queue ⬜, custom editor renderers ⬜ |
+| Filtering           | ✅ filter row + 5 operators + global search; checkbox/menu filter UI ⬜               |
+| Grouping            | ✅ groupBy + collapsible + per-group aggregates; load-on-demand 🚫 (server concern)   |
+| Paging              | ✅ client-side + page sizes; server paging waits on the DataSource adapter            |
+| Sorting             | ✅ single + multi (Shift+click) with order badges                                     |
+| Export              | ✅ CSV + Excel (in-house OOXML writer); PDF/print 🚫                                  |
+| Column enhancements | ✅ frozen/locked, resize, reorder, hide, multi-column headers; column menu UI ⬜      |
+| State persistence   | ⬜ getState()/setState() planned                                                      |
+| Hierarchy           | ✅ detail templates; nested child grids compose via detail; also `aurora-treelist`    |
+| Templates           | ✅ formatters + detail templates; row/group templates 🔶                              |
+| Scroll modes        | ✅ virtualization (10k rows < 100 nodes); endless remote scroll waits on DataSource   |
+| Selection           | ✅ single/multi row, checkbox column, select-all; cell selection ⬜                   |
+| Rendering/styling   | ✅ striped/dense/height/theming; adaptive mobile rendering ⬜                         |
+| Globalization       | ⬜ en-only; RTL untested                                                              |
+| Accessibility       | ✅ ARIA grid roles, aria-sort, keyboard cell navigation; full screen-reader audit ⬜  |
 
-## Remaining candidates
+## Build queue (from this audit)
 
-Map/Diagram · PDF Viewer · Spreadsheet
-
-Out of scope for now (rationale): **Map** needs tile providers or geo data (an external
-service, against the zero-dependency principle); **Diagram** (free-form node graphs)
-and **Spreadsheet** (formula engine) are products of their own; **PDF Viewer** requires
-a PDF rendering engine (pdf.js-scale). Revisit if the catalogue's positioning changes.
+1. `aurora-promptbox` (AI Interface starter) + SmartPasteButton
+2. Grid: `getState()`/`setState()`, column menu, cell selection, DataSource adapter
+3. `aurora-multiviewcalendar`, `aurora-responsivepanel`, standalone `aurora-pager`
+4. Chart: pyramid/funnel types; gauge needle variant
+5. `aurora-propertygrid`, `aurora-filterbuilder`, `aurora-captcha`, `aurora-imageeditor`, SpeechToText button
+6. FileManager composition showcase
