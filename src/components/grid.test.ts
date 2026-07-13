@@ -366,3 +366,60 @@ describe('grid wave 5', () => {
     el.remove()
   })
 })
+
+describe('grid popup edit', () => {
+  it('opens a row dialog, validates per field, and commits changes', () => {
+    const el = document.createElement('aurora-grid') as AuroraGrid
+    el.setAttribute('editable', 'popup')
+    document.body.append(el)
+    el.columns = [
+      { field: 'name', title: 'Project' },
+      {
+        field: 'stars',
+        title: 'Stars',
+        validator: (v) => (Number(v) < 0 ? 'No negatives' : null),
+      },
+    ]
+    el.data = [{ name: 'aurora', stars: 951 }]
+    let edits = 0
+    el.addEventListener('aurora-edit', () => {
+      edits++
+    })
+    el.shadowRoot
+      ?.querySelector<HTMLTableRowElement>('tbody tr[data-index]')
+      ?.dispatchEvent(new Event('dblclick'))
+    const pop = el.shadowRoot?.querySelector('.pop')
+    expect(pop).not.toBeNull()
+    expect(pop?.querySelectorAll('input').length).toBe(2)
+    const stars = pop?.querySelector<HTMLInputElement>('input[data-f="stars"]')
+    if (stars) stars.value = '-2'
+    pop?.querySelector<HTMLButtonElement>('.save')?.click()
+    expect(pop?.querySelector('.err[data-e="stars"]')?.textContent).toBe('No negatives')
+    expect(edits).toBe(0)
+    if (stars) stars.value = '1000'
+    const name = pop?.querySelector<HTMLInputElement>('input[data-f="name"]')
+    if (name) name.value = 'aurora-ui'
+    el.shadowRoot?.querySelector<HTMLButtonElement>('.pop .save')?.click()
+    expect(edits).toBe(2)
+    expect(el.data[0]).toEqual({ name: 'aurora-ui', stars: 1000 })
+    expect(el.shadowRoot?.querySelector('.pop')).toBeNull()
+    el.remove()
+  })
+
+  it('cancels without touching the row', () => {
+    const el = document.createElement('aurora-grid') as AuroraGrid
+    el.setAttribute('editable', 'popup')
+    document.body.append(el)
+    el.columns = [{ field: 'name', title: 'Name' }]
+    el.data = [{ name: 'keep' }]
+    el.shadowRoot
+      ?.querySelector<HTMLTableRowElement>('tbody tr[data-index]')
+      ?.dispatchEvent(new Event('dblclick'))
+    const input = el.shadowRoot?.querySelector<HTMLInputElement>('.pop input')
+    if (input) input.value = 'changed'
+    el.shadowRoot?.querySelector<HTMLButtonElement>('.pop .cancel')?.click()
+    expect(el.data[0]?.name).toBe('keep')
+    expect(el.shadowRoot?.querySelector('.pop')).toBeNull()
+    el.remove()
+  })
+})

@@ -171,12 +171,8 @@ export class AuroraMenu extends AuroraElement {
 
   private readonly onKey = (event: KeyboardEvent): void => {
     if (!this.isOpen) return
-    if (
-      (event.target as Element | null)?.closest?.('aurora-submenu') !== null &&
-      event.key !== 'Escape'
-    ) {
-      if ((event.target as Element | null)?.closest?.('aurora-submenu')) return
-    }
+    if ((event.target as Element | null)?.closest?.('aurora-submenu') && event.key !== 'Escape')
+      return
     const items = this.items()
     if (items.length === 0) return
     const current = items.findIndex((item) => item === document.activeElement)

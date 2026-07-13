@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.78.0
+
+Popup editing.
+
+- `aurora-grid` — `editable="popup"` swaps inline cell editing for a row dialog:
+  every editable column becomes a labeled field, validators show per-field errors and
+  block saving, Cancel/Escape discard, and commits emit `aurora-edit` per changed
+  field. `openPopupEdit(row)` is public. Menu keydown handling around submenus
+  simplified.
+
 ## 0.77.0
 
 Flyouts.

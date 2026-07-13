@@ -69,6 +69,36 @@ const STYLE = `
     position: absolute; z-index: 5; margin-top: 2px; padding: 3px 9px; font-size: 0.74rem;
     color: #fff; background: var(--aurora-danger, #f43f5e); border-radius: 7px; white-space: nowrap;
   }
+  .pop-backdrop {
+    position: fixed; inset: 0; z-index: var(--aurora-modal-z, 80);
+    background: rgba(6, 6, 12, 0.55); backdrop-filter: blur(3px);
+  }
+  .pop {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    z-index: calc(var(--aurora-modal-z, 80) + 1); width: min(400px, calc(100vw - 32px));
+    display: flex; flex-direction: column; gap: 13px; padding: 20px;
+    background: var(--aurora-surface, #16161f);
+    border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.14));
+    border-radius: 16px; box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+  }
+  .pop h3 { margin: 0 0 2px; font-size: 1rem; }
+  .pop label { display: grid; gap: 5px; font-size: 0.78rem; color: var(--aurora-muted, #9a98b3); }
+  .pop input {
+    all: unset; box-sizing: border-box; padding: 0.5rem 0.75rem; font: inherit; font-size: 0.9rem;
+    color: var(--aurora-fg, #ececf2);
+    background: var(--aurora-field, rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--aurora-border, rgba(128, 128, 128, 0.4)); border-radius: 9px;
+  }
+  .pop input:focus { border-color: var(--aurora-accent, #6d5cff); }
+  .pop input.invalid { border-color: var(--aurora-danger, #f43f5e); }
+  .pop .err { color: var(--aurora-danger, #f43f5e); font-size: 0.74rem; min-height: 1em; }
+  .pop .row2 { display: flex; justify-content: flex-end; gap: 9px; margin-top: 4px; }
+  .pop .row2 button {
+    all: unset; cursor: pointer; padding: 0.5rem 1rem; border-radius: 9px; font-size: 0.9rem;
+  }
+  .pop .save { background: var(--aurora-accent, #6d5cff); color: #fff; }
+  .pop .cancel { border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.14)); color: var(--aurora-muted, #9a98b3); }
+  .pop button:focus-visible { outline: 2px solid var(--aurora-accent2, #22d3ee); }
   thead tr.groups th {
     text-align: center; font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase;
     color: var(--aurora-muted, #9a98b3); border-bottom: none; padding-bottom: 0.2rem;
@@ -179,7 +209,8 @@ const FILTER_OPS: { op: FilterOp; sym: string; label: string }[] = [
  * `page-sizes="5,10,25"`), row selection (`selectable="single|multiple"`),
  * grouping with collapsible headers and per-group aggregates (`groupBy`),
  * footer aggregates (column `aggregate: sum|avg|min|max|count`), inline cell
- * editing (`editable` + column `editable`, dblclick → Enter/blur commits, a
+ * editing (`editable` + column `editable`, dblclick → Enter/blur commits;
+ * `editable="popup"` opens a row dialog instead; a
  * column `validator` blocks bad commits with an inline error, column `group`
  * strings render spanning header groups,
  * Escape cancels), row detail templates (`detail = (row) => html`), column
@@ -289,6 +320,79 @@ export class AuroraGrid extends AuroraElement {
     this.ops.set(field, op)
     this.page = 0
     this.render()
+  }
+
+  /** Open the popup editor for a row (used by editable="popup"). */
+  openPopupEdit(row: Row): void {
+    this.root.querySelector('.pop-backdrop')?.remove()
+    this.root.querySelector('.pop')?.remove()
+    const cols = this.visibleColumns().filter((c) => c.editable !== false)
+    const wrap = document.createElement('div')
+    wrap.className = 'pop-backdrop'
+    const pop = document.createElement('div')
+    pop.className = 'pop'
+    pop.setAttribute('role', 'dialog')
+    pop.setAttribute('aria-modal', 'true')
+    pop.innerHTML = `<h3>Edit row</h3>${cols
+      .map(
+        (c) =>
+          `<label>${escapeHtml(c.title ?? c.field)}<input data-f="${escapeHtml(c.field)}" value="${escapeHtml(String(row[c.field] ?? ''))}" /><span class="err" data-e="${escapeHtml(c.field)}"></span></label>`,
+      )
+      .join(
+        '',
+      )}<div class="row2"><button class="cancel">Cancel</button><button class="save">Save</button></div>`
+    const close = (): void => {
+      wrap.remove()
+      pop.remove()
+    }
+    wrap.addEventListener('click', close)
+    pop.querySelector('.cancel')?.addEventListener('click', close)
+    pop.addEventListener('keydown', (e) => {
+      if ((e as KeyboardEvent).key === 'Escape') close()
+    })
+    pop.querySelector('.save')?.addEventListener('click', () => {
+      let valid = true
+      const changes: { field: string; value: unknown; oldValue: unknown }[] = []
+      for (const c of cols) {
+        const input = pop.querySelector<HTMLInputElement>(`input[data-f="${CSS.escape(c.field)}"]`)
+        const err = pop.querySelector<HTMLElement>(`.err[data-e="${CSS.escape(c.field)}"]`)
+        if (!input) continue
+        const oldValue = row[c.field]
+        const next: unknown =
+          typeof oldValue === 'number' &&
+          input.value.trim() !== '' &&
+          Number.isFinite(Number(input.value))
+            ? Number(input.value)
+            : input.value
+        const message = c.validator ? c.validator(next, row) : null
+        input.classList.toggle('invalid', message !== null)
+        if (err) err.textContent = message ?? ''
+        if (message) {
+          valid = false
+          this.dispatchEvent(
+            new CustomEvent('aurora-invalid', {
+              detail: { row, field: c.field, value: next, message },
+            }),
+          )
+        } else if (next !== oldValue) {
+          changes.push({ field: c.field, value: next, oldValue })
+        }
+      }
+      if (!valid) return
+      for (const ch of changes) {
+        row[ch.field] = ch.value
+        this.dispatchEvent(
+          new CustomEvent('aurora-edit', {
+            detail: { row, field: ch.field, value: ch.value, oldValue: ch.oldValue },
+          }),
+        )
+      }
+      close()
+      this.render()
+    })
+    this.root.appendChild(wrap)
+    this.root.appendChild(pop)
+    pop.querySelector<HTMLInputElement>('input')?.focus()
   }
 
   private applyFrozen(): void {
@@ -441,7 +545,8 @@ export class AuroraGrid extends AuroraElement {
     const selectable = this.getAttribute('selectable')
     const multi = selectable === 'multiple'
     const filterable = this.hasAttribute('filterable')
-    const editable = this.hasAttribute('editable')
+    const editMode = this.getAttribute('editable')
+    const editable = editMode !== null && editMode !== 'popup'
     const cols = this.visibleColumns()
     const extraCols = (multi ? 1 : 0) + (this.#detail ? 1 : 0)
     const span = cols.length + extraCols
@@ -730,6 +835,14 @@ export class AuroraGrid extends AuroraElement {
         this.render()
       })
     })
+    if (this.getAttribute('editable') === 'popup') {
+      this.root.querySelectorAll<HTMLTableRowElement>('tbody tr[data-index]').forEach((tr) =>
+        tr.addEventListener('dblclick', () => {
+          const row = rows[Number(tr.dataset.index)]
+          if (row) this.openPopupEdit(row)
+        }),
+      )
+    }
     this.root.querySelectorAll<HTMLElement>('[data-edit]').forEach((td) => {
       td.addEventListener('dblclick', () => {
         if (td.classList.contains('editing')) return
