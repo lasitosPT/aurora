@@ -2338,6 +2338,24 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-videoplayer',
+    title: 'VideoPlayer',
+    category: 'Overlays & Feedback',
+    summary:
+      'Custom chrome over native video — accent seek bar, center play badge, volume scrubber, fullscreen — controls that fade away while playing.',
+    example: `<aurora-videoplayer src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" style="width:100%;max-width:460px"></aurora-videoplayer>`,
+    attributes: [['src / poster', 'Media source and preview frame']],
+    events: [['aurora-play / aurora-pause / aurora-ended', 'Playback lifecycle']],
+    cssvars: [['--aurora-accent', 'Seek fill and play badge']],
+    methods: [['play() / pause()', 'Programmatic control']],
+    tutorial: [
+      {
+        heading: '1 · Keyboard seeking',
+        text: 'Tab to the seek bar and arrow through the timeline in five-second steps; space on the play button does what you expect.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

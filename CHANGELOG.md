@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.74.0
+
+Media.
+
+- `aurora-videoplayer` — aurora chrome over `<video>`: click-anywhere play/pause with
+  a center badge, an accent seek bar (drag, click, arrow keys), time readout, volume
+  scrubber, mute, and fullscreen, all auto-hiding during playback. Ships with docs.
+
 ## 0.73.0
 
 Palettes and durations.

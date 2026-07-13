@@ -71,8 +71,13 @@ OrgChart ✅ (`aurora-orgchart`) · Map / Diagram ⬜
 ## Media / Files / Misc
 
 Upload ✅ · ScrollView ✅ (`aurora-carousel`) · QRCode ✅ + Barcode/Code 128 ✅ (in-house encoders) ·
-Chat ✅ · PDF Viewer ⬜
+Chat ✅ · MediaPlayer ✅ (`aurora-videoplayer`) · PDF Viewer ⬜
 
 ## Remaining candidates
 
-Map/Diagram · PDF Viewer · Spreadsheet · MediaPlayer · gantt drag-edit · grid popup edit
+Map/Diagram · PDF Viewer · Spreadsheet · gantt drag-edit · grid popup edit
+
+Out of scope for now (rationale): **Map** needs tile providers or geo data (an external
+service, against the zero-dependency principle); **Diagram** (free-form node graphs)
+and **Spreadsheet** (formula engine) are products of their own; **PDF Viewer** requires
+a PDF rendering engine (pdf.js-scale). Revisit if the catalogue's positioning changes.
