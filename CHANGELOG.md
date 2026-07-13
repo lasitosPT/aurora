@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.49.0
+
+Waiting, beautifully.
+
+- `aurora-loader` — indeterminate spinners: ring, dots, pulse; labeled, sized by a
+  var, `role="status"`, slowed (not frozen) under reduced motion
+- `aurora-progressbar` — a determinate bar whose fill tweens to every `value` change
+  with a live percentage readout, plus a sweeping `indeterminate` mode. Both ship
+  with docs.
+
 ## 0.48.0
 
 Conversational UI.

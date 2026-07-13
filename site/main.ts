@@ -299,6 +299,14 @@ function wireChat(chat: AuroraChat | null): void {
 }
 wireChat(document.getElementById('catChat') as AuroraChat | null)
 
+/* ---------- progressbar demo ---------- */
+const catBar = document.getElementById('catBar')
+if (catBar) {
+  window.setInterval(() => {
+    catBar.setAttribute('value', String(Math.floor(Math.random() * 100)))
+  }, 2600)
+}
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()

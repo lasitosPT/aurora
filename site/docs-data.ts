@@ -1693,6 +1693,49 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-loader',
+    title: 'Loader',
+    category: 'Overlays & Feedback',
+    summary:
+      'Indeterminate spinners in three flavors — ring, dots, pulse — with labels and status semantics.',
+    example: `<div style="display:flex;gap:34px;align-items:center">\n  <aurora-loader label="Loading"></aurora-loader>\n  <aurora-loader type="dots" label="Syncing"></aurora-loader>\n  <aurora-loader type="pulse" label="Connecting"></aurora-loader>\n</div>`,
+    attributes: [
+      ['type', '"ring" (default), "dots", "pulse"'],
+      ['label', 'Caption below the spinner'],
+    ],
+    events: [],
+    cssvars: [['--aurora-loader-size', 'Spinner diameter (default 34px)']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Pair with skeleton',
+        text: 'Use aurora-skeleton for content placeholders and aurora-loader for actions in flight.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-progressbar',
+    title: 'Progress Bar',
+    category: 'Overlays & Feedback',
+    summary:
+      'A determinate bar that tweens to every value change with a live percentage — or sweeps forever in indeterminate mode.',
+    example: `<div style="display:grid;gap:22px;width:100%;max-width:340px">\n  <aurora-progressbar value="64" label="Uploading"></aurora-progressbar>\n  <aurora-progressbar indeterminate label="Processing"></aurora-progressbar>\n</div>`,
+    attributes: [
+      ['value / max', 'Progress (re-tweens on change)'],
+      ['indeterminate', 'Sweeping mode'],
+      ['label', 'Caption'],
+    ],
+    events: [],
+    cssvars: [['--aurora-progressbar-color / -track / -height', 'Bar theming']],
+    methods: [['value', 'Get/set (animates)']],
+    tutorial: [
+      {
+        heading: '1 · Real progress',
+        text: 'Point value at your upload/onprogress handler — the fill and percentage animate to each report.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
