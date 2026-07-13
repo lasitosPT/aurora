@@ -1993,6 +1993,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-tilelayout',
+    title: 'TileLayout',
+    category: 'Enterprise & Data',
+    summary:
+      'A dashboard grid — tiles span columns and rows, and dragging one by its header FLIPs the rest out of the way in two dimensions.',
+    example: `<aurora-tilelayout columns="3" style="width:100%">\n  <aurora-tile heading="Traffic" colspan="2">Drop an aurora-chart in here.</aurora-tile>\n  <aurora-tile heading="Errors">Or a sparkline.</aurora-tile>\n  <aurora-tile heading="Uptime">Or a gauge.</aurora-tile>\n</aurora-tilelayout>`,
+    attributes: [
+      ['columns', 'Grid columns (default 3)'],
+      ['tile: heading / colspan / rowspan', 'Header text and cell spans'],
+    ],
+    events: [['aurora-reorder', '{ order } — tile headings in the new order']],
+    cssvars: [['--aurora-tile-gap / -tile-cols', 'Spacing and column override']],
+    methods: [['tiles()', 'Current order']],
+    tutorial: [
+      {
+        heading: '1 · Compose the library',
+        text: 'Tiles are slots — put charts, gauges, grids, or listviews inside. Persist detail.order from aurora-reorder to remember arrangements.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

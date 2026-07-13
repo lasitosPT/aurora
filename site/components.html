@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Eighty-nine components.<br /><span class="grad">Every one of them live.</span>
+          Ninety components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -177,6 +177,41 @@ list.data = people</pre>
                 <pre>
 chat.add({ text: 'Hi!', who: 'them', name: 'Ada' })
 chat.addEventListener('aurora-send', (e) => bot.reply(e.detail.text))</pre>
+              </div>
+            </article>
+            <!-- TileLayout -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>TileLayout</h3>
+                <code>&lt;aurora-tilelayout&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Drag a tile by its header — the rest FLIP out of the way.
+                <a href="./docs.html?c=aurora-tilelayout" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-tilelayout columns="3" style="width: 100%">
+                  <aurora-tile heading="Traffic" colspan="2">
+                    <aurora-sparkline
+                      id="catTileSpark"
+                      type="area"
+                      style="width: 100%; height: 46px"
+                    ></aurora-sparkline>
+                  </aurora-tile>
+                  <aurora-tile heading="Uptime">
+                    <aurora-gauge type="arc" value="99" unit="%" style="width: 90px"></aurora-gauge>
+                  </aurora-tile>
+                  <aurora-tile heading="Errors">3 this week</aurora-tile>
+                  <aurora-tile heading="Deploys">14 shipped</aurora-tile>
+                  <aurora-tile heading="Latency">p95 · 84 ms</aurora-tile>
+                </aurora-tilelayout>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-tilelayout columns="3"&gt;
+  &lt;aurora-tile heading="Traffic" colspan="2"&gt;…&lt;/aurora-tile&gt;
+&lt;/aurora-tilelayout&gt;</pre>
               </div>
             </article>
             <!-- Sparkline -->
@@ -802,7 +837,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Eighty-nine components.</strong><br />
+                  <strong>Ninety components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

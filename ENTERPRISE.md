@@ -49,7 +49,7 @@ ContextMenu ✅ · ToolBar ✅ (`aurora-toolbar`) · AppBar ⬜
 Dialog ✅ (`aurora-modal`) · Tooltip ✅ · TabStrip ✅ (`aurora-tabs`) ·
 ExpansionPanel ✅ (`aurora-accordion`) · Notification ✅ (`aurora-toaster`) ·
 Card ✅ (`aurora-spotlight`/`aurora-beam`) · Splitter ✅ · Window ✅ ·
-PopOver ✅ · Avatar/Badge ✅ · Timeline ✅ · Form/Validator ✅ (`aurora-form`) · TileLayout ⬜
+PopOver ✅ · Avatar/Badge ✅ · Timeline ✅ · Form/Validator ✅ (`aurora-form`) · TileLayout ✅ (`aurora-tilelayout`)
 
 ## Interactivity & UX
 
@@ -69,4 +69,4 @@ Chat ✅ · PDF Viewer ⬜
 
 ## Remaining candidates
 
-PivotGrid · Gantt · Rich Text Editor · AppBar · TileLayout · Map/Diagram · PDF Viewer
+PivotGrid · Gantt · Rich Text Editor · AppBar · Map/Diagram · PDF Viewer

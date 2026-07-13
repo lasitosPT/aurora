@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.62.0
+
+Dashboards.
+
+- `aurora-tilelayout` + `aurora-tile` — a dashboard grid: tiles span cells via
+  `colspan`/`rowspan`, drag one by its header and the others FLIP out of the way in
+  two dimensions. Emits `aurora-reorder` with the new order. Ships with docs.
+
 ## 0.61.0
 
 Scheduler views.

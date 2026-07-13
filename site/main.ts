@@ -334,6 +334,11 @@ function wireForm(form: AuroraForm | null): void {
 }
 wireForm(document.getElementById('catForm') as AuroraForm | null)
 
+/* ---------- tile demo ---------- */
+const catTileSpark = document.getElementById('catTileSpark') as
+  (HTMLElement & { data: number[] }) | null
+if (catTileSpark) catTileSpark.data = [4, 7, 5, 9, 12, 8, 14, 11, 16, 13, 18, 15]
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
