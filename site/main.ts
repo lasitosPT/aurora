@@ -528,6 +528,36 @@ function wireOrg(o: AuroraOrgchart | null): void {
 }
 wireOrg(document.getElementById('catOrg') as AuroraOrgchart | null)
 
+/* ---------- taskboard demo ---------- */
+import type { AuroraTaskboard } from 'aurora'
+const BOARD_COLS = [
+  {
+    id: 'todo',
+    title: 'To do',
+    cards: [
+      { id: 't1', title: 'Spreadsheet component', tag: 'research' },
+      { id: 't2', title: 'RTL support', tag: 'i18n', color: '#f5b83d' },
+    ],
+  },
+  {
+    id: 'doing',
+    title: 'In progress',
+    cards: [{ id: 't3', title: 'State persistence for the grid', tag: 'grid', color: '#22d3ee' }],
+  },
+  {
+    id: 'done',
+    title: 'Done',
+    cards: [
+      { id: 't4', title: 'Kendo parity audit', tag: 'roadmap', color: '#34d399' },
+      { id: 't5', title: 'TaskBoard component', tag: 'meta' },
+    ],
+  },
+]
+function wireBoard(b: AuroraTaskboard | null): void {
+  if (b) b.columns = JSON.parse(JSON.stringify(BOARD_COLS)) as typeof BOARD_COLS
+}
+wireBoard(document.getElementById('catBoard') as AuroraTaskboard | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -848,6 +878,7 @@ if (docRoot) {
     wireDdt(document.getElementById('docDdt') as AuroraDropdowntree | null)
     wireMcc(document.getElementById('docMcc') as AuroraMulticolumncombobox | null)
     wireOrg(document.getElementById('docOrg') as AuroraOrgchart | null)
+    wireBoard(document.getElementById('docBoard') as AuroraTaskboard | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

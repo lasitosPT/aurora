@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          One hundred and seven components.<br /><span class="grad">Every one of them live.</span>
+          One hundred and eight components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -274,6 +274,26 @@ pivot.data = sales</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>org.nodes = [{ name: 'Ada', title: 'CEO', children: [...] }]</pre>
+              </div>
+            </article>
+            <!-- TaskBoard -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>TaskBoard</h3>
+                <code>&lt;aurora-taskboard&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Kanban — drag cards across columns, or Ctrl/⌘ + arrows.
+                <a href="./docs.html?c=aurora-taskboard" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-taskboard id="catBoard" style="width: 100%"></aurora-taskboard>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+board.columns = [{ id: 'todo', title: 'To do', cards: [...] }]
+board.addEventListener('aurora-move', (e) => save(e.detail))</pre>
               </div>
             </article>
             <!-- Sparkline -->
@@ -1005,7 +1025,7 @@ sheet.show()</pre>
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>One hundred and seven components.</strong><br />
+                  <strong>One hundred and eight components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

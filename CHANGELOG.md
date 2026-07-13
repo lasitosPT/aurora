@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.80.0
+
+Kanban.
+
+- `aurora-taskboard` — columns of draggable cards: drag within and across columns
+  with target highlighting and midpoint insertion, move the focused card with
+  Ctrl/⌘ + arrows, per-card accent colors and tags, counts and empty states.
+  `move(cardId, col, index?)` is public; emits `aurora-move`. Ships with docs.
+
 ## 0.79.0
 
 Gap closing, round one.

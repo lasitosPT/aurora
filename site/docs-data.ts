@@ -2407,6 +2407,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-taskboard',
+    title: 'TaskBoard',
+    category: 'Enterprise & Data',
+    summary:
+      'A kanban board — drag cards within and across highlighted columns, or move the focused card with Ctrl/⌘ + arrows; every move is one event.',
+    example: `<aurora-taskboard id="docBoard" style="width:100%"></aurora-taskboard>`,
+    attributes: [['columns (property)', '{ id, title, cards: { id, title, tag?, color? }[] }[]']],
+    events: [['aurora-move', '{ card, from, to, index }']],
+    cssvars: [['--aurora-surface / -border / -accent', 'Column and card styling']],
+    methods: [
+      ['move(cardId, columnId, index?)', 'Programmatic (also the keyboard path)'],
+      ['columns', 'Get/set'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Persist the board',
+        text: 'aurora-move tells you exactly what changed — POST { card, from, to, index } and your backend stays in sync.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
