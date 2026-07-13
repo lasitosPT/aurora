@@ -1627,6 +1627,29 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-listview',
+    title: 'ListView',
+    category: 'Enterprise & Data',
+    summary:
+      'A templated, data-bound list — bring a row template, get staggered entrances, paging, and keyboard-navigable selection for free.',
+    example: `<aurora-listview id="docListview" selectable page-size="4" style="width:100%;max-width:420px"></aurora-listview>`,
+    attributes: [
+      ['data (property)', 'Array of row objects'],
+      ['template (property)', '(row) => HTML string'],
+      ['selectable', 'Present for single, "multiple" for multi'],
+      ['page-size', 'Rows per page (0 = all)'],
+    ],
+    events: [['aurora-select', '{ rows } — the currently selected rows']],
+    cssvars: [['--aurora-grid-height / -radius / -surface', 'Shared list theming']],
+    methods: [['rows', 'Selected rows getter']],
+    tutorial: [
+      {
+        heading: '1 · Cards, feeds, results',
+        text: 'The template returns any HTML — compose aurora-avatar and aurora-badge inside rows for instant contact lists and inboxes.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

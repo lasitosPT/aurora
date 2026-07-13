@@ -254,6 +254,24 @@ if (catTreelist) {
   catTreelist.data = TREE_ROWS
 }
 
+/* ---------- listview demo ---------- */
+import type { AuroraListview } from 'aurora'
+const LV_TPL = (row: Record<string, unknown>): string =>
+  `<div style="display:flex;align-items:center;gap:12px"><aurora-avatar name="${String(row.name)}" style="--aurora-avatar-size:34px"></aurora-avatar><div><strong>${String(row.name)}</strong><div style="color:var(--muted);font-size:.85em">${String(row.role)}</div></div></div>`
+const LV_DATA = [
+  { name: 'Ada Lovelace', role: 'Analyst engine programmer' },
+  { name: 'Grace Hopper', role: 'Compiler pioneer' },
+  { name: 'Alan Turing', role: 'Computability' },
+  { name: 'Margaret Hamilton', role: 'Flight software lead' },
+  { name: 'Edsger Dijkstra', role: 'Structured programming' },
+  { name: 'Barbara Liskov', role: 'Abstraction & substitution' },
+]
+const catListview = document.getElementById('catListview') as AuroraListview | null
+if (catListview) {
+  catListview.template = LV_TPL
+  catListview.data = LV_DATA
+}
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -567,6 +585,11 @@ if (docRoot) {
         },
         { title: 'Ship v1', start: '2026-07-17T16:00', end: '2026-07-17T17:00', color: '#34d399' },
       ]
+    const docListview = document.getElementById('docListview') as AuroraListview | null
+    if (docListview) {
+      docListview.template = LV_TPL
+      docListview.data = LV_DATA
+    }
     const docTreelist = document.getElementById('docTreelist') as AuroraTreelist | null
     if (docTreelist) {
       docTreelist.columns = TREE_COLS

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.46.0
+
+Lists, templated.
+
+- `aurora-listview` — a data-bound list: assign `data` and a `template` (row → HTML),
+  rows stagger in, paging via `page-size`, single/multiple selection with listbox ARIA
+  and arrow/Enter keyboard support. Emits `aurora-select` with the chosen rows.
+  Ships with docs.
+
 ## 0.45.0
 
 Ink.

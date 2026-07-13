@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Seventy-four components.<br /><span class="grad">Every one of them live.</span>
+          Seventy-five components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -132,6 +132,31 @@ grid.data = rows</pre>
 &lt;aurora-treelist selectable&gt;&lt;/aurora-treelist&gt;
 list.columns = [{ field: 'name' }, { field: 'size', align: 'right' }]
 list.data = rows // nested children or flat id/parentId</pre>
+              </div>
+            </article>
+            <!-- ListView -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>ListView</h3>
+                <code>&lt;aurora-listview&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Templated rows with paging and selection — the grid's lightweight sibling.
+                <a href="./docs.html?c=aurora-listview" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-listview
+                  id="catListview"
+                  selectable
+                  page-size="4"
+                  style="width: 100%; max-width: 460px"
+                ></aurora-listview>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+list.template = (row) => `&lt;strong&gt;${row.name}&lt;/strong&gt; — ${row.role}`
+list.data = people</pre>
               </div>
             </article>
             <!-- Sparkline -->
@@ -687,7 +712,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Seventy-four components.</strong><br />
+                  <strong>Seventy-five components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
