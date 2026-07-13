@@ -1325,3 +1325,33 @@ footer {
   border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
   font-size: 0.93rem;
 }
+
+/* dashboard showcase collapses on small screens */
+@media (max-width: 760px) {
+  #showcaseDash {
+    --aurora-tile-cols: 2 !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  #showcaseDash aurora-tile {
+    grid-column: span 2 !important;
+    grid-row: span 1 !important;
+  }
+}
+
+/* long install commands scroll inside their card instead of widening the page */
+.usage-card {
+  max-width: 100%;
+  min-width: 0;
+}
+.usage-card .code {
+  overflow-x: auto;
+}
+.usage-card pre {
+  white-space: pre;
+}
+@media (max-width: 560px) {
+  .usage-card pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
