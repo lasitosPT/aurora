@@ -1883,6 +1883,34 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-listbox',
+    title: 'ListBox',
+    category: 'Forms & Inputs',
+    summary:
+      'The classic dual-list pattern — reorder with the toolbar, transfer between connected boxes with a click or double-click.',
+    example: `<div style="display:flex;gap:14px;align-items:flex-start">\n  <aurora-listbox id="lbAvail" label="Available" connect="lbChosen">\n    <option>Grid</option><option>Chart</option><option>Scheduler</option>\n  </aurora-listbox>\n  <aurora-listbox id="lbChosen" label="Chosen" connect="lbAvail">\n    <option>Gauge</option>\n  </aurora-listbox>\n</div>`,
+    attributes: [
+      ['items (property) / option children', 'The list'],
+      ['connect', 'id of the receiving listbox'],
+      ['label', 'Column title'],
+    ],
+    events: [
+      ['aurora-change', '{ items } after reorder or remove'],
+      ['aurora-transfer', '{ item, to }'],
+    ],
+    cssvars: [['--aurora-listbox-height', 'Scroll height (default 240px)']],
+    methods: [
+      ['items', 'Get/set'],
+      ['receive(item)', 'Called by the connected box'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Column pickers',
+        text: 'Two connected boxes make a column chooser for aurora-grid — feed the chosen list into grid.toggleColumn on aurora-transfer.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

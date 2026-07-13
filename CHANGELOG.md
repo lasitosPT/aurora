@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.56.0
+
+Transfer lists.
+
+- `aurora-listbox` — an orderable list with a toolbar (move up/down, remove) that can
+  `connect` to another listbox: transfer the selection with the arrow button or a
+  double-click, arriving items slide in. Emits `aurora-change` on reorder/remove and
+  `aurora-transfer` on moves. Ships with docs.
+
 ## 0.55.0
 
 Type or pick.

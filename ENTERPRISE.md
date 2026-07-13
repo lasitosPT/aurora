@@ -26,6 +26,7 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 | Slider / RangeSlider                       | ✅     | `aurora-slider` / `aurora-rangeslider`             |
 | AutoComplete / DropDownList / MultiSelect  | ✅     | `aurora-autocomplete` / `-select` / `-multiselect` |
 | ComboBox (free text + list)                | ✅     | `aurora-combobox`                                  |
+| ListBox (dual-list transfer)               | ✅     | `aurora-listbox`                                   |
 | NumericTextBox / MaskedTextBox / OTP Input | ✅     | `aurora-numeric` / `-masked` / `-otp`              |
 | Calendar / DatePicker / TimePicker         | ✅     | `aurora-calendar` / `-datepicker` / `-timepicker`  |
 | DateRangePicker                            | ✅     | `aurora-daterange`                                 |
