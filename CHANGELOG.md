@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.76.0
+
+Gantt editing.
+
+- `aurora-gantt` — drag a bar to move the task in day snaps, or drag its right-edge
+  grip to resize (clamped at the start date); commits update the task and emit
+  `aurora-update`. `readonly` disables editing; clicks still select.
+
 ## 0.75.0
 
 Grid wave 5.

@@ -2071,8 +2071,12 @@ export const DOCS: ComponentDoc[] = [
     attributes: [
       ['tasks (property)', '{ id, title, start, end, progress?, dependsOn?, color? }[]'],
       ['day-width', 'Pixels per day column (default 34)'],
+      ['readonly', 'Disable drag editing'],
     ],
-    events: [['aurora-select', '{ task } — the clicked bar']],
+    events: [
+      ['aurora-select', '{ task } — the clicked bar'],
+      ['aurora-update', '{ task, start, end } — after a drag-move or grip-resize'],
+    ],
     cssvars: [['--aurora-gantt-label', 'Task column width (default 168px)']],
     methods: [['tasks', 'Get/set']],
     tutorial: [

@@ -41,7 +41,7 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 
 ## Scheduling
 
-Calendar ✅ · DateRangePicker ✅ · Scheduler ✅ (`aurora-scheduler`, day/week/month/agenda views) · Gantt ✅ (`aurora-gantt`)
+Calendar ✅ · DateRangePicker ✅ · Scheduler ✅ (`aurora-scheduler`, day/week/month/agenda views) · Gantt ✅ (`aurora-gantt`, drag-move + grip-resize)
 
 ## Navigation
 
@@ -75,7 +75,7 @@ Chat ✅ · MediaPlayer ✅ (`aurora-videoplayer`) · PDF Viewer ⬜
 
 ## Remaining candidates
 
-Map/Diagram · PDF Viewer · Spreadsheet · gantt drag-edit
+Map/Diagram · PDF Viewer · Spreadsheet
 
 Out of scope for now (rationale): **Map** needs tile providers or geo data (an external
 service, against the zero-dependency principle); **Diagram** (free-form node graphs)

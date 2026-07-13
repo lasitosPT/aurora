@@ -54,8 +54,15 @@ const STYLE = `
   .bar i { position: absolute; inset: 0; width: var(--p, 0%); background: color-mix(in srgb, var(--c, #6d5cff) 55%, transparent); }
   .bar span {
     position: absolute; inset: 0; display: flex; align-items: center; padding: 0 8px;
-    font-size: 0.7rem; white-space: nowrap;
+    font-size: 0.7rem; white-space: nowrap; pointer-events: none;
   }
+  .bar .grip {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 9px; cursor: ew-resize;
+    border-radius: 0 7px 7px 0;
+  }
+  .bar .grip:hover { background: color-mix(in srgb, var(--c, #6d5cff) 70%, transparent); }
+  :host(:not([readonly])) .bar { cursor: grab; }
+  .bar.dragging { opacity: 0.85; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); z-index: 2; }
   svg.deps { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
   svg.deps path { fill: none; stroke: var(--aurora-muted, #9a98b3); stroke-width: 1.3; opacity: 0.55; }
   svg.deps polygon { fill: var(--aurora-muted, #9a98b3); opacity: 0.55; }
@@ -66,7 +73,9 @@ const STYLE = `
  * (`{ id, title, start, end, progress?, dependsOn?, color? }[]`); the chart
  * lays out day columns across the full span, draws bars with progress fills
  * that sweep in, dependency arrows between bars, and a today line. Emits
- * `aurora-select` with the clicked task.
+ * `aurora-select` with the clicked task. Unless `readonly`, drag a bar to
+ * move it in day steps or drag its right edge to resize; commits update the
+ * task and emit `aurora-update` with `{ task, start, end }`.
  */
 export class AuroraGantt extends AuroraElement {
   #tasks: GanttTask[] = []
@@ -118,7 +127,7 @@ export class AuroraGantt extends AuroraElement {
         const left = x(t.start)
         const width = Math.max(x(t.end) - left + dayW, dayW * 0.5)
         const progress = Math.min(Math.max(t.progress ?? 0, 0), 100)
-        return `<div class="bar" data-id="${escapeHtml(t.id)}" role="button" tabindex="0" style="left:${left}px;top:${i * rowH + 9}px;width:${width}px;${t.color ? `--c:${t.color};` : ''}--p:${progress}%" aria-label="${escapeHtml(t.title)}, ${progress}% done"><i></i><span>${escapeHtml(t.title)}</span></div>`
+        return `<div class="bar" data-id="${escapeHtml(t.id)}" role="button" tabindex="0" style="left:${left}px;top:${i * rowH + 9}px;width:${width}px;${t.color ? `--c:${t.color};` : ''}--p:${progress}%" aria-label="${escapeHtml(t.title)}, ${progress}% done"><i></i><span>${escapeHtml(t.title)}</span>${this.hasAttribute('readonly') ? '' : '<b class="grip" aria-hidden="true"></b>'}</div>`
       })
       .join('')
     const byId = new Map(this.#tasks.map((t, i) => [t.id, i]))
@@ -160,13 +169,75 @@ export class AuroraGantt extends AuroraElement {
       </div></div>
     </div>`
     this.root.querySelectorAll<HTMLElement>('.bar').forEach((bar) => {
+      let dragged = false
       const pick = (): void => {
+        if (dragged) return
         const task = this.#tasks.find((t) => t.id === bar.dataset['id'])
         if (task) this.dispatchEvent(new CustomEvent('aurora-select', { detail: { task } }))
       }
       bar.addEventListener('click', pick)
       bar.addEventListener('keydown', (e) => {
         if ((e as KeyboardEvent).key === 'Enter') pick()
+      })
+      if (this.hasAttribute('readonly')) return
+      bar.addEventListener('pointerdown', (e) => {
+        const task = this.#tasks.find((t) => t.id === bar.dataset['id'])
+        if (!task) return
+        e.preventDefault()
+        const resize = (e.target as HTMLElement).classList?.contains('grip')
+        const startClientX = e.clientX
+        const origStart = task.start
+        const origEnd = task.end
+        const startLeft = parseFloat(bar.style.left)
+        const startWidth = parseFloat(bar.style.width)
+        dragged = false
+        bar.setPointerCapture?.(e.pointerId)
+        bar.classList.add('dragging')
+        const dw = this.numberAttr('day-width', 34)
+        const onMove = (move: PointerEvent): void => {
+          const days = Math.round((move.clientX - startClientX) / dw)
+          if (days !== 0) dragged = true
+          if (resize) {
+            bar.style.width = `${Math.max(startWidth + days * dw, dw * 0.5)}px`
+          } else {
+            bar.style.left = `${startLeft + days * dw}px`
+          }
+        }
+        const onUp = (up: PointerEvent): void => {
+          bar.removeEventListener('pointermove', onMove)
+          bar.removeEventListener('pointerup', onUp)
+          bar.removeEventListener('pointercancel', onUp)
+          bar.classList.remove('dragging')
+          const days = Math.round((up.clientX - startClientX) / dw)
+          if (!days) {
+            this.render()
+            return
+          }
+          const shift = (iso: string, n: number): string => {
+            const d = new Date(`${iso}T00:00`)
+            d.setDate(d.getDate() + n)
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+          }
+          if (resize) {
+            const next = shift(origEnd, days)
+            task.end = next >= task.start ? next : task.start
+          } else {
+            task.start = shift(origStart, days)
+            task.end = shift(origEnd, days)
+          }
+          this.render()
+          this.dispatchEvent(
+            new CustomEvent('aurora-update', {
+              detail: { task, start: task.start, end: task.end },
+            }),
+          )
+          window.setTimeout(() => {
+            dragged = false
+          }, 0)
+        }
+        bar.addEventListener('pointermove', onMove)
+        bar.addEventListener('pointerup', onUp)
+        bar.addEventListener('pointercancel', onUp)
       })
     })
     this.cleanup = whenVisible(this, () => {

@@ -56,3 +56,47 @@ describe('aurora-gantt', () => {
     el.remove()
   })
 })
+
+describe('gantt drag editing', () => {
+  it('moves a task by whole days on bar drag and emits aurora-update', () => {
+    const el = document.createElement('aurora-gantt') as AuroraGantt
+    el.setAttribute('day-width', '30')
+    document.body.append(el)
+    el.tasks = JSON.parse(JSON.stringify(TASKS))
+    let got: { start: string; end: string } | null = null
+    el.addEventListener('aurora-update', (e) => {
+      got = (e as CustomEvent<{ start: string; end: string }>).detail
+    })
+    const bar = el.shadowRoot?.querySelector<HTMLElement>('.bar[data-id="design"]')
+    bar?.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true, clientX: 100 }))
+    bar?.dispatchEvent(new MouseEvent('pointermove', { bubbles: true, clientX: 160 }))
+    bar?.dispatchEvent(new MouseEvent('pointerup', { bubbles: true, clientX: 160 }))
+    expect(got).toEqual(expect.objectContaining({ start: '2026-07-03', end: '2026-07-06' }))
+    el.remove()
+  })
+
+  it('resizes from the grip, clamping at the start date', () => {
+    const el = document.createElement('aurora-gantt') as AuroraGantt
+    el.setAttribute('day-width', '30')
+    document.body.append(el)
+    el.tasks = JSON.parse(JSON.stringify(TASKS))
+    const bar = el.shadowRoot?.querySelector<HTMLElement>('.bar[data-id="ship"]')
+    const grip = bar?.querySelector('.grip')
+    grip?.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true, clientX: 200 }))
+    bar?.dispatchEvent(new MouseEvent('pointermove', { bubbles: true, clientX: 260 }))
+    bar?.dispatchEvent(new MouseEvent('pointerup', { bubbles: true, clientX: 260 }))
+    const ship = el.tasks.find((t) => t.id === 'ship')
+    expect(ship?.end).toBe('2026-07-16')
+    expect(ship?.start).toBe('2026-07-13')
+    el.remove()
+  })
+
+  it('suppresses editing entirely with readonly', () => {
+    const el = document.createElement('aurora-gantt') as AuroraGantt
+    el.setAttribute('readonly', '')
+    document.body.append(el)
+    el.tasks = TASKS
+    expect(el.shadowRoot?.querySelector('.grip')).toBeNull()
+    el.remove()
+  })
+})
