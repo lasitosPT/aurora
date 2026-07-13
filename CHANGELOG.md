@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.72.0
+
+Who reports to whom.
+
+- `aurora-orgchart` — an organization chart from nested nodes: cards compose
+  `aurora-avatar` initials with names and titles, pure-CSS connectors draw the
+  reporting lines, branches collapse into a +N pill, and clicking a person emits
+  `aurora-select`. Ships with docs.
+
 ## 0.71.0
 
 Tabular picking.

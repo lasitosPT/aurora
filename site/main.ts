@@ -458,6 +458,34 @@ function wireMcc(mcc: AuroraMulticolumncombobox | null): void {
 }
 wireMcc(document.getElementById('catMcc') as AuroraMulticolumncombobox | null)
 
+/* ---------- orgchart demo ---------- */
+import type { AuroraOrgchart } from 'aurora'
+const ORG_NODES = [
+  {
+    name: 'Ada Lovelace',
+    title: 'CEO',
+    children: [
+      {
+        name: 'Grace Hopper',
+        title: 'CTO',
+        children: [
+          { name: 'Alan Turing', title: 'Research' },
+          { name: 'Edsger Dijkstra', title: 'Algorithms' },
+        ],
+      },
+      {
+        name: 'Margaret Hamilton',
+        title: 'VP Engineering',
+        children: [{ name: 'Barbara Liskov', title: 'Architecture' }],
+      },
+    ],
+  },
+]
+function wireOrg(o: AuroraOrgchart | null): void {
+  if (o) o.nodes = ORG_NODES
+}
+wireOrg(document.getElementById('catOrg') as AuroraOrgchart | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -777,6 +805,7 @@ if (docRoot) {
     wirePivot(document.getElementById('docPivot') as AuroraPivotgrid | null)
     wireDdt(document.getElementById('docDdt') as AuroraDropdowntree | null)
     wireMcc(document.getElementById('docMcc') as AuroraMulticolumncombobox | null)
+    wireOrg(document.getElementById('docOrg') as AuroraOrgchart | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

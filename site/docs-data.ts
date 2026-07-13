@@ -2270,6 +2270,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-orgchart',
+    title: 'OrgChart',
+    category: 'Enterprise & Data',
+    summary:
+      'Reporting lines from nested data — avatar cards, CSS connectors, collapsible branches with a +N pill, and person selection.',
+    example: `<aurora-orgchart id="docOrg" style="width:100%"></aurora-orgchart>`,
+    attributes: [['nodes (property)', 'Nested { name, title?, color?, collapsed?, children? }']],
+    events: [
+      ['aurora-select', '{ node } — the clicked person'],
+      ['aurora-toggle', '{ name, collapsed }'],
+    ],
+    cssvars: [['--aurora-surface / -border / -accent', 'Card and connector styling']],
+    methods: [['nodes', 'Get/set']],
+    tutorial: [
+      {
+        heading: '1 · Same hue, same person',
+        text: 'Cards use aurora-avatar initials, so people keep their deterministic colors across the org chart, grids, and chats.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
