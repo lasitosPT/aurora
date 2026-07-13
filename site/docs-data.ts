@@ -1757,6 +1757,53 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-checkbox',
+    title: 'Checkbox',
+    category: 'Forms & Inputs',
+    summary:
+      'A form-associated checkbox whose check draws itself on — with an indeterminate state for "some selected" trees and tables.',
+    example: `<div style="display:grid;gap:14px">\n  <aurora-checkbox label="Email me updates" checked></aurora-checkbox>\n  <aurora-checkbox label="Some selected" indeterminate></aurora-checkbox>\n  <aurora-checkbox label="Disabled" disabled></aurora-checkbox>\n</div>`,
+    attributes: [
+      ['checked', 'Source of truth (reflected)'],
+      ['indeterminate', 'Mixed state — cleared on first toggle'],
+      ['label / value / name / disabled', 'Caption, submitted value, form name, state'],
+    ],
+    events: [['aurora-change', '{ checked }']],
+    cssvars: [['--aurora-accent / -border / -field', 'Box styling']],
+    methods: [
+      ['checked', 'Get/set'],
+      ['toggle()', 'Programmatic flip'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Select-all patterns',
+        text: 'Bind a header checkbox\'s indeterminate attribute to "some but not all rows selected" — aurora-grid\'s selection events give you the counts.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-radiogroup',
+    title: 'Radio Group',
+    category: 'Forms & Inputs',
+    summary:
+      'A WAI-ARIA radio group — arrows move and select with wrap-around, the dot pops in, and the value submits with your form.',
+    example: `<aurora-radiogroup value="p" name="plan">\n  <option value="s">Starter</option>\n  <option value="p">Pro</option>\n  <option value="e">Enterprise</option>\n</aurora-radiogroup>`,
+    attributes: [
+      ['value', 'Selected option'],
+      ['inline', 'Horizontal layout'],
+      ['name', 'Form field name'],
+    ],
+    events: [['aurora-change', '{ value }']],
+    cssvars: [['--aurora-accent / -border / -field', 'Dot styling']],
+    methods: [['value', 'Get/set the selection']],
+    tutorial: [
+      {
+        heading: '1 · Plans and options',
+        text: 'Keyboard users get the native pattern for free: Tab reaches the group once, arrows change the choice.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.52.0
+
+The missing primitives.
+
+- `aurora-checkbox` — form-associated, drawn-on check, `indeterminate` (mixed) state,
+  Space/click toggling with a spring, disabled support
+- `aurora-radiogroup` — WAI-ARIA radio group from `<option>` children: roving
+  tabindex, arrows move and select with wrap-around, popping dots, `inline` layout.
+  Both ship with docs.
+
 ## 0.51.0
 
 Right-click.
