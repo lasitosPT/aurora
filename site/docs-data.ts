@@ -2245,6 +2245,31 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-multicolumncombobox',
+    title: 'MultiColumn ComboBox',
+    category: 'Forms & Inputs',
+    summary:
+      'A combobox that drops a table — filter across every column as you type, show context columns, and commit a mapped value.',
+    example: `<aurora-multicolumncombobox id="docMcc" label="Country" placeholder="Type to search…" text-field="name" value-field="code"></aurora-multicolumncombobox>`,
+    attributes: [
+      ['columns / data (properties)', '{ field, title? }[] and row objects'],
+      ['text-field / value-field', 'What shows in the field vs what submits'],
+      ['label / placeholder / name', 'Field chrome and form wiring'],
+    ],
+    events: [['aurora-change', '{ value, row } — the mapped value and the full row']],
+    cssvars: [['--aurora-field / -surface / -accent2', 'Field, panel, highlight']],
+    methods: [
+      ['open() / close()', 'Panel control'],
+      ['value', 'Current field text'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Context columns',
+        text: 'Airports with codes and cities, products with SKUs and prices — the extra columns disambiguate similar names as the user types.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

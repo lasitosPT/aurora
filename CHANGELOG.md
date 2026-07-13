@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.71.0
+
+Tabular picking.
+
+- `aurora-multicolumncombobox` — a combobox whose dropdown is a mini table: columns
+  and rows, typing filters across every column with highlighted matches,
+  `text-field`/`value-field` mapping on commit. Form-associated. Ships with docs.
+
 ## 0.70.0
 
 Component one hundred.

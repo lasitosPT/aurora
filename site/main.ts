@@ -436,6 +436,28 @@ function wireDdt(ddt: AuroraDropdowntree | null): void {
 }
 wireDdt(document.getElementById('catDdt') as AuroraDropdowntree | null)
 
+/* ---------- multicolumn combobox demo ---------- */
+import type { AuroraMulticolumncombobox } from 'aurora'
+const MCC_COLS = [
+  { field: 'name', title: 'Country' },
+  { field: 'capital', title: 'Capital' },
+  { field: 'code', title: 'Code' },
+]
+const MCC_DATA = [
+  { code: 'PT', name: 'Portugal', capital: 'Lisbon' },
+  { code: 'DE', name: 'Germany', capital: 'Berlin' },
+  { code: 'FR', name: 'France', capital: 'Paris' },
+  { code: 'ES', name: 'Spain', capital: 'Madrid' },
+  { code: 'IT', name: 'Italy', capital: 'Rome' },
+  { code: 'NL', name: 'Netherlands', capital: 'Amsterdam' },
+]
+function wireMcc(mcc: AuroraMulticolumncombobox | null): void {
+  if (!mcc) return
+  mcc.columns = MCC_COLS
+  mcc.data = MCC_DATA
+}
+wireMcc(document.getElementById('catMcc') as AuroraMulticolumncombobox | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -754,6 +776,7 @@ if (docRoot) {
     wireGantt(document.getElementById('docGantt') as AuroraGantt | null)
     wirePivot(document.getElementById('docPivot') as AuroraPivotgrid | null)
     wireDdt(document.getElementById('docDdt') as AuroraDropdowntree | null)
+    wireMcc(document.getElementById('docMcc') as AuroraMulticolumncombobox | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

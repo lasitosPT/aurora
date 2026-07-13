@@ -28,6 +28,7 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 | AutoComplete / DropDownList / MultiSelect  | ✅     | `aurora-autocomplete` / `-select` / `-multiselect` |
 | ComboBox (free text + list)                | ✅     | `aurora-combobox`                                  |
 | DropDownTree (tree popup select)           | ✅     | `aurora-dropdowntree`                              |
+| MultiColumnComboBox (table dropdown)       | ✅     | `aurora-multicolumncombobox`                       |
 | ListBox (dual-list transfer)               | ✅     | `aurora-listbox`                                   |
 | NumericTextBox / MaskedTextBox / OTP Input | ✅     | `aurora-numeric` / `-masked` / `-otp`              |
 | Calendar / DatePicker / TimePicker         | ✅     | `aurora-calendar` / `-datepicker` / `-timepicker`  |

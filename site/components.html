@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          One hundred components.<br /><span class="grad">Every one of them live.</span>
+          One hundred and one components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -987,7 +987,7 @@ sheet.show()</pre>
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>One hundred components.</strong><br />
+                  <strong>One hundred and one components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
@@ -1464,6 +1464,34 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
                 <button class="copy">Copy</button>
                 <pre>
 ddt.items = [{ label: 'Engineering', children: [{ label: 'Frontend', value: 'fe' }] }]</pre>
+              </div>
+            </article>
+            <!-- MultiColumn ComboBox -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>MultiColumn ComboBox</h3>
+                <code>&lt;aurora-multicolumncombobox&gt;</code>
+              </div>
+              <div class="demo-desc">
+                The dropdown is a table — filter across every column as you type.
+                <a href="./docs.html?c=aurora-multicolumncombobox" style="color: var(--accent)"
+                  >Docs →</a
+                >
+              </div>
+              <div class="stage">
+                <aurora-multicolumncombobox
+                  id="catMcc"
+                  label="Country"
+                  placeholder="Type to search…"
+                  text-field="name"
+                  value-field="code"
+                ></aurora-multicolumncombobox>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+mcc.columns = [{ field: 'name' }, { field: 'capital' }]
+mcc.data = countries</pre>
               </div>
             </article>
             <!-- Multiselect -->
