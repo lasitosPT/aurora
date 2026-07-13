@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Sixty-seven components.<br /><span class="grad">Every one of them live.</span>
+          Sixty-eight components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -197,6 +197,24 @@ chart.series = [{ label: 'Stars', data: [120, 260, 410, 640] }]</pre>
                 <button class="copy">Copy</button>
                 <pre>
 &lt;aurora-gauge type="arc" value="72" label="CPU" unit="%"&gt;&lt;/aurora-gauge&gt;</pre>
+              </div>
+            </article>
+            <!-- QR code -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>QR code</h3>
+                <code>&lt;aurora-qrcode&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Dependency-free encoder — Reed-Solomon and all. Scan it: it goes here.
+                <a href="./docs.html?c=aurora-qrcode" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage">
+                <aurora-qrcode value="https://auroralib.com" style="width: 150px"></aurora-qrcode>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>&lt;aurora-qrcode value="https://auroralib.com"&gt;&lt;/aurora-qrcode&gt;</pre>
               </div>
             </article>
             <!-- Scheduler -->
@@ -615,7 +633,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Sixty-seven components.</strong><br />
+                  <strong>Sixty-eight components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

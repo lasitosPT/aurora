@@ -1451,6 +1451,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-qrcode',
+    title: 'QR Code',
+    category: 'Enterprise & Data',
+    summary:
+      'A dependency-free QR generator — the whole encoder (Reed-Solomon, masking, versions 1-10) lives in the library and renders as crisp SVG.',
+    example: `<aurora-qrcode value="https://auroralib.com" style="width:150px"></aurora-qrcode>`,
+    attributes: [
+      ['value', 'The payload (URL, text — up to ~270 bytes at level L)'],
+      ['level', 'Error correction: "L", "M" (default), "Q", "H"'],
+    ],
+    events: [['aurora-error', '{ reason: "capacity" } when the payload is too large']],
+    cssvars: [['--aurora-qr-bg / -fg', 'Tile and module colors']],
+    methods: [['encodeQr(text, level)', 'Exported raw encoder — returns the module matrix']],
+    tutorial: [
+      {
+        heading: '1 · Share anything',
+        text: 'Point value at a URL, a Wi-Fi string (WIFI:T:WPA;S:name;P:pass;;), or a vCard. Higher EC levels survive more damage but hold less data.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

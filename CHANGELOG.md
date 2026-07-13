@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.40.0
+
+QR codes, from scratch.
+
+- `aurora-qrcode` — a dependency-free QR renderer with the encoder written in-house:
+  byte mode, versions 1-10, all four EC levels, Reed-Solomon over GF(256), block
+  interleaving, and spec mask scoring. Output verified bit-for-bit against the
+  reference python-qrcode implementation across texts, levels, and all eight masks.
+  Renders as crisp SVG with a proper quiet zone, scales into view, emits
+  `aurora-error` on capacity overflow. The raw `encodeQr()` is exported too.
+
 ## 0.39.0
 
 Color.
