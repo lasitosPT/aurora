@@ -2131,6 +2131,54 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-fab',
+    title: 'FAB',
+    category: 'Actions & Navigation',
+    summary:
+      'A floating action button — alone it clicks, with options it speed-dials actions that spring out with labels.',
+    example: `<aurora-fab label="Create">\n  <option value="note" icon="✎">New note</option>\n  <option value="upload" icon="⇪">Upload file</option>\n  <option value="event" icon="📅">New event</option>\n</aurora-fab>`,
+    attributes: [
+      ['icon', 'Main glyph (default +)'],
+      ['option: value / icon', 'Speed-dial actions'],
+    ],
+    events: [
+      ['aurora-click', 'Plain mode'],
+      ['aurora-select', '{ value } from the dial'],
+    ],
+    cssvars: [['--aurora-accent / -accent-hover', 'Button colors']],
+    methods: [['open() / close()', 'Dial control']],
+    tutorial: [
+      {
+        heading: '1 · Bottom-right anchor',
+        text: 'position: fixed; right: 24px; bottom: 24px — the dial opens upward with labels to the left.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-actionsheet',
+    title: 'ActionSheet',
+    category: 'Actions & Navigation',
+    summary:
+      'A bottom sheet of actions — grab handle, danger items, focus trap, and a slide-up entrance; the mobile answer to a context menu.',
+    example: `<aurora-button id="docSheetBtn">Share…</aurora-button>\n<aurora-actionsheet id="docSheet" label="Share this page">\n  <option value="copy" icon="⧉">Copy link</option>\n  <option value="mail" icon="✉">Email</option>\n  <option value="delete" icon="✕" danger>Delete</option>\n</aurora-actionsheet>`,
+    attributes: [
+      ['label / cancel-label', 'Sheet title and cancel text'],
+      ['option: value / icon / danger', 'Actions'],
+    ],
+    events: [
+      ['aurora-select', '{ value }'],
+      ['aurora-open / aurora-close', 'Lifecycle'],
+    ],
+    cssvars: [['--aurora-modal-z / -surface', 'Stacking and sheet styling']],
+    methods: [['show() / hide()', 'Open and close']],
+    tutorial: [
+      {
+        heading: '1 · Wire a trigger',
+        text: 'btn.addEventListener("click", () => sheet.show()) — focus is trapped inside and restored to the trigger on close.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

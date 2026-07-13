@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Ninety-five components.<br /><span class="grad">Every one of them live.</span>
+          Ninety-seven components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -679,6 +679,36 @@ tree.items = [
 &lt;/aurora-appbar&gt;</pre>
               </div>
             </article>
+            <!-- FAB + ActionSheet -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>FAB &amp; ActionSheet</h3>
+                <code>&lt;aurora-fab&gt; &lt;aurora-actionsheet&gt;</code>
+              </div>
+              <div class="demo-desc">
+                A speed-dial button and a bottom sheet — mobile-grade actions.
+                <a href="./docs.html?c=aurora-fab" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage" style="gap: 44px; min-height: 220px; align-items: flex-end">
+                <aurora-fab label="Create">
+                  <option value="note" icon="✎">New note</option>
+                  <option value="upload" icon="⇪">Upload file</option>
+                  <option value="event" icon="📅">New event</option>
+                </aurora-fab>
+                <aurora-button variant="ghost" id="catSheetBtn">Open action sheet</aurora-button>
+                <aurora-actionsheet id="catSheet" label="Share this page">
+                  <option value="copy" icon="⧉">Copy link</option>
+                  <option value="mail" icon="✉">Email</option>
+                  <option value="delete" icon="✕" danger>Delete</option>
+                </aurora-actionsheet>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-fab&gt;&lt;option value="note" icon="✎"&gt;New note&lt;/option&gt;&lt;/aurora-fab&gt;
+sheet.show()</pre>
+              </div>
+            </article>
             <!-- Breadcrumb + Chips -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -931,7 +961,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Ninety-five components.</strong><br />
+                  <strong>Ninety-seven components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

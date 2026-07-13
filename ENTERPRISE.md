@@ -43,7 +43,8 @@ Calendar ✅ · DateRangePicker ✅ · Scheduler ✅ (`aurora-scheduler`, day/we
 
 Button ✅ · ButtonGroup/SplitButton ✅ · Menu ✅ · Drawer ✅ · TreeView ✅ ·
 Stepper ✅ · Wizard ✅ · Breadcrumb ✅ · Chip/ChipList ✅ (`aurora-chips`) ·
-ContextMenu ✅ · ToolBar ✅ (`aurora-toolbar`) · AppBar ✅ (`aurora-appbar`)
+ContextMenu ✅ · ToolBar ✅ (`aurora-toolbar`) · AppBar ✅ (`aurora-appbar`) ·
+FAB ✅ (`aurora-fab`) · ActionSheet ✅ (`aurora-actionsheet`)
 
 ## Layout
 

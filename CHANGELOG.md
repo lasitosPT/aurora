@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.68.0
+
+Mobile actions.
+
+- `aurora-fab` — a floating action button that speed-dials: options spring out with
+  hover labels, the + rotates to ×, Escape closes
+- `aurora-actionsheet` — a bottom sheet of actions with a grab handle, danger items,
+  backdrop/Escape/cancel close, a shadow-aware focus trap, and focus restore.
+  Both ship with docs.
+
 ## 0.67.0
 
 Rich text.

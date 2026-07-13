@@ -405,6 +405,11 @@ function wirePivot(p: AuroraPivotgrid | null): void {
 }
 wirePivot(document.getElementById('catPivot') as AuroraPivotgrid | null)
 
+/* ---------- action sheet demo ---------- */
+document.getElementById('catSheetBtn')?.addEventListener('click', () => {
+  ;(document.getElementById('catSheet') as (HTMLElement & { show: () => void }) | null)?.show()
+})
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
