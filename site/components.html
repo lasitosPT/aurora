@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Ninety-two components.<br /><span class="grad">Every one of them live.</span>
+          Ninety-three components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -212,6 +212,28 @@ chat.addEventListener('aurora-send', (e) => bot.reply(e.detail.text))</pre>
 &lt;aurora-tilelayout columns="3"&gt;
   &lt;aurora-tile heading="Traffic" colspan="2"&gt;…&lt;/aurora-tile&gt;
 &lt;/aurora-tilelayout&gt;</pre>
+              </div>
+            </article>
+            <!-- Gantt -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Gantt</h3>
+                <code>&lt;aurora-gantt&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Bars on a day scale, dependency arrows, progress fills, a today line.
+                <a href="./docs.html?c=aurora-gantt" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-gantt id="catGantt" style="width: 100%"></aurora-gantt>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+gantt.tasks = [
+  { id: 'build', title: 'Build', start: '2026-07-05', end: '2026-07-12',
+    progress: 60, dependsOn: ['design'] },
+]</pre>
               </div>
             </article>
             <!-- Sparkline -->
@@ -887,7 +909,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Ninety-two components.</strong><br />
+                  <strong>Ninety-three components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

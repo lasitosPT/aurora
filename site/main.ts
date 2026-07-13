@@ -339,6 +339,51 @@ const catTileSpark = document.getElementById('catTileSpark') as
   (HTMLElement & { data: number[] }) | null
 if (catTileSpark) catTileSpark.data = [4, 7, 5, 9, 12, 8, 14, 11, 16, 13, 18, 15]
 
+/* ---------- gantt demo ---------- */
+import type { AuroraGantt } from 'aurora'
+const GANTT_TASKS = [
+  { id: 'design', title: 'Design system', start: '2026-07-01', end: '2026-07-05', progress: 100 },
+  {
+    id: 'core',
+    title: 'Core components',
+    start: '2026-07-04',
+    end: '2026-07-10',
+    progress: 85,
+    dependsOn: ['design'],
+    color: '#22d3ee',
+  },
+  {
+    id: 'ent',
+    title: 'Enterprise track',
+    start: '2026-07-08',
+    end: '2026-07-16',
+    progress: 60,
+    dependsOn: ['core'],
+    color: '#f472b6',
+  },
+  {
+    id: 'docs',
+    title: 'Docs & site',
+    start: '2026-07-10',
+    end: '2026-07-18',
+    progress: 40,
+    dependsOn: ['core'],
+    color: '#34d399',
+  },
+  {
+    id: 'launch',
+    title: 'Launch',
+    start: '2026-07-19',
+    end: '2026-07-20',
+    dependsOn: ['ent', 'docs'],
+    color: '#f5b83d',
+  },
+]
+function wireGantt(g: AuroraGantt | null): void {
+  if (g) g.tasks = GANTT_TASKS
+}
+wireGantt(document.getElementById('catGantt') as AuroraGantt | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -654,6 +699,7 @@ if (docRoot) {
       ]
     wireChat(document.getElementById('docChat') as AuroraChat | null)
     wireForm(document.getElementById('docForm') as AuroraForm | null)
+    wireGantt(document.getElementById('docGantt') as AuroraGantt | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

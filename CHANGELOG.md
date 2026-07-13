@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.65.0
+
+Project timelines.
+
+- `aurora-gantt` — day columns across the task span, bars with sweeping progress
+  fills, right-angle dependency arrows with arrowheads, a today line, a frozen task
+  column beside a scrollable chart, and `aurora-select` on bar clicks. Ships with
+  docs.
+
 ## 0.64.0
 
 Barcodes.

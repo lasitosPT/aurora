@@ -36,7 +36,7 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 
 ## Scheduling
 
-Calendar ✅ · DateRangePicker ✅ · Scheduler ✅ (`aurora-scheduler`, day/week/month/agenda views) · Gantt ⬜
+Calendar ✅ · DateRangePicker ✅ · Scheduler ✅ (`aurora-scheduler`, day/week/month/agenda views) · Gantt ✅ (`aurora-gantt`)
 
 ## Navigation
 
@@ -69,4 +69,4 @@ Chat ✅ · PDF Viewer ⬜
 
 ## Remaining candidates
 
-PivotGrid · Gantt · Rich Text Editor · Map/Diagram · PDF Viewer
+PivotGrid · Rich Text Editor · Map/Diagram · PDF Viewer · gantt drag-edit · grid popup edit

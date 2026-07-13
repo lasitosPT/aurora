@@ -2062,6 +2062,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-gantt',
+    title: 'Gantt',
+    category: 'Enterprise & Data',
+    summary:
+      'Project timelines — bars positioned on a day scale with progress fills, dependency arrows, a today line, and a frozen task column beside the scrollable chart.',
+    example: `<aurora-gantt id="docGantt" style="width:100%"></aurora-gantt>`,
+    attributes: [
+      ['tasks (property)', '{ id, title, start, end, progress?, dependsOn?, color? }[]'],
+      ['day-width', 'Pixels per day column (default 34)'],
+    ],
+    events: [['aurora-select', '{ task } — the clicked bar']],
+    cssvars: [['--aurora-gantt-label', 'Task column width (default 168px)']],
+    methods: [['tasks', 'Get/set']],
+    tutorial: [
+      {
+        heading: '1 · Dependencies',
+        text: "dependsOn lists task ids — arrows route right-angled from each predecessor's end to the successor's start.",
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
