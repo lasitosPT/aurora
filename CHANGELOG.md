@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.54.0
+
+Ranges.
+
+- `aurora-rangeslider` — dual thumbs that can't cross, track clicks move the nearest
+  thumb, arrows/Home/End step with `step` snapping, live value readouts, and
+  form association as `name-start`/`name-end`. Emits `aurora-change` with
+  `{ start, end }`. Ships with docs.
+
 ## 0.53.0
 
 Long-form text.

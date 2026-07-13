@@ -1833,6 +1833,31 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-rangeslider',
+    title: 'Range Slider',
+    category: 'Forms & Inputs',
+    summary:
+      "Two thumbs, one range — drag either end (they can't cross), click the track to jump the nearest thumb, arrow-key everything.",
+    example: `<aurora-rangeslider start="20" end="70" name="price"></aurora-rangeslider>`,
+    attributes: [
+      ['start / end', 'Initial range'],
+      ['min / max / step', 'Bounds and snapping (0 / 100 / 1)'],
+      ['name', 'Submits name-start and name-end'],
+    ],
+    events: [['aurora-change', '{ start, end }']],
+    cssvars: [['--aurora-accent / -slider-track', 'Fill and track colors']],
+    methods: [
+      ['start / end', 'Getters'],
+      ['setRange(a, b)', 'Programmatic (normalizes order)'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Price filters',
+        text: 'Wire aurora-change into your grid filter — setFilterOp("price", "gt") plus the start value gives instant range filtering.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
