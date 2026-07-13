@@ -77,7 +77,7 @@ export class AuroraGauge extends AuroraElement {
     const label = escapeHtml(this.getAttribute('label') ?? '')
     const unit = escapeHtml(this.getAttribute('unit') ?? '')
     const num = `${Math.round(this.shown)}${unit}`
-    let svg = ''
+    let svg: string
     if (type === 'linear') {
       svg = `<svg viewBox="0 0 160 34">
         <rect class="track" x="4" y="10" width="152" height="10" rx="5" fill="none" stroke-width="0" style="fill: var(--aurora-gauge-track, rgba(255,255,255,0.08))"/>
