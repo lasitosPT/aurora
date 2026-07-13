@@ -410,6 +410,32 @@ document.getElementById('catSheetBtn')?.addEventListener('click', () => {
   ;(document.getElementById('catSheet') as (HTMLElement & { show: () => void }) | null)?.show()
 })
 
+/* ---------- dropdowntree demo ---------- */
+import type { AuroraDropdowntree } from 'aurora'
+const DDT_ITEMS = [
+  {
+    label: 'Engineering',
+    open: true,
+    children: [
+      { label: 'Frontend', value: 'Frontend' },
+      { label: 'Backend', value: 'Backend' },
+      { label: 'Platform', value: 'Platform' },
+    ],
+  },
+  {
+    label: 'Design',
+    children: [
+      { label: 'Brand', value: 'Brand' },
+      { label: 'Product design', value: 'Product design' },
+    ],
+  },
+  { label: 'Operations', value: 'Operations' },
+]
+function wireDdt(ddt: AuroraDropdowntree | null): void {
+  if (ddt) ddt.items = DDT_ITEMS
+}
+wireDdt(document.getElementById('catDdt') as AuroraDropdowntree | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -727,6 +753,7 @@ if (docRoot) {
     wireForm(document.getElementById('docForm') as AuroraForm | null)
     wireGantt(document.getElementById('docGantt') as AuroraGantt | null)
     wirePivot(document.getElementById('docPivot') as AuroraPivotgrid | null)
+    wireDdt(document.getElementById('docDdt') as AuroraDropdowntree | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

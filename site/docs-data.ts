@@ -2221,6 +2221,30 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-dropdowntree',
+    title: 'DropDownTree',
+    category: 'Forms & Inputs',
+    summary:
+      'A select whose popup is a full treeview — pick branches or leaves from nested data, with the whole tree keyboard pattern inside.',
+    example: `<aurora-dropdowntree id="docDdt" label="Team" placeholder="Pick a team…"></aurora-dropdowntree>`,
+    attributes: [
+      ['items (property)', 'Nested { label, value?, open?, children? }'],
+      ['label / placeholder / value / name', 'Field chrome and form wiring'],
+    ],
+    events: [['aurora-change', '{ value }']],
+    cssvars: [['--aurora-field / -surface / -menu-z', 'Field and popup styling']],
+    methods: [
+      ['items / value', 'Get/set'],
+      ['open() / close()', 'Popup control'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Org pickers',
+        text: 'Departments, folders, categories — anything hierarchical becomes a single form field. The hundredth component in the catalogue.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

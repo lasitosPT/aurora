@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Ninety-nine components.<br /><span class="grad">Every one of them live.</span>
+          One hundred components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -987,7 +987,7 @@ sheet.show()</pre>
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Ninety-nine components.</strong><br />
+                  <strong>One hundred components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
@@ -1441,6 +1441,29 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
                 <pre>
 &lt;aurora-listbox label="Available" connect="chosen"&gt;…&lt;/aurora-listbox&gt;
 &lt;aurora-listbox id="chosen" label="Chosen"&gt;&lt;/aurora-listbox&gt;</pre>
+              </div>
+            </article>
+            <!-- DropDownTree -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>DropDownTree</h3>
+                <code>&lt;aurora-dropdowntree&gt;</code>
+              </div>
+              <div class="demo-desc">
+                A select with a whole treeview inside — component #100.
+                <a href="./docs.html?c=aurora-dropdowntree" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage">
+                <aurora-dropdowntree
+                  id="catDdt"
+                  label="Team"
+                  placeholder="Pick a team…"
+                ></aurora-dropdowntree>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+ddt.items = [{ label: 'Engineering', children: [{ label: 'Frontend', value: 'fe' }] }]</pre>
               </div>
             </article>
             <!-- Multiselect -->

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.70.0
+
+Component one hundred.
+
+- `aurora-dropdowntree` — a select whose popup is a full composed
+  `<aurora-treeview>`: nested items, branch or leaf picks, Escape close, placeholder
+  field, form association. The catalogue crosses one hundred components. Ships with
+  docs.
+
 ## 0.69.0
 
 Navigation and precise dates.
