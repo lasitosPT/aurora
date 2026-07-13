@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.36.0
+
+- `aurora-daterange` — a date-range picker: one popup month grid, first click sets the
+  start and the second the end (auto-swapped if reversed), the span highlighted with
+  shaped edge days and a state hint; form-associated with `name-start`/`name-end`
+  entries; emits `aurora-change` with `{ start, end }`. Ships with docs.
+
 ## 0.35.0
 
 The scheduler capstone.

@@ -1341,6 +1341,30 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-daterange',
+    title: 'Date Range',
+    category: 'Forms & Inputs',
+    summary:
+      'Pick a span in one grid: first click starts it, second ends it (reversed picks swap themselves), and the range highlights with shaped edges.',
+    example: `<aurora-daterange placeholder="Pick a range"></aurora-daterange>`,
+    attributes: [
+      ['start / end', 'ISO dates (yyyy-mm-dd)'],
+      ['placeholder / name', 'Trigger text; form fields submit as name-start / name-end'],
+    ],
+    events: [['aurora-change', '{ start, end } once both ends are set']],
+    cssvars: [['--aurora-accent / -surface / -border / -muted', 'Grid and range styling']],
+    methods: [
+      ['start / end', 'Read the current range'],
+      ['open() / close()', 'Programmatic control'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Two clicks, one range',
+        text: 'The hint under the grid tells the user which end they are picking; reversed picks are swapped silently.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
