@@ -31,6 +31,7 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 | NumericTextBox / MaskedTextBox / OTP Input | ✅     | `aurora-numeric` / `-masked` / `-otp`              |
 | Calendar / DatePicker / TimePicker         | ✅     | `aurora-calendar` / `-datepicker` / `-timepicker`  |
 | DateRangePicker / DateTimePicker           | ✅     | `aurora-daterange` / `aurora-datetimepicker`       |
+| DateInput (segmented typing)               | ✅     | `aurora-dateinput`                                 |
 | ColorPicker                                | ✅     | `aurora-colorpicker`                               |
 | Rating / Signature                         | ✅     | `aurora-rating` / `aurora-signature`               |
 | Rich Text Editor                           | ✅     | `aurora-editor`                                    |
@@ -44,7 +45,7 @@ Calendar ✅ · DateRangePicker ✅ · Scheduler ✅ (`aurora-scheduler`, day/we
 Button ✅ · ButtonGroup/SplitButton ✅ · Menu ✅ · Drawer ✅ · TreeView ✅ ·
 Stepper ✅ · Wizard ✅ · Breadcrumb ✅ · Chip/ChipList ✅ (`aurora-chips`) ·
 ContextMenu ✅ · ToolBar ✅ (`aurora-toolbar`) · AppBar ✅ (`aurora-appbar`) ·
-FAB ✅ (`aurora-fab`) · ActionSheet ✅ (`aurora-actionsheet`)
+FAB ✅ (`aurora-fab`) · ActionSheet ✅ (`aurora-actionsheet`) · BottomNavigation ✅ (`aurora-bottomnav`)
 
 ## Layout
 

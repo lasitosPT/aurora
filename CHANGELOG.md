@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.69.0
+
+Navigation and precise dates.
+
+- `aurora-bottomnav` — a frosted bottom navigation bar: one active item with an icon
+  pop, arrow-key movement, tablist semantics
+- `aurora-dateinput` — segmented date typing: dd/mm/yyyy spinbutton cells with digit
+  auto-advance, arrow increments, Backspace clearing, and impossible-date rejection.
+  ISO value, form-associated. Both ship with docs.
+
 ## 0.68.0
 
 Mobile actions.

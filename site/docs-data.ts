@@ -2179,6 +2179,48 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-bottomnav',
+    title: 'BottomNavigation',
+    category: 'Actions & Navigation',
+    summary:
+      'A frosted bottom bar with one active destination — icons pop on switch, arrows move, tablist semantics throughout.',
+    example: `<aurora-bottomnav value="home" style="width:100%;max-width:380px">\n  <option value="home" icon="⌂">Home</option>\n  <option value="search" icon="⌕">Search</option>\n  <option value="stats" icon="◔">Stats</option>\n  <option value="me" icon="☺">Profile</option>\n</aurora-bottomnav>`,
+    attributes: [
+      ['value', 'Active item'],
+      ['option: value / icon', 'Destinations'],
+    ],
+    events: [['aurora-change', '{ value }']],
+    cssvars: [['--aurora-accent / -surface', 'Active tint and bar background']],
+    methods: [['value', 'Get/set the active item']],
+    tutorial: [
+      {
+        heading: '1 · Mobile shells',
+        text: 'Fix it to the viewport bottom and swap views on aurora-change — pairs with aurora-appbar up top.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-dateinput',
+    title: 'DateInput',
+    category: 'Forms & Inputs',
+    summary:
+      'Type a date without a popup — dd/mm/yyyy segments with auto-advance, arrow increments, and impossible-date rejection.',
+    example: `<aurora-dateinput label="Date of birth" name="dob"></aurora-dateinput>`,
+    attributes: [
+      ['value', 'ISO yyyy-mm-dd'],
+      ['label / name', 'Caption and form field'],
+    ],
+    events: [['aurora-change', '{ value } — once complete and valid']],
+    cssvars: [['--aurora-field / -border / -accent', 'Field styling']],
+    methods: [['value', 'Get/set ISO (null while incomplete or invalid)']],
+    tutorial: [
+      {
+        heading: '1 · Keyboard-first forms',
+        text: 'Faster than a calendar for known dates like birthdays — Feb 31 simply refuses to commit.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

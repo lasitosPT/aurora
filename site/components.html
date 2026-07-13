@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Ninety-seven components.<br /><span class="grad">Every one of them live.</span>
+          Ninety-nine components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -709,6 +709,32 @@ tree.items = [
 sheet.show()</pre>
               </div>
             </article>
+            <!-- BottomNavigation -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>BottomNavigation</h3>
+                <code>&lt;aurora-bottomnav&gt;</code>
+              </div>
+              <div class="demo-desc">
+                One active destination, popping icons, arrow keys.
+                <a href="./docs.html?c=aurora-bottomnav" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage">
+                <aurora-bottomnav value="home" style="width: 100%; max-width: 400px">
+                  <option value="home" icon="⌂">Home</option>
+                  <option value="search" icon="⌕">Search</option>
+                  <option value="stats" icon="◔">Stats</option>
+                  <option value="me" icon="☺">Profile</option>
+                </aurora-bottomnav>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-bottomnav value="home"&gt;
+  &lt;option value="home" icon="⌂"&gt;Home&lt;/option&gt;
+&lt;/aurora-bottomnav&gt;</pre>
+              </div>
+            </article>
             <!-- Breadcrumb + Chips -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -961,7 +987,7 @@ sheet.show()</pre>
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Ninety-seven components.</strong><br />
+                  <strong>Ninety-nine components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
@@ -1536,6 +1562,25 @@ ac.options = ['TypeScript', 'Go', 'Rust']</pre>
                 <button class="copy">Copy</button>
                 <pre>
 &lt;aurora-datetimepicker label="Kickoff" step="30"&gt;&lt;/aurora-datetimepicker&gt;</pre>
+              </div>
+            </article>
+            <!-- DateInput -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>DateInput</h3>
+                <code>&lt;aurora-dateinput&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Type it, don't pick it — segments auto-advance, Feb 31 refuses.
+                <a href="./docs.html?c=aurora-dateinput" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage">
+                <aurora-dateinput label="Date of birth"></aurora-dateinput>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-dateinput label="Date of birth" name="dob"&gt;&lt;/aurora-dateinput&gt;</pre>
               </div>
             </article>
             <!-- Color picker -->
