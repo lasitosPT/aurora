@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.58.0
+
+The validation harness.
+
+- `aurora-form` — wraps any mix of aurora's twenty form-associated editors: a `rules`
+  map (required, min/max, pattern, email, custom fn) plus `required` attributes,
+  shaking inline error messages injected under offending fields with `role="alert"`,
+  focus jumped to the first error, touched fields re-validating as they change, and
+  `aurora-submit`/`aurora-invalid` events carrying the collected data or the error
+  map. Ships with docs.
+
 ## 0.57.0
 
 Date and time, one field.

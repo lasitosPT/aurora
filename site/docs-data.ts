@@ -1936,6 +1936,41 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-form',
+    title: 'Form',
+    category: 'Forms & Inputs',
+    summary:
+      'A validation harness for every aurora editor — declare rules once, get inline errors, focus management, touched-field re-validation, and a clean data payload on submit.',
+    example: `<aurora-form id="docForm" style="display:grid;gap:18px;max-width:380px">\n  <aurora-input name="email" label="Email"></aurora-input>\n  <aurora-input name="handle" label="Handle" required></aurora-input>\n  <aurora-checkbox name="terms" label="Accept the terms"></aurora-checkbox>\n  <aurora-button data-submit>Create account</aurora-button>\n</aurora-form>`,
+    attributes: [
+      [
+        'rules (property)',
+        '{ fieldName: [{ type, value?, message?, fn? }] } — required, min, max, pattern, email, custom',
+      ],
+      ['required (on fields)', 'Shorthand for a required rule'],
+      ['[data-submit]', 'Any descendant with this attribute submits'],
+    ],
+    events: [
+      ['aurora-submit', '{ data } — only when everything validates'],
+      ['aurora-invalid', '{ errors } — field → message map'],
+    ],
+    cssvars: [['--aurora-danger', 'Error text color']],
+    methods: [
+      ['submit() / validate(name?)', 'Programmatic control'],
+      ['data', 'Live { name: value } snapshot'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · One harness, twenty editors',
+        text: 'Anything with a name attribute participates — inputs, checkboxes, comboboxes, range sliders (as { start, end }), multiselects (as arrays).',
+      },
+      {
+        heading: '2 · Cross-field rules',
+        text: 'Custom rules receive the whole data object: { type: "custom", fn: (v, data) => v === data.password, message: "Passwords must match" }.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

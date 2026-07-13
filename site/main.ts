@@ -313,6 +313,27 @@ document.getElementById('catCtx')?.addEventListener('aurora-select', (e) => {
   AuroraToaster.show(`Context action: ${value}`, { title: 'Context menu' })
 })
 
+/* ---------- form demo ---------- */
+import type { AuroraForm } from 'aurora'
+function wireForm(form: AuroraForm | null): void {
+  if (!form) return
+  form.rules = {
+    email: [
+      { type: 'required', message: 'Email is required' },
+      { type: 'email', message: 'That does not look like an email' },
+    ],
+    handle: [{ type: 'min', value: 3, message: 'At least 3 characters' }],
+    terms: [{ type: 'required', message: 'You must accept the terms' }],
+  }
+  form.addEventListener('aurora-submit', () => {
+    AuroraToaster.show('Account created — all fields valid.', {
+      title: 'Form',
+      variant: 'success',
+    })
+  })
+}
+wireForm(document.getElementById('catForm') as AuroraForm | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -627,6 +648,7 @@ if (docRoot) {
         { title: 'Ship v1', start: '2026-07-17T16:00', end: '2026-07-17T17:00', color: '#34d399' },
       ]
     wireChat(document.getElementById('docChat') as AuroraChat | null)
+    wireForm(document.getElementById('docForm') as AuroraForm | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

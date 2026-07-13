@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Eighty-seven components.<br /><span class="grad">Every one of them live.</span>
+          Eighty-eight components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -772,7 +772,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Eighty-seven components.</strong><br />
+                  <strong>Eighty-eight components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
@@ -997,6 +997,35 @@ AuroraConfetti.burst({ count: 120 })</pre>
   &lt;aurora-switch name="newsletter" checked&gt;&lt;/aurora-switch&gt;
   &lt;aurora-slider name="volume" min="0" max="100" value="70"&gt;&lt;/aurora-slider&gt;
 &lt;/form&gt;</pre>
+              </div>
+            </article>
+            <!-- Form harness -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Form</h3>
+                <code>&lt;aurora-form&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Declare rules once — try submitting empty. Errors shake in, fields recover as you
+                type.
+                <a href="./docs.html?c=aurora-form" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-form
+                  id="catForm"
+                  style="display: grid; gap: 18px; width: 100%; max-width: 380px"
+                >
+                  <aurora-input name="email" label="Email"></aurora-input>
+                  <aurora-input name="handle" label="Handle" required></aurora-input>
+                  <aurora-checkbox name="terms" label="Accept the terms"></aurora-checkbox>
+                  <aurora-button data-submit>Create account</aurora-button>
+                </aurora-form>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+form.rules = { email: [{ type: 'email' }, { type: 'required' }] }
+form.addEventListener('aurora-submit', (e) => save(e.detail.data))</pre>
               </div>
             </article>
             <!-- Checkbox + Radio group -->
