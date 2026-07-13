@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Seventy-two components.<br /><span class="grad">Every one of them live.</span>
+          Seventy-three components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -402,6 +402,39 @@ tree.items = [
 &lt;aurora-splitbutton label="Deploy"&gt;…&lt;/aurora-splitbutton&gt;</pre>
               </div>
             </article>
+            <!-- Wizard -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Wizard</h3>
+                <code>&lt;aurora-wizard&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Multi-step flows with a built-in stepper and validation gates.
+                <a href="./docs.html?c=aurora-wizard" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-wizard style="width: 100%; max-width: 480px">
+                  <aurora-wizard-step label="Account"
+                    >Pick a username and password — this page is a slot, put anything
+                    here.</aurora-wizard-step
+                  >
+                  <aurora-wizard-step label="Profile"
+                    >Avatar, bio, links. The Next button below is gated by a cancelable
+                    event.</aurora-wizard-step
+                  >
+                  <aurora-wizard-step label="Review"
+                    >All set — Finish fires aurora-finish.</aurora-wizard-step
+                  >
+                </aurora-wizard>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-wizard&gt;
+  &lt;aurora-wizard-step label="Account"&gt;…&lt;/aurora-wizard-step&gt;
+&lt;/aurora-wizard&gt;</pre>
+              </div>
+            </article>
             <!-- Breadcrumb + Chips -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -654,7 +687,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Seventy-two components.</strong><br />
+                  <strong>Seventy-three components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

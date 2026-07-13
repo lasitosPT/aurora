@@ -1571,6 +1571,36 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-wizard',
+    title: 'Wizard',
+    category: 'Actions & Navigation',
+    summary:
+      'Multi-step flows with a built-in stepper, animated direction-aware transitions, and a cancelable gate so you can validate each step before letting the user through.',
+    example: `<aurora-wizard>\n  <aurora-wizard-step label="Account">Email + password fields…</aurora-wizard-step>\n  <aurora-wizard-step label="Profile">Handle, avatar…</aurora-wizard-step>\n  <aurora-wizard-step label="Review">Summary before submit.</aurora-wizard-step>\n</aurora-wizard>`,
+    attributes: [
+      ['step: label', 'Stepper caption for that page'],
+      ['linear', '"false" allows jumping ahead via stepper dots'],
+      ['back-label / next-label / finish-label', 'Button text'],
+      ['index', 'Starting step'],
+    ],
+    events: [
+      ['aurora-next', 'Cancelable — preventDefault() to block advancing'],
+      ['aurora-change', '{ index, label }'],
+      ['aurora-finish', 'Cancelable — fired by the Finish button'],
+    ],
+    cssvars: [['--aurora-wizard-height', 'Fixed panel height to stop reflow']],
+    methods: [
+      ['next() / prev() / goTo(i)', 'Programmatic navigation'],
+      ['index', 'Get/set the current step'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Validate as you go',
+        text: "Listen for aurora-next, check the active step's fields, and preventDefault() to hold the user — the wizard never advances past invalid input.",
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.44.0
+
+Guided flows.
+
+- `aurora-wizard` + `aurora-wizard-step` — a multi-step flow composing `aurora-stepper`
+  for progress: direction-aware animated transitions, Back/Next/Finish chrome with
+  custom labels, jump-back via the stepper dots (or free jumps with `linear="false"`),
+  a cancelable `aurora-next` validation gate, and `aurora-change`/`aurora-finish`
+  events. Ships with docs.
+
 ## 0.43.0
 
 Milestones.
