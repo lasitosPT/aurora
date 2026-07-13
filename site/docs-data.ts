@@ -1519,6 +1519,37 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-treelist',
+    title: 'TreeList',
+    category: 'Enterprise & Data',
+    summary:
+      'A hierarchical data grid — nested rows with animated expand/collapse, sibling-group sorting that never breaks the hierarchy, and treeview-style keyboard navigation.',
+    example: `<aurora-treelist id="docTreelist" selectable></aurora-treelist>`,
+    attributes: [
+      ['columns (property)', '{ field, title?, width?, align?, sortable?, formatter? }[]'],
+      ['data (property)', 'Nested children arrays, or flat rows with id/parent fields'],
+      ['id-field / parent-field', 'Flat-data keys (default "id" / "parentId")'],
+      ['selectable / dense / collapsed', 'Row selection, compact rows, start collapsed'],
+    ],
+    events: [
+      ['aurora-toggle', '{ row, expanded }'],
+      ['aurora-sort', '{ field, dir }'],
+      ['aurora-select', '{ row }'],
+    ],
+    cssvars: [['--aurora-grid-height / -radius / -surface', 'Shared grid theming']],
+    methods: [['expandAll() / collapseAll()', 'Branch control']],
+    tutorial: [
+      {
+        heading: '1 · File trees, org charts, BOMs',
+        text: 'Anything with parent/child structure drops straight in — pass flat database rows with parentId and the component assembles the tree for you.',
+      },
+      {
+        heading: '2 · Sorting stays sane',
+        text: 'Header clicks sort within each sibling group recursively, so children always stay under their parents.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

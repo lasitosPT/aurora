@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.42.0
+
+The last big rock: TreeList.
+
+- `aurora-treelist` — a hierarchical data grid. Takes nested `children` arrays or flat
+  id/parentId rows (`id-field`/`parent-field`), renders a treegrid with animated
+  expand/collapse and staggered child reveals, sorts sibling groups recursively without
+  breaking the hierarchy, navigates with arrow keys (down/up rows, right/left
+  expand/collapse), and supports row selection. `expandAll()`/`collapseAll()`,
+  `aurora-toggle`/`aurora-sort`/`aurora-select`, proper aria-level/aria-expanded.
+  Ships with docs.
+
 ## 0.41.0
 
 Identity chrome.

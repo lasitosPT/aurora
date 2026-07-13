@@ -229,6 +229,31 @@ document.getElementById('catBadgeBtn')?.addEventListener('click', () => {
   catBadge?.setAttribute('value', String(next))
 })
 
+/* ---------- treelist demo ---------- */
+import type { AuroraTreelist } from 'aurora'
+const TREE_COLS = [
+  { field: 'name', title: 'Name', width: '40%' },
+  { field: 'kind', title: 'Kind' },
+  { field: 'size', title: 'kB', align: 'right' as const },
+]
+const TREE_ROWS = [
+  { id: 1, name: 'src', kind: 'folder', size: 118 },
+  { id: 2, name: 'components', kind: 'folder', size: 96, parentId: 1 },
+  { id: 3, name: 'grid.ts', kind: 'module', size: 31, parentId: 2 },
+  { id: 4, name: 'treelist.ts', kind: 'module', size: 12, parentId: 2 },
+  { id: 5, name: 'qrcode.ts', kind: 'module', size: 9, parentId: 2 },
+  { id: 6, name: 'core', kind: 'folder', size: 22, parentId: 1 },
+  { id: 7, name: 'base.ts', kind: 'module', size: 3, parentId: 6 },
+  { id: 8, name: 'focus.ts', kind: 'module', size: 2, parentId: 6 },
+  { id: 9, name: 'site', kind: 'folder', size: 64 },
+  { id: 10, name: 'main.ts', kind: 'entry', size: 28, parentId: 9 },
+]
+const catTreelist = document.getElementById('catTreelist') as AuroraTreelist | null
+if (catTreelist) {
+  catTreelist.columns = TREE_COLS
+  catTreelist.data = TREE_ROWS
+}
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -542,6 +567,11 @@ if (docRoot) {
         },
         { title: 'Ship v1', start: '2026-07-17T16:00', end: '2026-07-17T17:00', color: '#34d399' },
       ]
+    const docTreelist = document.getElementById('docTreelist') as AuroraTreelist | null
+    if (docTreelist) {
+      docTreelist.columns = TREE_COLS
+      docTreelist.data = TREE_ROWS
+    }
     const ac = document.getElementById('docAc') as (HTMLElement & { options: string[] }) | null
     if (ac) ac.options = ['TypeScript', 'JavaScript', 'Go', 'Rust', 'Python', 'Zig']
     if (doc.tag === 'aurora-grid') {
