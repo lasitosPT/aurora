@@ -899,6 +899,243 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-scramble',
+    title: 'Scramble',
+    category: 'Text & Typography',
+    summary:
+      'Text decodes through random glyphs, left to right — on scroll into view and again on hover.',
+    example: `<aurora-scramble hover duration="1.2" style="font-family:monospace">TRANSMISSION DECODED</aurora-scramble>`,
+    attributes: [
+      ['duration', 'Seconds (default 1.2)'],
+      ['chars', 'Custom glyph set'],
+      ['hover', 'Replay on pointer enter'],
+    ],
+    events: [['aurora-complete', 'Decode finished']],
+    cssvars: [],
+    methods: [['play()', 'Run the decode (restarts mid-run)']],
+    tutorial: [
+      {
+        heading: '1 · Mono sells it',
+        text: 'A monospace font keeps the glyph churn from reflowing the layout.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-typewriter',
+    title: 'Typewriter',
+    category: 'Text & Typography',
+    summary: 'Types its text behind a blinking accent caret when scrolled into view.',
+    example: `<aurora-typewriter speed="18" style="font-family:monospace">The platform types for itself.</aurora-typewriter>`,
+    attributes: [
+      ['speed', 'Characters per second (default 16)'],
+      ['delay', 'Start delay'],
+      ['no-caret', 'Hide the caret'],
+    ],
+    events: [['aurora-complete', 'Typing finished']],
+    cssvars: [['--aurora-accent', 'Caret color']],
+    methods: [['start()', 'Type now, regardless of visibility']],
+    tutorial: [
+      {
+        heading: '1 · Reduced motion honored',
+        text: 'Users who prefer reduced motion see the full text instantly, caret static.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-reveal',
+    title: 'Reveal',
+    category: 'Scroll & Page',
+    summary:
+      'Fades and rises any content the first time it scrolls into view — IntersectionObserver, zero scroll listeners.',
+    example: `<aurora-reveal stagger="0.12">\n  <div class="card">One</div>\n  <div class="card">Two</div>\n</aurora-reveal>`,
+    attributes: [
+      ['y / duration / delay', 'Motion controls (default 36px, 0.9s)'],
+      ['stagger', 'Animate direct children in sequence'],
+    ],
+    events: [['aurora-reveal', 'Animation complete']],
+    cssvars: [],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · IO cannot miss',
+        text: 'Unlike position-based triggers, the observer fires even after anchor jumps and scroll restoration.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-counter',
+    title: 'Counter',
+    category: 'Scroll & Page',
+    summary:
+      'A number that counts up when seen — and re-tweens live whenever its value attribute changes.',
+    example: `<aurora-counter value="62" style="font-size:2.4rem;font-weight:700"></aurora-counter>`,
+    attributes: [
+      ['value / from / duration / decimals', 'Target, start, timing, fixed-point places'],
+    ],
+    events: [['aurora-complete', 'Count landed']],
+    cssvars: [],
+    methods: [['start()', 'Count now, regardless of visibility']],
+    tutorial: [
+      {
+        heading: '1 · Live data ready',
+        text: 'Change the value attribute and it re-tweens from the current number — no re-mounting.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-cursor',
+    title: 'Cursor',
+    category: 'Scroll & Page',
+    summary:
+      'A trailing glow ring that follows the pointer and grows over interactive elements — never hiding the system cursor.',
+    example: `<aurora-cursor></aurora-cursor>`,
+    attributes: [],
+    events: [],
+    cssvars: [['--aurora-cursor-size / -color / -active / -z', 'Ring geometry and colors']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Drop in once',
+        text: 'Fine pointers only; touch devices and reduced-motion users get nothing extra. Mark custom targets with data-cursor.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-spotlight',
+    title: 'Spotlight',
+    category: 'Visual & 3D',
+    summary:
+      'A card whose interior glow and 1px border beam follow the cursor — the treatment on this site’s feature grid.',
+    example: `<aurora-spotlight style="padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px">\n  Move your cursor over me.\n</aurora-spotlight>`,
+    attributes: [],
+    events: [],
+    cssvars: [
+      ['--aurora-spotlight-size / -color / -beam / -beam2 / -beam-size', 'Glow and beam tuning'],
+    ],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Style the host',
+        text: 'Give the host card styling — the layers inherit its border-radius automatically.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-dock',
+    title: 'Dock',
+    category: 'Motion & Interaction',
+    summary: 'Children magnify as the cursor approaches — the macOS dock as one wrapper element.',
+    example: `<aurora-dock max="1.7" range="120">\n  <button class="tile">✦</button><button class="tile">◆</button><button class="tile">●</button>\n</aurora-dock>`,
+    attributes: [
+      ['max', 'Peak scale (default 1.6)'],
+      ['range', 'Falloff distance px (default 110)'],
+      ['lift', 'Rise at peak px (default 16)'],
+    ],
+    events: [],
+    cssvars: [['--aurora-dock-gap', 'Space between items']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Anchor the bottom',
+        text: 'Items scale from bottom-center, so align the dock to a baseline for the classic look.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-ripple',
+    title: 'Ripple',
+    category: 'Motion & Interaction',
+    summary: 'A soft ripple expands from the pointer on press, clipped to the wrapper’s radius.',
+    example: `<aurora-ripple style="border-radius:14px">\n  <button style="padding:20px 34px">Click me</button>\n</aurora-ripple>`,
+    attributes: [],
+    events: [],
+    cssvars: [['--aurora-ripple-color', 'Ripple tint']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Radius matters',
+        text: 'Set border-radius on the host — the ripple overlay clips to it.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-carousel',
+    title: 'Carousel',
+    category: 'Motion & Interaction',
+    summary:
+      'Drag or swipe with GSAP inertia and slide snapping; arrow keys and a programmatic API included.',
+    example: `<aurora-carousel>\n  <div class="slide">01</div><div class="slide">02</div><div class="slide">03</div>\n</aurora-carousel>`,
+    attributes: [],
+    events: [['aurora-slide-change', '{ index }']],
+    cssvars: [['--aurora-carousel-gap', 'Space between slides']],
+    methods: [['next() / prev() / goTo(i)', 'Programmatic navigation']],
+    tutorial: [
+      {
+        heading: '1 · Slides are children',
+        text: 'Size them with CSS (flex: 0 0 auto widths); links inside stay safe — post-drag clicks are swallowed.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-orbit',
+    title: 'Orbit',
+    category: 'Motion & Interaction',
+    summary: 'Children revolve around optional slot="center" content — instant hero decoration.',
+    example: `<aurora-orbit radius="72" speed="12" style="width:200px;height:200px">\n  <span slot="center">✦</span>\n  <span class="dot"></span><span class="dot"></span><span class="dot"></span>\n</aurora-orbit>`,
+    attributes: [
+      ['radius', 'Orbit radius px (default 80)'],
+      ['speed', 'Seconds per revolution (default 14)'],
+      ['reverse', 'Spin the other way'],
+    ],
+    events: [],
+    cssvars: [],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Size the host',
+        text: 'The host box defines the stage; items distribute evenly and hold position under reduced motion.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-glitch',
+    title: 'Glitch',
+    category: 'Text & Typography',
+    summary:
+      'An RGB-split, slice-clipped glitch burst over text — on scroll into view and on hover.',
+    example: `<aurora-glitch hover style="font-size:1.8rem;font-weight:700">SIGNAL LOST</aurora-glitch>`,
+    attributes: [['hover', 'Replay on pointer enter']],
+    events: [],
+    cssvars: [['--aurora-glitch-a / -b', 'The two split colors']],
+    methods: [['play()', 'Run one burst']],
+    tutorial: [
+      {
+        heading: '1 · One burst, not a loop',
+        text: 'The effect runs ~half a second and resets clean — trigger it on meaningful moments.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-progress',
+    title: 'Scroll Progress',
+    category: 'Scroll & Page',
+    summary:
+      'A fixed gradient hairline at the top of the viewport tracking reading position — rAF-throttled.',
+    example: `<aurora-progress></aurora-progress>`,
+    attributes: [],
+    events: [],
+    cssvars: [
+      ['--aurora-progress-height / -z, --aurora-accent / -accent2', 'Bar size and gradient'],
+    ],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · It is on this page',
+        text: 'Look at the very top of this window while you scroll — that is the component.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
