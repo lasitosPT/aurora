@@ -34,7 +34,8 @@ Legend: ✅ shipped · 🔶 partial (aurora equivalent exists) · ⬜ open
 | Calendar / DatePicker / TimePicker         | ✅     | `aurora-calendar` / `-datepicker` / `-timepicker`  |
 | DateRangePicker / DateTimePicker           | ✅     | `aurora-daterange` / `aurora-datetimepicker`       |
 | DateInput (segmented typing)               | ✅     | `aurora-dateinput`                                 |
-| ColorPicker                                | ✅     | `aurora-colorpicker`                               |
+| TimeDurationPicker                         | ✅     | `aurora-durationpicker`                            |
+| ColorPicker / ColorGradient / ColorPalette | ✅     | `aurora-colorpicker` / `aurora-colorpalette`       |
 | Rating / Signature                         | ✅     | `aurora-rating` / `aurora-signature`               |
 | Rich Text Editor                           | ✅     | `aurora-editor`                                    |
 

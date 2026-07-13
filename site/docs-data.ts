@@ -2291,6 +2291,53 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-colorpalette',
+    title: 'ColorPalette',
+    category: 'Forms & Inputs',
+    summary:
+      'A fixed swatch grid for brand-constrained picking — arrows rove in two dimensions, the pick gets a check, the hex submits with your form.',
+    example: `<aurora-colorpalette columns="8"></aurora-colorpalette>`,
+    attributes: [
+      ['colors', 'Comma-separated hexes (default: 16 aurora tones)'],
+      ['columns', 'Grid width (default 8)'],
+      ['value / name', 'Selection and form field'],
+    ],
+    events: [['aurora-change', '{ value }']],
+    cssvars: [['--aurora-palette-cols', 'Column override']],
+    methods: [['value', 'Get/set']],
+    tutorial: [
+      {
+        heading: '1 · Constrained choices',
+        text: 'Use the palette when the design system allows only approved colors; reach for aurora-colorpicker when anything goes.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-durationpicker',
+    title: 'DurationPicker',
+    category: 'Forms & Inputs',
+    summary:
+      'Type a duration as hh:mm:ss — segments auto-advance, minutes and seconds wrap at sixty, and the total is one property away.',
+    example: `<aurora-durationpicker label="Session length" value="01:30:00"></aurora-durationpicker>`,
+    attributes: [
+      ['value', 'HH:MM:SS (hours up to 999)'],
+      ['no-seconds', 'h:m only'],
+      ['label / name', 'Caption and form field'],
+    ],
+    events: [['aurora-change', '{ value, seconds }']],
+    cssvars: [['--aurora-field / -accent', 'Field styling']],
+    methods: [
+      ['seconds', 'Total seconds (null while empty)'],
+      ['value', 'Get/set'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Timers and estimates',
+        text: 'seconds feeds straight into countdowns — pair with aurora-progressbar for a session timer.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

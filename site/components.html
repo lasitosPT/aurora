@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          One hundred and two components.<br /><span class="grad">Every one of them live.</span>
+          One hundred and four components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -1005,7 +1005,7 @@ sheet.show()</pre>
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>One hundred and two components.</strong><br />
+                  <strong>One hundred and four components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
@@ -1691,6 +1691,30 @@ mcc.data = countries</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>&lt;aurora-signature name="signature"&gt;&lt;/aurora-signature&gt;</pre>
+              </div>
+            </article>
+            <!-- ColorPalette + DurationPicker -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>ColorPalette &amp; DurationPicker</h3>
+                <code>&lt;aurora-colorpalette&gt; &lt;aurora-durationpicker&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Constrained swatches and hh:mm:ss typing that wraps at sixty.
+                <a href="./docs.html?c=aurora-colorpalette" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage" style="gap: 40px; align-items: flex-start; flex-wrap: wrap">
+                <aurora-colorpalette></aurora-colorpalette>
+                <aurora-durationpicker
+                  label="Session length"
+                  value="01:30:00"
+                ></aurora-durationpicker>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-colorpalette columns="8"&gt;&lt;/aurora-colorpalette&gt;
+&lt;aurora-durationpicker value="01:30:00"&gt;&lt;/aurora-durationpicker&gt;</pre>
               </div>
             </article>
             <!-- Rating -->

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.73.0
+
+Palettes and durations.
+
+- `aurora-colorpalette` — a fixed swatch grid with two-dimensional arrow roving,
+  check-marked selection, and form association; completes the color suite alongside
+  the HSV `aurora-colorpicker`
+- `aurora-durationpicker` — hh:mm:ss segments with auto-advance, wrapping arrow
+  increments, `no-seconds` mode, a total-`seconds` getter, and `HH:MM:SS` form
+  submission. Both ship with docs.
+
 ## 0.72.0
 
 Who reports to whom.
