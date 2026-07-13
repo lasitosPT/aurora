@@ -1736,6 +1736,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-contextmenu',
+    title: 'Context Menu',
+    category: 'Actions & Navigation',
+    summary:
+      'Right-click menus for any element — cursor-positioned and viewport-clamped, with icons, separators, disabled items, and the clicked element passed to your handler.',
+    example: `<div id="ctxZone" style="padding:38px;border:1.5px dashed var(--border);border-radius:14px">Right-click inside this zone</div>\n<aurora-contextmenu for="ctxZone">\n  <option value="copy" icon="⧉">Copy</option>\n  <option value="rename" icon="✎">Rename</option>\n  <hr />\n  <option value="delete" icon="✕">Delete</option>\n</aurora-contextmenu>`,
+    attributes: [
+      ['for', 'Target element id (defaults to the parent element)'],
+      ['option: value / icon / disabled', 'Item payload, glyph, state'],
+    ],
+    events: [['aurora-select', '{ value, context } — context is the right-clicked node']],
+    cssvars: [['--aurora-menu-z / -surface / -border', 'Stacking and panel styling']],
+    methods: [['openAt(x, y, context?) / close()', 'Programmatic control']],
+    tutorial: [
+      {
+        heading: '1 · Per-row actions',
+        text: 'Attach one menu to a whole grid or listview and read detail.context to know which row was clicked — no per-row wiring.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

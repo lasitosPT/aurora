@@ -307,6 +307,12 @@ if (catBar) {
   }, 2600)
 }
 
+/* ---------- context menu demo ---------- */
+document.getElementById('catCtx')?.addEventListener('aurora-select', (e) => {
+  const { value } = (e as CustomEvent<{ value: string }>).detail
+  AuroraToaster.show(`Context action: ${value}`, { title: 'Context menu' })
+})
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()

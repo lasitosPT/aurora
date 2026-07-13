@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Seventy-nine components.<br /><span class="grad">Every one of them live.</span>
+          Eighty components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -480,6 +480,46 @@ tree.items = [
 &lt;/aurora-wizard&gt;</pre>
               </div>
             </article>
+            <!-- Context menu -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Context menu</h3>
+                <code>&lt;aurora-contextmenu&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Right-click the zone — cursor-positioned, keyboard-navigable.
+                <a href="./docs.html?c=aurora-contextmenu" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <div
+                  id="catCtxZone"
+                  style="
+                    width: 100%;
+                    max-width: 420px;
+                    padding: 44px 20px;
+                    text-align: center;
+                    border: 1.5px dashed var(--border);
+                    border-radius: 14px;
+                    color: var(--muted);
+                  "
+                >
+                  Right-click inside this zone
+                </div>
+                <aurora-contextmenu for="catCtxZone" id="catCtx">
+                  <option value="copy" icon="⧉">Copy</option>
+                  <option value="rename" icon="✎">Rename</option>
+                  <hr />
+                  <option value="delete" icon="✕">Delete</option>
+                </aurora-contextmenu>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-contextmenu for="zone"&gt;
+  &lt;option value="copy" icon="⧉"&gt;Copy&lt;/option&gt;
+&lt;/aurora-contextmenu&gt;</pre>
+              </div>
+            </article>
             <!-- Breadcrumb + Chips -->
             <article class="demo" data-reveal>
               <div class="demo-head">
@@ -732,7 +772,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Seventy-nine components.</strong><br />
+                  <strong>Eighty components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

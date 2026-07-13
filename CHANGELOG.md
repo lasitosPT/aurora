@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.51.0
+
+Right-click.
+
+- `aurora-contextmenu` — attach to any element via `for`; opens at the cursor clamped
+  to the viewport, items from `<option value icon>` children with `<hr>` separators
+  and disabled states, arrow-key navigation, Escape/outside close, and
+  `aurora-select` carrying the right-clicked context element. Ships with docs.
+- ENTERPRISE.md refreshed to the true catalogue state.
+
 ## 0.50.0
 
 Grid wave 4 + npm.
