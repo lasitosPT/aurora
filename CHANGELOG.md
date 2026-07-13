@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.64.0
+
+Barcodes.
+
+- `aurora-barcode` — Code 128 with an in-house encoder: code set B, automatic code set
+  C for even digit payloads, mod-103 checksum, crisp SVG bars with a quiet zone and
+  the value printed underneath. Verified bit-for-bit against the python-barcode
+  reference across both code sets, with the reference strings locked into the test
+  suite. `encodeCode128()` is exported. Ships with docs.
+
 ## 0.63.0
 
 The header.

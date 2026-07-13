@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          Ninety-one components.<br /><span class="grad">Every one of them live.</span>
+          Ninety-two components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -316,6 +316,25 @@ chart.series = [{ label: 'Stars', data: [120, 260, 410, 640] }]</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>&lt;aurora-qrcode value="https://auroralib.com"&gt;&lt;/aurora-qrcode&gt;</pre>
+              </div>
+            </article>
+            <!-- Barcode -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Barcode</h3>
+                <code>&lt;aurora-barcode&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Code 128 from an in-house encoder — checksum, code sets, quiet zone.
+                <a href="./docs.html?c=aurora-barcode" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage" style="gap: 22px; flex-wrap: wrap">
+                <aurora-barcode value="AURORA-0042" style="width: 230px"></aurora-barcode>
+                <aurora-barcode value="59012341234567" style="width: 200px"></aurora-barcode>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>&lt;aurora-barcode value="AURORA-0042"&gt;&lt;/aurora-barcode&gt;</pre>
               </div>
             </article>
             <!-- Scheduler -->
@@ -868,7 +887,7 @@ tree.items = [
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>Ninety-one components.</strong><br />
+                  <strong>Ninety-two components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

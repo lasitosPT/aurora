@@ -2041,6 +2041,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-barcode',
+    title: 'Barcode',
+    category: 'Enterprise & Data',
+    summary:
+      'Code 128 barcodes from an in-house, spec-verified encoder — automatic code set C for digit payloads, checksum included, printed value underneath.',
+    example: `<div style="display:flex;gap:20px;flex-wrap:wrap">\n  <aurora-barcode value="AURORA-0042" style="width:220px"></aurora-barcode>\n  <aurora-barcode value="59012341234567" style="width:190px"></aurora-barcode>\n</div>`,
+    attributes: [
+      ['value', 'ASCII 32-126 (digits pack into code set C)'],
+      ['hide-text', 'Bars only'],
+    ],
+    events: [['aurora-error', '{ reason: "charset" } for unencodable input']],
+    cssvars: [['--aurora-barcode-fg / -bg', 'Bar and tile colors']],
+    methods: [['encodeCode128(text)', 'Exported raw encoder — returns the bit string']],
+    tutorial: [
+      {
+        heading: '1 · Labels and badges',
+        text: 'Pair with aurora-qrcode — barcodes for scanners and legacy systems, QR for phones. Both encoders live in the library, zero dependencies.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

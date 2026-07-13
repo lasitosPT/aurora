@@ -64,7 +64,7 @@ Map / Diagram / OrgChart ⬜
 
 ## Media / Files / Misc
 
-Upload ✅ · ScrollView ✅ (`aurora-carousel`) · QRCode ✅ (in-house encoder) ·
+Upload ✅ · ScrollView ✅ (`aurora-carousel`) · QRCode ✅ + Barcode/Code 128 ✅ (in-house encoders) ·
 Chat ✅ · PDF Viewer ⬜
 
 ## Remaining candidates
