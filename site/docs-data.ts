@@ -2361,6 +2361,52 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-checkboxgroup',
+    title: 'CheckBoxGroup',
+    category: 'Forms & Inputs',
+    summary:
+      'A set of composed checkboxes managed as one field — a values array in, one FormData entry per checked value out.',
+    example: `<aurora-checkboxgroup values="grid,charts" name="interests">\n  <option value="grid">Data grid</option>\n  <option value="charts">Charts</option>\n  <option value="motion">Motion</option>\n</aurora-checkboxgroup>`,
+    attributes: [
+      ['values', 'Comma-separated initial set'],
+      ['inline', 'Horizontal layout'],
+      ['name', 'Form field name'],
+    ],
+    events: [['aurora-change', '{ values }']],
+    cssvars: [['--aurora-accent', 'Inherited by the composed checkboxes']],
+    methods: [['values', 'Get/set as an array']],
+    tutorial: [
+      {
+        heading: '1 · Multi-pick filters',
+        text: 'Reads as one field in aurora-form — required rules pass once at least one box is checked.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-togglebutton',
+    title: 'ToggleButton',
+    category: 'Actions & Navigation',
+    summary:
+      'A button that stays pressed — reflected state, aria-pressed, and a pop on every flip.',
+    example: `<div style="display:flex;gap:10px">\n  <aurora-togglebutton pressed>Bold</aurora-togglebutton>\n  <aurora-togglebutton>Italic</aurora-togglebutton>\n  <aurora-togglebutton>Underline</aurora-togglebutton>\n</div>`,
+    attributes: [
+      ['pressed', 'Source of truth (reflected)'],
+      ['value / name / disabled', 'Form wiring and state'],
+    ],
+    events: [['aurora-change', '{ pressed }']],
+    cssvars: [['--aurora-accent / -radius', 'Pressed fill and shape']],
+    methods: [
+      ['pressed', 'Get/set'],
+      ['toggle()', 'Programmatic flip'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Formatting bars',
+        text: 'Drop a row of toggle buttons in an aurora-toolbar for instant editor chrome.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

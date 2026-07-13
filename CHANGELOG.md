@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.79.0
+
+Gap closing, round one.
+
+- `aurora-checkboxgroup` — composed checkboxes from options with a `values` set and
+  one FormData entry per checked value
+- `aurora-togglebutton` — a two-state button: `pressed` reflected, aria-pressed,
+  pop on flip, form-associated. Both ship with docs.
+
 ## 0.78.0
 
 Popup editing.

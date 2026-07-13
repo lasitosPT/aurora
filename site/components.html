@@ -1312,6 +1312,34 @@ form.addEventListener('aurora-submit', (e) => save(e.detail.data))</pre>
 &lt;aurora-radiogroup value="p"&gt;…&lt;/aurora-radiogroup&gt;</pre>
               </div>
             </article>
+            <!-- CheckBoxGroup + ToggleButton -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>CheckBoxGroup &amp; ToggleButton</h3>
+                <code>&lt;aurora-checkboxgroup&gt; &lt;aurora-togglebutton&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Checked sets as one field, and buttons that stay pressed.
+                <a href="./docs.html?c=aurora-checkboxgroup" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage" style="gap: 40px; align-items: flex-start">
+                <aurora-checkboxgroup values="grid,charts">
+                  <option value="grid">Data grid</option>
+                  <option value="charts">Charts</option>
+                  <option value="motion">Motion</option>
+                </aurora-checkboxgroup>
+                <div style="display: flex; gap: 10px">
+                  <aurora-togglebutton pressed>Bold</aurora-togglebutton>
+                  <aurora-togglebutton>Italic</aurora-togglebutton>
+                </div>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-checkboxgroup values="grid" name="interests"&gt;…&lt;/aurora-checkboxgroup&gt;
+&lt;aurora-togglebutton pressed&gt;Bold&lt;/aurora-togglebutton&gt;</pre>
+              </div>
+            </article>
             <!-- Text area -->
             <article class="demo" data-reveal>
               <div class="demo-head">
