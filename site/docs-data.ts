@@ -740,6 +740,165 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-button',
+    title: 'Button',
+    category: 'Actions & Navigation',
+    summary:
+      'The themeable base button — primary and ghost variants, focus-visible ring, disabled state.',
+    example: `<aurora-button>Primary</aurora-button>\n<aurora-button variant="ghost">Ghost</aurora-button>`,
+    attributes: [
+      ['variant', '"primary" (default) or "ghost"'],
+      ['disabled', 'Disables interaction'],
+    ],
+    events: [],
+    cssvars: [['--aurora-accent / -accent-hover / -radius', 'Fill, hover, corner radius']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · It is a real button',
+        text: 'Clicks, forms, and focus behave natively — delegatesFocus forwards host.focus() to the inner control.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-magnetic',
+    title: 'Magnetic',
+    category: 'Motion & Interaction',
+    summary:
+      'Wrapped content is pulled toward the cursor as it approaches and springs back on leave.',
+    example: `<aurora-magnetic strength="0.5">\n  <aurora-button>Hover near me</aurora-button>\n</aurora-magnetic>`,
+    attributes: [['strength', 'Pull factor 0–1 (default 0.4)']],
+    events: [],
+    cssvars: [],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Best on CTAs',
+        text: 'One magnetic hero button reads premium; ten read chaotic. Use sparingly.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-text',
+    title: 'Text Reveal',
+    category: 'Text & Typography',
+    summary:
+      'Masked text that rises into view on scroll — word by word, or per character for display headlines.',
+    example: `<aurora-text by="chars" stagger="0.03" style="font-size:1.6rem;font-weight:700">\n  Motion, built in.\n</aurora-text>`,
+    attributes: [
+      ['by', '"words" (default) or "chars"'],
+      ['stagger / delay', 'Timing controls'],
+    ],
+    events: [['aurora-complete', 'Reveal finished']],
+    cssvars: [],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Gradient-safe',
+        text: 'The reveal masks translate whole glyph units, so background-clip gradients on the host survive.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-marquee',
+    title: 'Marquee',
+    category: 'Motion & Interaction',
+    summary:
+      'A seamless infinite scroller — content duplicates once (aria-hidden) and loops at a pixel speed you set.',
+    example: `<aurora-marquee speed="70" style="font-weight:700">GSAP · Web Components · MIT · </aurora-marquee>`,
+    attributes: [['speed', 'Pixels per second (default 60)']],
+    events: [],
+    cssvars: [['--aurora-marquee-gap', 'Space between loop copies']],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · End with a separator',
+        text: 'Finish your content with a trailing dot or dash so the loop seam reads naturally.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-tilt',
+    title: 'Tilt',
+    category: 'Motion & Interaction',
+    summary:
+      '3D perspective tilt that follows the pointer across the surface and eases back on leave.',
+    example: `<aurora-tilt max="14">\n  <div style="padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:14px">Tilt me</div>\n</aurora-tilt>`,
+    attributes: [['max', 'Maximum tilt in degrees (default 12)']],
+    events: [],
+    cssvars: [],
+    methods: [],
+    tutorial: [
+      {
+        heading: '1 · Cards love it',
+        text: 'Wrap product cards or covers; keep max under ~16° to stay classy.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-input',
+    title: 'Text Input',
+    category: 'Forms & Inputs',
+    summary:
+      'A text field with an animated focus underline; form-associated and event-transparent.',
+    example: `<aurora-input label="Email" type="email" placeholder="you@example.com"></aurora-input>`,
+    attributes: [
+      ['label / type / placeholder / value / name / disabled', 'The essentials, passed through'],
+    ],
+    events: [['input / change', 'Re-emitted composed across the shadow boundary']],
+    cssvars: [['--aurora-accent / -border / -muted / -input-bg', 'Underline and field styling']],
+    methods: [['value / focus()', 'Programmatic access']],
+    tutorial: [
+      {
+        heading: '1 · Forms just work',
+        text: 'ElementInternals registers the value — FormData sees it like a native input.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-switch',
+    title: 'Switch',
+    category: 'Forms & Inputs',
+    summary:
+      'An animated toggle with role="switch" — the thumb glides, the form gets its value when checked.',
+    example: `<aurora-switch checked></aurora-switch>`,
+    attributes: [
+      ['checked / value / name / disabled', 'State, submitted value (default "on"), form field'],
+    ],
+    events: [['change', 'On toggle']],
+    cssvars: [
+      ['--aurora-accent / -switch-width / -switch-height / -switch-off', 'Colors and geometry'],
+    ],
+    methods: [['checked', 'Get/set state']],
+    tutorial: [
+      {
+        heading: '1 · Label it',
+        text: 'Wrap in a <label> with text beside it — clicks on the text toggle the switch.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-slider',
+    title: 'Slider',
+    category: 'Forms & Inputs',
+    summary:
+      'A draggable, keyboard-accessible range slider with role="slider" and honest min/max/step math.',
+    example: `<aurora-slider min="0" max="100" value="70" style="width:240px"></aurora-slider>`,
+    attributes: [['min / max / step / value / name / disabled', 'Range configuration']],
+    events: [
+      ['input', 'While sliding'],
+      ['change', 'On release / keyboard step'],
+    ],
+    cssvars: [['--aurora-accent / -slider-track', 'Fill and track']],
+    methods: [['value', 'Get/set (clamped and snapped)']],
+    tutorial: [
+      {
+        heading: '1 · Keyboard included',
+        text: 'Arrows step, Home/End jump — focus the track and drive it without a pointer.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
