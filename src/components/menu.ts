@@ -3,6 +3,8 @@ import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { prefersReducedMotion } from '../core/motion'
 import { register } from '../core/register'
+import './submenu'
+import type { AuroraSubmenu } from './submenu'
 
 const STYLE = `
   :host { display: inline-block; position: relative; }
@@ -66,7 +68,8 @@ const STYLE = `
 
 /**
  * `<aurora-menu label="Options">` — an animated, accessible dropdown. Items are
- * child `<button>`s (use `data-value`; `<hr>` for separators). Arrow keys rove,
+ * child `<button>`s (use `data-value`; `<hr>` for separators) and
+ * `<aurora-submenu>` flyouts. Arrow keys rove,
  * Home/End jump, Escape closes and restores focus, outside clicks close.
  * Emits `aurora-select` with `{ value }`. `align="end"` right-aligns the panel.
  */
@@ -105,8 +108,10 @@ export class AuroraMenu extends AuroraElement {
     if (this.onDocDown) document.removeEventListener('pointerdown', this.onDocDown)
   }
 
-  private items(): HTMLButtonElement[] {
-    return Array.from(this.querySelectorAll<HTMLButtonElement>(':scope > button'))
+  private items(): HTMLElement[] {
+    return Array.from(
+      this.querySelectorAll<HTMLElement>(':scope > button, :scope > aurora-submenu'),
+    )
   }
 
   open(): void {
@@ -157,14 +162,21 @@ export class AuroraMenu extends AuroraElement {
 
   private readonly onItemClick = (event: Event): void => {
     const item = (event.target as Element | null)?.closest?.('button')
-    if (!item || !this.items().includes(item as HTMLButtonElement)) return
+    if (!item || item.closest('aurora-menu') !== this) return
     const value = item.getAttribute('data-value') ?? item.textContent?.trim() ?? ''
     this.dispatchEvent(new CustomEvent('aurora-select', { detail: { value } }))
+    this.querySelectorAll<AuroraSubmenu>(':scope > aurora-submenu').forEach((sub) => sub.close())
     this.close(true)
   }
 
   private readonly onKey = (event: KeyboardEvent): void => {
     if (!this.isOpen) return
+    if (
+      (event.target as Element | null)?.closest?.('aurora-submenu') !== null &&
+      event.key !== 'Escape'
+    ) {
+      if ((event.target as Element | null)?.closest?.('aurora-submenu')) return
+    }
     const items = this.items()
     if (items.length === 0) return
     const current = items.findIndex((item) => item === document.activeElement)

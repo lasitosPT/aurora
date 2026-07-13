@@ -729,6 +729,7 @@ export const DOCS: ComponentDoc[] = [
     attributes: [
       ['label', 'Trigger text'],
       ['align', '"end" right-aligns the panel'],
+      ['aurora-submenu children', 'label attr + child buttons — hover or ArrowRight flyouts'],
     ],
     events: [['aurora-select', '{ value } from data-value or the label']],
     cssvars: [['--aurora-surface / -border / -menu-z / -radius', 'Panel style and layering']],

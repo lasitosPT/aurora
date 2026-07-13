@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.77.0
+
+Flyouts.
+
+- `aurora-menu` grows `<aurora-submenu>` flyouts: hover or ArrowRight opens the side
+  panel, ArrowLeft/Escape steps back without closing the parent, selections bubble up
+  as a single `aurora-select`, and the top-level roving includes submenu triggers.
+
 ## 0.76.0
 
 Gantt editing.
