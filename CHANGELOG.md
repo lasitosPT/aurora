@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.35.0
+
+The scheduler capstone.
+
+- `aurora-scheduler` — a week-view scheduler: Monday-first day columns over configurable
+  hour rows (`start-hour`/`end-hour`, `slot-height`), events positioned by time with
+  per-event accent colors and staggered entrances, today highlighting, week paging with
+  a live range title; `events` ({ title, start, end, color? }[] ISO datetimes); emits
+  `aurora-select` and `aurora-range`. Ships with docs.
+
 ## 0.34.0
 
 - `aurora-upload` — drag-and-drop file zone: click/keyboard browse or drop, staggered

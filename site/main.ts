@@ -208,6 +208,20 @@ if (catChart) {
   ]
 }
 
+const catSched = document.getElementById('catSched') as (HTMLElement & { events: unknown[] }) | null
+if (catSched)
+  catSched.events = [
+    { title: 'Standup', start: '2026-07-13T09:00', end: '2026-07-13T09:30' },
+    { title: 'aurora sprint', start: '2026-07-14T10:00', end: '2026-07-14T12:30' },
+    {
+      title: 'Design review',
+      start: '2026-07-15T14:00',
+      end: '2026-07-15T15:30',
+      color: '#22d3ee',
+    },
+    { title: 'Ship v1', start: '2026-07-17T16:00', end: '2026-07-17T17:00', color: '#34d399' },
+  ]
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -507,6 +521,20 @@ if (docRoot) {
         { label: 'Forks', data: [40, 90, 150, 210] },
       ]
     }
+    const sched = document.getElementById('docSched') as
+      (HTMLElement & { events: unknown[] }) | null
+    if (sched)
+      sched.events = [
+        { title: 'Standup', start: '2026-07-13T09:00', end: '2026-07-13T09:30' },
+        { title: 'aurora sprint', start: '2026-07-14T10:00', end: '2026-07-14T12:30' },
+        {
+          title: 'Design review',
+          start: '2026-07-15T14:00',
+          end: '2026-07-15T15:30',
+          color: '#22d3ee',
+        },
+        { title: 'Ship v1', start: '2026-07-17T16:00', end: '2026-07-17T17:00', color: '#34d399' },
+      ]
     const ac = document.getElementById('docAc') as (HTMLElement & { options: string[] }) | null
     if (ac) ac.options = ['TypeScript', 'JavaScript', 'Go', 'Rust', 'Python', 'Zig']
     if (doc.tag === 'aurora-grid') {

@@ -606,6 +606,36 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-scheduler',
+    title: 'Scheduler',
+    category: 'Enterprise & Data',
+    summary:
+      'A week-view scheduler: day columns over hour rows, time-positioned events with accent colors, today highlighting, and week paging — the capstone of the enterprise track.',
+    example: `<aurora-scheduler id="docSched" date="2026-07-13" start-hour="8" end-hour="18"></aurora-scheduler>`,
+    attributes: [
+      ['date', 'Any day in the week to show (ISO)'],
+      ['start-hour / end-hour', 'Visible hour range (default 8–19)'],
+      ['slot-height', 'Pixels per hour row (default 44)'],
+    ],
+    events: [
+      ['aurora-select', '{ event } when an event is clicked'],
+      ['aurora-range', '{ start } when the week changes'],
+    ],
+    cssvars: [['--aurora-accent / -surface / -border / -muted', 'Grid and default event color']],
+    methods: [['events', '{ title, start, end, color? }[] — ISO datetimes']],
+    tutorial: [
+      {
+        heading: '1 · Events are plain objects',
+        text: 'Times position and size each block; color sets the accent.',
+        code: `sched.events = [\n  { title: 'Standup', start: '2026-07-13T09:00', end: '2026-07-13T09:30' },\n  { title: 'Design review', start: '2026-07-15T14:00', end: '2026-07-15T15:30', color: '#22d3ee' },\n]`,
+      },
+      {
+        heading: '2 · Load weeks on demand',
+        text: 'aurora-range fires with the new week start — fetch and reassign events.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
