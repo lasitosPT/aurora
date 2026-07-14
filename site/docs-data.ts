@@ -509,6 +509,8 @@ export const DOCS: ComponentDoc[] = [
         '"bar" (grouped or stacked), "line", "area", "donut", "pie", "scatter", "funnel", "pyramid"',
       ],
       ['stacked', 'Stack bar series instead of grouping'],
+      ['chart-title / x-title / y-title', 'Captions around the plot'],
+      ['empty-text', 'No-data message (shown when every series is empty)'],
       ['aria-label', 'Describe the chart (role="img")'],
     ],
     events: [],

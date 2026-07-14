@@ -11,6 +11,18 @@ const STYLE = `
   .legend { display: flex; flex-wrap: wrap; gap: 14px; padding-top: 10px; font-size: 0.82rem; color: var(--aurora-muted, #9a98b3); }
   .key { display: inline-flex; align-items: center; gap: 7px; }
   .swab { width: 10px; height: 10px; border-radius: 3px; }
+  .heading { text-align: center; font-weight: 600; font-size: 0.95rem; padding-bottom: 8px; }
+  .axis-x { text-align: center; font-size: 0.74rem; color: var(--aurora-muted, #9a98b3); padding-top: 4px; }
+  .frame { display: flex; align-items: stretch; }
+  .axis-y {
+    writing-mode: vertical-rl; transform: rotate(180deg); text-align: center;
+    font-size: 0.74rem; color: var(--aurora-muted, #9a98b3); flex: none; padding-left: 2px;
+  }
+  .framebody { flex: 1; min-width: 0; }
+  .nodata {
+    display: grid; place-items: center; height: var(--aurora-chart-height, 240px);
+    color: var(--aurora-muted, #9a98b3); font-size: 0.88rem;
+  }
   .tip {
     position: absolute; pointer-events: none; display: none; padding: 6px 10px; font-size: 0.8rem;
     background: var(--aurora-surface, #16161f); border: 1px solid var(--aurora-border, rgba(255,255,255,0.16));
@@ -29,7 +41,9 @@ export interface ChartSeries {
 /**
  * `<aurora-chart type="bar|line|area|donut|pie|scatter|funnel|pyramid">` — a 2D-canvas
  * chart with axes, gridlines, an HTML legend, hover tooltips, and an
- * animated intro. Assign `labels` (string[] categories) and `series`
+ * animated intro, plus `chart-title`/`x-title`/`y-title` captions, a no-data
+ * state (`empty-text`), and PNG export (`toImage()`/`exportImage()`). Assign
+ * `labels` (string[] categories) and `series`
  * (`{ label, data, color? }[]`; donut/pie use the first series). Bars can
  * `stacked`; height via `--aurora-chart-height`.
  */
@@ -57,7 +71,16 @@ export class AuroraChart extends AuroraElement {
   }
 
   connectedCallback(): void {
-    this.root.innerHTML = `<style>${STYLE}</style><canvas></canvas><div class="legend" part="legend"></div><div class="tip"></div>`
+    const heading = this.getAttribute('chart-title')
+    const xTitle = this.getAttribute('x-title')
+    const yTitle = this.getAttribute('y-title')
+    this.root.innerHTML = `<style>${STYLE}</style>${
+      heading ? `<div class="heading" part="title">${escapeHtml(heading)}</div>` : ''
+    }<div class="frame">${
+      yTitle ? `<div class="axis-y" part="y-title">${escapeHtml(yTitle)}</div>` : ''
+    }<div class="framebody"><canvas></canvas><div class="nodata" hidden>${escapeHtml(
+      this.getAttribute('empty-text') ?? 'No data available',
+    )}</div>${xTitle ? `<div class="axis-x" part="x-title">${escapeHtml(xTitle)}</div>` : ''}</div></div><div class="legend" part="legend"></div><div class="tip"></div>`
     this.setAttribute('role', 'img')
     if (!this.hasAttribute('aria-label')) this.setAttribute('aria-label', 'Chart')
     const canvas = this.root.querySelector('canvas')
@@ -70,12 +93,43 @@ export class AuroraChart extends AuroraElement {
     this.cleanup?.()
   }
 
+  /** The rendered chart as a PNG data URL (empty before first draw). */
+  toImage(type = 'image/png'): string {
+    const canvas = this.root.querySelector('canvas')
+    if (!canvas) return ''
+    try {
+      return canvas.toDataURL(type)
+    } catch {
+      return ''
+    }
+  }
+
+  /** Download the chart as an image file. */
+  exportImage(filename = 'chart.png'): void {
+    const url = this.toImage()
+    if (!url) return
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    a.click()
+  }
+
   private color(i: number): string {
     return this.#series[i]?.color ?? PALETTE[i % PALETTE.length] ?? '#6d5cff'
   }
 
   private boot(): void {
     this.cleanup?.()
+    const empty = this.#series.length === 0 || this.#series.every((s) => s.data.length === 0)
+    const nodata = this.root.querySelector<HTMLElement>('.nodata')
+    const canvas = this.root.querySelector<HTMLElement>('canvas')
+    if (nodata) nodata.hidden = !empty
+    if (canvas) canvas.style.display = empty ? 'none' : 'block'
+    if (empty) {
+      const legend = this.root.querySelector('.legend')
+      if (legend) legend.innerHTML = ''
+      return
+    }
     if (this.#series.length === 0) return
     const legend = this.root.querySelector('.legend')
     if (legend) {

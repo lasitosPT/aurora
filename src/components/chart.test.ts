@@ -76,3 +76,39 @@ describe('funnel and pyramid charts', () => {
     }
   })
 })
+
+describe('chart depth (v1.3)', () => {
+  it('renders title and axis captions', () => {
+    const el = document.createElement('aurora-chart') as AuroraChart
+    el.setAttribute('chart-title', 'Revenue by quarter')
+    el.setAttribute('x-title', 'Quarter')
+    el.setAttribute('y-title', 'MRR (k€)')
+    document.body.append(el)
+    el.labels = ['Q1', 'Q2']
+    el.series = [{ label: 'MRR', data: [1, 2] }]
+    expect(el.shadowRoot?.querySelector('.heading')?.textContent).toBe('Revenue by quarter')
+    expect(el.shadowRoot?.querySelector('.axis-x')?.textContent).toBe('Quarter')
+    expect(el.shadowRoot?.querySelector('.axis-y')?.textContent).toBe('MRR (k€)')
+    el.remove()
+  })
+
+  it('shows the no-data state for empty series and recovers', () => {
+    const el = document.createElement('aurora-chart') as AuroraChart
+    el.setAttribute('empty-text', 'Nothing yet')
+    document.body.append(el)
+    el.series = []
+    expect(el.shadowRoot?.querySelector<HTMLElement>('.nodata')?.hidden).toBe(false)
+    expect(el.shadowRoot?.querySelector('.nodata')?.textContent).toBe('Nothing yet')
+    el.series = [{ label: 'A', data: [1, 2, 3] }]
+    expect(el.shadowRoot?.querySelector<HTMLElement>('.nodata')?.hidden).toBe(true)
+    el.remove()
+  })
+
+  it('exposes image export methods', () => {
+    const el = document.createElement('aurora-chart') as AuroraChart
+    document.body.append(el)
+    el.series = [{ label: 'A', data: [1] }]
+    expect(typeof el.toImage()).toBe('string')
+    el.remove()
+  })
+})

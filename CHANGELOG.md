@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0
+
+Chart depth.
+
+- `aurora-chart` — `chart-title`, `x-title`, and `y-title` captions, a no-data
+  state with `empty-text`, and PNG export via `toImage()`/`exportImage()`.
+
 ## 1.2.0
 
 Window depth.

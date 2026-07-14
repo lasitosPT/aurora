@@ -36,21 +36,21 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 
 ## Chart
 
-| Kendo feature          | aurora                                   |
-| ---------------------- | ---------------------------------------- |
-| Data binding           | ✅ properties (+ DataSource adapter)     |
-| Export (image/SVG/PDF) | ⬜ → v1.3 (PNG export; PDF out of scope) |
-| Appearance             | ✅ CSS vars + palette                    |
-| Axes (titles, config)  | ⬜ → v1.3 (titles + y-format)            |
-| Data series / types    | ✅ 9 types (bubble/polar/bullet ⬜)      |
-| Date series            | ⬜                                       |
-| Error bars             | ⬜                                       |
-| Legend                 | ✅                                       |
-| Notes/annotations      | ⬜                                       |
-| Panes                  | ⬜                                       |
-| Title                  | ⬜ → v1.3                                |
-| Tooltip                | ✅                                       |
-| No-data template       | ⬜ → v1.3                                |
+| Kendo feature          | aurora                               |
+| ---------------------- | ------------------------------------ |
+| Data binding           | ✅ properties (+ DataSource adapter) |
+| Export (image/SVG/PDF) | ✅ PNG (SVG/PDF out of scope)        |
+| Appearance             | ✅ CSS vars + palette                |
+| Axes (titles, config)  | ✅ x/y titles (custom scales ⬜)     |
+| Data series / types    | ✅ 9 types (bubble/polar/bullet ⬜)  |
+| Date series            | ⬜                                   |
+| Error bars             | ⬜                                   |
+| Legend                 | ✅                                   |
+| Notes/annotations      | ⬜                                   |
+| Panes                  | ⬜                                   |
+| Title                  | ✅ chart-title                       |
+| Tooltip                | ✅                                   |
+| No-data template       | ✅ empty-text                        |
 
 ## Editor (RTE)
 
