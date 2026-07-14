@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.0.0
+
+The depth milestone. No breaking changes — the major marks a claim:
+
+**Every component in the Kendo UI catalogue, with its documented headline features.**
+Since 1.0.0, twelve depth releases driven by DEPTH.md — a feature-parity audit built
+from Kendo's own documentation:
+
+- Calendar: month/year/decade zoom, min/max, disabled dates, week numbers, day templates
+- Window: resize, maximize/minimize, modal, custom actions
+- Chart: titles, axis captions, no-data states, PNG export
+- Editor: 21 tools, colors, tables, HTML source view, read-only
+- TreeView: tri-state checkboxes, filtering, lazy branches, node drag-and-drop
+- Scheduler: recurrence, resources, drag-to-move and resize events
+- Spreadsheet: cell formatting, custom functions, .xlsx export AND import
+  (in-house zip reader with DecompressionStream)
+- Gantt: day/week/month scales, planned-vs-actual baselines
+- Grid: checkbox value filters, custom editor renderers
+- Cross-cutting: full localization via setMessages()/t(), logical-property RTL groundwork
+
 ## 1.12.0
 
 Depth, final round.
