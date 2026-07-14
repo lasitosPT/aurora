@@ -9,12 +9,12 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
 endobj
 4 0 obj
-<< /Length 379 >>
+<< /Length 369 >>
 stream
 BT /F1 22 Tf 60 740 Td (aurora) Tj ET
-BT /F1 12 Tf 60 700 Td (This document is rendered by <aurora-pdfviewer>,) Tj ET
-BT /F1 12 Tf 60 678 Td (the 127th and final component of the Kendo parity catalogue.) Tj ET
-BT /F1 12 Tf 60 656 Td (Page controls, zoom, and download - all aurora chrome) Tj ET
+BT /F1 12 Tf 60 700 Td (This document is rendered by <aurora-pdfviewer> -) Tj ET
+BT /F1 12 Tf 60 678 Td (the final component of the Kendo parity catalogue.) Tj ET
+BT /F1 12 Tf 60 656 Td (Page controls, zoom, and download: all aurora chrome) Tj ET
 BT /F1 12 Tf 60 634 Td (around Mozilla pdf.js on the opt-in aurora/pdf entry.) Tj ET
 endstream
 endobj
@@ -28,9 +28,9 @@ xref
 0000000058 00000 n 
 0000000115 00000 n 
 0000000241 00000 n 
-0000000671 00000 n 
+0000000661 00000 n 
 trailer
 << /Size 6 /Root 1 0 R >>
 startxref
-741
+731
 %%EOF

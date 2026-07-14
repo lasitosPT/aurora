@@ -1,6 +1,6 @@
 # aurora
 
-> Enterprise UI that moves like it means it — 107 animated components, from data grids to gauges, shipped as native Web Components.
+> Enterprise UI that moves like it means it — 126 animated components, from data grids to gauges, shipped as native Web Components.
 
 [![CI](https://github.com/lasitosPT/aurora/actions/workflows/ci.yml/badge.svg)](https://github.com/lasitosPT/aurora/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/@lasitospt/aurora?color=6d5cff)](https://www.npmjs.com/package/@lasitospt/aurora)
