@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.9.0
+
+ImageEditor: crop. ✂ enters crop mode — drag a marquee over the image
+(dimmed surround, dashed selection), then Apply cuts the region with the
+current rotation/flips/filters baked in and the crop becomes the working
+image; Cancel leaves without cutting. Reset still restores the originally
+opened file. `startCrop()`/`applyCrop(rect)`/`cancelCrop()` from code.
+
 ## 2.8.0
 
 Calendar: century view — the last zoom level. Decade view's title zooms out

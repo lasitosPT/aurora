@@ -2678,13 +2678,20 @@ export const DOCS: ComponentDoc[] = [
     title: 'ImageEditor',
     category: 'Forms & Inputs',
     summary:
-      'Canvas image editing — rotate, flip, and tune brightness, contrast, and saturation live, then export the result as a PNG.',
+      'Canvas image editing — rotate, flip, crop with a drag marquee, and tune brightness, contrast, and saturation live, then export the result as a PNG.',
     example: `<aurora-imageeditor src="/og.jpg" style="width:100%;max-width:520px"></aurora-imageeditor>`,
     attributes: [['src', 'Initial image (or use the Open button)']],
     events: [['aurora-change', '{ edits } — rotation, flips, and filter values']],
     cssvars: [['--aurora-surface / -accent', 'Chrome and slider styling']],
     methods: [
-      ['rotate(±90) / flip(axis) / reset()', 'Programmatic operations'],
+      [
+        'rotate(±90) / flip(axis) / reset()',
+        'Programmatic operations (reset restores the opened file)',
+      ],
+      [
+        'startCrop() / applyCrop(rect) / cancelCrop()',
+        '✂ drag a marquee; applying bakes edits into the crop',
+      ],
       ['toDataUrl(type?) / loadUrl(url)', 'Export and load'],
     ],
     tutorial: [

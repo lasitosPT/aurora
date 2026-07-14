@@ -61,7 +61,7 @@ NumericTextBox ✅ · OTP ✅ · RadioButton 🔶 / RadioGroup ✅ · RangeSlide
 Rich Text Editor ✅ · Signature ✅ · Slider ✅ · Switch ✅ · TextArea ✅ · TextBox ✅ ·
 TimeDurationPicker ✅ · TimePicker ✅ · Validator ✅ (`aurora-form`) ·
 Captcha ✅ (`aurora-captcha`, client-side; docs say pair with server checks) ·
-ImageEditor ✅ (`aurora-imageeditor`: rotate/flip/filters/export; crop ⬜)
+ImageEditor ✅ (`aurora-imageeditor`: rotate/flip/crop/filters/export)
 
 ## Scheduling
 
@@ -120,5 +120,5 @@ ProgressBar ✅ · Skeleton ✅ · Sortable ✅ · TaskBoard ✅ (`aurora-taskbo
 **The catalogue is complete.** Every component in the Kendo UI for jQuery catalogue is
 covered — as a dedicated aurora element or a documented equivalent — including the
 four former giants (Spreadsheet, Diagram, Map, PDF Viewer). Remaining refinements are
-depth items marked ⬜ inline above (crop mode for the ImageEditor, extra barcode
+depth items marked ⬜ inline above (extra barcode
 symbologies, RTL/globalization).

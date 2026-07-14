@@ -6,7 +6,7 @@ describe('aurora-imageeditor', () => {
   it('renders the toolbar and empty state', () => {
     const el = document.createElement('aurora-imageeditor') as AuroraImageeditor
     document.body.append(el)
-    expect(el.shadowRoot?.querySelectorAll('.tools button').length).toBe(7)
+    expect(el.shadowRoot?.querySelectorAll('.tools button').length).toBe(8)
     expect(el.shadowRoot?.querySelectorAll('input[data-f]').length).toBe(3)
     expect(el.shadowRoot?.querySelector('.empty')?.textContent).toContain('Open an image')
     expect(el.toDataUrl()).toBe('')
@@ -45,6 +45,42 @@ describe('aurora-imageeditor', () => {
     expect(el.shadowRoot?.querySelector<HTMLInputElement>('input[data-f="contrast"]')?.value).toBe(
       '100',
     )
+    el.remove()
+  })
+})
+
+describe('imageeditor crop (v2.9)', () => {
+  it('crop mode needs an image; overlay appears and cancel removes it', () => {
+    const el = document.createElement('aurora-imageeditor') as AuroraImageeditor
+    document.body.append(el)
+    el.startCrop()
+    expect(el.shadowRoot?.querySelector('.cropov')).toBeNull()
+    // fake a loaded image so crop mode arms
+    const priv = el as unknown as { img: HTMLImageElement }
+    priv.img = document.createElement('img') as HTMLImageElement
+    el.startCrop()
+    const ov = el.shadowRoot?.querySelector('.cropov')
+    expect(ov).not.toBeNull()
+    expect(ov?.querySelector('[data-crop-apply]')).not.toBeNull()
+    el.cancelCrop()
+    expect(el.shadowRoot?.querySelector('.cropov')).toBeNull()
+    el.remove()
+  })
+
+  it('marquee follows a pointer drag', () => {
+    const el = document.createElement('aurora-imageeditor') as AuroraImageeditor
+    document.body.append(el)
+    const priv = el as unknown as { img: HTMLImageElement }
+    priv.img = document.createElement('img') as HTMLImageElement
+    el.startCrop()
+    const ov = el.shadowRoot?.querySelector<HTMLElement>('.cropov')
+    ov?.dispatchEvent(new PointerEvent('pointerdown', { clientX: 10, clientY: 12, bubbles: true }))
+    ov?.dispatchEvent(new PointerEvent('pointermove', { clientX: 70, clientY: 52, bubbles: true }))
+    const marq = ov?.querySelector<HTMLElement>('.marq')
+    expect(marq?.style.display).toBe('block')
+    expect(marq?.style.width).toBe('60px')
+    expect(marq?.style.height).toBe('40px')
+    ov?.dispatchEvent(new PointerEvent('pointerup', { bubbles: true }))
     el.remove()
   })
 })
