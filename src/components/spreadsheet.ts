@@ -1,7 +1,15 @@
 import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { register } from '../core/register'
-import { evaluateFormula, indexToCol } from '../core/formula'
+import { evaluateFormula, indexToCol, registerFormulaFunction } from '../core/formula'
+import { makeXlsx } from '../core/xlsx'
+
+export interface CellStyle {
+  bold?: boolean
+  italic?: boolean
+  align?: 'left' | 'center' | 'right'
+  color?: string
+}
 
 const STYLE = `
   :host {
@@ -14,6 +22,16 @@ const STYLE = `
     display: flex; gap: 10px; align-items: center; padding: 8px 12px;
     border-bottom: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.08));
   }
+  .fmt { display: flex; gap: 3px; }
+  .fmt button {
+    all: unset; cursor: pointer; width: 26px; height: 26px; display: inline-grid;
+    place-items: center; border-radius: 7px; font-size: 0.82rem; color: var(--aurora-muted, #9a98b3);
+  }
+  .fmt button:hover { color: var(--aurora-fg, #ececf2); background: rgba(255, 255, 255, 0.06); }
+  .fmt button.on { color: #fff; background: var(--aurora-accent, #6d5cff); }
+  .fmt button:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); }
+  .fmt .swatch { position: relative; overflow: hidden; }
+  .fmt .swatch input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
   .ref {
     min-width: 46px; text-align: center; font-size: 0.78rem; padding: 4px 8px;
     border-radius: 7px; background: rgba(255, 255, 255, 0.05);
@@ -57,13 +75,67 @@ const STYLE = `
  * with circular-reference detection. Click or arrow between cells, edit with
  * Enter/F2/typing, commit with Enter (moves down) or Tab (moves right); the
  * formula bar shows and edits the raw value. `data` in/out as a
- * `{ A1: raw }` map; `toCsv()` exports computed values. Emits
+ * `{ A1: raw }` map; `styles` carries `{ A1: { bold, italic, align, color } }`
+ * cell formatting (a toolbar edits the selected cell); `toCsv()` and
+ * `toExcel()`/`exportExcel()` export computed values;
+ * `AuroraSpreadsheet.registerFunction()` extends the formula engine. Emits
  * `aurora-change` with `{ ref, raw, value }`.
  */
 export class AuroraSpreadsheet extends AuroraElement {
   private cells = new Map<string, string>()
+  private cellStyles = new Map<string, CellStyle>()
   private selected = 'A1'
   private editing = false
+
+  /** Register a custom formula function usable across every sheet. */
+  static registerFunction(name: string, fn: (values: number[]) => number): void {
+    registerFormulaFunction(name, fn)
+  }
+
+  get styles(): Record<string, CellStyle> {
+    return Object.fromEntries(this.cellStyles)
+  }
+
+  set styles(v: Record<string, CellStyle>) {
+    this.cellStyles = new Map(Object.entries(v ?? {}))
+    this.render()
+  }
+
+  /** Merge style patches into the selected cell (or a given ref). */
+  formatCell(patch: CellStyle, ref = this.selected): void {
+    const key = ref.toUpperCase()
+    const current = this.cellStyles.get(key) ?? {}
+    const next = { ...current, ...patch }
+    if (patch.bold !== undefined && current.bold === patch.bold)
+      next.bold = !patch.bold ? undefined : patch.bold
+    this.cellStyles.set(key, next)
+    this.render()
+    this.focusCell(key)
+  }
+
+  /** The current sheet as .xlsx bytes (computed values). */
+  toExcel(): Uint8Array {
+    const rows = this.numberAttr('rows', 12)
+    const cols = this.numberAttr('cols', 8)
+    const grid: unknown[][] = []
+    for (let r = 1; r <= rows; r++)
+      grid.push(Array.from({ length: cols }, (_, c) => this.valueAt(`${indexToCol(c)}${r}`)))
+    const header = Array.from({ length: cols }, (_, c) => indexToCol(c))
+    return makeXlsx(header, grid, 'Sheet1')
+  }
+
+  /** Download the sheet as an Excel workbook. */
+  exportExcel(filename = 'sheet.xlsx'): void {
+    const bytes = this.toExcel()
+    const blob = new Blob([bytes.buffer as ArrayBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    })
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(blob)
+    a.download = filename
+    a.click()
+    URL.revokeObjectURL(a.href)
+  }
 
   get data(): Record<string, string> {
     return Object.fromEntries(this.cells)
@@ -141,16 +213,38 @@ export class AuroraSpreadsheet extends AuroraElement {
         const value = this.valueAt(ref)
         const isErr = typeof value === 'string' && value.startsWith('#')
         const isText = typeof value === 'string' && !isErr
-        return `<td data-ref="${ref}" tabindex="-1" class="${isErr ? 'err' : isText ? 'text' : ''}" aria-selected="${ref === this.selected}">${escapeHtml(String(value))}</td>`
+        const cs = this.cellStyles.get(ref)
+        const styleAttr = cs
+          ? ` style="${cs.bold ? 'font-weight:700;' : ''}${cs.italic ? 'font-style:italic;' : ''}${cs.align ? `text-align:${cs.align};` : ''}${cs.color ? `color:${cs.color};` : ''}"`
+          : ''
+        return `<td data-ref="${ref}" tabindex="-1" class="${isErr ? 'err' : isText ? 'text' : ''}"${styleAttr} aria-selected="${ref === this.selected}">${escapeHtml(String(value))}</td>`
       }).join('')}</tr>`
     }
     this.root.innerHTML = `<style>${STYLE}</style>
-      <div class="bar" part="bar"><span class="ref">${escapeHtml(this.selected)}</span><input class="fx" part="formula" aria-label="Formula" value="${escapeHtml(this.getCell(this.selected))}" spellcheck="false" /></div>
+      <div class="bar" part="bar"><span class="ref">${escapeHtml(this.selected)}</span><input class="fx" part="formula" aria-label="Formula" value="${escapeHtml(this.getCell(this.selected))}" spellcheck="false" /><div class="fmt" part="format"><button data-f="bold" aria-label="Bold"><b>B</b></button><button data-f="italic" aria-label="Italic"><i>I</i></button><button data-f="left" aria-label="Align left">⇤</button><button data-f="center" aria-label="Align center">↔</button><button data-f="right" aria-label="Align right">⇥</button><button class="swatch" aria-label="Text color">A<input type="color" data-f="color" value="#22d3ee" /></button><button data-f="xlsx" aria-label="Export Excel">⬇</button></div></div>
       <div class="viewport"><table aria-label="Spreadsheet"><thead><tr><th class="corner rowh"></th>${head}</tr></thead><tbody>${body}</tbody></table></div>`
     this.wire()
   }
 
   private wire(): void {
+    const cs = this.cellStyles.get(this.selected) ?? {}
+    this.root.querySelectorAll<HTMLButtonElement>('.fmt button[data-f]').forEach((btn) => {
+      const f = btn.dataset['f']
+      if (f === 'bold') btn.classList.toggle('on', cs.bold === true)
+      if (f === 'italic') btn.classList.toggle('on', cs.italic === true)
+      if (f === cs.align) btn.classList.toggle('on', true)
+      btn.addEventListener('click', () => {
+        if (f === 'bold') this.formatCell({ bold: !cs.bold })
+        else if (f === 'italic') this.formatCell({ italic: !cs.italic })
+        else if (f === 'left' || f === 'center' || f === 'right') this.formatCell({ align: f })
+        else if (f === 'xlsx') this.exportExcel()
+      })
+    })
+    this.root
+      .querySelector<HTMLInputElement>('.fmt input[data-f="color"]')
+      ?.addEventListener('input', (e) => {
+        this.formatCell({ color: (e.target as HTMLInputElement).value })
+      })
     const fx = this.root.querySelector<HTMLInputElement>('.fx')
     fx?.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {

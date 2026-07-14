@@ -2779,7 +2779,9 @@ export const DOCS: ComponentDoc[] = [
     methods: [
       ['setCell(ref, raw) / getCell(ref) / valueAt(ref)', 'Raw in, computed out'],
       ['data', '{ A1: raw } map in/out'],
-      ['toCsv()', 'Computed values as CSV'],
+      ['toCsv() / toExcel() / exportExcel()', 'Computed values as CSV or .xlsx (in-house writer)'],
+      ['formatCell(patch, ref?) / styles', 'Bold, italic, align, color per cell'],
+      ['AuroraSpreadsheet.registerFunction(name, fn)', 'Extend the formula engine'],
     ],
     tutorial: [
       {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import './spreadsheet'
-import type { AuroraSpreadsheet } from './spreadsheet'
+import { AuroraSpreadsheet } from './spreadsheet'
 
 function make(): AuroraSpreadsheet {
   const el = document.createElement('aurora-spreadsheet') as AuroraSpreadsheet
@@ -59,6 +59,39 @@ describe('aurora-spreadsheet', () => {
     expect(el.getCell('A1')).toBe('5')
     const csv = el.toCsv()
     expect(csv.split('\n')[0]).toBe('"5","15","",""')
+    el.remove()
+  })
+})
+
+describe('spreadsheet depth (v1.7)', () => {
+  it('formats cells with bold, alignment, and color', () => {
+    const el = make()
+    el.data = { A1: 'Title' }
+    el.formatCell({ bold: true, align: 'center', color: '#ff0000' }, 'A1')
+    const td = el.shadowRoot?.querySelector<HTMLElement>('td[data-ref="A1"]')
+    expect(td?.getAttribute('style')).toContain('font-weight:700')
+    expect(td?.getAttribute('style')).toContain('text-align:center')
+    expect(td?.getAttribute('style')).toContain('#ff0000')
+    expect(el.styles['A1']).toEqual({ bold: true, align: 'center', color: '#ff0000' })
+    el.remove()
+  })
+
+  it('registers custom formula functions', () => {
+    AuroraSpreadsheet.registerFunction('DOUBLE', (v) => (v[0] ?? 0) * 2)
+    const el = make()
+    el.data = { A1: '21', A2: '=DOUBLE(A1)' }
+    expect(el.valueAt('A2')).toBe(42)
+    el.remove()
+  })
+
+  it('exports computed values as a valid xlsx workbook', () => {
+    const el = make()
+    el.data = { A1: '2', B1: '=A1*5' }
+    const bytes = el.toExcel()
+    expect(bytes[0]).toBe(0x50)
+    expect(bytes[1]).toBe(0x4b)
+    const text = new TextDecoder().decode(bytes)
+    expect(text).toContain('<v>10</v>')
     el.remove()
   })
 })

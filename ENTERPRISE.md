@@ -30,7 +30,7 @@ SplitButton ✅ · Stepper ✅ · ToggleButton ✅ · Toolbar ✅ · TreeView �
 | Pager (standalone)             | ✅     | `aurora-pager` (windowed numbers + ellipses)                         |
 | PropertyGrid                   | ✅     | `aurora-propertygrid` (type-inferred editors, groups, explicit defs) |
 | FileManager                    | ✅     | `aurora-filemanager` (breadcrumb + treeview + tile grid composition) |
-| Spreadsheet                    | 🚫     | a formula engine is a product of its own                             |
+| Spreadsheet                    | ✅     | `aurora-spreadsheet` (in-house formula engine + formatting + xlsx)   |
 
 ## File Management / Bar codes / Documents
 
@@ -66,7 +66,7 @@ ImageEditor ✅ (`aurora-imageeditor`: rotate/flip/filters/export; crop ⬜)
 ## Scheduling
 
 Calendar ✅ · DateRangePicker ✅ · Scheduler ✅ (day/week/month/agenda) ·
-Gantt ✅ (drag-move + grip-resize) · MultiViewCalendar ⬜ (planned: paired-month calendar)
+Gantt ✅ (drag-move + grip-resize) · MultiViewCalendar ✅ (`aurora-multiviewcalendar`)
 
 ## Layout
 
@@ -98,7 +98,7 @@ ProgressBar ✅ · Skeleton ✅ · Sortable ✅ · TaskBoard ✅ (`aurora-taskbo
 
 | Kendo grid feature  | aurora-grid status                                                                    |
 | ------------------- | ------------------------------------------------------------------------------------- |
-| Data binding        | 🔶 local arrays; remote DataSource adapter ⬜                                         |
+| Data binding        | ✅ local arrays + `createDataSource()` remote adapter                                 |
 | Editing             | ✅ inline + popup + per-column validators; batch queue ⬜, custom editor renderers ⬜ |
 | Filtering           | ✅ filter row + 5 operators + global search; checkbox/menu filter UI ⬜               |
 | Grouping            | ✅ groupBy + collapsible + per-group aggregates; load-on-demand 🚫 (server concern)   |

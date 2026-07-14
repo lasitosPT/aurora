@@ -9,6 +9,13 @@ const FUNCS: Record<string, (values: number[]) => number> = {
   MIN: (v) => (v.length ? Math.min(...v) : 0),
   MAX: (v) => (v.length ? Math.max(...v) : 0),
   COUNT: (v) => v.length,
+  ROUND: (v) => Math.round(v[0] ?? 0),
+  ABS: (v) => Math.abs(v[0] ?? 0),
+}
+
+/** Register a custom formula function (name is case-insensitive in formulas). */
+export function registerFormulaFunction(name: string, fn: (values: number[]) => number): void {
+  FUNCS[name.toUpperCase()] = fn
 }
 
 export function colToIndex(col: string): number {

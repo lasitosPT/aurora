@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.7.0
+
+Spreadsheet depth.
+
+- `aurora-spreadsheet` — cell formatting (bold, italic, alignment, text color) with
+  a toolbar and a persistable `styles` map, `AuroraSpreadsheet.registerFunction()`
+  extending the formula engine (plus new built-ins ROUND and ABS), and .xlsx export
+  through the in-house OOXML writer.
+
 ## 1.6.0
 
 Scheduler depth.
