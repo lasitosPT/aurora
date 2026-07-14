@@ -78,8 +78,8 @@ DockManager 🔶 (splitter + window + tilelayout compose most of it; dedicated m
 
 ## Interactivity & UX
 
-CircularProgressBar ✅ (`aurora-gauge type="circular"`) · Drag and Drop 🔶 (sortable/taskboard/tile drag;
-generic draggable primitive ⬜) · Effects 🔶 (the motion components + GSAP re-export) · Loader ✅ ·
+CircularProgressBar ✅ (`aurora-gauge type="circular"`) · Drag and Drop ✅ (`aurora-draggable` + `aurora-dropzone` +
+sortable/taskboard/tile specializations) · Effects 🔶 (the motion components + GSAP re-export) · Loader ✅ ·
 ProgressBar ✅ · Skeleton ✅ · Sortable ✅ · TaskBoard ✅ (`aurora-taskboard`)
 
 ## Framework (Kendo's jQuery-era infrastructure)

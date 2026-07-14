@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.91.0
+
+Drag and drop, generic.
+
+- `aurora-draggable` + `aurora-dropzone` — the primitive pair under sortable,
+  taskboard, and tile drag, now public: wrap anything to drag it, zones hit-test and
+  highlight while a compatible payload hovers (`accept`/`type` matching), and drops
+  deliver `{ data, draggable }`. Ships with docs.
+
 ## 0.90.0
 
 Charts, configured interactively.

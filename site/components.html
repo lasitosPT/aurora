@@ -49,7 +49,9 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          One hundred and twenty components.<br /><span class="grad">Every one of them live.</span>
+          One hundred and twenty-two components.<br /><span class="grad"
+            >Every one of them live.</span
+          >
         </h1>
         <input
           id="catalogSearch"
@@ -1159,7 +1161,7 @@ sheet.show()</pre>
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>One hundred and twenty components.</strong><br />
+                  <strong>One hundred and twenty-two components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
@@ -2350,6 +2352,40 @@ mcc.data = countries</pre>
   &lt;div&gt;Design the API&lt;/div&gt;
   &lt;div&gt;Ship it&lt;/div&gt;
 &lt;/aurora-sortable&gt;</pre>
+              </div>
+            </article>
+            <!-- Drag and Drop -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Drag and Drop</h3>
+                <code>&lt;aurora-draggable&gt; &lt;aurora-dropzone&gt;</code>
+              </div>
+              <div class="demo-desc">
+                The generic pair — drag the card into the zone.
+                <a href="./docs.html?c=aurora-draggable" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage" style="gap: 22px; align-items: stretch">
+                <aurora-draggable id="catDrag" data="⚡ payload delivered">
+                  <div class="sort-card">Drag me</div>
+                </aurora-draggable>
+                <aurora-dropzone
+                  id="catDrop"
+                  style="
+                    flex: 1;
+                    display: grid;
+                    place-items: center;
+                    color: var(--muted);
+                    min-height: 90px;
+                  "
+                >
+                  Drop here
+                </aurora-dropzone>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+&lt;aurora-draggable data="payload"&gt;…&lt;/aurora-draggable&gt;
+zone.addEventListener('aurora-drop', (e) => use(e.detail.data))</pre>
               </div>
             </article>
             <!-- Compare -->

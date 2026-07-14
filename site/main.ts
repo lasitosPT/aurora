@@ -661,6 +661,16 @@ function wireWiz(wiz: AuroraChartwizard | null): void {
 }
 wireWiz(document.getElementById('catWiz') as AuroraChartwizard | null)
 
+/* ---------- drag and drop demo ---------- */
+document.getElementById('catDrop')?.addEventListener('aurora-drop', (e) => {
+  const { data } = (e as CustomEvent<{ data: string }>).detail
+  const zone = e.currentTarget as HTMLElement
+  zone.textContent = data
+  window.setTimeout(() => {
+    zone.textContent = 'Drop here'
+  }, 2200)
+})
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()

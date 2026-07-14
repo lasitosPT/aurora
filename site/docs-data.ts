@@ -2705,6 +2705,30 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-draggable',
+    title: 'Drag and Drop',
+    category: 'Motion & Interaction',
+    summary:
+      'The generic pair — wrap anything in a draggable, mark targets as dropzones, and payloads arrive as events with accept/type matching.',
+    example: `<div style="display:flex;gap:22px;align-items:stretch;width:100%">\n  <aurora-draggable data="⚡ payload"><div class="sort-card">Drag me</div></aurora-draggable>\n  <aurora-dropzone style="flex:1;display:grid;place-items:center;color:var(--muted)">Drop here</aurora-dropzone>\n</div>`,
+    attributes: [
+      ['draggable: data / type / disabled', 'Payload, matching key, state'],
+      ['dropzone: accept', 'Only accept draggables with this type'],
+    ],
+    events: [
+      ['aurora-dragstart / aurora-dragend', '{ data } / { dropped }'],
+      ['aurora-drop (on the zone)', '{ data, draggable } — cancelable'],
+    ],
+    cssvars: [['--aurora-dropzone-pad / -accent', 'Zone padding and highlight']],
+    methods: [['zone.receive(data, draggable)', 'Programmatic delivery']],
+    tutorial: [
+      {
+        heading: '1 · Build your own',
+        text: 'Sortable, taskboard, and tile drag are specializations of this pair — use it for upload targets, trash cans, or shelf builders.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
