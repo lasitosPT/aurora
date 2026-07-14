@@ -2567,6 +2567,30 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-filterbuilder',
+    title: 'Filter',
+    category: 'Enterprise & Data',
+    summary:
+      'A filter expression builder — rows of field, operator, and value under ALL-ANY logic, with a built-in evaluator you can run over any array.',
+    example: `<aurora-filterbuilder id="docFilter" style="width:100%;max-width:460px"></aurora-filterbuilder>`,
+    attributes: [
+      ['fields (property)', '{ field, label?, type? }[] — type picks the operator set'],
+      ['expression (property)', '{ logic, rules } in and out'],
+    ],
+    events: [['aurora-change', '{ expression } on every edit']],
+    cssvars: [['--aurora-surface / -field / -accent', 'Builder styling']],
+    methods: [
+      ['test(row) / apply(rows)', 'Evaluate the expression'],
+      ['expression', 'Get/set'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Beyond the grid',
+        text: 'Feed apply() any array — grid rows, listview data, API results. The expression itself is JSON, so it saves and restores like grid state.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

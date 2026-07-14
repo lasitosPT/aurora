@@ -26,7 +26,7 @@ SplitButton ✅ · Stepper ✅ · ToggleButton ✅ · Toolbar ✅ · TreeView �
 | TreeList                       | ✅     | `aurora-treelist`                                                              |
 | ListView                       | ✅     | `aurora-listview`                                                              |
 | PivotGrid / PivotGrid v2       | ✅     | `aurora-pivotgrid`                                                             |
-| Filter (standalone builder UI) | ⬜     | filtering exists in-grid; standalone expression builder planned                |
+| Filter (standalone builder UI) | ✅     | `aurora-filterbuilder` (ALL/ANY rules + built-in evaluator)                    |
 | Pager (standalone)             | ✅     | `aurora-pager` (windowed numbers + ellipses)                                   |
 | PropertyGrid                   | ✅     | `aurora-propertygrid` (type-inferred editors, groups, explicit defs)           |
 | FileManager                    | ⬜     | planned as a composition showcase (treeview + listview + toolbar + breadcrumb) |

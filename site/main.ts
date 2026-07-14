@@ -600,6 +600,18 @@ function wirePropgrid(pg: AuroraPropertygrid | null): void {
 }
 wirePropgrid(document.getElementById('catPropgrid') as AuroraPropertygrid | null)
 
+/* ---------- filterbuilder demo ---------- */
+import type { AuroraFilterbuilder } from 'aurora'
+function wireFilter(fb: AuroraFilterbuilder | null): void {
+  if (!fb) return
+  fb.fields = [
+    { field: 'name', label: 'Project' },
+    { field: 'lang', label: 'Language' },
+    { field: 'stars', label: 'Stars', type: 'number' },
+  ]
+}
+wireFilter(document.getElementById('catFilter') as AuroraFilterbuilder | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -923,6 +935,7 @@ if (docRoot) {
     wireBoard(document.getElementById('docBoard') as AuroraTaskboard | null)
     wirePrompt(document.getElementById('docPrompt') as AuroraPromptbox | null)
     wirePropgrid(document.getElementById('docPropgrid') as AuroraPropertygrid | null)
+    wireFilter(document.getElementById('docFilter') as AuroraFilterbuilder | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

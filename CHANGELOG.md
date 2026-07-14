@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.86.0
+
+Filter expressions.
+
+- `aurora-filterbuilder` — the standalone Filter: field/operator/value rules with
+  ALL-ANY logic, add and remove, typed operator sets (string vs number), and an
+  evaluator (`test(row)` / `apply(rows)`) so the expression is directly usable.
+  Ships with docs.
+
 ## 0.85.0
 
 Object inspection.

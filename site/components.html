@@ -49,9 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          One hundred and fourteen components.<br /><span class="grad"
-            >Every one of them live.</span
-          >
+          One hundred and fifteen components.<br /><span class="grad">Every one of them live.</span>
         </h1>
         <input
           id="catalogSearch"
@@ -347,6 +345,29 @@ board.addEventListener('aurora-move', (e) => save(e.detail))</pre>
                 <button class="copy">Copy</button>
                 <pre>
 pg.value = { title: 'Aurora', width: 320, visible: true, accent: '#6d5cff' }</pre>
+              </div>
+            </article>
+            <!-- Filter builder -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Filter</h3>
+                <code>&lt;aurora-filterbuilder&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Build an expression, get an evaluator — ALL/ANY, typed operators.
+                <a href="./docs.html?c=aurora-filterbuilder" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-filterbuilder
+                  id="catFilter"
+                  style="width: 100%; max-width: 480px"
+                ></aurora-filterbuilder>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+fb.fields = [{ field: 'name' }, { field: 'stars', type: 'number' }]
+grid.data = fb.apply(allRows)</pre>
               </div>
             </article>
             <!-- Sparkline -->
@@ -1098,7 +1119,7 @@ sheet.show()</pre>
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>One hundred and fourteen components.</strong><br />
+                  <strong>One hundred and fifteen components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>
