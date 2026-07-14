@@ -2776,6 +2776,31 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-diagram',
+    title: 'Diagram',
+    category: 'Enterprise & Data',
+    summary:
+      'A node-graph canvas — drag nodes and the curved arrows follow live, pan the background, zoom with the wheel, click to select.',
+    example: `<aurora-diagram id="docDiagram" style="width:100%"></aurora-diagram>`,
+    attributes: [
+      ['nodes (property)', '{ id, label, x, y, color? }[]'],
+      ['edges (property)', '{ from, to, label? }[]'],
+      ['readonly', 'Freeze dragging'],
+    ],
+    events: [
+      ['aurora-select', '{ node }'],
+      ['aurora-move', '{ node, x, y } after a drag'],
+    ],
+    cssvars: [['--aurora-diagram-height', 'Canvas height (default 340px)']],
+    methods: [['nodes / edges', 'Get/set']],
+    tutorial: [
+      {
+        heading: '1 · Pipelines and flows',
+        text: 'Positions live on your node objects — persist them after aurora-move and the graph reopens exactly as the user left it.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

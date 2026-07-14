@@ -698,6 +698,27 @@ function wireSheet(sheet: AuroraSpreadsheet | null): void {
 }
 wireSheet(document.getElementById('catSs') as AuroraSpreadsheet | null)
 
+/* ---------- diagram demo ---------- */
+import type { AuroraDiagram } from 'aurora'
+function wireDiagram(dg: AuroraDiagram | null): void {
+  if (!dg) return
+  dg.nodes = [
+    { id: 'ingest', label: 'Ingest', x: 40, y: 50 },
+    { id: 'queue', label: 'Queue', x: 250, y: 140, color: '#f5b83d' },
+    { id: 'process', label: 'Process', x: 460, y: 50, color: '#22d3ee' },
+    { id: 'store', label: 'Store', x: 640, y: 160, color: '#34d399' },
+    { id: 'dash', label: 'Dashboard', x: 460, y: 260, color: '#f472b6' },
+  ]
+  dg.edges = [
+    { from: 'ingest', to: 'queue', label: 'events' },
+    { from: 'queue', to: 'process' },
+    { from: 'process', to: 'store', label: 'batches' },
+    { from: 'store', to: 'dash' },
+    { from: 'process', to: 'dash', label: 'live' },
+  ]
+}
+wireDiagram(document.getElementById('catDiagram') as AuroraDiagram | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -1025,6 +1046,7 @@ if (docRoot) {
     wireFm(document.getElementById('docFm') as AuroraFilemanager | null)
     wireWiz(document.getElementById('docWiz') as AuroraChartwizard | null)
     wireSheet(document.getElementById('docSs') as AuroraSpreadsheet | null)
+    wireDiagram(document.getElementById('docDiagram') as AuroraDiagram | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

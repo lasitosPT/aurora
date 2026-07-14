@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.94.0
+
+Giant two: Diagram.
+
+- `aurora-diagram` — a node-graph canvas: nodes and labeled curved edges with
+  arrowheads on SVG, node dragging with live edge updates, background panning,
+  wheel zoom, selection, and a `readonly` mode. Ships with docs.
+
 ## 0.93.0
 
 The first giant: Spreadsheet.

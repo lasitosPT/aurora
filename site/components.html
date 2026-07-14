@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          One hundred and twenty-four components.<br /><span class="grad"
+          One hundred and twenty-five components.<br /><span class="grad"
             >Every one of them live.</span
           >
         </h1>
@@ -447,6 +447,26 @@ fm.addEventListener('aurora-open', (e) => view(e.detail.path))</pre>
               <div class="code">
                 <button class="copy">Copy</button>
                 <pre>sheet.data = { A1: '120', A2: '80', A3: '=SUM(A1:A2)' }</pre>
+              </div>
+            </article>
+            <!-- Diagram -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Diagram</h3>
+                <code>&lt;aurora-diagram&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Drag the nodes — edges follow. Drag the background to pan, wheel to zoom.
+                <a href="./docs.html?c=aurora-diagram" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-diagram id="catDiagram" style="width: 100%"></aurora-diagram>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+diagram.nodes = [{ id: 'a', label: 'Ingest', x: 40, y: 60 }]
+diagram.edges = [{ from: 'a', to: 'b', label: 'raw' }]</pre>
               </div>
             </article>
             <!-- Sparkline -->
@@ -1218,7 +1238,7 @@ sheet.show()</pre>
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>One hundred and twenty-four components.</strong><br />
+                  <strong>One hundred and twenty-five components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

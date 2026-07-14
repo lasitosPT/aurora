@@ -39,8 +39,8 @@ other symbologies ⬜) · PDF Viewer 🚫 (needs a pdf.js-scale rendering engine
 
 ## Diagrams and Maps
 
-OrgChart ✅ · Diagram 🚫 (free-form node-graph editor is a product of its own) ·
-Map 🚫 (needs tile providers / geo services — against the zero-dependency principle)
+OrgChart ✅ · Diagram ✅ (`aurora-diagram`: draggable nodes, live edges, pan/zoom) ·
+Map 🚫→⬜ (SVG choropleth from GeoJSON in progress — no tile servers)
 
 ## Charts
 
