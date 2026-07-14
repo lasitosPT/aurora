@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.93.0
+
+The first giant: Spreadsheet.
+
+- `aurora-spreadsheet` — a formula-capable sheet: values and `=SUM(A1:B3)`-style
+  formulas (SUM, AVG, MIN, MAX, COUNT, arithmetic with refs and parens) evaluated by
+  an in-house recursive-descent engine with circular-reference detection and typed
+  errors (#CIRC, #DIV/0, #VALUE). Keyboard-first editing, a formula bar, sticky
+  headers, `data` in/out, computed CSV export. The engine (`evaluateFormula`) is
+  exported. Ships with docs.
+
 ## 0.92.0
 
 Docking.

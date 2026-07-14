@@ -671,6 +671,33 @@ document.getElementById('catDrop')?.addEventListener('aurora-drop', (e) => {
   }, 2200)
 })
 
+/* ---------- spreadsheet demo ---------- */
+import type { AuroraSpreadsheet } from 'aurora'
+function wireSheet(sheet: AuroraSpreadsheet | null): void {
+  if (!sheet) return
+  sheet.data = {
+    A1: 'Revenue',
+    B1: 'Q1',
+    C1: 'Q2',
+    D1: 'Total',
+    A2: 'Grid',
+    B2: '42',
+    C2: '55',
+    D2: '=SUM(B2:C2)',
+    A3: 'Charts',
+    B3: '18',
+    C3: '26',
+    D3: '=SUM(B3:C3)',
+    A4: 'Total',
+    B4: '=SUM(B2:B3)',
+    C4: '=SUM(C2:C3)',
+    D4: '=SUM(D2:D3)',
+    A6: 'Avg/quarter',
+    B6: '=AVG(B2:C3)',
+  }
+}
+wireSheet(document.getElementById('catSheet') as AuroraSpreadsheet | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -997,6 +1024,7 @@ if (docRoot) {
     wireFilter(document.getElementById('docFilter') as AuroraFilterbuilder | null)
     wireFm(document.getElementById('docFm') as AuroraFilemanager | null)
     wireWiz(document.getElementById('docWiz') as AuroraChartwizard | null)
+    wireSheet(document.getElementById('docSheet') as AuroraSpreadsheet | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

@@ -2750,6 +2750,32 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-spreadsheet',
+    title: 'Spreadsheet',
+    category: 'Enterprise & Data',
+    summary:
+      'A formula-capable sheet — =SUM(A1:B3), arithmetic with refs, circular-reference detection, keyboard-first editing, and a formula bar. The engine is in-house.',
+    example: `<aurora-spreadsheet id="docSheet" rows="8" cols="6" style="width:100%"></aurora-spreadsheet>`,
+    attributes: [['rows / cols', 'Sheet dimensions (default 12 × 8)']],
+    events: [['aurora-change', '{ ref, raw, value } per commit']],
+    cssvars: [['--aurora-grid-height', 'Scroll height (default 340px)']],
+    methods: [
+      ['setCell(ref, raw) / getCell(ref) / valueAt(ref)', 'Raw in, computed out'],
+      ['data', '{ A1: raw } map in/out'],
+      ['toCsv()', 'Computed values as CSV'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Formulas',
+        text: 'Start a cell with = — SUM, AVG, MIN, MAX, COUNT over ranges, plus arithmetic with refs and parentheses. Errors are typed: #CIRC, #DIV/0, #VALUE.',
+      },
+      {
+        heading: '2 · Keyboard-first',
+        text: 'Arrows move, typing replaces, Enter commits down, Tab commits right, F2 edits in place, Escape cancels.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
