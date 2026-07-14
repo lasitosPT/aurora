@@ -696,7 +696,7 @@ function wireSheet(sheet: AuroraSpreadsheet | null): void {
     B6: '=AVG(B2:C3)',
   }
 }
-wireSheet(document.getElementById('catSheet') as AuroraSpreadsheet | null)
+wireSheet(document.getElementById('catSs') as AuroraSpreadsheet | null)
 
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
@@ -1024,7 +1024,7 @@ if (docRoot) {
     wireFilter(document.getElementById('docFilter') as AuroraFilterbuilder | null)
     wireFm(document.getElementById('docFm') as AuroraFilemanager | null)
     wireWiz(document.getElementById('docWiz') as AuroraChartwizard | null)
-    wireSheet(document.getElementById('docSheet') as AuroraSpreadsheet | null)
+    wireSheet(document.getElementById('docSs') as AuroraSpreadsheet | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

@@ -2755,7 +2755,7 @@ export const DOCS: ComponentDoc[] = [
     category: 'Enterprise & Data',
     summary:
       'A formula-capable sheet — =SUM(A1:B3), arithmetic with refs, circular-reference detection, keyboard-first editing, and a formula bar. The engine is in-house.',
-    example: `<aurora-spreadsheet id="docSheet" rows="8" cols="6" style="width:100%"></aurora-spreadsheet>`,
+    example: `<aurora-spreadsheet id="docSs" rows="8" cols="6" style="width:100%"></aurora-spreadsheet>`,
     attributes: [['rows / cols', 'Sheet dimensions (default 12 × 8)']],
     events: [['aurora-change', '{ ref, raw, value } per commit']],
     cssvars: [['--aurora-grid-height', 'Scroll height (default 340px)']],
