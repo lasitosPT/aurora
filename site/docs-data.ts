@@ -2591,6 +2591,52 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-captcha',
+    title: 'Captcha',
+    category: 'Forms & Inputs',
+    summary:
+      'A client-side challenge — distorted canvas glyphs, refresh, verify-as-you-type. Deters casual automation; pair with a server check for real protection.',
+    example: `<aurora-captcha length="5" name="challenge"></aurora-captcha>`,
+    attributes: [
+      ['length', 'Glyph count (default 5)'],
+      ['name', 'Form field (submits only once verified)'],
+    ],
+    events: [['aurora-verify', '{ valid } — on full-length input']],
+    cssvars: [['--aurora-field / -danger', 'Canvas tile and state colors']],
+    methods: [
+      ['regenerate()', 'New challenge'],
+      ['verified', 'Reflected state'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Gate the submit',
+        text: 'In aurora-form, give it a name and a required rule — the form blocks until the captcha verifies.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-speechbutton',
+    title: 'SpeechToText Button',
+    category: 'Forms & Inputs',
+    summary:
+      'Press to talk — Web Speech API transcripts stream into a target input, with a pulsing state while listening and graceful degradation elsewhere.',
+    example: `<div style="display:flex;gap:10px;align-items:flex-end">\n  <aurora-input id="speechOut" label="Dictation"></aurora-input>\n  <aurora-speechbutton for="speechOut"></aurora-speechbutton>\n</div>`,
+    attributes: [
+      ['for', 'Target input id'],
+      ['lang', 'Recognition locale (default en-US)'],
+      ['label', 'Button text'],
+    ],
+    events: [['aurora-result', '{ transcript, final }']],
+    cssvars: [['--aurora-danger', 'Listening state color']],
+    methods: [['stop()', 'End the session']],
+    tutorial: [
+      {
+        heading: '1 · Progressive enhancement',
+        text: 'Unsupported browsers get a disabled button with a tooltip — the form still works, dictation is a bonus.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

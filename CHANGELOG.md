@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.87.0
+
+The long tail.
+
+- `aurora-captcha` — a client-side challenge: distorted canvas glyphs with noise,
+  refresh, verify-as-you-type, form association (honest docs: pair with a server
+  check for anything that matters)
+- `aurora-speechbutton` — press-to-talk via the Web Speech API, streaming transcripts
+  into a target input; renders disabled where unsupported
+- `createDataSource()` — a tiny fetch adapter turning grid view state into query
+  params and responses into `{ rows, total }` — server-side paging without a
+  framework. All ship with docs.
+
 ## 0.86.0
 
 Filter expressions.

@@ -15,7 +15,7 @@ Legend: ✅ dedicated component · 🔶 covered by an equivalent · ⬜ open · 
 ActionSheet ✅ · AppBar ✅ · BottomNavigation ✅ · Breadcrumb ✅ · Button ✅ ·
 ButtonGroup ✅ · Chip/ChipList ✅ (`aurora-chips`) · Drawer ✅ ·
 DropDownButton 🔶 (`aurora-menu` / `aurora-splitbutton`) · FAB ✅ · Menu ✅ (+ `aurora-submenu` flyouts) ·
-Segmented Control 🔶 (`aurora-buttongroup` is one) · SpeechToText Button ⬜ (planned: Web Speech API) ·
+Segmented Control 🔶 (`aurora-buttongroup` is one) · SpeechToText Button ✅ (`aurora-speechbutton`) ·
 SplitButton ✅ · Stepper ✅ · ToggleButton ✅ · Toolbar ✅ · TreeView ✅ · Wizard ✅
 
 ## Data Management
@@ -60,7 +60,7 @@ DropDownTree ✅ · ListBox ✅ · MaskedTextBox ✅ · MultiColumnComboBox ✅ 
 NumericTextBox ✅ · OTP ✅ · RadioButton 🔶 / RadioGroup ✅ · RangeSlider ✅ · Rating ✅ ·
 Rich Text Editor ✅ · Signature ✅ · Slider ✅ · Switch ✅ · TextArea ✅ · TextBox ✅ ·
 TimeDurationPicker ✅ · TimePicker ✅ · Validator ✅ (`aurora-form`) ·
-Captcha ⬜ (client-side widget planned; Kendo's is server-backed) ·
+Captcha ✅ (`aurora-captcha`, client-side; docs say pair with server checks) ·
 ImageEditor ⬜ (crop/rotate/flip/export planned)
 
 ## Scheduling
@@ -84,15 +84,15 @@ ProgressBar ✅ · Skeleton ✅ · Sortable ✅ · TaskBoard ✅ (`aurora-taskbo
 
 ## Framework (Kendo's jQuery-era infrastructure)
 
-| Kendo           | aurora's answer                                                                            |
-| --------------- | ------------------------------------------------------------------------------------------ |
-| DataSource      | ⬜ planned: a small fetch-based remote adapter for grid/listview (sort/filter/page params) |
-| Templates       | ✅ formatter/template functions (grid, listview, timeline bodies)                          |
-| Touch           | ✅ pointer events throughout — mouse/touch/pen unified                                     |
-| MVVM            | 🚫 N/A — properties + events are the Web Components contract; frameworks bind natively     |
-| Drawing API     | 🚫 canvas/SVG drawing library is out of scope                                              |
-| PDF Export      | 🚫 CSV + Excel export are in-house; PDF needs a layout engine                              |
-| Single-Page App | 🚫 N/A — routing belongs to the host app                                                   |
+| Kendo           | aurora's answer                                                                        |
+| --------------- | -------------------------------------------------------------------------------------- |
+| DataSource      | ✅ `createDataSource()` — fetch adapter: grid state → query params → { rows, total }   |
+| Templates       | ✅ formatter/template functions (grid, listview, timeline bodies)                      |
+| Touch           | ✅ pointer events throughout — mouse/touch/pen unified                                 |
+| MVVM            | 🚫 N/A — properties + events are the Web Components contract; frameworks bind natively |
+| Drawing API     | 🚫 canvas/SVG drawing library is out of scope                                          |
+| PDF Export      | 🚫 CSV + Excel export are in-house; PDF needs a layout engine                          |
+| Single-Page App | 🚫 N/A — routing belongs to the host app                                               |
 
 ## Grid feature-depth audit (vs Kendo's grid feature list)
 
