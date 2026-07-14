@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.0.0
+
+One-oh. The catalogue is complete.
+
+145 releases after `aurora-button`, the library covers the full enterprise component
+catalogue — 126 documented components, every one animated, tested, and demoed live:
+
+- **Data**: grid (remote binding, state persistence, frozen columns, multi-column
+  headers, cell selection, column menus, inline + popup edit validation,
+  virtualization, CSV + Excel export via an in-house OOXML writer), TreeList,
+  PivotGrid, ListView, FileManager, Spreadsheet with an in-house formula engine
+- **29 form editors**, all form-associated, tied together by the `aurora-form`
+  validation harness
+- **Scheduling**: calendar suite, four-view scheduler, drag-editable Gantt
+- **Visualization**: nine chart types, chart wizard, four gauges, sparklines,
+  node-graph diagram, GeoJSON choropleth map, org chart
+- **In-house encoders**: QR (Reed-Solomon), Code 128 — both spec-verified
+  bit-for-bit against reference implementations
+- **Opt-in entries**: `aurora/three` (3D), `aurora/pdf` (pdf.js viewer)
+- **Motion in everything**, GSAP-driven, with a full reduced-motion path
+
+Thank you, platform. Web Components were enough all along.
+
 ## 0.96.0
 
 The last box: PDF.
