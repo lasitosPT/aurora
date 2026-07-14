@@ -20,10 +20,12 @@ export default defineConfig({
     // pinned to this app's node_modules because the aliased library source lives
     // outside site/, so its bare imports would otherwise not resolve in CI.
     alias: [
+      { find: 'aurora/pdf', replacement: resolve(__dirname, '../src/pdf/viewer.ts') },
       { find: 'aurora/three', replacement: resolve(__dirname, '../src/three.ts') },
       { find: 'aurora', replacement: resolve(__dirname, '../src/index.ts') },
       { find: /^gsap$/, replacement: resolve(__dirname, 'node_modules/gsap') },
       { find: /^three$/, replacement: resolve(__dirname, 'node_modules/three') },
+      { find: /^pdfjs-dist/, replacement: resolve(__dirname, 'node_modules/pdfjs-dist') },
     ],
   },
 })

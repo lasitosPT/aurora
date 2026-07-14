@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.96.0
+
+The last box: PDF.
+
+- `aurora-pdfviewer` — on the new opt-in `aurora/pdf` entry, rendering through
+  Mozilla's pdf.js exactly like Three.js rides on `aurora/three`: page controls,
+  zoom, and download in aurora chrome, with a configurable worker source and an
+  injectable pdf module for testing. The Kendo catalogue is now fully covered.
+
 ## 0.95.0
 
 Giant three: Map.

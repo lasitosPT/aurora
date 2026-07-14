@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          One hundred and twenty-six components.<br /><span class="grad"
+          One hundred and twenty-seven components.<br /><span class="grad"
             >Every one of them live.</span
           >
         </h1>
@@ -487,6 +487,30 @@ diagram.edges = [{ from: 'a', to: 'b', label: 'raw' }]</pre>
                 <pre>
 map.geo = featureCollection
 map.data = { Norte: 84, Centro: 51, Lisboa: 97, Alentejo: 32, Algarve: 66 }</pre>
+              </div>
+            </article>
+            <!-- PDF Viewer -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>PDF Viewer</h3>
+                <code>&lt;aurora-pdfviewer&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Mozilla pdf.js in aurora chrome — the final catalogue box, opt-in entry.
+                <a href="./docs.html?c=aurora-pdfviewer" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-pdfviewer
+                  id="catPdf"
+                  src="/sample.pdf"
+                  style="width: 100%; max-width: 560px; --aurora-pdf-height: 380px"
+                ></aurora-pdfviewer>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+import 'aurora/pdf'
+&lt;aurora-pdfviewer src="report.pdf"&gt;&lt;/aurora-pdfviewer&gt;</pre>
               </div>
             </article>
             <!-- Sparkline -->
@@ -1258,7 +1282,7 @@ sheet.show()</pre>
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>One hundred and twenty-six components.</strong><br />
+                  <strong>One hundred and twenty-seven components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

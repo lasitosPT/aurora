@@ -1,6 +1,6 @@
 {
   "name": "@lasitospt/aurora",
-  "version": "0.95.0",
+  "version": "0.96.0",
   "description": "A framework-agnostic library of animated UI components (Web Components) powered by GSAP and Three.js.",
   "keywords": [
     "web-components",
@@ -37,6 +37,11 @@
       "types": "./dist/three.d.ts",
       "import": "./dist/three.js",
       "require": "./dist/three.cjs"
+    },
+    "./pdf": {
+      "types": "./dist/pdf.d.ts",
+      "import": "./dist/pdf.js",
+      "require": "./dist/pdf.cjs"
     }
   },
   "files": [
@@ -62,6 +67,7 @@
   },
   "dependencies": {
     "gsap": "^3.15.0",
+    "pdfjs-dist": "^6.1.200",
     "three": "^0.185.1"
   },
   "devDependencies": {

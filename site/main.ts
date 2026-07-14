@@ -1,5 +1,9 @@
 import 'aurora'
 import { AuroraConfetti, AuroraToaster } from 'aurora'
+import { AuroraPdfviewer } from 'aurora/pdf'
+import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url'
+
+AuroraPdfviewer.workerSrc = pdfWorkerUrl
 import { DOCS } from './docs-data'
 import '@fontsource-variable/inter'
 import '@fontsource-variable/space-grotesk'

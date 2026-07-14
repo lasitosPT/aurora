@@ -35,7 +35,7 @@ SplitButton ✅ · Stepper ✅ · ToggleButton ✅ · Toolbar ✅ · TreeView �
 ## File Management / Bar codes / Documents
 
 Upload ✅ · QRCode ✅ (in-house encoder, spec-verified) · BarCode ✅ (in-house Code 128, spec-verified;
-other symbologies ⬜) · PDF Viewer 🚫 (needs a pdf.js-scale rendering engine)
+other symbologies ⬜) · PDF Viewer ✅ (`aurora-pdfviewer` on the opt-in `aurora/pdf` entry, pdf.js-powered)
 
 ## Diagrams and Maps
 
@@ -115,11 +115,10 @@ ProgressBar ✅ · Skeleton ✅ · Sortable ✅ · TaskBoard ✅ (`aurora-taskbo
 | Globalization       | ⬜ en-only; RTL untested                                                              |
 | Accessibility       | ✅ ARIA grid roles, aria-sort, keyboard cell navigation; full screen-reader audit ⬜  |
 
-## Build queue (from this audit)
+## Status
 
-1. `aurora-promptbox` (AI Interface starter) + SmartPasteButton
-2. Grid: `getState()`/`setState()`, column menu, cell selection, DataSource adapter
-3. `aurora-multiviewcalendar`, `aurora-responsivepanel`, standalone `aurora-pager`
-4. Chart: pyramid/funnel types; gauge needle variant
-5. `aurora-propertygrid`, `aurora-filterbuilder`, `aurora-captcha`, `aurora-imageeditor`, SpeechToText button
-6. FileManager composition showcase
+**The catalogue is complete.** Every component in the Kendo UI for jQuery catalogue is
+covered — as a dedicated aurora element or a documented equivalent — including the
+four former giants (Spreadsheet, Diagram, Map, PDF Viewer). Remaining refinements are
+depth items marked ⬜ inline above (crop mode for the ImageEditor, extra barcode
+symbologies, RTL/globalization).

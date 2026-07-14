@@ -2823,6 +2823,30 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-pdfviewer',
+    title: 'PDF Viewer',
+    category: 'Enterprise & Data',
+    summary:
+      "PDFs in aurora chrome — page controls, zoom, and download around Mozilla's pdf.js, on the opt-in aurora/pdf entry so the core stays lean.",
+    example: `<aurora-pdfviewer id="docPdf" src="/sample.pdf" style="width:100%"></aurora-pdfviewer>`,
+    attributes: [['src', 'Document URL']],
+    events: [
+      ['aurora-load', '{ pages }'],
+      ['aurora-page', '{ page }'],
+    ],
+    cssvars: [['--aurora-pdf-height', 'Stage height (default 460px)']],
+    methods: [
+      ['go(page) / zoom(factor) / load(src)', 'Programmatic control'],
+      ['AuroraPdfviewer.workerSrc', 'Set the pdf.js worker URL once (bundler-specific)'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Opt-in entry',
+        text: "import 'aurora/pdf' pulls pdf.js only where you need it — the core bundle never pays for it, the same pattern as aurora/three.",
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
