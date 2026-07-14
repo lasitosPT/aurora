@@ -648,6 +648,19 @@ function wireFm(fm: AuroraFilemanager | null): void {
 }
 wireFm(document.getElementById('catFm') as AuroraFilemanager | null)
 
+/* ---------- chart wizard demo ---------- */
+import type { AuroraChartwizard } from 'aurora'
+function wireWiz(wiz: AuroraChartwizard | null): void {
+  if (!wiz) return
+  wiz.data = [
+    { quarter: 'Q1', revenue: 42, costs: 24 },
+    { quarter: 'Q2', revenue: 55, costs: 27 },
+    { quarter: 'Q3', revenue: 61, costs: 30 },
+    { quarter: 'Q4', revenue: 78, costs: 33 },
+  ]
+}
+wireWiz(document.getElementById('catWiz') as AuroraChartwizard | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -973,6 +986,7 @@ if (docRoot) {
     wirePropgrid(document.getElementById('docPropgrid') as AuroraPropertygrid | null)
     wireFilter(document.getElementById('docFilter') as AuroraFilterbuilder | null)
     wireFm(document.getElementById('docFm') as AuroraFilemanager | null)
+    wireWiz(document.getElementById('docWiz') as AuroraChartwizard | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

@@ -127,6 +127,8 @@ export type { DataSourceState, DataSourceResult, DataSourceOptions } from './cor
 export { AuroraImageeditor } from './components/imageeditor'
 export { AuroraFilemanager } from './components/filemanager'
 export type { FsNode } from './components/filemanager'
+export { AuroraChartwizard } from './components/chartwizard'
+export type { ChartWizardConfig } from './components/chartwizard'
 export { AuroraGrid } from './components/grid'
 export type { GridColumn, FilterOp, GridState } from './components/grid'
 export { makeXlsx } from './core/xlsx'

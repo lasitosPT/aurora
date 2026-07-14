@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.90.0
+
+Charts, configured interactively.
+
+- `aurora-chartwizard` — point it at flat rows: a composed segmented control picks
+  the type, selects pick category/value/compare fields (types auto-detected), and a
+  live chart preview updates on every change; read `config` or listen for
+  `aurora-change`. Ships with docs.
+
 ## 0.89.0
 
 The composition showcase.

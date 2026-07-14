@@ -2679,6 +2679,32 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-chartwizard',
+    title: 'Chart Wizard',
+    category: 'Enterprise & Data',
+    summary:
+      'Configure a chart by clicking — type, category, value, and compare fields auto-detected from your rows, previewed live.',
+    example: `<aurora-chartwizard id="docWiz" style="width:100%"></aurora-chartwizard>`,
+    attributes: [
+      [
+        'data (property)',
+        'Flat rows — string fields become categories, numeric fields become values',
+      ],
+    ],
+    events: [['aurora-change', '{ config: { type, labelField, valueFields } }']],
+    cssvars: [['--aurora-surface / -field', 'Panel and control styling']],
+    methods: [
+      ['config', 'The current configuration'],
+      ['data', 'Get/set'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Self-serve dashboards',
+        text: 'Let users build their own tiles: persist config from aurora-change and recreate the chart anywhere with the same fields.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

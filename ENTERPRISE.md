@@ -45,7 +45,7 @@ Map 🚫 (needs tile providers / geo services — against the zero-dependency pr
 ## Charts
 
 Charts ✅ (`aurora-chart`: bar / stacked bar / line / area / donut / pie / scatter / funnel / pyramid) ·
-Sparklines ✅ · Pyramid Chart ✅ (funnel + pyramid types) · Chart Wizard ⬜ (config-UI planned) ·
+Sparklines ✅ · Pyramid Chart ✅ (funnel + pyramid types) · Chart Wizard ✅ (`aurora-chartwizard`) ·
 Gauges: Arc ✅ / Circular ✅ / Linear ✅ / Radial ✅ (ticked dial + needle)
 
 ## Conversational UI / Media
