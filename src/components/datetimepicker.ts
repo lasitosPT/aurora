@@ -31,7 +31,7 @@ const STYLE = `
   :host([open]) .panel { display: flex; }
   .times {
     width: 96px; max-height: 292px; overflow-y: auto; padding: 8px;
-    border-left: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.1));
+    border-inline-start: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.1));
     display: flex; flex-direction: column; gap: 2px;
   }
   .times button {

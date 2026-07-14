@@ -63,11 +63,11 @@ const STYLE = `
   .page:empty::before { content: attr(data-placeholder); color: var(--aurora-muted, #9a98b3); opacity: 0.6; }
   .page h2 { margin: 0.6em 0 0.3em; font-size: 1.25rem; }
   .page blockquote {
-    margin: 0.6em 0; padding: 4px 14px; border-left: 3px solid var(--aurora-accent, #6d5cff);
+    margin: 0.6em 0; padding: 4px 14px; border-inline-start: 3px solid var(--aurora-accent, #6d5cff);
     color: var(--aurora-muted, #9a98b3);
   }
   .page a { color: var(--aurora-accent2, #22d3ee); }
-  .page ul, .page ol { padding-left: 1.4em; }
+  .page ul, .page ol { padding-inline-start: 1.4em; }
   .page table { border-collapse: collapse; margin: 0.6em 0; }
   .page td, .page th { border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.2)); padding: 5px 12px; min-width: 40px; }
   .page img { max-width: 100%; border-radius: 8px; }

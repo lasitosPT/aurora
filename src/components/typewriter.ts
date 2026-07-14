@@ -12,7 +12,7 @@ const STYLE = `
     width: 0.08em;
     min-width: 1.5px;
     height: 1em;
-    margin-left: 0.06em;
+    margin-inline-start: 0.06em;
     vertical-align: text-bottom;
     background: var(--aurora-accent, #6d5cff);
     animation: aurora-blink 1s steps(1) infinite;

@@ -65,6 +65,7 @@ const STYLE = `
   tbody tr:hover .fz { background: color-mix(in srgb, var(--aurora-surface, #14141f) 90%, white); }
   tbody tr[aria-selected='true'] .fz { background: color-mix(in srgb, var(--aurora-surface, #14141f) 82%, var(--aurora-accent, #6d5cff)); }
   .fz-edge { box-shadow: inset -7px 0 7px -7px rgba(0, 0, 0, 0.6); }
+  .fz-edge:dir(rtl) { box-shadow: inset 7px 0 7px -7px rgba(0, 0, 0, 0.6); }
   td.editing input.invalid { outline: 2px solid var(--aurora-danger, #f43f5e); border-radius: 5px; }
   :host([selectable='cell']) td[data-cell] { cursor: cell; }
   td[data-cell][aria-selected='true'] {
@@ -72,7 +73,7 @@ const STYLE = `
     outline: 1.5px solid var(--aurora-accent, #6d5cff); outline-offset: -1.5px;
   }
   .colmenu-btn {
-    all: unset; cursor: pointer; margin-left: 6px; width: 17px; height: 17px;
+    all: unset; cursor: pointer; margin-inline-start: 6px; width: 17px; height: 17px;
     display: inline-grid; place-items: center; border-radius: 5px; font-size: 0.75em;
     color: var(--aurora-muted, #9a98b3); vertical-align: middle;
   }
@@ -180,9 +181,9 @@ const STYLE = `
   tr.group-row td {
     background: rgba(109, 92, 255, 0.07); font-weight: 600; cursor: pointer;
   }
-  tr.group-row .caret { display: inline-block; margin-right: 8px; transition: transform 0.2s ease; }
+  tr.group-row .caret { display: inline-block; margin-inline-end: 8px; transition: transform 0.2s ease; }
   tr.group-row.is-collapsed .caret { transform: rotate(-90deg); }
-  tr.group-row .agg { color: var(--aurora-muted, #9a98b3); font-weight: 400; margin-left: 10px; font-size: 0.86em; }
+  tr.group-row .agg { color: var(--aurora-muted, #9a98b3); font-weight: 400; margin-inline-start: 10px; font-size: 0.86em; }
   tfoot td { font-weight: 600; border-top: 1px solid var(--aurora-border, rgba(255,255,255,0.14)); }
   .expander { all: unset; cursor: pointer; padding: 0 6px; color: var(--aurora-muted, #9a98b3); }
   .expander:hover { color: inherit; }
@@ -485,7 +486,7 @@ export class AuroraGrid extends AuroraElement {
         c.classList.contains('fz'),
       )
       cells.forEach((cellEl, i) => {
-        cellEl.style.left = `${lefts[i] ?? 0}px`
+        cellEl.style.insetInlineStart = `${lefts[i] ?? 0}px`
         cellEl.classList.toggle('fz-edge', i === cells.length - 1)
       })
     })

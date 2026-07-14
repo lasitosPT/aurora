@@ -8,7 +8,7 @@ import { whenVisible } from '../core/visible'
 const ITEM_STYLE = `
   :host { display: block; position: relative; padding: 0 0 34px 34px; }
   .dot {
-    position: absolute; left: 0; top: 3px; width: 15px; height: 15px; border-radius: 50%;
+    position: absolute; inset-inline-start: 0; top: 3px; width: 15px; height: 15px; border-radius: 50%;
     background: var(--aurora-timeline-dot, var(--aurora-accent, #6d5cff));
     box-shadow: 0 0 0 4px color-mix(in srgb, var(--aurora-timeline-dot, var(--aurora-accent, #6d5cff)) 22%, transparent);
   }
@@ -47,9 +47,9 @@ export class AuroraTimelineItem extends AuroraElement {
 register('aurora-timeline-item', AuroraTimelineItem)
 
 const STYLE = `
-  :host { display: block; position: relative; padding-left: 7px; }
+  :host { display: block; position: relative; padding-inline-start: 7px; }
   .line {
-    position: absolute; left: 7px; top: 6px; bottom: 6px; width: 1.5px;
+    position: absolute; inset-inline-start: 7px; top: 6px; bottom: 6px; width: 1.5px;
     background: linear-gradient(
       to bottom,
       var(--aurora-accent, #6d5cff),

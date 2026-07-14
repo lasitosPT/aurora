@@ -12,7 +12,7 @@ const STYLE = `
   }
   .main { padding: 0.6rem 1.15rem; border-radius: var(--aurora-radius, 0.6rem) 0 0 var(--aurora-radius, 0.6rem); }
   .arrow { padding: 0.6rem 0.7rem; border-radius: 0 var(--aurora-radius, 0.6rem) var(--aurora-radius, 0.6rem) 0;
-    border-left: 1px solid rgba(0, 0, 0, 0.25); }
+    border-inline-start: 1px solid rgba(0, 0, 0, 0.25); }
   .main:hover, .arrow:hover { background: var(--aurora-accent-hover, #5a49e0); }
   .main:focus-visible, .arrow:focus-visible { outline: 2px solid var(--aurora-accent2, #22d3ee); outline-offset: 2px; }
   .panel {

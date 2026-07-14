@@ -32,7 +32,7 @@ const STYLE = `
   tr.totals td { border-top: 1.5px solid var(--aurora-border, rgba(255, 255, 255, 0.16)); }
   .caret {
     all: unset; cursor: pointer; width: 16px; display: inline-grid; place-items: center;
-    margin-right: 6px; color: var(--aurora-muted, #9a98b3); font-size: 0.72em;
+    margin-inline-end: 6px; color: var(--aurora-muted, #9a98b3); font-size: 0.72em;
     transition: transform 0.2s ease;
   }
   .caret.open { transform: rotate(90deg); }

@@ -25,7 +25,7 @@ const STYLE = `
   .seg.filled { color: var(--aurora-fg, #ececf2); }
   .seg:focus { background: color-mix(in srgb, var(--aurora-accent, #6d5cff) 30%, transparent); color: #fff; }
   .sep { opacity: 0.4; }
-  .unit { font-size: 0.72rem; color: var(--aurora-muted, #9a98b3); margin-left: 6px; }
+  .unit { font-size: 0.72rem; color: var(--aurora-muted, #9a98b3); margin-inline-start: 6px; }
 `
 
 /**

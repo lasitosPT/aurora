@@ -87,7 +87,7 @@ const STYLE = `
   .hints kbd {
     font-family: inherit;
     padding: 1px 6px;
-    margin-right: 5px;
+    margin-inline-end: 5px;
     border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.14));
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.04);

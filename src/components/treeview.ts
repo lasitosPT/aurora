@@ -7,7 +7,7 @@ import { register } from '../core/register'
 const STYLE = `
   :host { display: block; font-size: 0.95rem; color: var(--aurora-fg, #ececf2); }
   ul { list-style: none; margin: 0; padding: 0; }
-  ul ul { padding-left: 1.15rem; border-left: 1px solid var(--aurora-border, rgba(255,255,255,0.08)); margin-left: 0.55rem; }
+  ul ul { padding-inline-start: 1.15rem; border-inline-start: 1px solid var(--aurora-border, rgba(255,255,255,0.08)); margin-inline-start: 0.55rem; }
   .row {
     display: flex; align-items: center; gap: 7px; padding: 0.34rem 0.55rem; border-radius: 8px;
     cursor: pointer; user-select: none;

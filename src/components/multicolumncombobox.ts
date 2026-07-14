@@ -18,7 +18,7 @@ const STYLE = `
   }
   input:focus { border-color: var(--aurora-accent, #6d5cff); }
   .panel {
-    position: absolute; top: calc(100% + 6px); left: 0; min-width: 100%; max-height: 280px;
+    position: absolute; top: calc(100% + 6px); inset-inline-start: 0; min-width: 100%; max-height: 280px;
     overflow: auto; display: none; z-index: var(--aurora-menu-z, 60);
     background: var(--aurora-surface, #16161f);
     border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.14));

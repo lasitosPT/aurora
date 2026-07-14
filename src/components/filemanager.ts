@@ -44,7 +44,7 @@ const STYLE = `
   .top { padding: 10px 14px; border-bottom: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.08)); }
   .body { display: grid; grid-template-columns: 200px 1fr; min-height: 260px; }
   .side {
-    border-right: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.08));
+    border-inline-end: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.08));
     padding: 10px; overflow-y: auto;
   }
   .files { padding: 14px; display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; }

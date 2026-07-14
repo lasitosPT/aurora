@@ -23,7 +23,7 @@ const STYLE = `
   .arrow { font-size: 0.72em; opacity: 0.6; transition: transform 0.18s ease; }
   :host([open]) .arrow { transform: rotate(180deg); }
   .panel {
-    position: absolute; top: calc(100% + 7px); left: 0; min-width: 100%; max-height: 300px;
+    position: absolute; top: calc(100% + 7px); inset-inline-start: 0; min-width: 100%; max-height: 300px;
     overflow: auto; display: none; padding: 8px; z-index: var(--aurora-menu-z, 60);
     background: var(--aurora-surface, #16161f);
     border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.14));

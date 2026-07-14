@@ -216,7 +216,7 @@ export class AuroraTreelist extends AuroraElement {
                 const text = c.formatter ? c.formatter(raw, n.row) : escapeHtml(String(raw ?? ''))
                 const cls = c.align === 'right' ? 'num' : c.align === 'center' ? 'center' : ''
                 if (ci === 0)
-                  return `<td class="${cls}" style="padding-left:${0.9 + n.level * 1.35}rem"><span class="cell0"><button class="caret${
+                  return `<td class="${cls}" style="padding-inline-start:${0.9 + n.level * 1.35}rem"><span class="cell0"><button class="caret${
                     n.children.length ? '' : ' leaf'
                   }" tabindex="-1" aria-label="Toggle">▶</button>${text}</span></td>`
                 return `<td class="${cls}">${text}</td>`

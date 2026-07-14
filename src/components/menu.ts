@@ -29,7 +29,7 @@ const STYLE = `
   .panel {
     position: absolute;
     top: calc(100% + 8px);
-    left: 0;
+    inset-inline-start: 0;
     min-width: max(100%, 190px);
     display: none;
     flex-direction: column;

@@ -10,9 +10,9 @@ const STYLE = `
   button {
     all: unset; box-sizing: border-box; cursor: pointer; padding: 0.55rem 1.05rem; font: inherit;
     color: var(--aurora-muted, #9a98b3); transition: background 0.15s ease, color 0.15s ease;
-    border-left: 1px solid var(--aurora-border, rgba(128,128,128,0.25));
+    border-inline-start: 1px solid var(--aurora-border, rgba(128,128,128,0.25));
   }
-  button:first-of-type { border-left: none; }
+  button:first-of-type { border-inline-start: none; }
   button:hover { color: var(--aurora-fg, #ececf2); }
   button[aria-pressed='true'] {
     background: color-mix(in srgb, var(--aurora-accent, #6d5cff) 22%, transparent);

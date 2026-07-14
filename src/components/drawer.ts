@@ -1,6 +1,7 @@
 import { gsap } from 'gsap'
 import { AuroraElement } from '../core/base'
 import { FOCUSABLE, trapTab } from '../core/focus'
+import { isRtl } from '../core/dir'
 import { prefersReducedMotion } from '../core/motion'
 import { register } from '../core/register'
 
@@ -32,8 +33,9 @@ const STYLE = `
 `
 
 /**
- * `<aurora-drawer>` — a side panel that slides in from the right (or
- * `side="left"`). Toggle with the `open` attribute or `show()` / `hide()`.
+ * `<aurora-drawer>` — a side panel that slides in from the inline-end edge
+ * (right in LTR, left in RTL). `side` accepts logical `start`/`end` or
+ * explicit `left`/`right`. Toggle with the `open` attribute or `show()` / `hide()`.
  * Escape and backdrop clicks close it; Tab is trapped while open and focus
  * returns to the opener on close. Emits `aurora-open` / `aurora-close`.
  */
@@ -71,9 +73,19 @@ export class AuroraDrawer extends AuroraElement {
     this.removeAttribute('open')
   }
 
+  private edge(): 'left' | 'right' {
+    const side = this.getAttribute('side') ?? 'end'
+    if (side === 'left' || side === 'right') return side
+    const rtl = isRtl(this)
+    return (side === 'start') !== rtl ? 'left' : 'right'
+  }
+
   private open(): void {
     if (this.visible || !this.backdrop || !this.panel) return
     this.visible = true
+    const edge = this.edge()
+    this.panel.style.left = edge === 'left' ? '0' : 'auto'
+    this.panel.style.right = edge === 'left' ? 'auto' : '0'
     this.backdrop.style.display = 'block'
     this.panel.style.display = 'block'
     this.previouslyFocused = document.activeElement
@@ -81,7 +93,7 @@ export class AuroraDrawer extends AuroraElement {
     ;(first ?? this.panel).focus()
     this.dispatchEvent(new CustomEvent('aurora-open'))
     if (prefersReducedMotion()) return
-    const from = this.getAttribute('side') === 'left' ? -100 : 100
+    const from = this.edge() === 'left' ? -100 : 100
     gsap.fromTo(this.backdrop, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: 'power2.out' })
     gsap.fromTo(this.panel, { xPercent: from }, { xPercent: 0, duration: 0.45, ease: 'power3.out' })
   }
@@ -101,7 +113,7 @@ export class AuroraDrawer extends AuroraElement {
       done()
       return
     }
-    const to = this.getAttribute('side') === 'left' ? -100 : 100
+    const to = this.edge() === 'left' ? -100 : 100
     gsap.to(this.panel, { xPercent: to, duration: 0.32, ease: 'power2.in' })
     gsap.to(this.backdrop, { opacity: 0, duration: 0.32, onComplete: done })
   }

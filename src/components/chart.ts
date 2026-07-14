@@ -16,7 +16,7 @@ const STYLE = `
   .frame { display: flex; align-items: stretch; }
   .axis-y {
     writing-mode: vertical-rl; transform: rotate(180deg); text-align: center;
-    font-size: 0.74rem; color: var(--aurora-muted, #9a98b3); flex: none; padding-left: 2px;
+    font-size: 0.74rem; color: var(--aurora-muted, #9a98b3); flex: none; padding-inline-start: 2px;
   }
   .framebody { flex: 1; min-width: 0; }
   .nodata {

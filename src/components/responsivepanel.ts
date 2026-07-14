@@ -19,7 +19,7 @@ const STYLE = `
     position: fixed; top: 0; bottom: 0; left: 0; width: min(300px, 84vw);
     transform: translateX(-102%); z-index: calc(var(--aurora-modal-z, 80) + 1);
     background: var(--aurora-surface, #14141f); padding: 20px; overflow-y: auto;
-    border-right: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.12));
+    border-inline-end: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.12));
     transition: transform 0.3s ease;
   }
   :host([narrow][open]) .panel { transform: translateX(0); }

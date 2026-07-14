@@ -1,5 +1,6 @@
 import { gsap } from 'gsap'
 import { AuroraElement } from '../core/base'
+import { isRtl } from '../core/dir'
 import { clamp } from '../core/motion'
 import { register } from '../core/register'
 
@@ -103,8 +104,13 @@ export class AuroraSlider extends AuroraElement {
 
   private render(): void {
     const pct = this.percent() * 100
-    if (this.fill) this.fill.style.width = `${pct}%`
-    if (this.thumb) this.thumb.style.left = `${pct}%`
+    const rtl = isRtl(this)
+    if (this.fill) {
+      this.fill.style.width = `${pct}%`
+      this.fill.style.left = rtl ? 'auto' : '0'
+      this.fill.style.right = rtl ? '0' : 'auto'
+    }
+    if (this.thumb) this.thumb.style.left = `${rtl ? 100 - pct : pct}%`
     this.track?.setAttribute('aria-valuemin', String(this.min))
     this.track?.setAttribute('aria-valuemax', String(this.max))
     this.track?.setAttribute('aria-valuenow', String(this.current))
@@ -134,14 +140,18 @@ export class AuroraSlider extends AuroraElement {
     const rect = this.track.getBoundingClientRect()
     if (rect.width === 0) return
     const pct = clamp((clientX - rect.left) / rect.width, 0, 1)
-    this.setValue(this.min + pct * (this.max - this.min), true)
+    const frac = isRtl(this) ? 1 - pct : pct
+    this.setValue(this.min + frac * (this.max - this.min), true)
   }
 
   private readonly onKeyDown = (event: KeyboardEvent): void => {
     if (this.hasAttribute('disabled')) return
     let next: number | null = null
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') next = this.current - this.step
-    else if (event.key === 'ArrowRight' || event.key === 'ArrowUp') next = this.current + this.step
+    const towardStart = isRtl(this) ? this.step : -this.step
+    if (event.key === 'ArrowLeft') next = this.current + towardStart
+    else if (event.key === 'ArrowRight') next = this.current - towardStart
+    else if (event.key === 'ArrowDown') next = this.current - this.step
+    else if (event.key === 'ArrowUp') next = this.current + this.step
     else if (event.key === 'Home') next = this.min
     else if (event.key === 'End') next = this.max
     if (next === null) return

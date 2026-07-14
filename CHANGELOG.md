@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.1.0
+
+Right-to-left support. Set `dir="rtl"` on any ancestor and the components follow:
+
+- New `isRtl(el)` helper (exported) resolves direction across shadow boundaries
+- Slider + rangeslider: pointer math and arrow keys follow the visual direction
+- Drawer: `side` accepts logical `start`/`end` (new default `end`); `left`/`right`
+  stay explicit
+- Grid: frozen columns pin to the inline-start edge (`inset-inline-start` sticky),
+  edge shadow flips
+- Submenu flyouts, menu/date/tree popups anchor with `inset-inline-start`
+- Logical border/padding/margin properties across 20 component styles
+
 ## 2.0.1
 
 Accessibility: an axe-core WCAG 2.1 AA audit of the full site (landing, catalogue,

@@ -130,7 +130,9 @@ foreign-key columns ⬜, endless remote scroll 🔶 (DataSource pattern document
 
 - Globalization/localization ✅ `setMessages()` registry — all built-in strings
   resolve through `t()` with template args; ship a locale pack object and done
-- RTL rendering 🔶 logical text alignment throughout; directional layout
-  (flyout sides, frozen columns) pending a full `dir="rtl"` pass
+- RTL rendering ✅ logical CSS properties throughout (borders, paddings,
+  popup anchors); direction-aware behaviour via `isRtl()` — slider/rangeslider
+  pointer + arrow keys, drawer logical `side="start|end"`, grid frozen columns
+  pin to the inline-start edge, submenu flyouts mirror
 - Screen-reader / a11y audit 🔶 axe-core WCAG 2.1 AA run against the live site
   (landing, catalogue, docs): 0 violations. Manual NVDA/VoiceOver passes pending

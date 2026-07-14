@@ -41,7 +41,7 @@ const STYLE = `
   .big span {
     width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center;
     font-size: 1.5rem; background: color-mix(in srgb, var(--aurora-accent, #6d5cff) 85%, transparent);
-    padding-left: 4px;
+    padding-inline-start: 4px;
   }
 `
 

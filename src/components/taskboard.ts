@@ -37,7 +37,7 @@ const STYLE = `
     cursor: grab; user-select: none; touch-action: none; padding: 10px 13px; border-radius: 11px;
     background: rgba(255, 255, 255, 0.035);
     border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.1));
-    border-left: 3px solid var(--c, var(--aurora-accent, #6d5cff));
+    border-inline-start: 3px solid var(--c, var(--aurora-accent, #6d5cff));
     font-size: 0.88rem; position: relative;
   }
   .card:hover { background: rgba(255, 255, 255, 0.055); }

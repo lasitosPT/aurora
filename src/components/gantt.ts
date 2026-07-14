@@ -27,7 +27,7 @@ const STYLE = `
     border-radius: 14px; background: var(--aurora-surface, #14141f); overflow: hidden;
   }
   .wrap { display: grid; grid-template-columns: var(--aurora-gantt-label, 168px) 1fr; }
-  .names { border-right: 1px solid var(--aurora-border, rgba(255,255,255,0.08)); }
+  .names { border-inline-end: 1px solid var(--aurora-border, rgba(255,255,255,0.08)); }
   .names .cell {
     height: var(--row, 40px); display: flex; align-items: center; padding: 0 14px;
     border-bottom: 1px solid var(--aurora-border, rgba(255,255,255,0.05));
@@ -39,7 +39,7 @@ const STYLE = `
   .scale div {
     flex: none; display: flex; align-items: center; justify-content: center;
     color: var(--aurora-muted, #9a98b3); font-size: 0.72rem;
-    border-left: 1px solid var(--aurora-border, rgba(255,255,255,0.04));
+    border-inline-start: 1px solid var(--aurora-border, rgba(255,255,255,0.04));
   }
   .rows { position: relative; }
   .rowline { height: var(--row, 40px); border-bottom: 1px solid var(--aurora-border, rgba(255,255,255,0.05)); }

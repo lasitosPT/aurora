@@ -724,7 +724,7 @@ export const DOCS: ComponentDoc[] = [
     example: `<aurora-button onclick="document.getElementById('dd').show()">Open drawer</aurora-button>\n<aurora-drawer id="dd">\n  <h2 style="margin-top:0">Panel</h2>\n  <aurora-button onclick="document.getElementById('dd').hide()">Close</aurora-button>\n</aurora-drawer>`,
     attributes: [
       ['open', 'Present while shown'],
-      ['side', 'right (default) or left'],
+      ['side', 'end (default), start, left, or right — start/end follow dir="rtl"'],
     ],
     events: [['aurora-open / aurora-close', 'Lifecycle']],
     cssvars: [['--aurora-drawer-width / -z / -padding', 'Size, layering, spacing']],

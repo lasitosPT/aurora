@@ -19,7 +19,7 @@ const STYLE = `
   .trigger .ph { color: var(--aurora-muted, #9a98b3); }
   .trigger svg { flex: none; stroke: var(--aurora-muted, #9a98b3); }
   .pop {
-    position: absolute; top: calc(100% + 6px); left: 0; display: none;
+    position: absolute; top: calc(100% + 6px); inset-inline-start: 0; display: none;
     z-index: var(--aurora-menu-z, 60); will-change: transform, opacity;
   }
 `

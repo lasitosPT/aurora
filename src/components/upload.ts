@@ -20,7 +20,7 @@ const STYLE = `
     display: flex; align-items: center; gap: 10px; padding: 0.5rem 0.8rem; font-size: 0.88rem;
     border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.1)); border-radius: 10px;
   }
-  .size { color: var(--aurora-muted, #9a98b3); margin-left: auto; }
+  .size { color: var(--aurora-muted, #9a98b3); margin-inline-start: auto; }
   .rm { all: unset; cursor: pointer; padding: 0 6px; color: var(--aurora-muted, #9a98b3); }
   .rm:hover { color: var(--aurora-error, #f87171); }
 `

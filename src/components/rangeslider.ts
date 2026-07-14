@@ -1,4 +1,5 @@
 import { AuroraElement } from '../core/base'
+import { isRtl } from '../core/dir'
 import { clamp } from '../core/motion'
 import { register } from '../core/register'
 
@@ -94,7 +95,8 @@ export class AuroraRangeslider extends AuroraElement {
     const min = this.numberAttr('min', 0)
     const max = this.numberAttr('max', 100)
     const step = this.numberAttr('step', 1)
-    const raw = min + clamp((x - track.left) / track.width, 0, 1) * (max - min)
+    const pct = clamp((x - track.left) / track.width, 0, 1)
+    const raw = min + (isRtl(this) ? 1 - pct : pct) * (max - min)
     return clamp(Math.round(raw / step) * step, min, max)
   }
 
@@ -124,12 +126,17 @@ export class AuroraRangeslider extends AuroraElement {
       thumb.addEventListener('keydown', (e) => {
         const step = this.numberAttr('step', 1)
         const key = e.key
+        const right = isRtl(this) ? -step : step
         const delta =
-          key === 'ArrowRight' || key === 'ArrowUp'
-            ? step
-            : key === 'ArrowLeft' || key === 'ArrowDown'
-              ? -step
-              : 0
+          key === 'ArrowRight'
+            ? right
+            : key === 'ArrowLeft'
+              ? -right
+              : key === 'ArrowUp'
+                ? step
+                : key === 'ArrowDown'
+                  ? -step
+                  : 0
         if (!delta && key !== 'Home' && key !== 'End') return
         e.preventDefault()
         const which = thumb.dataset['t'] === 'a' ? 'a' : 'b'
@@ -152,19 +159,21 @@ export class AuroraRangeslider extends AuroraElement {
   private sync(): void {
     const fa = this.frac(this.a) * 100
     const fb = this.frac(this.b) * 100
+    const rtl = isRtl(this)
+    const pos = (f: number): string => `${rtl ? 100 - f : f}%`
     const fill = this.root.querySelector<HTMLElement>('.fill')
     if (fill) {
-      fill.style.left = `${fa}%`
+      fill.style.left = rtl ? `${100 - fb}%` : `${fa}%`
       fill.style.width = `${fb - fa}%`
     }
     const ta = this.root.querySelector<HTMLElement>('.thumb[data-t="a"]')
     const tb = this.root.querySelector<HTMLElement>('.thumb[data-t="b"]')
     if (ta) {
-      ta.style.left = `${fa}%`
+      ta.style.left = pos(fa)
       ta.setAttribute('aria-valuenow', String(this.a))
     }
     if (tb) {
-      tb.style.left = `${fb}%`
+      tb.style.left = pos(fb)
       tb.setAttribute('aria-valuenow', String(this.b))
     }
     const va = this.root.querySelector('.va')

@@ -14,7 +14,7 @@ const STYLE = `
   .row:hover, .row:focus-visible, :host([open]) .row { background: rgba(109, 92, 255, 0.14); }
   .row .arr { font-size: 0.7em; opacity: 0.6; }
   .panel {
-    position: absolute; left: calc(100% + 4px); top: -6px; min-width: 180px;
+    position: absolute; inset-inline-start: calc(100% + 4px); top: -6px; min-width: 180px;
     display: none; flex-direction: column; padding: 6px;
     background: var(--aurora-surface, #16161f);
     border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.14));
