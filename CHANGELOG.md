@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.0
+
+Window depth.
+
+- `aurora-window` — corner-grip resizing, maximize/restore (button or double-click
+  the title bar), minimize to the bar, a `modal` backdrop (`static` keeps it from
+  closing on backdrop clicks), and a `slot="actions"` for custom title-bar buttons.
+  New events: `aurora-resize`, `aurora-maximize`, `aurora-minimize`,
+  `aurora-restore`.
+
 ## 1.1.0
 
 Calendar depth (from the Kendo feature-list audit in DEPTH.md).

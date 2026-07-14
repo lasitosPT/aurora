@@ -27,11 +27,11 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 | Animations              | ✅                                  |
 | Positioning + constrain | ✅ drag with viewport clamp         |
 | Dimensions              | ✅ CSS                              |
-| Custom actions          | ⬜ → v1.2 (actions slot)            |
+| Custom actions          | ✅ actions slot                     |
 | Content via AJAX/iframe | 🔶 slots cover the composition case |
-| Resizing                | ⬜ → v1.2                           |
-| Maximize/minimize       | ⬜ → v1.2                           |
-| Modal mode              | ⬜ → v1.2                           |
+| Resizing                | ✅ corner grip                      |
+| Maximize/minimize       | ✅ + dblclick bar                   |
+| Modal mode              | ✅ modal/static attrs               |
 | Globalization/RTL       | ⬜ (tracked globally)               |
 
 ## Chart

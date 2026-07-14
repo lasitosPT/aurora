@@ -22,19 +22,37 @@ const STYLE = `
     font-weight: 600; touch-action: none;
   }
   .bar.is-drag { cursor: grabbing; }
-  .x { all: unset; cursor: pointer; padding: 2px 8px; border-radius: 7px; color: var(--aurora-muted, #9a98b3); }
-  .x:hover { color: inherit; background: rgba(255, 255, 255, 0.07); }
-  .x:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); }
+  .x, .mini, .maxi { all: unset; cursor: pointer; padding: 2px 8px; border-radius: 7px; color: var(--aurora-muted, #9a98b3); }
+  .x:hover, .mini:hover, .maxi:hover { color: inherit; background: rgba(255, 255, 255, 0.07); }
+  .x:focus-visible, .mini:focus-visible, .maxi:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); }
   .body { padding: 1.1rem; overflow: auto; }
+  .acts { display: flex; align-items: center; gap: 2px; }
+  .win.maxed { left: 8px !important; top: 8px !important; width: calc(100vw - 16px) !important; max-width: none; height: calc(100vh - 16px); max-height: none; }
+  .win.minned .body { display: none; }
+  .win.minned { min-width: 200px; }
+  .grip {
+    position: absolute; right: 0; bottom: 0; width: 16px; height: 16px; cursor: nwse-resize;
+    touch-action: none;
+    background: linear-gradient(135deg, transparent 55%, var(--aurora-border, rgba(255, 255, 255, 0.3)) 55%);
+    border-bottom-right-radius: 13px;
+  }
+  .win.maxed .grip, .win.minned .grip { display: none; }
+  .backdrop {
+    position: fixed; inset: 0; display: none; background: rgba(6, 6, 12, 0.55);
+    z-index: calc(var(--aurora-window-z, 900) - 1); backdrop-filter: blur(3px);
+  }
+  :host([modal][open]) .backdrop { display: block; }
 `
 
 let topZ = 0
 
 /**
- * `<aurora-window title="Inspector">` — a floating, draggable window: grab the
- * title bar to move (clamped to the viewport), click anywhere to bring to
- * front, Escape or ✕ closes, Tab is trapped and focus returns to the opener.
- * `open` attribute or `show()`/`hide()`. Emits `aurora-open`/`aurora-close`.
+ * `<aurora-window title="Inspector">` — a floating window: drag the title
+ * bar (viewport-clamped), resize from the corner grip, maximize (or
+ * double-click the bar), minimize to the bar, `modal` adds a backdrop,
+ * `slot="actions"` injects custom title-bar buttons. Click brings to front,
+ * Escape/✕ close, Tab is trapped, focus restores. Emits
+ * `aurora-open`/`aurora-close`.
  */
 export class AuroraWindow extends AuroraElement {
   static readonly observedAttributes = ['open']
@@ -44,9 +62,44 @@ export class AuroraWindow extends AuroraElement {
 
   connectedCallback(): void {
     const title = escapeHtml(this.getAttribute('title') ?? 'Window')
-    this.root.innerHTML = `<style>${STYLE}</style><div class="win" part="window" role="dialog" aria-label="${title}" tabindex="-1"><div class="bar" part="bar"><span>${title}</span><button class="x" aria-label="Close window">✕</button></div><div class="body" part="body"><slot></slot></div></div>`
+    this.root.innerHTML = `<style>${STYLE}</style><div class="backdrop" part="backdrop"></div><div class="win" part="window" role="dialog" aria-label="${title}" tabindex="-1"><div class="bar" part="bar"><span>${title}</span><span class="acts"><slot name="actions"></slot><button class="mini" aria-label="Minimize window">–</button><button class="maxi" aria-label="Maximize window">▢</button><button class="x" aria-label="Close window">✕</button></span></div><div class="body" part="body"><slot></slot></div><div class="grip" part="grip" aria-hidden="true"></div></div>`
     this.win = this.root.querySelector('.win')
-    this.root.querySelector('.x')?.addEventListener('click', () => this.hide())
+    this.root
+      .querySelector('.x:not(.mini):not(.maxi)')
+      ?.addEventListener('click', () => this.hide())
+    this.root.querySelector('.maxi')?.addEventListener('click', () => this.toggleMaximize())
+    this.root.querySelector('.mini')?.addEventListener('click', () => this.toggleMinimize())
+    this.root.querySelector('.backdrop')?.addEventListener('click', () => {
+      if (!this.hasAttribute('static')) this.hide()
+    })
+    this.root.querySelector('.bar')?.addEventListener('dblclick', (e) => {
+      if ((e.target as HTMLElement).closest('.x')) return
+      this.toggleMaximize()
+    })
+    const grip = this.root.querySelector<HTMLElement>('.grip')
+    grip?.addEventListener('pointerdown', (e) => {
+      if (!this.win) return
+      e.preventDefault()
+      e.stopPropagation()
+      grip.setPointerCapture(e.pointerId)
+      const rect = this.win.getBoundingClientRect()
+      const sx = e.clientX
+      const sy = e.clientY
+      const onMove = (move: PointerEvent): void => {
+        if (!this.win) return
+        this.win.style.width = `${Math.max(rect.width + move.clientX - sx, 260)}px`
+        this.win.style.height = `${Math.max(rect.height + move.clientY - sy, 120)}px`
+        this.win.style.maxWidth = 'none'
+        this.win.style.maxHeight = 'none'
+      }
+      const onUp = (): void => {
+        grip.removeEventListener('pointermove', onMove)
+        grip.removeEventListener('pointerup', onUp)
+        this.dispatchEvent(new CustomEvent('aurora-resize'))
+      }
+      grip.addEventListener('pointermove', onMove)
+      grip.addEventListener('pointerup', onUp)
+    })
     this.win?.addEventListener('pointerdown', () => {
       if (this.win) this.win.style.zIndex = String(++topZ + 900)
     })
@@ -54,7 +107,8 @@ export class AuroraWindow extends AuroraElement {
 
     const bar = this.root.querySelector<HTMLElement>('.bar')
     bar?.addEventListener('pointerdown', (e) => {
-      if ((e.target as HTMLElement).closest('.x') || !this.win) return
+      if ((e.target as HTMLElement).closest('.acts') || !this.win) return
+      if (this.win.classList.contains('maxed')) return
       bar.classList.add('is-drag')
       bar.setPointerCapture(e.pointerId)
       const rect = this.win.getBoundingClientRect()
@@ -88,6 +142,27 @@ export class AuroraWindow extends AuroraElement {
 
   show(): void {
     this.setAttribute('open', '')
+  }
+
+  toggleMaximize(): void {
+    if (!this.win) return
+    this.win.classList.remove('minned')
+    const maxed = this.win.classList.toggle('maxed')
+    const maxi = this.root.querySelector('.maxi')
+    if (maxi) {
+      maxi.textContent = maxed ? '❐' : '▢'
+      maxi.setAttribute('aria-label', maxed ? 'Restore window' : 'Maximize window')
+    }
+    this.dispatchEvent(new CustomEvent(maxed ? 'aurora-maximize' : 'aurora-restore'))
+  }
+
+  toggleMinimize(): void {
+    if (!this.win) return
+    this.win.classList.remove('maxed')
+    const minned = this.win.classList.toggle('minned')
+    const mini = this.root.querySelector('.mini')
+    if (mini) mini.setAttribute('aria-label', minned ? 'Restore window' : 'Minimize window')
+    this.dispatchEvent(new CustomEvent(minned ? 'aurora-minimize' : 'aurora-restore'))
   }
 
   hide(): void {
