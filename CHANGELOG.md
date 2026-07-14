@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.10.0
+
+Excel files, both directions.
+
+- `parseXlsx()`/`readZip()` — an in-house .xlsx reader: zip central-directory
+  parsing with store and deflate entries (via DecompressionStream), shared and
+  inline strings, numeric cells, formula cached values
+- `aurora-spreadsheet` — `importExcel(bytes)` and a 📂 toolbar button load the
+  first worksheet of any .xlsx; round-trips with the in-house writer.
+
 ## 1.9.0
 
 Long-tail depth, round one.

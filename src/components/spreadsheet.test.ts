@@ -95,3 +95,22 @@ describe('spreadsheet depth (v1.7)', () => {
     el.remove()
   })
 })
+
+describe('spreadsheet xlsx import (v1.10)', () => {
+  it('round-trips a sheet through export and import', async () => {
+    const a = make()
+    a.data = { A1: 'Item', B1: 'Qty', A2: 'Grid', B2: '4' }
+    const bytes = a.toExcel()
+    const b = make()
+    let imported: Record<string, string> | null = null
+    b.addEventListener('aurora-import', (e) => {
+      imported = (e as CustomEvent<{ cells: Record<string, string> }>).detail.cells
+    })
+    await b.importExcel(bytes)
+    expect(b.getCell('A2')).toBe('Grid')
+    expect(b.getCell('B2')).toBe('4')
+    expect(imported?.['A1']).toBe('Item')
+    a.remove()
+    b.remove()
+  })
+})

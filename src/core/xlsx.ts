@@ -66,7 +66,11 @@ function colName(i: number): string {
  * Builds a single-sheet .xlsx workbook. Numbers become numeric cells;
  * everything else is an inline string. Returns the zip bytes.
  */
-export function makeXlsx(headers: string[], rows: unknown[][], sheetName = 'Sheet1'): Uint8Array {
+export function makeXlsx(
+  headers: string[] | null,
+  rows: unknown[][],
+  sheetName = 'Sheet1',
+): Uint8Array {
   const enc = new TextEncoder()
   const cell = (value: unknown, c: number, r: number): string => {
     const ref = `${colName(c)}${r + 1}`
@@ -75,7 +79,7 @@ export function makeXlsx(headers: string[], rows: unknown[][], sheetName = 'Shee
     const text = xmlEscape(String(value ?? ''))
     return `<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${text}</t></is></c>`
   }
-  const allRows = [headers as unknown[], ...rows]
+  const allRows = headers ? [headers as unknown[], ...rows] : rows
   const sheetRows = allRows
     .map((row, r) => `<row r="${r + 1}">${row.map((v, c) => cell(v, c, r)).join('')}</row>`)
     .join('')
@@ -91,4 +95,114 @@ export function makeXlsx(headers: string[], rows: unknown[][], sheetName = 'Shee
     { name: 'xl/_rels/workbook.xml.rels', data: enc.encode(workbookRels) },
     { name: 'xl/worksheets/sheet1.xml', data: enc.encode(sheet) },
   ])
+}
+
+/* ---------- reading ---------- */
+
+function u16(b: Uint8Array, o: number): number {
+  return (b[o] ?? 0) | ((b[o + 1] ?? 0) << 8)
+}
+
+function u32(b: Uint8Array, o: number): number {
+  return (
+    ((b[o] ?? 0) | ((b[o + 1] ?? 0) << 8) | ((b[o + 2] ?? 0) << 16) | ((b[o + 3] ?? 0) << 24)) >>> 0
+  )
+}
+
+async function inflateRaw(data: Uint8Array): Promise<Uint8Array> {
+  const ds = new DecompressionStream('deflate-raw')
+  const stream = new Blob([data.buffer as ArrayBuffer]).stream().pipeThrough(ds)
+  const buf = await new Response(stream).arrayBuffer()
+  return new Uint8Array(buf)
+}
+
+/** Extract named entries from a .zip (store and deflate methods). */
+export async function readZip(
+  bytes: Uint8Array,
+  wanted: string[],
+): Promise<Record<string, string>> {
+  // locate the end-of-central-directory record
+  let eocd = -1
+  for (let i = bytes.length - 22; i >= 0; i--) {
+    if (u32(bytes, i) === 0x06054b50) {
+      eocd = i
+      break
+    }
+  }
+  if (eocd < 0) throw new Error('not a zip file')
+  const count = u16(bytes, eocd + 10)
+  let off = u32(bytes, eocd + 16)
+  const decoder = new TextDecoder()
+  const out: Record<string, string> = {}
+  for (let i = 0; i < count; i++) {
+    if (u32(bytes, off) !== 0x02014b50) break
+    const method = u16(bytes, off + 10)
+    const compSize = u32(bytes, off + 20)
+    const nameLen = u16(bytes, off + 28)
+    const extraLen = u16(bytes, off + 30)
+    const commentLen = u16(bytes, off + 32)
+    const localOff = u32(bytes, off + 42)
+    const name = decoder.decode(bytes.slice(off + 46, off + 46 + nameLen))
+    if (wanted.includes(name)) {
+      const lNameLen = u16(bytes, localOff + 26)
+      const lExtraLen = u16(bytes, localOff + 28)
+      const start = localOff + 30 + lNameLen + lExtraLen
+      const raw = bytes.slice(start, start + compSize)
+      out[name] = decoder.decode(method === 8 ? await inflateRaw(raw) : raw)
+    }
+    off += 46 + nameLen + extraLen + commentLen
+  }
+  return out
+}
+
+const decodeXml = (s: string): string =>
+  s
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#(\d+);/g, (_, n: string) => String.fromCharCode(Number(n)))
+    .replace(/&amp;/g, '&')
+
+/**
+ * Parse the first worksheet of a .xlsx into an `{ A1: value }` map.
+ * Handles inline strings, shared strings, and numeric cells; formulas come
+ * back as their cached values.
+ */
+export async function parseXlsx(bytes: Uint8Array): Promise<Record<string, string>> {
+  const files = await readZip(bytes, ['xl/worksheets/sheet1.xml', 'xl/sharedStrings.xml'])
+  const sheet = files['xl/worksheets/sheet1.xml']
+  if (!sheet) throw new Error('no worksheet found')
+  const shared: string[] = []
+  const sharedXml = files['xl/sharedStrings.xml']
+  if (sharedXml) {
+    for (const si of sharedXml.match(/<si>[\s\S]*?<\/si>/g) ?? []) {
+      shared.push(
+        (si.match(/<t[^>]*>([\s\S]*?)<\/t>/g) ?? [])
+          .map((t) => decodeXml(t.replace(/<t[^>]*>|<\/t>/g, '')))
+          .join(''),
+      )
+    }
+  }
+  const cells: Record<string, string> = {}
+  for (const cell of sheet.match(/<c [^>]*?r="[A-Z]+\d+"[^>]*?(?:\/>|>[\s\S]*?<\/c>)/g) ?? []) {
+    const ref = /r="([A-Z]+\d+)"/.exec(cell)?.[1]
+    if (!ref) continue
+    const type = /t="([a-zA-Z]+)"/.exec(cell)?.[1]
+    if (type === 'inlineStr') {
+      const text = (cell.match(/<t[^>]*>([\s\S]*?)<\/t>/g) ?? [])
+        .map((t) => decodeXml(t.replace(/<t[^>]*>|<\/t>/g, '')))
+        .join('')
+      if (text !== '') cells[ref] = text
+      continue
+    }
+    const v = /<v>([\s\S]*?)<\/v>/.exec(cell)?.[1]
+    if (v === undefined) continue
+    if (type === 's') {
+      const text = shared[Number(v)] ?? ''
+      if (text !== '') cells[ref] = text
+    } else {
+      cells[ref] = decodeXml(v)
+    }
+  }
+  return cells
 }

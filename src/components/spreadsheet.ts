@@ -2,7 +2,7 @@ import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { register } from '../core/register'
 import { evaluateFormula, indexToCol, registerFormulaFunction } from '../core/formula'
-import { makeXlsx } from '../core/xlsx'
+import { makeXlsx, parseXlsx } from '../core/xlsx'
 
 export interface CellStyle {
   bold?: boolean
@@ -77,7 +77,8 @@ const STYLE = `
  * formula bar shows and edits the raw value. `data` in/out as a
  * `{ A1: raw }` map; `styles` carries `{ A1: { bold, italic, align, color } }`
  * cell formatting (a toolbar edits the selected cell); `toCsv()` and
- * `toExcel()`/`exportExcel()` export computed values;
+ * `toExcel()`/`exportExcel()` export computed values, `importExcel()` reads
+ * .xlsx files back in (in-house zip reader, store and deflate);
  * `AuroraSpreadsheet.registerFunction()` extends the formula engine. Emits
  * `aurora-change` with `{ ref, raw, value }`.
  */
@@ -113,6 +114,15 @@ export class AuroraSpreadsheet extends AuroraElement {
     this.focusCell(key)
   }
 
+  /** Load a .xlsx file's first worksheet into the sheet (replaces data). */
+  async importExcel(bytes: Uint8Array): Promise<void> {
+    const cells = await parseXlsx(bytes)
+    this.cells = new Map(Object.entries(cells))
+    this.cellStyles.clear()
+    this.render()
+    this.dispatchEvent(new CustomEvent('aurora-import', { detail: { cells: this.data } }))
+  }
+
   /** The current sheet as .xlsx bytes (computed values). */
   toExcel(): Uint8Array {
     const rows = this.numberAttr('rows', 12)
@@ -120,8 +130,7 @@ export class AuroraSpreadsheet extends AuroraElement {
     const grid: unknown[][] = []
     for (let r = 1; r <= rows; r++)
       grid.push(Array.from({ length: cols }, (_, c) => this.valueAt(`${indexToCol(c)}${r}`)))
-    const header = Array.from({ length: cols }, (_, c) => indexToCol(c))
-    return makeXlsx(header, grid, 'Sheet1')
+    return makeXlsx(null, grid, 'Sheet1')
   }
 
   /** Download the sheet as an Excel workbook. */
@@ -221,7 +230,7 @@ export class AuroraSpreadsheet extends AuroraElement {
       }).join('')}</tr>`
     }
     this.root.innerHTML = `<style>${STYLE}</style>
-      <div class="bar" part="bar"><span class="ref">${escapeHtml(this.selected)}</span><input class="fx" part="formula" aria-label="Formula" value="${escapeHtml(this.getCell(this.selected))}" spellcheck="false" /><div class="fmt" part="format"><button data-f="bold" aria-label="Bold"><b>B</b></button><button data-f="italic" aria-label="Italic"><i>I</i></button><button data-f="left" aria-label="Align left">⇤</button><button data-f="center" aria-label="Align center">↔</button><button data-f="right" aria-label="Align right">⇥</button><button class="swatch" aria-label="Text color">A<input type="color" data-f="color" value="#22d3ee" /></button><button data-f="xlsx" aria-label="Export Excel">⬇</button></div></div>
+      <div class="bar" part="bar"><span class="ref">${escapeHtml(this.selected)}</span><input class="fx" part="formula" aria-label="Formula" value="${escapeHtml(this.getCell(this.selected))}" spellcheck="false" /><div class="fmt" part="format"><button data-f="bold" aria-label="Bold"><b>B</b></button><button data-f="italic" aria-label="Italic"><i>I</i></button><button data-f="left" aria-label="Align left">⇤</button><button data-f="center" aria-label="Align center">↔</button><button data-f="right" aria-label="Align right">⇥</button><button class="swatch" aria-label="Text color">A<input type="color" data-f="color" value="#22d3ee" /></button><button data-f="xlsx" aria-label="Export Excel">⬇</button><button data-f="import" aria-label="Import Excel">📂</button></div></div><input type="file" accept=".xlsx" hidden />
       <div class="viewport"><table aria-label="Spreadsheet"><thead><tr><th class="corner rowh"></th>${head}</tr></thead><tbody>${body}</tbody></table></div>`
     this.wire()
   }
@@ -238,8 +247,17 @@ export class AuroraSpreadsheet extends AuroraElement {
         else if (f === 'italic') this.formatCell({ italic: !cs.italic })
         else if (f === 'left' || f === 'center' || f === 'right') this.formatCell({ align: f })
         else if (f === 'xlsx') this.exportExcel()
+        else if (f === 'import')
+          this.root.querySelector<HTMLInputElement>('input[type="file"]')?.click()
       })
     })
+    this.root
+      .querySelector<HTMLInputElement>('input[type="file"]')
+      ?.addEventListener('change', (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0]
+        if (!file) return
+        void file.arrayBuffer().then((buf) => this.importExcel(new Uint8Array(buf)))
+      })
     this.root
       .querySelector<HTMLInputElement>('.fmt input[data-f="color"]')
       ?.addEventListener('input', (e) => {
