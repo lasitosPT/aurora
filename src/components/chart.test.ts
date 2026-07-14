@@ -60,3 +60,19 @@ describe('chart type wave', () => {
     el.remove()
   })
 })
+
+describe('funnel and pyramid charts', () => {
+  it('renders both stage types with category legends', () => {
+    for (const type of ['funnel', 'pyramid']) {
+      const el = document.createElement('aurora-chart') as AuroraChart
+      el.setAttribute('type', type)
+      document.body.append(el)
+      el.labels = ['Visits', 'Signups', 'Paid']
+      el.series = [{ label: 'Conversion', data: [1000, 320, 64] }]
+      const keys = el.shadowRoot?.querySelectorAll('.key')
+      expect(keys?.length).toBe(3)
+      expect(keys?.[0]?.textContent).toBe('Visits')
+      el.remove()
+    }
+  })
+})

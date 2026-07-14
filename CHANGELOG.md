@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.84.0
+
+Funnels and needles.
+
+- `aurora-chart` — `funnel` and `pyramid` types: centered stage bands with inline
+  labels, category legends, and band hover tooltips with percentages
+- `aurora-gauge` — `radial` type: a ticked dial with an animated needle that sweeps
+  to the value.
+
 ## 0.83.0
 
 Queue clearing.

@@ -44,9 +44,9 @@ Map 🚫 (needs tile providers / geo services — against the zero-dependency pr
 
 ## Charts
 
-Charts ✅ (`aurora-chart`: bar / stacked bar / line / area / donut / pie / scatter) ·
-Sparklines ✅ · Pyramid Chart ⬜ (funnel/pyramid types planned) · Chart Wizard ⬜ (config-UI planned) ·
-Gauges: Arc ✅ / Circular ✅ / Linear ✅ / Radial 🔶 (`type="circular"`; needle variant ⬜)
+Charts ✅ (`aurora-chart`: bar / stacked bar / line / area / donut / pie / scatter / funnel / pyramid) ·
+Sparklines ✅ · Pyramid Chart ✅ (funnel + pyramid types) · Chart Wizard ⬜ (config-UI planned) ·
+Gauges: Arc ✅ / Circular ✅ / Linear ✅ / Radial ✅ (ticked dial + needle)
 
 ## Conversational UI / Media
 

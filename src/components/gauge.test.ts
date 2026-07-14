@@ -27,3 +27,18 @@ describe('aurora-gauge', () => {
     el.remove()
   })
 })
+
+describe('radial gauge', () => {
+  it('renders ticks and a needle rotated by the value', () => {
+    const el = document.createElement('aurora-gauge') as AuroraGauge
+    el.setAttribute('type', 'radial')
+    el.setAttribute('value', '50')
+    el.setAttribute('label', 'Load')
+    document.body.append(el)
+    expect(el.shadowRoot?.querySelectorAll('line').length).toBe(9)
+    const needle = el.shadowRoot?.querySelector('g')
+    expect(needle?.getAttribute('transform')).toContain('rotate(')
+    expect(el.getAttribute('role')).toBe('meter')
+    el.remove()
+  })
+})

@@ -27,7 +27,7 @@ export interface ChartSeries {
 }
 
 /**
- * `<aurora-chart type="bar|line|area|donut|pie|scatter">` — a 2D-canvas
+ * `<aurora-chart type="bar|line|area|donut|pie|scatter|funnel|pyramid">` — a 2D-canvas
  * chart with axes, gridlines, an HTML legend, hover tooltips, and an
  * animated intro. Assign `labels` (string[] categories) and `series`
  * (`{ label, data, color? }[]`; donut/pie use the first series). Bars can
@@ -81,7 +81,7 @@ export class AuroraChart extends AuroraElement {
     if (legend) {
       const type = this.getAttribute('type') ?? 'bar'
       const keys =
-        type === 'donut' || type === 'pie'
+        type === 'donut' || type === 'pie' || type === 'funnel' || type === 'pyramid'
           ? this.#labels.map((label, i) => ({
               label,
               color: PALETTE[i % PALETTE.length] ?? '#6d5cff',
@@ -134,6 +134,10 @@ export class AuroraChart extends AuroraElement {
     const type = this.getAttribute('type') ?? 'bar'
     if (type === 'donut' || type === 'pie') {
       this.drawDonut(ctx, w, h, type === 'donut' ? 0.62 : 0)
+      return
+    }
+    if (type === 'funnel' || type === 'pyramid') {
+      this.drawFunnel(ctx, w, h, type === 'pyramid')
       return
     }
     const stacked = type === 'bar' && this.hasAttribute('stacked')
@@ -251,12 +255,61 @@ export class AuroraChart extends AuroraElement {
     })
   }
 
+  private drawFunnel(ctx: CanvasRenderingContext2D, w: number, h: number, pyramid: boolean): void {
+    const data = this.#series[0]?.data ?? []
+    if (!data.length) return
+    const max = Math.max(...data, 1)
+    const gap = 3
+    const bandH = (h - 12 - gap * (data.length - 1)) / data.length
+    const cx = w / 2
+    const usable = w * 0.86
+    const widthAt = (i: number): number => {
+      if (pyramid) return usable * ((i + 1) / data.length)
+      return usable * ((data[i] ?? 0) / max)
+    }
+    data.forEach((v, i) => {
+      const y = 6 + i * (bandH + gap)
+      const topW = widthAt(i) * this.progress
+      const botW = (i + 1 < data.length ? widthAt(i + 1) : widthAt(i) * 0.72) * this.progress
+      ctx.beginPath()
+      ctx.moveTo(cx - topW / 2, y)
+      ctx.lineTo(cx + topW / 2, y)
+      ctx.lineTo(cx + botW / 2, y + bandH)
+      ctx.lineTo(cx - botW / 2, y + bandH)
+      ctx.closePath()
+      ctx.fillStyle = PALETTE[i % PALETTE.length] ?? '#6d5cff'
+      ctx.globalAlpha = 0.88
+      ctx.fill()
+      ctx.globalAlpha = 1
+      ctx.fillStyle = 'rgba(255,255,255,0.85)'
+      ctx.font = '11px system-ui'
+      ctx.textAlign = 'center'
+      if (bandH > 16) ctx.fillText(`${this.#labels[i] ?? ''} — ${v}`, cx, y + bandH / 2 + 4)
+    })
+  }
+
   private hover(e: PointerEvent): void {
     const canvas = this.root.querySelector('canvas')
     if (!canvas || this.#series.length === 0) return
     const rect = canvas.getBoundingClientRect()
     const type = this.getAttribute('type') ?? 'bar'
     const n = Math.max(...this.#series.map((s) => s.data.length), 1)
+    if (type === 'funnel' || type === 'pyramid') {
+      const data = this.#series[0]?.data ?? []
+      const gap = 3
+      const bandH = (rect.height - 12 - gap * (data.length - 1)) / data.length
+      const i = Math.floor((e.clientY - rect.top - 6) / (bandH + gap))
+      if (i >= 0 && i < data.length) {
+        const total = data.reduce((a, b) => a + b, 0) || 1
+        const pct = Math.round(((data[i] ?? 0) / total) * 100)
+        this.tip(
+          `<strong>${escapeHtml(this.#labels[i] ?? String(i))}</strong>: ${data[i]} (${pct}%)`,
+          e.clientX - rect.left,
+          e.clientY - rect.top,
+        )
+      } else this.tip(null, 0, 0)
+      return
+    }
     if (type === 'donut' || type === 'pie') {
       const cx = rect.width / 2
       const cy = rect.height / 2

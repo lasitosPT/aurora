@@ -492,7 +492,10 @@ export const DOCS: ComponentDoc[] = [
       'Grouped bars, multi-series lines, and donuts on a DPR-aware canvas — gridlines, y-ticks, category labels, an HTML legend, hover tooltips, and an animated intro.',
     example: `<aurora-chart id="docChart" type="bar" style="--aurora-chart-height:220px"></aurora-chart>`,
     attributes: [
-      ['type', '"bar" (grouped or stacked), "line", "area", "donut", "pie", "scatter"'],
+      [
+        'type',
+        '"bar" (grouped or stacked), "line", "area", "donut", "pie", "scatter", "funnel", "pyramid"',
+      ],
       ['stacked', 'Stack bar series instead of grouping'],
       ['aria-label', 'Describe the chart (role="img")'],
     ],
@@ -1374,7 +1377,7 @@ export const DOCS: ComponentDoc[] = [
       'Arc, circular, and linear gauges in one SVG element — the value sweeps into view, re-tweens on change, and reports itself as a proper meter.',
     example: `<div style="display:flex;gap:26px;align-items:center;flex-wrap:wrap">\n  <aurora-gauge type="arc" value="72" label="CPU" unit="%"></aurora-gauge>\n  <aurora-gauge type="circular" value="48" label="Memory" unit="%" style="--aurora-gauge-color:#22d3ee"></aurora-gauge>\n</div>`,
     attributes: [
-      ['type', '"arc" (default), "circular", "linear"'],
+      ['type', '"arc" (default), "circular", "linear", "radial" (ticked dial + needle)'],
       ['value / min / max', 'The measurement (re-tweens on change)'],
       ['label / unit', 'Caption and suffix'],
     ],
