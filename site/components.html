@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          One hundred and eighteen components.<br /><span class="grad"
+          One hundred and nineteen components.<br /><span class="grad"
             >Every one of them live.</span
           >
         </h1>
@@ -370,6 +370,26 @@ pg.value = { title: 'Aurora', width: 320, visible: true, accent: '#6d5cff' }</pr
                 <pre>
 fb.fields = [{ field: 'name' }, { field: 'stars', type: 'number' }]
 grid.data = fb.apply(allRows)</pre>
+              </div>
+            </article>
+            <!-- FileManager -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>FileManager</h3>
+                <code>&lt;aurora-filemanager&gt;</code>
+              </div>
+              <div class="demo-desc">
+                Breadcrumb + treeview + tiles, composed — double-click to explore.
+                <a href="./docs.html?c=aurora-filemanager" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-filemanager id="catFm" style="width: 100%"></aurora-filemanager>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+fm.fs = [{ name: 'src', type: 'folder', children: [...] }]
+fm.addEventListener('aurora-open', (e) => view(e.detail.path))</pre>
               </div>
             </article>
             <!-- Sparkline -->
@@ -1121,7 +1141,7 @@ sheet.show()</pre>
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>One hundred and eighteen components.</strong><br />
+                  <strong>One hundred and nineteen components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

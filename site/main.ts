@@ -612,6 +612,42 @@ function wireFilter(fb: AuroraFilterbuilder | null): void {
 }
 wireFilter(document.getElementById('catFilter') as AuroraFilterbuilder | null)
 
+/* ---------- filemanager demo ---------- */
+import type { AuroraFilemanager } from 'aurora'
+const FM_FS = [
+  {
+    name: 'src',
+    type: 'folder' as const,
+    children: [
+      {
+        name: 'components',
+        type: 'folder' as const,
+        children: [
+          { name: 'grid.ts', type: 'file' as const, size: 38200 },
+          { name: 'chart.ts', type: 'file' as const, size: 12400 },
+          { name: 'gantt.ts', type: 'file' as const, size: 9800 },
+        ],
+      },
+      { name: 'index.ts', type: 'file' as const, size: 4100 },
+    ],
+  },
+  {
+    name: 'media',
+    type: 'folder' as const,
+    children: [
+      { name: 'hero.png', type: 'file' as const, size: 1609214 },
+      { name: 'dashboard.png', type: 'file' as const, size: 360612 },
+      { name: 'launch.mp4', type: 'file' as const, size: 8400000 },
+    ],
+  },
+  { name: 'README.md', type: 'file' as const, size: 9400 },
+  { name: 'release.zip', type: 'file' as const, size: 442000 },
+]
+function wireFm(fm: AuroraFilemanager | null): void {
+  if (fm) fm.fs = FM_FS
+}
+wireFm(document.getElementById('catFm') as AuroraFilemanager | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -936,6 +972,7 @@ if (docRoot) {
     wirePrompt(document.getElementById('docPrompt') as AuroraPromptbox | null)
     wirePropgrid(document.getElementById('docPropgrid') as AuroraPropertygrid | null)
     wireFilter(document.getElementById('docFilter') as AuroraFilterbuilder | null)
+    wireFm(document.getElementById('docFm') as AuroraFilemanager | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

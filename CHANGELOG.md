@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.89.0
+
+The composition showcase.
+
+- `aurora-filemanager` — a file browser assembled from aurora parts: breadcrumb
+  path, folder treeview, and a tile grid with type icons and sizes; navigate by
+  tree, crumb, or double-click, open files with full paths. Ships with docs.
+
 ## 0.88.0
 
 Image editing.

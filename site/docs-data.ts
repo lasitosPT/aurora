@@ -2658,6 +2658,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-filemanager',
+    title: 'FileManager',
+    category: 'Enterprise & Data',
+    summary:
+      'A file browser assembled from aurora parts — breadcrumb path, folder tree, and a tile grid with type icons; three components composing into a fourth.',
+    example: `<aurora-filemanager id="docFm" style="width:100%"></aurora-filemanager>`,
+    attributes: [['fs (property)', 'Nested { name, type: "folder"|"file", size?, children? }']],
+    events: [
+      ['aurora-open', '{ node, path } — double-clicked files'],
+      ['aurora-select', '{ node, path } — highlighted tiles'],
+    ],
+    cssvars: [['--aurora-surface / -accent', 'Panels and selection']],
+    methods: [['fs', 'Get/set the tree']],
+    tutorial: [
+      {
+        heading: '1 · Wire a backend',
+        text: 'Map your storage listing into fs and handle aurora-open — the navigation, tree sync, and breadcrumbs are already done.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',
