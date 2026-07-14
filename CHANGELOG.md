@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.7.0
+
+Spreadsheet: cell comments and list editors.
+
+- 💬 toolbar panel attaches a comment to the selected cell — amber corner
+  flag, native hover tooltip, per-sheet storage; `setComment()`/
+  `getComment()`/`comments` and an `aurora-comment` event from code
+- `editors` maps cell refs ("B2") or whole columns ("B") to value lists;
+  those cells edit through a select instead of free text
+
 ## 2.6.0
 
 Editor: format painter, immutable elements, inline mode.

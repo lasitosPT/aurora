@@ -2791,7 +2791,7 @@ export const DOCS: ComponentDoc[] = [
     title: 'Spreadsheet',
     category: 'Enterprise & Data',
     summary:
-      'A formula-capable workbook — =SUM(A1:B3), arithmetic with refs, circular-reference detection, keyboard-first editing, a formula bar, and sheet tabs (click to switch, double-click to rename). The engine is in-house.',
+      'A formula-capable workbook — =SUM(A1:B3), arithmetic with refs, circular-reference detection, keyboard-first editing, a formula bar, sheet tabs, cell comments, and per-column list editors. The engine is in-house.',
     example: `<aurora-spreadsheet id="docSs" rows="8" cols="6" style="width:100%"></aurora-spreadsheet>`,
     attributes: [['rows / cols', 'Sheet dimensions (default 12 × 8)']],
     events: [['aurora-change', '{ ref, raw, value } per commit']],
@@ -2809,6 +2809,11 @@ export const DOCS: ComponentDoc[] = [
       ],
       ['addSheet(name?) / removeSheet(i) / renameSheet(i, name)', 'Manage tabs from code'],
       ['activeSheet / sheetNames', 'Switch tabs programmatically; aurora-sheet fires on change'],
+      [
+        'setComment(ref, text) / getComment(ref) / comments',
+        'Corner-flagged hover notes per sheet (💬 in the toolbar)',
+      ],
+      ['editors', '{ "B": [...], "A1": [...] } — those cells edit via a select'],
       ['formatCell(patch, ref?) / styles', 'Bold, italic, align, color per cell'],
       ['AuroraSpreadsheet.registerFunction(name, fn)', 'Extend the formula engine'],
     ],

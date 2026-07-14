@@ -95,17 +95,17 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 
 ## Spreadsheet
 
-| Kendo feature    | aurora                                  |
-| ---------------- | --------------------------------------- |
-| Formulas         | ✅ in-house engine                      |
-| Cell formatting  | ✅ bold/italic/align/color + styles map |
-| Comments         | ⬜                                      |
-| Images in sheets | ⬜                                      |
-| Custom editors   | ⬜                                      |
-| Custom functions | ✅ registerFunction + ROUND/ABS         |
-| Import/export    | ✅ CSV + multi-sheet .xlsx both ways    |
-| Multiple sheets  | ✅ tabs: add/rename/remove/switch       |
-| Localization     | ⬜ (tracked globally)                   |
+| Kendo feature    | aurora                                      |
+| ---------------- | ------------------------------------------- |
+| Formulas         | ✅ in-house engine                          |
+| Cell formatting  | ✅ bold/italic/align/color + styles map     |
+| Comments         | ✅ 💬 per-sheet notes (not xlsx-serialized) |
+| Images in sheets | ⬜                                          |
+| Custom editors   | ✅ list editors per cell/column             |
+| Custom functions | ✅ registerFunction + ROUND/ABS             |
+| Import/export    | ✅ CSV + multi-sheet .xlsx both ways        |
+| Multiple sheets  | ✅ tabs: add/rename/remove/switch           |
+| Localization     | ⬜ (tracked globally)                       |
 
 ## Gantt
 

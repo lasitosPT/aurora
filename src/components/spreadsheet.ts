@@ -84,12 +84,33 @@ const STYLE = `
     place-items: center; border-radius: 6px; color: var(--aurora-muted, #9a98b3);
   }
   .tabs .add:hover { color: var(--aurora-fg, #ececf2); background: rgba(255, 255, 255, 0.06); }
+  td.cm { position: relative; }
+  td.cm::after {
+    content: ''; position: absolute; top: 0; inset-inline-end: 0;
+    border: 4px solid transparent; border-top-color: #f5b83d; border-inline-end-color: #f5b83d;
+  }
+  .cpanel {
+    display: flex; gap: 8px; align-items: center; padding: 7px 12px;
+    border-bottom: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.08));
+  }
+  .cpanel input {
+    all: unset; flex: 1; min-width: 0; padding: 0.3rem 0.7rem; font-size: 0.84rem;
+    background: var(--aurora-field, rgba(255, 255, 255, 0.045));
+    border: 1px solid var(--aurora-border, rgba(128, 128, 128, 0.35)); border-radius: 8px;
+  }
+  .cpanel button {
+    all: unset; cursor: pointer; font-size: 0.78rem; padding: 4px 12px; border-radius: 7px;
+    color: var(--aurora-muted, #9a98b3); border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.12));
+  }
+  .cpanel button:hover { color: var(--aurora-fg, #ececf2); border-color: var(--aurora-accent, #6d5cff); }
+  .cpanel button:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); }
 `
 
 interface SheetState {
   name: string
   cells: Map<string, string>
   styles: Map<string, CellStyle>
+  comments: Map<string, string>
 }
 
 /**
@@ -105,12 +126,20 @@ interface SheetState {
  * rename, `+` / `addSheet()` to append, `activeSheet` to drive it from code.
  * `toCsv()` exports the active sheet; `toExcel()`/`exportExcel()` write every
  * tab as a real worksheet and `importExcel()` reads all worksheets back into
- * tabs (in-house zip reader, store and deflate);
+ * tabs (in-house zip reader, store and deflate). Cell comments (💬 or
+ * `setComment()`) mark cells with a corner flag and show on hover, per sheet.
+ * `editors` maps refs ("B2") or whole columns ("B") to value lists, turning
+ * those cells' editors into selects;
  * `AuroraSpreadsheet.registerFunction()` extends the formula engine. Emits
  * `aurora-change` with `{ ref, raw, value }`.
  */
 export class AuroraSpreadsheet extends AuroraElement {
-  private sheets: SheetState[] = [{ name: 'Sheet1', cells: new Map(), styles: new Map() }]
+  private sheets: SheetState[] = [
+    { name: 'Sheet1', cells: new Map(), styles: new Map(), comments: new Map() },
+  ]
+  /** Cell/column list editors: keys are refs ("B2") or column letters ("B"). */
+  editors: Record<string, string[]> = {}
+  private commenting = false
   private active = 0
   private selected = 'A1'
   private editing = false
@@ -129,6 +158,39 @@ export class AuroraSpreadsheet extends AuroraElement {
 
   private set cellStyles(v: Map<string, CellStyle>) {
     ;(this.sheets[this.active] as SheetState).styles = v
+  }
+
+  /** The active sheet's comments as an `{ A1: text }` map. */
+  get comments(): Record<string, string> {
+    return Object.fromEntries((this.sheets[this.active] as SheetState).comments)
+  }
+
+  set comments(v: Record<string, string>) {
+    ;(this.sheets[this.active] as SheetState).comments = new Map(Object.entries(v ?? {}))
+    this.render()
+  }
+
+  /** Attach, replace, or (with null/'') remove a cell comment. */
+  setComment(ref: string, text: string | null): void {
+    const key = ref.toUpperCase()
+    const comments = (this.sheets[this.active] as SheetState).comments
+    if (text) comments.set(key, text)
+    else comments.delete(key)
+    this.render()
+    this.dispatchEvent(new CustomEvent('aurora-comment', { detail: { ref: key, text } }))
+  }
+
+  getComment(ref: string): string {
+    return (this.sheets[this.active] as SheetState).comments.get(ref.toUpperCase()) ?? ''
+  }
+
+  /** The list editor (if any) governing a cell ref. */
+  private editorFor(ref: string): string[] | null {
+    const key = ref.toUpperCase()
+    const direct = this.editors[key]
+    if (direct) return direct
+    const col = /^([A-Z]+)\d+$/.exec(key)?.[1]
+    return (col ? this.editors[col] : undefined) ?? null
   }
 
   /** Sheet names in tab order. */
@@ -160,6 +222,7 @@ export class AuroraSpreadsheet extends AuroraElement {
       name: name ?? `Sheet${this.sheets.length + 1}`,
       cells: new Map(),
       styles: new Map(),
+      comments: new Map(),
     })
     this.active = this.sheets.length - 1
     this.selected = 'A1'
@@ -221,6 +284,7 @@ export class AuroraSpreadsheet extends AuroraElement {
       name: sh.name,
       cells: new Map(Object.entries(sh.cells)),
       styles: new Map(),
+      comments: new Map(),
     }))
     this.active = 0
     this.selected = 'A1'
@@ -341,11 +405,17 @@ export class AuroraSpreadsheet extends AuroraElement {
         const styleAttr = cs
           ? ` style="${cs.bold ? 'font-weight:700;' : ''}${cs.italic ? 'font-style:italic;' : ''}${cs.align ? `text-align:${cs.align};` : ''}${cs.color ? `color:${cs.color};` : ''}"`
           : ''
-        return `<td data-ref="${ref}" tabindex="-1" class="${isErr ? 'err' : isText ? 'text' : ''}"${styleAttr} aria-selected="${ref === this.selected}">${escapeHtml(String(value))}</td>`
+        const note = this.getComment(ref)
+        const noteAttr = note ? ` title="${escapeHtml(note)}"` : ''
+        return `<td data-ref="${ref}" tabindex="-1" class="${[isErr ? 'err' : isText ? 'text' : '', note ? 'cm' : ''].filter(Boolean).join(' ')}"${styleAttr}${noteAttr} aria-selected="${ref === this.selected}">${escapeHtml(String(value))}</td>`
       }).join('')}</tr>`
     }
     this.root.innerHTML = `<style>${STYLE}</style>
-      <div class="bar" part="bar"><span class="ref">${escapeHtml(this.selected)}</span><input class="fx" part="formula" aria-label="Formula" value="${escapeHtml(this.getCell(this.selected))}" spellcheck="false" /><div class="fmt" part="format"><button data-f="bold" aria-label="Bold"><b>B</b></button><button data-f="italic" aria-label="Italic"><i>I</i></button><button data-f="left" aria-label="Align left">⇤</button><button data-f="center" aria-label="Align center">↔</button><button data-f="right" aria-label="Align right">⇥</button><button class="swatch" aria-label="Text color">A<input type="color" data-f="color" value="#22d3ee" /></button><button data-f="xlsx" aria-label="Export Excel">⬇</button><button data-f="import" aria-label="Import Excel">📂</button></div></div><input type="file" accept=".xlsx" hidden />
+      <div class="bar" part="bar"><span class="ref">${escapeHtml(this.selected)}</span><input class="fx" part="formula" aria-label="Formula" value="${escapeHtml(this.getCell(this.selected))}" spellcheck="false" /><div class="fmt" part="format"><button data-f="bold" aria-label="Bold"><b>B</b></button><button data-f="italic" aria-label="Italic"><i>I</i></button><button data-f="left" aria-label="Align left">⇤</button><button data-f="center" aria-label="Align center">↔</button><button data-f="right" aria-label="Align right">⇥</button><button class="swatch" aria-label="Text color">A<input type="color" data-f="color" value="#22d3ee" /></button><button data-f="comment" aria-label="Cell comment">💬</button><button data-f="xlsx" aria-label="Export Excel">⬇</button><button data-f="import" aria-label="Import Excel">📂</button></div></div><input type="file" accept=".xlsx" hidden />${
+        this.commenting
+          ? `<div class="cpanel" part="comment"><span class="ref">${escapeHtml(this.selected)}</span><input class="ctext" aria-label="Comment for ${escapeHtml(this.selected)}" value="${escapeHtml(this.getComment(this.selected))}" placeholder="Add a comment…" /><button data-csave>Save</button><button data-cremove>Remove</button></div>`
+          : ''
+      }
       <div class="viewport"><table aria-label="Spreadsheet"><thead><tr><th class="corner rowh"></th>${head}</tr></thead><tbody>${body}</tbody></table></div>
       <div class="tabs" part="tabs" role="tablist" aria-label="Sheets">${this.sheets
         .map(
@@ -368,9 +438,30 @@ export class AuroraSpreadsheet extends AuroraElement {
         else if (f === 'italic') this.formatCell({ italic: !cs.italic })
         else if (f === 'left' || f === 'center' || f === 'right') this.formatCell({ align: f })
         else if (f === 'xlsx') this.exportExcel()
-        else if (f === 'import')
+        else if (f === 'comment') {
+          this.commenting = !this.commenting
+          this.render()
+          if (this.commenting) this.root.querySelector<HTMLInputElement>('.ctext')?.focus()
+        } else if (f === 'import')
           this.root.querySelector<HTMLInputElement>('input[type="file"]')?.click()
       })
+    })
+    const ctext = this.root.querySelector<HTMLInputElement>('.ctext')
+    const commitComment = (): void => {
+      this.commenting = false
+      this.setComment(this.selected, ctext?.value ?? '')
+    }
+    this.root.querySelector('[data-csave]')?.addEventListener('click', commitComment)
+    this.root.querySelector('[data-cremove]')?.addEventListener('click', () => {
+      this.commenting = false
+      this.setComment(this.selected, null)
+    })
+    ctext?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') commitComment()
+      else if (e.key === 'Escape') {
+        this.commenting = false
+        this.render()
+      }
     })
     this.root
       .querySelector<HTMLInputElement>('input[type="file"]')
@@ -475,6 +566,40 @@ export class AuroraSpreadsheet extends AuroraElement {
   private edit(td: HTMLTableCellElement, seed?: string): void {
     const ref = td.dataset['ref'] ?? 'A1'
     this.selected = ref
+    const list = this.editorFor(ref)
+    if (list) {
+      this.editing = true
+      const current = this.getCell(ref)
+      td.innerHTML = `<select aria-label="Edit ${ref}">${list
+        .map(
+          (v) =>
+            `<option value="${escapeHtml(v)}"${v === current ? ' selected' : ''}>${escapeHtml(v)}</option>`,
+        )
+        .join('')}</select>`
+      const select = td.querySelector('select')
+      if (!select) return
+      select.focus()
+      let selDone = false
+      const commitSel = (): void => {
+        if (selDone) return
+        selDone = true
+        this.editing = false
+        this.setCell(ref, select.value)
+        this.focusCell(ref)
+      }
+      select.addEventListener('change', commitSel)
+      select.addEventListener('blur', commitSel)
+      select.addEventListener('keydown', (e) => {
+        e.stopPropagation()
+        if (e.key === 'Escape') {
+          selDone = true
+          this.editing = false
+          this.render()
+          this.focusCell(ref)
+        }
+      })
+      return
+    }
     this.editing = true
     const raw = seed ?? this.getCell(ref)
     td.innerHTML = `<input value="${escapeHtml(raw)}" aria-label="Edit ${ref}" />`

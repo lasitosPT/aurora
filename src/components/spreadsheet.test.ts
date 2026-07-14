@@ -168,3 +168,58 @@ describe('spreadsheet multiple sheets (v2.2)', () => {
     b.remove()
   })
 })
+
+describe('spreadsheet comments + list editors (v2.7)', () => {
+  it('flags commented cells per sheet and shows the text on hover', () => {
+    const el = make()
+    let fired: { ref: string; text: string | null } | undefined
+    el.addEventListener('aurora-comment', (e) => {
+      fired = (e as CustomEvent<{ ref: string; text: string | null }>).detail
+    })
+    el.setComment('b2', 'check this total')
+    expect(fired).toEqual({ ref: 'B2', text: 'check this total' })
+    const td = el.shadowRoot?.querySelector('td[data-ref="B2"]')
+    expect(td?.classList.contains('cm')).toBe(true)
+    expect(td?.getAttribute('title')).toBe('check this total')
+    el.addSheet()
+    expect(el.shadowRoot?.querySelector('td.cm')).toBeNull()
+    el.activeSheet = 0
+    expect(el.getComment('B2')).toBe('check this total')
+    el.setComment('B2', null)
+    expect(el.shadowRoot?.querySelector('td.cm')).toBeNull()
+    el.remove()
+  })
+
+  it('edits comments from the 💬 toolbar panel', () => {
+    const el = make()
+    el.shadowRoot?.querySelector<HTMLButtonElement>('button[data-f="comment"]')?.click()
+    const input = el.shadowRoot?.querySelector<HTMLInputElement>('.cpanel .ctext')
+    expect(input).not.toBeNull()
+    if (input) {
+      input.value = 'note on A1'
+      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+    }
+    expect(el.getComment('A1')).toBe('note on A1')
+    expect(el.shadowRoot?.querySelector('td[data-ref="A1"]')?.classList.contains('cm')).toBe(true)
+    el.remove()
+  })
+
+  it('column and cell list editors render selects that commit', () => {
+    const el = make()
+    el.editors = { B: ['Yes', 'No'], A1: ['Low', 'High'] }
+    const b3 = el.shadowRoot?.querySelector<HTMLTableCellElement>('td[data-ref="B3"]')
+    b3?.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }))
+    const select = el.shadowRoot?.querySelector<HTMLSelectElement>('td[data-ref="B3"] select')
+    expect(Array.from(select?.options ?? []).map((o) => o.value)).toEqual(['Yes', 'No'])
+    if (select) {
+      select.value = 'No'
+      select.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+    expect(el.getCell('B3')).toBe('No')
+    const a1 = el.shadowRoot?.querySelector<HTMLTableCellElement>('td[data-ref="A1"]')
+    a1?.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }))
+    const sel2 = el.shadowRoot?.querySelector<HTMLSelectElement>('td[data-ref="A1"] select')
+    expect(Array.from(sel2?.options ?? []).map((o) => o.value)).toEqual(['Low', 'High'])
+    el.remove()
+  })
+})
