@@ -10,6 +10,7 @@
   --border-strong: rgba(255, 255, 255, 0.16);
   --fg: #ecebf3;
   --muted: #9a98b3;
+  --accent-bright: #a99bff;
   --accent: #6d5cff;
   --accent-2: #22d3ee;
 
@@ -411,8 +412,14 @@ html.js:not(.reduced) .scroll-hint i::after {
   -webkit-text-stroke: 1px rgba(236, 235, 243, 0.28);
 }
 .outline-marquee.fill {
-  color: rgba(236, 235, 243, 0.08);
+  color: transparent;
   -webkit-text-stroke: 0;
+}
+.outline-marquee.fill::part(content) {
+  background: rgba(236, 235, 243, 0.08);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* ---------- Sections ---------- */
@@ -421,7 +428,7 @@ html.js:not(.reduced) .scroll-hint i::after {
 }
 .kicker {
   font-family: var(--font-mono);
-  color: var(--accent);
+  color: var(--accent-bright, #a99bff);
   font-size: 0.8rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -981,7 +988,7 @@ html.js .features:not(.is-live) .ico :is(path, circle, rect) {
 .demo-head code {
   font-family: var(--font-mono);
   font-size: 0.76rem;
-  color: var(--accent);
+  color: var(--accent-bright, #a99bff);
 }
 .demo-desc {
   padding: 6px 26px 0;
@@ -1159,7 +1166,7 @@ html.js .features:not(.is-live) .ico :is(path, circle, rect) {
 }
 .vars code {
   font-family: var(--font-mono);
-  color: var(--accent);
+  color: var(--accent-bright, #a99bff);
   font-size: 0.84rem;
 }
 .vars .swatch {

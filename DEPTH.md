@@ -132,4 +132,5 @@ foreign-key columns ⬜, endless remote scroll 🔶 (DataSource pattern document
   resolve through `t()` with template args; ship a locale pack object and done
 - RTL rendering 🔶 logical text alignment throughout; directional layout
   (flyout sides, frozen columns) pending a full `dir="rtl"` pass
-- Formal screen-reader audit ⬜ (ARIA is in place; NVDA/VoiceOver passes not run)
+- Screen-reader / a11y audit 🔶 axe-core WCAG 2.1 AA run against the live site
+  (landing, catalogue, docs): 0 violations. Manual NVDA/VoiceOver passes pending

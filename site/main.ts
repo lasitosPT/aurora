@@ -796,7 +796,13 @@ const hasHero = Boolean(document.querySelector('.hero-title'))
 if (!reduced && hasHero) {
   /* hero title: chars for plain lines, a masked block for the gradient line
      (SplitText chars would break background-clip: text) */
-  const split = new SplitText('.hero-title .line:not(.line-grad)', { type: 'chars' })
+  const heroTitle = document.querySelector('.hero-title')
+  if (heroTitle && !heroTitle.getAttribute('aria-label'))
+    heroTitle.setAttribute('aria-label', heroTitle.textContent?.replace(/\s+/g, ' ').trim() ?? '')
+  const split = new SplitText('.hero-title .line:not(.line-grad)', {
+    type: 'chars',
+    aria: 'hidden',
+  })
   const gradInner = document.querySelector('.hero-title .line-grad .inner')
   gsap.set(split.chars, { yPercent: 118 })
   if (gradInner) gsap.set(gradInner, { yPercent: 118 })
@@ -824,7 +830,7 @@ if (!reduced && hasHero) {
   )
 
   if (loader && !seen) {
-    const word = new SplitText('.loader-word', { type: 'chars' })
+    const word = new SplitText('.loader-word', { type: 'chars', aria: 'hidden' })
     gsap.set(word.chars, { yPercent: 120 })
     gsap
       .timeline()
@@ -937,7 +943,7 @@ if (!reduced && hasHero) {
 
   /* footer giant */
   const giantEl = document.querySelector('.giant')
-  const giant = giantEl ? new SplitText(giantEl, { type: 'chars' }) : null
+  const giant = giantEl ? new SplitText(giantEl, { type: 'chars', aria: 'hidden' }) : null
   if (giant) gsap.set(giant.chars, { yPercent: 118 })
   if (giantEl && giant) {
     onVisible(giantEl, () =>

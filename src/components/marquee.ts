@@ -18,10 +18,13 @@ export class AuroraMarquee extends AuroraElement {
 
   connectedCallback(): void {
     const content = this.innerHTML
+    // decorative marquees (aria-hidden hosts) hide their whole track from AT
+    if (this.hasAttribute('aria-hidden')) this.setAttribute('role', 'presentation')
+    const hideAll = this.hasAttribute('aria-hidden')
     this.root.innerHTML =
       `<style>${STYLE}</style><div class="track">` +
-      `<span class="group">${content}</span>` +
-      `<span class="group" aria-hidden="true">${content}</span>` +
+      `<span class="group" part="content"${hideAll ? ' aria-hidden="true"' : ''}>${content}</span>` +
+      `<span class="group" part="content" aria-hidden="true">${content}</span>` +
       `</div>`
     requestAnimationFrame(() => this.start())
   }

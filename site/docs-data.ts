@@ -823,9 +823,12 @@ export const DOCS: ComponentDoc[] = [
     title: 'Marquee',
     category: 'Motion & Interaction',
     summary:
-      'A seamless infinite scroller — content duplicates once (aria-hidden) and loops at a pixel speed you set.',
+      'A seamless infinite scroller — content duplicates once (aria-hidden) and loops at a pixel speed you set. Put aria-hidden on the host for purely decorative bands and the whole track is removed from the accessibility tree. Style the loop copies from outside via ::part(content).',
     example: `<aurora-marquee speed="70" style="font-weight:700">GSAP · Web Components · MIT · </aurora-marquee>`,
-    attributes: [['speed', 'Pixels per second (default 60)']],
+    attributes: [
+      ['speed', 'Pixels per second (default 60)'],
+      ['aria-hidden', 'Marks the marquee decorative — hides the whole track from screen readers'],
+    ],
     events: [],
     cssvars: [['--aurora-marquee-gap', 'Space between loop copies']],
     methods: [],

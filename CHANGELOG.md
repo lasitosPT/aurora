@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.1
+
+Accessibility: an axe-core WCAG 2.1 AA audit of the full site (landing, catalogue,
+docs) now reports zero violations.
+
+- Hero SplitText fragments are aria-hidden and the accessible name lives on the
+  heading itself (SplitText's automatic aria-label on spans is a prohibited-attr)
+- Accent-coloured code/kicker text brightened to a 4.5:1 tint (--accent-bright)
+- Marquee: aria-hidden on the host now removes the whole duplicated track from
+  the accessibility tree, and loop copies are stylable via ::part(content)
+
 ## 2.0.0
 
 The depth milestone. No breaking changes — the major marks a claim:
