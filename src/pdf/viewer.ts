@@ -21,7 +21,7 @@ interface PdfDocLike {
 
 interface PdfLibLike {
   GlobalWorkerOptions?: { workerSrc: string }
-  getDocument: (src: string) => { promise: Promise<PdfDocLike> }
+  getDocument: (src: { url: string }) => { promise: Promise<PdfDocLike> }
 }
 
 const STYLE = `
@@ -99,7 +99,7 @@ export class AuroraPdfviewer extends AuroraElement {
       const lib = AuroraPdfviewer.pdfLib ?? ((await import('pdfjs-dist')) as unknown as PdfLibLike)
       if (lib.GlobalWorkerOptions && AuroraPdfviewer.workerSrc)
         lib.GlobalWorkerOptions.workerSrc = AuroraPdfviewer.workerSrc
-      this.doc = await lib.getDocument(src).promise
+      this.doc = await lib.getDocument({ url: src }).promise
       this.page = 1
       this.dispatchEvent(new CustomEvent('aurora-load', { detail: { pages: this.doc.numPages } }))
       await this.renderPage()
