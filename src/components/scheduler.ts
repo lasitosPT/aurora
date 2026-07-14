@@ -39,6 +39,11 @@ const STYLE = `
   }
   .ev:hover { background: color-mix(in srgb, var(--c, #6d5cff) 34%, transparent); }
   .ev time { display: block; opacity: 0.75; font-size: 0.68rem; }
+  .ev .rep { position: absolute; right: 5px; top: 3px; font-size: 0.66rem; opacity: 0.7; }
+  .ev.dragging { opacity: 0.85; z-index: 4; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); cursor: grabbing; }
+  .resources { display: flex; gap: 12px; padding: 6px 14px; font-size: 0.74rem; color: var(--aurora-muted, #9a98b3);
+    border-bottom: 1px solid var(--aurora-border, rgba(255,255,255,0.06)); flex-wrap: wrap; }
+  .resources i { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
   .mgrid { display: grid; grid-template-columns: repeat(7, 1fr); }
   .mcell {
     min-height: 76px; padding: 5px 6px; border-left: 1px solid var(--aurora-border, rgba(255,255,255,0.05));
@@ -78,6 +83,17 @@ export interface SchedulerEvent {
   start: string
   end: string
   color?: string
+  /** Recurrence: repeats at the same time until `until` (inclusive). */
+  repeat?: 'daily' | 'weekly' | 'monthly'
+  until?: string
+  /** Resource id — inherits the resource color unless `color` is set. */
+  resource?: string
+}
+
+export interface SchedulerResource {
+  id: string
+  title: string
+  color: string
 }
 
 type View = 'day' | 'week' | 'month' | 'agenda'
@@ -100,12 +116,31 @@ const hm = (x: Date): string =>
  * (calendar cells with event chips and a "+N more" tail), and `agenda`
  * (a grouped list of the coming two weeks). The toolbar pages by the view's
  * unit and switches views inline. Assign `events`
- * (`{ title, start, end, color? }[]`, ISO datetimes). Emits `aurora-select`
+ * (`{ title, start, end, color?, repeat?, until?, resource? }[]`, ISO
+ * datetimes — `repeat` expands daily/weekly/monthly occurrences until
+ * `until`). Assign `resources` for color-coded categories with a legend;
+ * drag base events in day/week views to move them in half-hour snaps
+ * (`readonly` opts out, occurrences don't drag). Emits `aurora-select`,
+ * `aurora-update` after drags,
  * with the clicked event and `aurora-range` on paging or view change.
  */
 export class AuroraScheduler extends AuroraElement {
   #events: SchedulerEvent[] = []
+  #resources: SchedulerResource[] = []
   private cursor = new Date()
+
+  get resources(): SchedulerResource[] {
+    return this.#resources
+  }
+
+  set resources(v: SchedulerResource[]) {
+    this.#resources = v ?? []
+    this.render()
+  }
+
+  private colorOf(e: SchedulerEvent): string | undefined {
+    return e.color ?? this.#resources.find((r) => r.id === e.resource)?.color
+  }
 
   get events(): SchedulerEvent[] {
     return this.#events
@@ -134,11 +169,24 @@ export class AuroraScheduler extends AuroraElement {
     this.render()
   }
 
-  private eventsOn(key: string): { e: SchedulerEvent; idx: number }[] {
+  private occursOn(e: SchedulerEvent, key: string): boolean {
+    const base = e.start.slice(0, 10)
+    if (base === key) return true
+    if (!e.repeat) return false
+    if (key < base) return false
+    if (e.until && key > e.until) return false
+    const from = new Date(`${base}T00:00`)
+    const day = new Date(`${key}T00:00`)
+    if (e.repeat === 'daily') return true
+    if (e.repeat === 'weekly') return from.getDay() === day.getDay()
+    return from.getDate() === day.getDate()
+  }
+
+  private eventsOn(key: string): { e: SchedulerEvent; idx: number; occurrence: boolean }[] {
     return this.#events
-      .map((e, idx) => ({ e, idx }))
-      .filter(({ e }) => e.start.slice(0, 10) === key)
-      .sort((a, b) => a.e.start.localeCompare(b.e.start))
+      .map((e, idx) => ({ e, idx, occurrence: e.start.slice(0, 10) !== key }))
+      .filter(({ e }) => this.occursOn(e, key))
+      .sort((a, b) => a.e.start.slice(11).localeCompare(b.e.start.slice(11)))
   }
 
   private heading(): string {
@@ -177,7 +225,15 @@ export class AuroraScheduler extends AuroraElement {
         : this.view === 'agenda'
           ? this.renderAgenda()
           : this.renderTimeGrid(this.view === 'day' ? 1 : 7)
-    this.root.innerHTML = `<style>${STYLE}</style>${bar}${body}`
+    const legend = this.#resources.length
+      ? `<div class="resources" part="resources">${this.#resources
+          .map(
+            (r) =>
+              `<span><i style="background:${escapeHtml(r.color)}"></i>${escapeHtml(r.title)}</span>`,
+          )
+          .join('')}</div>`
+      : ''
+    this.root.innerHTML = `<style>${STYLE}</style>${bar}${legend}${body}`
     this.wire()
   }
 
@@ -206,15 +262,16 @@ export class AuroraScheduler extends AuroraElement {
         .map((d) => {
           const key = iso(d)
           const evs = this.eventsOn(key)
-            .map(({ e, idx }) => {
+            .map(({ e, idx, occurrence }) => {
               const s = new Date(e.start)
               const en = new Date(e.end)
               const top = ((s.getHours() + s.getMinutes() / 60 - h0) / slots) * 100
               const height = Math.max(((en.getTime() - s.getTime()) / 3600000 / slots) * 100, 3)
-              return `<div class="ev" data-i="${idx}" role="button" tabindex="0" style="top:${top}%;height:${height}%;${e.color ? `--c:${e.color}` : ''}">${escapeHtml(e.title)}<time>${hm(s)}–${hm(en)}</time></div>`
+              const color = this.colorOf(e)
+              return `<div class="ev${occurrence ? ' occ' : ''}" data-i="${idx}" data-occ="${occurrence}" role="button" tabindex="0" style="top:${top}%;height:${height}%;${color ? `--c:${color}` : ''}">${escapeHtml(e.title)}${e.repeat ? '<span class="rep" aria-label="Repeats">↻</span>' : ''}<time>${hm(s)}–${hm(en)}</time></div>`
             })
             .join('')
-          return `<div class="day${key === today ? ' today' : ''}" style="height: calc(var(--slot) * ${slots})">${evs}</div>`
+          return `<div class="day${key === today ? ' today' : ''}" data-key="${key}" style="height: calc(var(--slot) * ${slots})">${evs}</div>`
         })
         .join('') +
       `</div>`
@@ -245,7 +302,7 @@ export class AuroraScheduler extends AuroraElement {
       cells += `<div class="mcell${off ? ' off' : ''}${key === today ? ' today' : ''}"><span class="num">${d.getDate()}</span>${shown
         .map(
           ({ e, idx }) =>
-            `<button class="chip" data-i="${idx}" ${e.color ? `style="--c:${e.color}"` : ''}>${escapeHtml(e.title)}</button>`,
+            `<button class="chip" data-i="${idx}" ${this.colorOf(e) ? `style="--c:${this.colorOf(e)}"` : ''}>${escapeHtml(e.title)}</button>`,
         )
         .join('')}${extra > 0 ? `<span class="more">+${extra} more</span>` : ''}</div>`
     }
@@ -268,7 +325,7 @@ export class AuroraScheduler extends AuroraElement {
         .map(({ e, idx }) => {
           const s = new Date(e.start)
           const en = new Date(e.end)
-          return `<button class="arow" data-i="${idx}"><span class="dot" ${e.color ? `style="--c:${e.color}"` : ''}></span><time>${hm(s)}–${hm(en)}</time><span>${escapeHtml(e.title)}</span></button>`
+          return `<button class="arow" data-i="${idx}"><span class="dot" ${this.colorOf(e) ? `style="--c:${this.colorOf(e)}"` : ''}></span><time>${hm(s)}–${hm(en)}</time><span>${escapeHtml(e.title)}</span></button>`
         })
         .join('')
     }
@@ -300,8 +357,10 @@ export class AuroraScheduler extends AuroraElement {
         if (v !== this.view) this.view = v
       }),
     )
+    let draggedRecently = false
     this.root.querySelectorAll<HTMLElement>('.ev, .chip, .arow').forEach((el) => {
       const pick = (): void => {
+        if (draggedRecently) return
         const event = this.#events[Number(el.dataset['i'])]
         if (event) this.dispatchEvent(new CustomEvent('aurora-select', { detail: { event } }))
       }
@@ -310,6 +369,67 @@ export class AuroraScheduler extends AuroraElement {
         if ((e as KeyboardEvent).key === 'Enter') pick()
       })
     })
+    if ((this.view === 'week' || this.view === 'day') && !this.hasAttribute('readonly')) {
+      this.root.querySelectorAll<HTMLElement>('.ev').forEach((el) => {
+        if (el.dataset['occ'] === 'true') return
+        el.addEventListener('pointerdown', (e) => {
+          const event = this.#events[Number(el.dataset['i'])]
+          if (!event) return
+          e.preventDefault()
+          const sx = e.clientX
+          const sy = e.clientY
+          let moved = false
+          el.setPointerCapture?.(e.pointerId)
+          const onMove = (m: PointerEvent): void => {
+            if (Math.abs(m.clientX - sx) + Math.abs(m.clientY - sy) > 4) moved = true
+            el.classList.add('dragging')
+            el.style.transform = `translate(${m.clientX - sx}px, ${m.clientY - sy}px)`
+          }
+          const onUp = (u: PointerEvent): void => {
+            el.removeEventListener('pointermove', onMove)
+            el.removeEventListener('pointerup', onUp)
+            el.removeEventListener('pointercancel', onUp)
+            el.classList.remove('dragging')
+            el.style.transform = ''
+            if (!moved) return
+            draggedRecently = true
+            window.setTimeout(() => {
+              draggedRecently = false
+            }, 0)
+            const target = Array.from(this.root.querySelectorAll<HTMLElement>('.day')).find((d) => {
+              const r = d.getBoundingClientRect()
+              return r.width > 0 && u.clientX >= r.left && u.clientX <= r.right
+            })
+            const key = target?.dataset['key']
+            if (!target || !key) {
+              this.render()
+              return
+            }
+            const rect = target.getBoundingClientRect()
+            const h0 = this.numberAttr('start-hour', 8)
+            const h1 = this.numberAttr('end-hour', 19)
+            const frac = Math.min(Math.max((u.clientY - rect.top) / rect.height, 0), 0.98)
+            const minutes = Math.round((frac * (h1 - h0) * 60) / 30) * 30
+            const startH = h0 + Math.floor(minutes / 60)
+            const startM = minutes % 60
+            const durMs = new Date(event.end).getTime() - new Date(event.start).getTime()
+            const newStart = `${key}T${String(startH).padStart(2, '0')}:${String(startM).padStart(2, '0')}`
+            const endDate = new Date(new Date(`${newStart}:00`).getTime() + durMs)
+            event.start = newStart
+            event.end = `${iso(endDate)}T${hm(endDate)}`
+            this.render()
+            this.dispatchEvent(
+              new CustomEvent('aurora-update', {
+                detail: { event, start: event.start, end: event.end },
+              }),
+            )
+          }
+          el.addEventListener('pointermove', onMove)
+          el.addEventListener('pointerup', onUp)
+          el.addEventListener('pointercancel', onUp)
+        })
+      })
+    }
     if (!prefersReducedMotion()) {
       const evs = this.root.querySelectorAll('.ev, .chip, .arow')
       if (evs.length > 0)

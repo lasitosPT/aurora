@@ -98,3 +98,57 @@ describe('scheduler views', () => {
     el.remove()
   })
 })
+
+describe('scheduler depth (v1.6)', () => {
+  it('expands daily and weekly recurrences until the end date', () => {
+    const el = document.createElement('aurora-scheduler') as AuroraScheduler
+    el.setAttribute('date', '2026-07-13')
+    document.body.append(el)
+    el.events = [
+      {
+        title: 'Standup',
+        start: '2026-07-13T09:00',
+        end: '2026-07-13T09:15',
+        repeat: 'daily',
+        until: '2026-07-16',
+      },
+      { title: 'Retro', start: '2026-07-06T16:00', end: '2026-07-06T17:00', repeat: 'weekly' },
+    ]
+    const evs = el.shadowRoot?.querySelectorAll('.ev')
+    // standup: mon-thu (4) + retro monday occurrence (1)
+    expect(evs?.length).toBe(5)
+    expect(el.shadowRoot?.querySelectorAll('.ev .rep').length).toBe(5)
+    const occ = el.shadowRoot?.querySelectorAll('.ev[data-occ="true"]')
+    expect(occ?.length).toBe(4)
+    el.remove()
+  })
+
+  it('colors events by resource and renders the legend', () => {
+    const el = document.createElement('aurora-scheduler') as AuroraScheduler
+    el.setAttribute('date', '2026-07-13')
+    document.body.append(el)
+    el.resources = [
+      { id: 'eng', title: 'Engineering', color: '#22d3ee' },
+      { id: 'design', title: 'Design', color: '#f472b6' },
+    ]
+    el.events = [
+      { title: 'Review', start: '2026-07-13T14:00', end: '2026-07-13T15:00', resource: 'eng' },
+    ]
+    expect(el.shadowRoot?.querySelector('.resources')?.textContent).toContain('Engineering')
+    const ev = el.shadowRoot?.querySelector<HTMLElement>('.ev')
+    expect(ev?.getAttribute('style')).toContain('#22d3ee')
+    el.remove()
+  })
+
+  it('keeps occurrences non-draggable and readonly disables event drags', () => {
+    const el = document.createElement('aurora-scheduler') as AuroraScheduler
+    el.setAttribute('date', '2026-07-13')
+    el.setAttribute('readonly', '')
+    document.body.append(el)
+    el.events = [{ title: 'Fixed', start: '2026-07-13T10:00', end: '2026-07-13T11:00' }]
+    const ev = el.shadowRoot?.querySelector<HTMLElement>('.ev')
+    ev?.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true, clientX: 5, clientY: 5 }))
+    expect(ev?.classList.contains('dragging')).toBe(false)
+    el.remove()
+  })
+})

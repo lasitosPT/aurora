@@ -86,12 +86,12 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 | -------------------------- | ------------------------------------ |
 | Local/remote data          | ✅ events (+ adapter)                |
 | Views + custom views       | ✅ day/week/month/agenda (custom ⬜) |
-| Resources                  | ⬜ → v1.6                            |
+| Resources                  | ✅ colors + legend                   |
 | Timezones                  | ⬜ (ISO local by design; documented) |
 | Printing                   | ⬜                                   |
 | Adaptive rendering         | 🔶 responsive CSS                    |
-| Recurrence                 | ⬜ → v1.6                            |
-| Drag to move/resize events | ⬜ → v1.6                            |
+| Recurrence                 | ✅ daily/weekly/monthly + until      |
+| Drag to move/resize events | ✅ move w/ 30-min snap (resize ⬜)   |
 
 ## Spreadsheet
 

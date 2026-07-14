@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.6.0
+
+Scheduler depth.
+
+- `aurora-scheduler` — recurrence (`repeat: daily/weekly/monthly` with `until`,
+  occurrences marked ↻ and read-only), `resources` with color inheritance and a
+  legend, and drag-to-move for base events in day/week views with half-hour snapping
+  and duration preservation (`aurora-update`; `readonly` opts out).
+
 ## 1.5.0
 
 TreeView depth.
