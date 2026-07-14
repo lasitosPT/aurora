@@ -2480,6 +2480,66 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-multiviewcalendar',
+    title: 'MultiViewCalendar',
+    category: 'Forms & Inputs',
+    summary:
+      'Two (or more) consecutive months under one navigation — pick a day in any view and every view agrees.',
+    example: `<aurora-multiviewcalendar views="2"></aurora-multiviewcalendar>`,
+    attributes: [
+      ['views', 'How many months (default 2)'],
+      ['value / name', 'ISO selection and form wiring'],
+    ],
+    events: [['aurora-change', '{ value }']],
+    cssvars: [['--aurora-accent / -surface', 'Inherited by the composed calendars']],
+    methods: [['value', 'Get/set ISO']],
+    tutorial: [
+      {
+        heading: '1 · Ranges at a glance',
+        text: 'Pair with aurora-daterange when picking spans that straddle month boundaries — no paging back and forth.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-responsivepanel',
+    title: 'ResponsivePanel',
+    category: 'Actions & Navigation',
+    summary:
+      'Sidebar on desktop, off-canvas ☰ panel on mobile — one element, one breakpoint attribute.',
+    example: `<aurora-responsivepanel breakpoint="768">\n  <nav>Sidebar links…</nav>\n</aurora-responsivepanel>`,
+    attributes: [
+      ['breakpoint', 'Max width in px for the collapsed mode (default 768)'],
+      ['label', 'Toggle aria-label'],
+    ],
+    events: [['aurora-open / aurora-close', 'Panel lifecycle']],
+    cssvars: [['--aurora-modal-z / -surface', 'Stacking and panel styling']],
+    methods: [['show() / hide()', 'Programmatic control']],
+    tutorial: [
+      {
+        heading: '1 · Docs layouts',
+        text: 'Put the section nav inside — it reads inline on wide screens and becomes a drawer on phones with zero JS from you.',
+      },
+    ],
+  },
+  {
+    tag: 'aurora-pager',
+    title: 'Pager',
+    category: 'Actions & Navigation',
+    summary:
+      'Standalone pagination — windowed numbers with ellipses, disabled edges, and a single page event.',
+    example: `<aurora-pager total="240" page-size="10" page="12"></aurora-pager>`,
+    attributes: [['total / page-size / page', 'Item count, per page, current (1-based)']],
+    events: [['aurora-page', '{ page }']],
+    cssvars: [['--aurora-accent', 'Current page fill']],
+    methods: [['page / pages', 'Current and count']],
+    tutorial: [
+      {
+        heading: '1 · Beyond grids',
+        text: 'Grid and listview page themselves — use the pager for card layouts, search results, and API-driven lists.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

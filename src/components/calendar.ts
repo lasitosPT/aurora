@@ -2,6 +2,7 @@ import { AuroraElement } from '../core/base'
 import { register } from '../core/register'
 
 const STYLE = `
+  :host([hide-nav]) [data-nav] { visibility: hidden; }
   :host {
     display: inline-block; padding: 14px; min-width: 264px;
     color: var(--aurora-fg, #ececf2);
@@ -41,6 +42,12 @@ export class AuroraCalendar extends AuroraElement {
   static readonly formAssociated = true
   private internals: ElementInternals | null = null
   private cursor = new Date()
+
+  /** Show a specific month (used by aurora-multiviewcalendar). */
+  showMonth(year: number, month: number): void {
+    this.cursor = new Date(year, month, 1)
+    this.render()
+  }
   private picked: string | null = null
 
   constructor() {

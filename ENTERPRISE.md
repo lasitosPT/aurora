@@ -27,7 +27,7 @@ SplitButton ✅ · Stepper ✅ · ToggleButton ✅ · Toolbar ✅ · TreeView �
 | ListView                       | ✅     | `aurora-listview`                                                              |
 | PivotGrid / PivotGrid v2       | ✅     | `aurora-pivotgrid`                                                             |
 | Filter (standalone builder UI) | ⬜     | filtering exists in-grid; standalone expression builder planned                |
-| Pager (standalone)             | ⬜     | paging exists in grid/listview; standalone planned                             |
+| Pager (standalone)             | ✅     | `aurora-pager` (windowed numbers + ellipses)                                   |
 | PropertyGrid                   | ⬜     | planned (object → composed editor rows)                                        |
 | FileManager                    | ⬜     | planned as a composition showcase (treeview + listview + toolbar + breadcrumb) |
 | Spreadsheet                    | 🚫     | a formula engine is a product of its own                                       |
@@ -72,7 +72,7 @@ Gantt ✅ (drag-move + grip-resize) · MultiViewCalendar ⬜ (planned: paired-mo
 
 Avatar ✅ · Badge ✅ · Card ✅ · Dialog ✅ · ExpansionPanel ✅ · Form ✅ · Notification ✅ ·
 PanelBar 🔶 (`aurora-accordion`) · PopOver ✅ · Popup 🔶 (popover/menu primitives) ·
-ResponsivePanel ⬜ (planned: drawer-collapsing side panel) · Ripple ✅ · Splitter ✅ ·
+ResponsivePanel ✅ (`aurora-responsivepanel`) · Ripple ✅ · Splitter ✅ ·
 TabStrip ✅ · TileLayout ✅ · Timeline ✅ · Tooltip ✅ · Window ✅ ·
 DockManager 🔶 (splitter + window + tilelayout compose most of it; dedicated manager ⬜)
 

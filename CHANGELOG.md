@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.83.0
+
+Queue clearing.
+
+- `aurora-multiviewcalendar` — consecutive months side by side (composed calendars)
+  under one shared navigation, selecting across views; form-associated
+- `aurora-responsivepanel` — inline content that collapses into an off-canvas ☰ panel
+  below a breakpoint
+- `aurora-pager` — standalone pagination with windowed numbers and ellipses.
+  All ship with docs.
+
 ## 0.82.0
 
 Grid wave 6.
