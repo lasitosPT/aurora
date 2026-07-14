@@ -82,19 +82,39 @@ const STYLE = `
   :host([source-view]) .page { display: none; }
   :host([source-view]) .src { display: block; }
   :host([readonly]) .tools { opacity: 0.45; pointer-events: none; }
+  .page [data-immutable] { position: relative; }
+  .page [data-immutable]:hover {
+    outline: 1.5px dashed var(--aurora-border, rgba(255, 255, 255, 0.35));
+    outline-offset: 3px; cursor: not-allowed;
+  }
+  :host([inline]) { position: relative; border: none; background: transparent; overflow: visible; border-radius: 0; }
+  :host([inline]) .page { min-height: 1.4em; padding: 2px 4px; max-height: none; }
+  :host([inline]) .tools {
+    position: absolute; bottom: calc(100% + 8px); inset-inline-start: 0; display: none;
+    border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.14)); border-radius: 12px;
+    background: var(--aurora-surface, #16161f); box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+    z-index: 20; width: max-content; max-width: min(92vw, 560px);
+  }
+  :host([inline]:focus-within) .tools { display: flex; }
 `
 
 /**
  * `<aurora-editor>` — a rich text editor over contenteditable: inline marks,
  * headings, quotes, lists, alignment, indentation, links, images, tables,
- * horizontal rules, text and highlight colors, a `</>` HTML source view, and
- * a `readonly` state — with active-state toolbar buttons and ⌘/Ctrl+B/I/U.
+ * horizontal rules, text and highlight colors, a format painter (🖌 copies
+ * the selection's marks and colors, the next selection receives them), a
+ * `</>` HTML source view, and a `readonly` state — with active-state toolbar
+ * buttons and ⌘/Ctrl+B/I/U. Elements carrying `data-immutable` become
+ * non-editable islands (contenteditable=false plus a guard against edits
+ * whose selection spans them). With `inline`, the chrome disappears and the
+ * toolbar floats above the text only while focused — editing in place.
  * `value` is HTML; form-associated; emits `aurora-change` as you type.
  */
 export class AuroraEditor extends AuroraElement {
   static readonly formAssociated = true
   private internals: ElementInternals | null = null
   private page: HTMLElement | null = null
+  private painter: { cmd: string; value?: string }[] | null = null
 
   constructor() {
     super()
@@ -114,8 +134,33 @@ export class AuroraEditor extends AuroraElement {
   set value(html: string) {
     if (this.page) {
       this.page.innerHTML = html
+      this.protectImmutable()
       this.internals?.setFormValue(html)
     }
+  }
+
+  /** Mark `[data-immutable]` islands non-editable. */
+  private protectImmutable(): void {
+    this.page?.querySelectorAll<HTMLElement>('[data-immutable]').forEach((el) => {
+      el.contentEditable = 'false'
+    })
+  }
+
+  private selectionTouchesImmutable(): boolean {
+    const selection = (this.root as unknown as { getSelection?: () => Selection | null })
+      .getSelection
+      ? (this.root as unknown as { getSelection: () => Selection | null }).getSelection()
+      : document.getSelection()
+    if (!selection || selection.rangeCount === 0 || selection.isCollapsed) return false
+    const range = selection.getRangeAt(0)
+    for (const el of this.page?.querySelectorAll('[data-immutable]') ?? []) {
+      try {
+        if (range.intersectsNode(el)) return true
+      } catch {
+        /* detached node */
+      }
+    }
+    return false
   }
 
   connectedCallback(): void {
@@ -125,7 +170,7 @@ export class AuroraEditor extends AuroraElement {
           `<button data-a="${i}" aria-label="${a.label}" title="${a.label}">${a.icon}</button>`,
       ).join(
         '',
-      )}<button class="swatch" aria-label="Text color" title="Text color">A<input type="color" data-c="foreColor" value="#22d3ee" /></button><button class="swatch" aria-label="Highlight" title="Highlight">◧<input type="color" data-c="hiliteColor" value="#6d5cff" /></button><button data-src aria-label="View HTML source" title="View HTML source">&lt;/&gt;</button></div>
+      )}<button class="swatch" aria-label="Text color" title="Text color">A<input type="color" data-c="foreColor" value="#22d3ee" /></button><button class="swatch" aria-label="Highlight" title="Highlight">◧<input type="color" data-c="hiliteColor" value="#6d5cff" /></button><button data-painter aria-label="Format painter" title="Format painter">🖌</button><button data-src aria-label="View HTML source" title="View HTML source">&lt;/&gt;</button></div>
       <div class="page" part="page" contenteditable="${this.hasAttribute('readonly') ? 'false' : 'true'}" data-placeholder="${this.getAttribute('placeholder') ?? 'Write something…'}" aria-label="Editor"></div>
       <textarea class="src" part="source" aria-label="HTML source" spellcheck="false"></textarea>`
     this.page = this.root.querySelector('.page')
@@ -143,6 +188,45 @@ export class AuroraEditor extends AuroraElement {
         this.format(input.dataset['c'] ?? 'foreColor', input.value)
       }),
     )
+    const painterBtn = this.root.querySelector<HTMLButtonElement>('[data-painter]')
+    painterBtn?.addEventListener('mousedown', (e) => e.preventDefault())
+    painterBtn?.addEventListener('click', () => {
+      if (this.hasAttribute('readonly')) return
+      if (this.painter) {
+        this.painter = null
+        painterBtn.classList.remove('on')
+        return
+      }
+      const marks: { cmd: string; value?: string }[] = []
+      for (const cmd of ['bold', 'italic', 'underline', 'strikeThrough']) {
+        try {
+          if (document.queryCommandState(cmd)) marks.push({ cmd })
+        } catch {
+          /* unsupported */
+        }
+      }
+      for (const cmd of ['foreColor', 'hiliteColor']) {
+        try {
+          const v = document.queryCommandValue(cmd)
+          if (v && v !== 'rgb(0, 0, 0)' && v !== 'transparent') marks.push({ cmd, value: v })
+        } catch {
+          /* unsupported */
+        }
+      }
+      this.painter = marks
+      painterBtn.classList.add('on')
+    })
+    this.page?.addEventListener('mouseup', () => {
+      if (!this.painter) return
+      const marks = this.painter
+      this.painter = null
+      painterBtn?.classList.remove('on')
+      document.execCommand('removeFormat')
+      for (const mark of marks) document.execCommand(mark.cmd, false, mark.value)
+      this.reflect()
+      this.internals?.setFormValue(this.value)
+      this.dispatchEvent(new CustomEvent('aurora-change', { detail: { value: this.value } }))
+    })
     const src = this.root.querySelector<HTMLTextAreaElement>('.src')
     this.root.querySelector('[data-src]')?.addEventListener('click', () => {
       const showing = this.toggleAttribute('source-view')
@@ -156,8 +240,16 @@ export class AuroraEditor extends AuroraElement {
       if (this.page) this.page.innerHTML = src.value
     })
     this.page?.addEventListener('input', () => {
+      this.protectImmutable()
       this.internals?.setFormValue(this.value)
       this.dispatchEvent(new CustomEvent('aurora-change', { detail: { value: this.value } }))
+    })
+    this.page?.addEventListener('keydown', (e) => {
+      const editing =
+        e.key.length === 1 || e.key === 'Backspace' || e.key === 'Delete' || e.key === 'Enter'
+      if (editing && !e.ctrlKey && !e.metaKey && this.selectionTouchesImmutable()) {
+        e.preventDefault()
+      }
     })
     this.page?.addEventListener('keyup', () => this.reflect())
     this.page?.addEventListener('mouseup', () => this.reflect())

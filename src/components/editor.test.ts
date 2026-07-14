@@ -7,7 +7,7 @@ describe('aurora-editor', () => {
     const el = document.createElement('aurora-editor') as AuroraEditor
     el.setAttribute('placeholder', 'Start typing')
     document.body.append(el)
-    expect(el.shadowRoot?.querySelectorAll('.tools button').length).toBe(21)
+    expect(el.shadowRoot?.querySelectorAll('.tools button').length).toBe(22)
     const page = el.shadowRoot?.querySelector('.page')
     expect(page?.getAttribute('contenteditable')).toBe('true')
     expect(page?.getAttribute('data-placeholder')).toBe('Start typing')
@@ -45,7 +45,7 @@ describe('editor depth (v1.4)', () => {
   it('ships the extended tool set with colors and source toggle', () => {
     const el = document.createElement('aurora-editor') as AuroraEditor
     document.body.append(el)
-    expect(el.shadowRoot?.querySelectorAll('.tools button').length).toBe(21)
+    expect(el.shadowRoot?.querySelectorAll('.tools button').length).toBe(22)
     expect(el.shadowRoot?.querySelectorAll('.swatch input[type="color"]').length).toBe(2)
     expect(el.shadowRoot?.querySelector('[data-src]')).not.toBeNull()
     el.remove()
@@ -74,6 +74,62 @@ describe('editor depth (v1.4)', () => {
     el.setAttribute('readonly', '')
     document.body.append(el)
     expect(el.shadowRoot?.querySelector('.page')?.getAttribute('contenteditable')).toBe('false')
+    el.remove()
+  })
+})
+
+describe('editor depth (v2.6)', () => {
+  it('locks data-immutable islands on value set and after input', () => {
+    const el = document.createElement('aurora-editor') as AuroraEditor
+    document.body.append(el)
+    el.value = '<p>intro</p><div data-immutable><p>legal text</p></div>'
+    const island = el.shadowRoot?.querySelector<HTMLElement>('.page [data-immutable]')
+    expect(island?.getAttribute('contenteditable')).toBe('false')
+    const page = el.shadowRoot?.querySelector<HTMLElement>('.page')
+    if (page) {
+      page.innerHTML = '<div data-immutable>new island</div>'
+      page.dispatchEvent(new Event('input'))
+    }
+    expect(
+      el.shadowRoot
+        ?.querySelector<HTMLElement>('.page [data-immutable]')
+        ?.getAttribute('contenteditable'),
+    ).toBe('false')
+    el.remove()
+  })
+
+  it('format painter captures marks and applies them on the next selection', () => {
+    const states: Record<string, boolean> = { bold: true, italic: true }
+    const calls: [string, string | undefined][] = []
+    const doc = document as unknown as Record<string, unknown>
+    doc['queryCommandState'] = (cmd: string): boolean => states[cmd] === true
+    doc['queryCommandValue'] = (): string => ''
+    doc['execCommand'] = (cmd: string, _ui?: boolean, value?: string): boolean => {
+      calls.push([cmd, value])
+      return true
+    }
+    const el = document.createElement('aurora-editor') as AuroraEditor
+    document.body.append(el)
+    const painter = el.shadowRoot?.querySelector<HTMLButtonElement>('[data-painter]')
+    painter?.click()
+    expect(painter?.classList.contains('on')).toBe(true)
+    const page = el.shadowRoot?.querySelector<HTMLElement>('.page')
+    page?.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }))
+    expect(painter?.classList.contains('on')).toBe(false)
+    expect(calls.map((c) => c[0])).toEqual(['removeFormat', 'bold', 'italic'])
+    // second click arms, second toggles off without applying
+    painter?.click()
+    painter?.click()
+    expect(painter?.classList.contains('on')).toBe(false)
+    el.remove()
+  })
+
+  it('inline mode keeps the toolbar and editable page', () => {
+    const el = document.createElement('aurora-editor') as AuroraEditor
+    el.setAttribute('inline', '')
+    document.body.append(el)
+    expect(el.shadowRoot?.querySelector('.tools')).not.toBeNull()
+    expect(el.shadowRoot?.querySelector('.page')?.getAttribute('contenteditable')).toBe('true')
     el.remove()
   })
 })

@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.6.0
+
+Editor: format painter, immutable elements, inline mode.
+
+- 🖌 format painter — arms on click, captures the selection's marks and
+  colors, and paints them onto the next selection (click again to disarm)
+- `data-immutable` elements become locked islands: contenteditable=false,
+  a dashed hover outline, and a keydown guard against edits whose selection
+  spans them
+- `inline` mode drops the chrome and floats the toolbar above the text only
+  while focused — editing in place, Medium-style
+
 ## 2.5.0
 
 Grid: batch editing and foreign-key columns.

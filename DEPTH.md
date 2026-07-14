@@ -57,12 +57,12 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 | Kendo feature          | aurora                                                                              |
 | ---------------------- | ----------------------------------------------------------------------------------- |
 | Read-only state        | ✅                                                                                  |
-| Classic + inline modes | 🔶 classic only                                                                     |
+| Classic + inline modes | ✅ `inline` floats the toolbar over in-place text                                   |
 | Tools collection       | ✅ 21 tools (marks, blocks, lists, align, indent, colors, image, table, hr, source) |
 | Selection API          | ✅ browser ranges                                                                   |
 | Image browser          | 🔶 insert by URL (file browser needs a backend)                                     |
-| Format painter         | ⬜                                                                                  |
-| Immutable elements     | ⬜                                                                                  |
+| Format painter         | ✅ 🖌 copies marks/colors to the next selection                                      |
+| Immutable elements     | ✅ data-immutable islands + span-guard                                              |
 | Pasting from Word      | 🔶 browser-native paste                                                             |
 | Post-processing        | ✅ `value` getter                                                                   |
 | XSS prevention         | 🔶 documented as consumer responsibility                                            |

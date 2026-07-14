@@ -2149,11 +2149,13 @@ export const DOCS: ComponentDoc[] = [
     title: 'Rich Text Editor',
     category: 'Forms & Inputs',
     summary:
-      'A contenteditable editor with a stateful toolbar — inline marks, headings, quotes, lists, and links, submitting its HTML with your form.',
+      'A contenteditable editor with a stateful toolbar — inline marks, headings, quotes, lists, links, a format painter, immutable content islands, and an in-place inline mode, submitting its HTML with your form.',
     example: `<aurora-editor placeholder="Write your update…" style="width:100%;max-width:520px">\n  <p>Aurora now has <b>ninety-five</b> components.</p>\n</aurora-editor>`,
     attributes: [
       ['value / light-DOM children', 'Initial HTML'],
       ['readonly / source-view', 'Lock editing; toggle the raw-HTML pane'],
+      ['inline', 'Chrome-less editing in place; the toolbar floats above while focused'],
+      ['data-immutable (on content)', 'Marks an element as a locked, non-editable island'],
       ['placeholder', 'Empty-state hint'],
       ['name', 'Form field name (submits HTML)'],
     ],
