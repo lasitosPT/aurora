@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0
+
+Editor depth.
+
+- `aurora-editor` — alignment and indentation tools, text and highlight color
+  swatches, image insertion, 3×3 table insertion with styled borders, horizontal
+  rules, a `</>` HTML source view that round-trips edits, and a `readonly` state.
+  Twenty-one tools total.
+
 ## 1.3.0
 
 Chart depth.

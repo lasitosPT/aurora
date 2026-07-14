@@ -54,20 +54,20 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 
 ## Editor (RTE)
 
-| Kendo feature          | aurora                                                                                |
-| ---------------------- | ------------------------------------------------------------------------------------- |
-| Read-only state        | ⬜ → v1.4                                                                             |
-| Classic + inline modes | 🔶 classic only                                                                       |
-| Tools collection       | 🔶 10 tools → v1.4 adds color, highlight, alignment, indent, hr, image, table, source |
-| Selection API          | ✅ browser ranges                                                                     |
-| Image browser          | 🔶 → v1.4 (insert by URL; file browser needs a backend)                               |
-| Format painter         | ⬜                                                                                    |
-| Immutable elements     | ⬜                                                                                    |
-| Pasting from Word      | 🔶 browser-native paste                                                               |
-| Post-processing        | ✅ `value` getter                                                                     |
-| XSS prevention         | 🔶 documented as consumer responsibility                                              |
-| Table Wizard           | 🔶 → v1.4 (rows×cols insert; no wizard dialog)                                        |
-| Appearance             | ✅ CSS vars                                                                           |
+| Kendo feature          | aurora                                                                              |
+| ---------------------- | ----------------------------------------------------------------------------------- |
+| Read-only state        | ✅                                                                                  |
+| Classic + inline modes | 🔶 classic only                                                                     |
+| Tools collection       | ✅ 21 tools (marks, blocks, lists, align, indent, colors, image, table, hr, source) |
+| Selection API          | ✅ browser ranges                                                                   |
+| Image browser          | 🔶 insert by URL (file browser needs a backend)                                     |
+| Format painter         | ⬜                                                                                  |
+| Immutable elements     | ⬜                                                                                  |
+| Pasting from Word      | 🔶 browser-native paste                                                             |
+| Post-processing        | ✅ `value` getter                                                                   |
+| XSS prevention         | 🔶 documented as consumer responsibility                                            |
+| Table Wizard           | 🔶 3×3 insert (wizard dialog ⬜)                                                    |
+| Appearance             | ✅ CSS vars                                                                         |
 
 ## TreeView
 

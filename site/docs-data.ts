@@ -2136,6 +2136,7 @@ export const DOCS: ComponentDoc[] = [
     example: `<aurora-editor placeholder="Write your update…" style="width:100%;max-width:520px">\n  <p>Aurora now has <b>ninety-five</b> components.</p>\n</aurora-editor>`,
     attributes: [
       ['value / light-DOM children', 'Initial HTML'],
+      ['readonly / source-view', 'Lock editing; toggle the raw-HTML pane'],
       ['placeholder', 'Empty-state hint'],
       ['name', 'Form field name (submits HTML)'],
     ],
