@@ -213,6 +213,8 @@ export interface GridColumn<T = Record<string, unknown>> {
   frozen?: boolean
   group?: string
   validator?: (value: unknown, row: T) => string | null
+  /** Custom inline editor: return an element, call commit(next) to save. */
+  editor?: (value: unknown, row: T, commit: (next: unknown) => void) => HTMLElement
   aggregate?: 'sum' | 'avg' | 'min' | 'max' | 'count'
   formatter?: (value: unknown, row: T) => string
 }
@@ -1032,6 +1034,29 @@ export class AuroraGrid extends AuroraElement {
         if (!row) return
         const oldValue = row[field]
         td.classList.add('editing')
+        const custom = this.#columns.find((c) => c.field === field)?.editor
+        if (custom) {
+          const finish = (next: unknown): void => {
+            const col = this.#columns.find((c) => c.field === field)
+            const message = col?.validator ? col.validator(next, row) : null
+            if (message) {
+              this.dispatchEvent(
+                new CustomEvent('aurora-invalid', { detail: { row, field, value: next, message } }),
+              )
+              return
+            }
+            if (next !== oldValue) {
+              row[field] = next
+              this.dispatchEvent(
+                new CustomEvent('aurora-edit', { detail: { row, field, value: next, oldValue } }),
+              )
+            }
+            this.render()
+          }
+          td.innerHTML = ''
+          td.appendChild(custom(oldValue, row, finish))
+          return
+        }
         td.innerHTML = '<input type="text" />'
         const input = td.querySelector('input')
         if (!input) return

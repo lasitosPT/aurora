@@ -20,6 +20,9 @@ const STYLE = `
   .leaf .caret { visibility: hidden; }
   li[aria-expanded='false'] > ul { display: none; }
   li.filtered-out { display: none; }
+  :host([draggable-nodes]) .row { touch-action: none; }
+  .row.drag-src { opacity: 0.5; }
+  .row.drag-over { background: color-mix(in srgb, var(--aurora-accent, #6d5cff) 22%, transparent); outline: 1.5px dashed var(--aurora-accent, #6d5cff); outline-offset: -1.5px; }
   .cb {
     all: unset; width: 15px; height: 15px; border-radius: 5px; flex: none; box-sizing: border-box;
     border: 1.5px solid var(--aurora-border, rgba(128, 128, 128, 0.55));
@@ -57,7 +60,9 @@ export interface TreeNode {
  * `checkboxes` adds tri-state checking (branches cascade down, parents show
  * mixed; `checkedValues` + `aurora-check`); `filterable` adds a search box
  * (`filter(text)` keeps matches and their ancestors); nodes with a `load`
- * function fetch their children on first expand.
+ * function fetch their children on first expand; `draggable-nodes` lets
+ * users re-parent nodes by dragging one onto another (`aurora-move`,
+ * descendants refused).
  */
 export class AuroraTreeview extends AuroraElement {
   #items: TreeNode[] = []
@@ -162,6 +167,7 @@ export class AuroraTreeview extends AuroraElement {
       })
       row.addEventListener('keydown', (e) => this.onKey(e, row))
     })
+    if (this.hasAttribute('draggable-nodes')) this.wireDrag()
     this.root.querySelectorAll<HTMLButtonElement>('.cb').forEach((cb) =>
       cb.addEventListener('click', (e) => {
         e.stopPropagation()
@@ -169,6 +175,82 @@ export class AuroraTreeview extends AuroraElement {
         this.toggleCheck(value)
       }),
     )
+  }
+
+  /** Re-parent `value` under `parent` (null = root). Refuses descendants. */
+  moveNode(value: string, parent: string | null): boolean {
+    const node = this.findNode(this.#items, value)
+    if (!node) return false
+    const isDescendant = (n: TreeNode, target: string): boolean =>
+      (n.children ?? []).some((c) => (c.value ?? c.label) === target || isDescendant(c, target))
+    if (parent !== null) {
+      const dest = this.findNode(this.#items, parent)
+      if (!dest || dest === node || isDescendant(node, parent)) return false
+    }
+    const detach = (nodes: TreeNode[]): boolean => {
+      const i = nodes.findIndex((n) => (n.value ?? n.label) === value)
+      if (i >= 0) {
+        nodes.splice(i, 1)
+        return true
+      }
+      return nodes.some((n) => detach(n.children ?? []))
+    }
+    detach(this.#items)
+    if (parent === null) this.#items.push(node)
+    else {
+      const dest = this.findNode(this.#items, parent)
+      if (!dest) return false
+      dest.children = dest.children ?? []
+      dest.children.push(node)
+      dest.open = true
+    }
+    this.render()
+    this.dispatchEvent(new CustomEvent('aurora-move', { detail: { value, parent } }))
+    return true
+  }
+
+  private wireDrag(): void {
+    this.root.querySelectorAll<HTMLElement>('.row').forEach((row) => {
+      row.addEventListener('pointerdown', (e) => {
+        if ((e.target as HTMLElement).classList?.contains('cb')) return
+        const sx = e.clientX
+        const sy = e.clientY
+        let active = false
+        const onMove = (m: PointerEvent): void => {
+          if (!active && Math.abs(m.clientX - sx) + Math.abs(m.clientY - sy) > 6) {
+            active = true
+            row.classList.add('drag-src')
+            row.setPointerCapture?.(e.pointerId)
+          }
+          if (!active) return
+          this.root.querySelectorAll('.row').forEach((r) => r.classList.remove('drag-over'))
+          const target = this.rowAt(m.clientX, m.clientY)
+          if (target && target !== row) target.classList.add('drag-over')
+        }
+        const onUp = (u: PointerEvent): void => {
+          row.removeEventListener('pointermove', onMove)
+          row.removeEventListener('pointerup', onUp)
+          row.removeEventListener('pointercancel', onUp)
+          row.classList.remove('drag-src')
+          this.root.querySelectorAll('.row').forEach((r) => r.classList.remove('drag-over'))
+          if (!active) return
+          const target = this.rowAt(u.clientX, u.clientY)
+          if (target && target !== row) this.moveNode(row.dataset.v ?? '', target.dataset.v ?? null)
+        }
+        row.addEventListener('pointermove', onMove)
+        row.addEventListener('pointerup', onUp)
+        row.addEventListener('pointercancel', onUp)
+      })
+    })
+  }
+
+  private rowAt(x: number, y: number): HTMLElement | null {
+    for (const r of Array.from(this.root.querySelectorAll<HTMLElement>('.row'))) {
+      const rect = r.getBoundingClientRect()
+      if (rect.width > 0 && x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom)
+        return r
+    }
+    return null
   }
 
   private findNode(nodes: TreeNode[], value: string): TreeNode | null {

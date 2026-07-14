@@ -30,6 +30,7 @@ const STYLE = `
   .day:focus-visible { outline: 2px solid var(--aurora-accent2, #22d3ee); }
   .day:disabled { opacity: 0.25; cursor: default; }
   .day:disabled:hover { background: none; }
+  .day .tpl { display: block; font-size: 0.62em; line-height: 1.1; color: var(--aurora-muted, #9a98b3); pointer-events: none; }
   .day.hidden-other { visibility: hidden; }
   .wk { font-size: 0.68em; color: var(--aurora-muted, #9a98b3); align-self: center; }
   .grid.with-weeks { grid-template-columns: auto repeat(7, 1fr); }
@@ -66,6 +67,9 @@ export class AuroraCalendar extends AuroraElement {
 
   /** Optional veto function for selectable days (return true to disable). */
   disabledDate: ((iso: string) => boolean) | null = null
+
+  /** Optional extra HTML per day cell (badges, prices, dots). */
+  dayTemplate: ((iso: string) => string) | null = null
 
   private isDisabled(iso: string): boolean {
     const min = this.getAttribute('min')
@@ -196,7 +200,8 @@ export class AuroraCalendar extends AuroraElement {
       if (weeks && i % 7 === 0)
         cells += `<span class="wk" aria-hidden="true">${this.isoWeek(d)}</span>`
       const disabled = this.isDisabled(iso)
-      cells += `<button class="day${other ? (hideOther ? ' hidden-other' : ' other') : ''}${iso === today ? ' today' : ''}" role="gridcell" data-iso="${iso}" ${disabled ? 'disabled' : ''} aria-selected="${iso === this.picked}" tabindex="${iso === (this.picked ?? today) ? 0 : -1}">${d.getDate()}</button>`
+      const extra = this.dayTemplate?.(iso) ?? ''
+      cells += `<button class="day${other ? (hideOther ? ' hidden-other' : ' other') : ''}${iso === today ? ' today' : ''}" role="gridcell" data-iso="${iso}" ${disabled ? 'disabled' : ''} aria-selected="${iso === this.picked}" tabindex="${iso === (this.picked ?? today) ? 0 : -1}">${d.getDate()}${extra ? `<span class="tpl">${extra}</span>` : ''}</button>`
     }
     this.root.innerHTML = `<style>${STYLE}</style><div class="head"><button data-nav="-1" aria-label="Previous month">‹</button><button class="title" aria-live="polite" aria-label="Switch to year view">${title}</button><button data-nav="1" aria-label="Next month">›</button></div><div class="grid${weeks ? ' with-weeks' : ''}" role="grid">${weeks ? '<span class="wk"></span>' : ''}${dows.map((d) => `<span class="dow">${d}</span>`).join('')}${cells}</div>`
 

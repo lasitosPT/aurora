@@ -118,3 +118,16 @@ describe('calendar depth (v1.1)', () => {
     el.remove()
   })
 })
+
+describe('calendar day templates (v1.12)', () => {
+  it('renders per-day extra content from the template function', () => {
+    const el = document.createElement('aurora-calendar') as AuroraCalendar
+    document.body.append(el)
+    el.dayTemplate = (iso) => (iso === '2026-07-14' ? '●' : '')
+    el.value = '2026-07-14'
+    const cell = el.shadowRoot?.querySelector('[data-iso="2026-07-14"] .tpl')
+    expect(cell?.textContent).toBe('●')
+    expect(el.shadowRoot?.querySelector('[data-iso="2026-07-15"] .tpl')).toBeNull()
+    el.remove()
+  })
+})

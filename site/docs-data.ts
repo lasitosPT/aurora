@@ -2255,6 +2255,7 @@ export const DOCS: ComponentDoc[] = [
     attributes: [
       ['items (property)', 'Nested { label, value?, open?, checked?, children?, load? }'],
       ['checkboxes', 'Tri-state checking — checkedValues + aurora-check'],
+      ['draggable-nodes', 'Drag a node onto another to re-parent (aurora-move)'],
       ['filterable', 'Search box; filter(text) keeps matches and ancestors'],
       ['label / placeholder / value / name', 'Field chrome and form wiring'],
     ],

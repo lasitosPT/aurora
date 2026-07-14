@@ -527,3 +527,59 @@ describe('grid checkbox value filters (v1.9)', () => {
     el.remove()
   })
 })
+
+describe('grid custom editors (v1.12)', () => {
+  it('renders a custom editor element and commits through validation', () => {
+    const el = document.createElement('aurora-grid') as AuroraGrid
+    el.setAttribute('editable', '')
+    document.body.append(el)
+    el.columns = [
+      {
+        field: 'status',
+        title: 'Status',
+        validator: (v) => (v === 'bad' ? 'Not allowed' : null),
+        editor: (value, _row, commit) => {
+          const select = document.createElement('select')
+          for (const opt of ['stable', 'active', 'bad']) {
+            const option = document.createElement('option')
+            option.value = opt
+            option.textContent = opt
+            option.selected = opt === value
+            select.append(option)
+          }
+          select.addEventListener('change', () => commit(select.value))
+          return select
+        },
+      },
+    ]
+    el.data = [{ status: 'stable' }]
+    let invalid = ''
+    let edited = ''
+    el.addEventListener('aurora-invalid', (e) => {
+      invalid = (e as CustomEvent<{ message: string }>).detail.message
+    })
+    el.addEventListener('aurora-edit', (e) => {
+      edited = String((e as CustomEvent<{ value: unknown }>).detail.value)
+    })
+    const td = el.shadowRoot?.querySelector<HTMLElement>('[data-edit]')
+    td?.dispatchEvent(new Event('dblclick'))
+    const select = td?.querySelector('select')
+    expect(select).not.toBeNull()
+    if (select) {
+      select.value = 'bad'
+      select.dispatchEvent(new Event('change'))
+    }
+    expect(invalid).toBe('Not allowed')
+    expect(el.data[0]?.status).toBe('stable')
+    const td2 = el.shadowRoot?.querySelector<HTMLElement>('[data-edit]')
+    td2?.dispatchEvent(new Event('dblclick'))
+    const select2 = td2?.querySelector('select')
+    if (select2) {
+      select2.value = 'active'
+      select2.dispatchEvent(new Event('change'))
+    }
+    expect(edited).toBe('active')
+    expect(el.data[0]?.status).toBe('active')
+    el.remove()
+  })
+})

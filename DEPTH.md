@@ -11,7 +11,7 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 | Selected dates (initial)                          | ✅ `value`                              |
 | Disabled dates                                    | ✅ list attr + veto fn                  |
 | Start view & navigation depth (month/year/decade) | ✅                                      |
-| Day template                                      | ⬜                                      |
+| Day template                                      | ✅ dayTemplate fn                       |
 | Week numbers                                      | ✅ ISO weeks                            |
 | Multiple/range selection                          | 🔶 `aurora-daterange` handles ranges    |
 | Century cells format                              | ⬜ (century view out of scope for v1.1) |
@@ -71,14 +71,14 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 
 ## TreeView
 
-| Kendo feature          | aurora                                            |
-| ---------------------- | ------------------------------------------------- |
-| Data binding           | ✅ items (+ adapter for remote)                   |
-| Drag and drop nodes    | ⬜ (compose aurora-sortable; native DnD deferred) |
-| Item configuration     | ✅ label/value/open/children                      |
-| Checkboxes (tri-state) | ✅ cascade down, summarize up                     |
-| Load on demand         | ✅ node.load() promise                            |
-| Filtering              | ✅ box + filter(text)                             |
+| Kendo feature          | aurora                          |
+| ---------------------- | ------------------------------- |
+| Data binding           | ✅ items (+ adapter for remote) |
+| Drag and drop nodes    | ✅ draggable-nodes re-parenting |
+| Item configuration     | ✅ label/value/open/children    |
+| Checkboxes (tri-state) | ✅ cascade down, summarize up   |
+| Load on demand         | ✅ node.load() promise          |
+| Filtering              | ✅ box + filter(text)           |
 
 ## Scheduler
 

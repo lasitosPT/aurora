@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.12.0
+
+Depth, final round.
+
+- `aurora-treeview` — `draggable-nodes`: re-parent nodes by dragging one onto
+  another (targets highlight, descendants refused, `moveNode()` public,
+  `aurora-move` emitted)
+- `aurora-grid` — column `editor` functions render custom inline editors (selects,
+  pickers, anything) committing through the same validation pipeline
+- `aurora-calendar` — `dayTemplate` renders per-day extras (dots, prices, badges)
+  inside every cell.
+
 ## 1.11.0
 
 Localization foundation.

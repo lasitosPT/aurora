@@ -129,3 +129,25 @@ describe('treeview depth (v1.5)', () => {
     el.remove()
   })
 })
+
+describe('treeview node drag-and-drop (v1.12)', () => {
+  it('re-parents via moveNode and refuses descendants', () => {
+    const el = document.createElement('aurora-treeview') as AuroraTreeview
+    el.setAttribute('draggable-nodes', '')
+    document.body.append(el)
+    el.items = [{ label: 'a', children: [{ label: 'a1' }] }, { label: 'b' }]
+    let moved: { value: string; parent: string | null } | null = null
+    el.addEventListener('aurora-move', (e) => {
+      moved = (e as CustomEvent<{ value: string; parent: string | null }>).detail
+    })
+    expect(el.moveNode('b', 'a')).toBe(true)
+    expect(moved).toEqual({ value: 'b', parent: 'a' })
+    expect(el.items[0]?.children?.map((c) => c.label)).toEqual(['a1', 'b'])
+    // refuse moving a into its own descendant
+    expect(el.moveNode('a', 'a1')).toBe(false)
+    // move back to root
+    expect(el.moveNode('b', null)).toBe(true)
+    expect(el.items.map((n) => n.label)).toEqual(['a', 'b'])
+    el.remove()
+  })
+})
