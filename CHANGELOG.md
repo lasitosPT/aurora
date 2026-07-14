@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.8.0
+
+Gantt depth.
+
+- `aurora-gantt` — day/week/month time scales switchable from a built-in toolbar
+  (drag snapping follows the scale), and planned-vs-actual baselines: tasks with
+  `plannedStart`/`plannedEnd` render a grey baseline bar under the actual one, so
+  slips are visible at a glance.
+
 ## 1.7.0
 
 Spreadsheet depth.

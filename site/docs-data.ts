@@ -2088,7 +2088,9 @@ export const DOCS: ComponentDoc[] = [
     example: `<aurora-gantt id="docGantt" style="width:100%"></aurora-gantt>`,
     attributes: [
       ['tasks (property)', '{ id, title, start, end, progress?, dependsOn?, color? }[]'],
-      ['day-width', 'Pixels per day column (default 34)'],
+      ['day-width', 'Pixels per day at day scale (default 34)'],
+      ['scale', '"day" (default), "week", "month" — switchable from the toolbar'],
+      ['task.plannedStart / plannedEnd', 'Grey baseline bar under the actual — slips at a glance'],
       ['readonly', 'Disable drag editing'],
     ],
     events: [

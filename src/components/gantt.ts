@@ -13,6 +13,9 @@ export interface GanttTask {
   progress?: number
   dependsOn?: string[]
   color?: string
+  /** Baseline dates — rendered as a thin planned bar under the actual one. */
+  plannedStart?: string
+  plannedEnd?: string
 }
 
 const DAY = 86400000
@@ -63,6 +66,17 @@ const STYLE = `
   .bar .grip:hover { background: color-mix(in srgb, var(--c, #6d5cff) 70%, transparent); }
   :host(:not([readonly])) .bar { cursor: grab; }
   .bar.dragging { opacity: 0.85; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45); z-index: 2; }
+  .baseline {
+    position: absolute; height: 5px; border-radius: 3px; opacity: 0.55;
+    background: var(--aurora-muted, #9a98b3); pointer-events: none;
+  }
+  .scalebar { display: flex; gap: 4px; padding: 8px 12px 0; justify-content: flex-end; }
+  .scalebar button {
+    all: unset; cursor: pointer; font-size: 0.72rem; padding: 2px 10px; border-radius: 7px;
+    color: var(--aurora-muted, #9a98b3); border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.12));
+  }
+  .scalebar button[aria-pressed='true'] { color: #fff; background: var(--aurora-accent, #6d5cff); border-color: var(--aurora-accent, #6d5cff); }
+  .scalebar button:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); }
   svg.deps { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
   svg.deps path { fill: none; stroke: var(--aurora-muted, #9a98b3); stroke-width: 1.3; opacity: 0.55; }
   svg.deps polygon { fill: var(--aurora-muted, #9a98b3); opacity: 0.55; }
@@ -71,8 +85,11 @@ const STYLE = `
 /**
  * `<aurora-gantt>` — a project timeline. Assign `tasks`
  * (`{ id, title, start, end, progress?, dependsOn?, color? }[]`); the chart
- * lays out day columns across the full span, draws bars with progress fills
- * that sweep in, dependency arrows between bars, and a today line. Emits
+ * lays out the timeline at `scale` day, week, or month (switchable from the
+ * built-in toolbar), draws bars with progress fills
+ * that sweep in, grey planned-vs-actual baselines under tasks that carry
+ * `plannedStart`/`plannedEnd`, dependency arrows between bars, and a today
+ * line. Emits
  * `aurora-select` with the clicked task. Unless `readonly`, drag a bar to
  * move it in day steps or drag its right edge to resize; commits update the
  * task and emit `aurora-update` with `{ task, start, end }`.
@@ -80,6 +97,21 @@ const STYLE = `
 export class AuroraGantt extends AuroraElement {
   #tasks: GanttTask[] = []
   private cleanup: (() => void) | null = null
+
+  get scale(): 'day' | 'week' | 'month' {
+    const s = this.getAttribute('scale')
+    return s === 'week' || s === 'month' ? s : 'day'
+  }
+
+  set scale(v: 'day' | 'week' | 'month') {
+    this.setAttribute('scale', v)
+    this.render()
+  }
+
+  private pxPerDay(): number {
+    const dayW = this.numberAttr('day-width', 34)
+    return this.scale === 'day' ? dayW : this.scale === 'week' ? dayW / 4 : dayW / 12
+  }
 
   get tasks(): GanttTask[] {
     return this.#tasks
@@ -104,7 +136,7 @@ export class AuroraGantt extends AuroraElement {
       this.root.innerHTML = `<style>${STYLE}</style>`
       return
     }
-    const dayW = this.numberAttr('day-width', 34)
+    const dayW = this.pxPerDay()
     const rowH = 40
     const starts = this.#tasks.map((t) => new Date(`${t.start}T00:00`).getTime())
     const ends = this.#tasks.map((t) => new Date(`${t.end}T00:00`).getTime())
@@ -115,11 +147,32 @@ export class AuroraGantt extends AuroraElement {
       ((new Date(`${isoDate}T00:00`).getTime() - min) / DAY) * dayW
 
     const scale: string[] = []
-    for (let i = 0; i < days; i++) {
-      const d = new Date(min + i * DAY)
-      scale.push(
-        `<div style="width:${dayW}px">${d.getDate() === 1 || i === 0 ? d.toLocaleDateString('en', { month: 'short', day: 'numeric' }) : d.getDate()}</div>`,
-      )
+    if (this.scale === 'day') {
+      for (let i = 0; i < days; i++) {
+        const d = new Date(min + i * DAY)
+        scale.push(
+          `<div style="width:${dayW}px">${d.getDate() === 1 || i === 0 ? d.toLocaleDateString('en', { month: 'short', day: 'numeric' }) : d.getDate()}</div>`,
+        )
+      }
+    } else if (this.scale === 'week') {
+      for (let i = 0; i < days; i += 7) {
+        const d = new Date(min + i * DAY)
+        const w = Math.min(7, days - i)
+        scale.push(
+          `<div style="width:${dayW * w}px">${d.toLocaleDateString('en', { month: 'short', day: 'numeric' })}</div>`,
+        )
+      }
+    } else {
+      let i = 0
+      while (i < days) {
+        const d = new Date(min + i * DAY)
+        const inMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate() - d.getDate() + 1
+        const w = Math.min(inMonth, days - i)
+        scale.push(
+          `<div style="width:${dayW * w}px">${d.toLocaleDateString('en', { month: 'short', year: '2-digit' })}</div>`,
+        )
+        i += w
+      }
     }
     const names = this.#tasks.map((t) => `<div class="cell">${escapeHtml(t.title)}</div>`).join('')
     const bars = this.#tasks
@@ -127,7 +180,13 @@ export class AuroraGantt extends AuroraElement {
         const left = x(t.start)
         const width = Math.max(x(t.end) - left + dayW, dayW * 0.5)
         const progress = Math.min(Math.max(t.progress ?? 0, 0), 100)
-        return `<div class="bar" data-id="${escapeHtml(t.id)}" role="button" tabindex="0" style="left:${left}px;top:${i * rowH + 9}px;width:${width}px;${t.color ? `--c:${t.color};` : ''}--p:${progress}%" aria-label="${escapeHtml(t.title)}, ${progress}% done"><i></i><span>${escapeHtml(t.title)}</span>${this.hasAttribute('readonly') ? '' : '<b class="grip" aria-hidden="true"></b>'}</div>`
+        let baseline = ''
+        if (t.plannedStart && t.plannedEnd) {
+          const bLeft = x(t.plannedStart)
+          const bWidth = Math.max(x(t.plannedEnd) - bLeft + dayW, dayW * 0.5)
+          baseline = `<div class="baseline" data-for="${escapeHtml(t.id)}" style="left:${bLeft}px;top:${i * rowH + 33}px;width:${bWidth}px" title="Planned"></div>`
+        }
+        return `${baseline}<div class="bar" data-id="${escapeHtml(t.id)}" role="button" tabindex="0" style="left:${left}px;top:${i * rowH + 9}px;width:${width}px;${t.color ? `--c:${t.color};` : ''}--p:${progress}%" aria-label="${escapeHtml(t.title)}, ${progress}% done"><i></i><span>${escapeHtml(t.title)}</span>${this.hasAttribute('readonly') ? '' : '<b class="grip" aria-hidden="true"></b>'}</div>`
       })
       .join('')
     const byId = new Map(this.#tasks.map((t, i) => [t.id, i]))
@@ -155,7 +214,14 @@ export class AuroraGantt extends AuroraElement {
         : ''
     const chartW = days * dayW
 
-    this.root.innerHTML = `<style>${STYLE}</style><div class="wrap">
+    this.root.innerHTML = `<style>${STYLE}</style><div class="scalebar" part="scalebar" role="group" aria-label="Time scale">${(
+      ['day', 'week', 'month'] as const
+    )
+      .map(
+        (sc) =>
+          `<button data-sc="${sc}" aria-pressed="${sc === this.scale}">${sc[0]?.toUpperCase()}${sc.slice(1)}</button>`,
+      )
+      .join('')}</div><div class="wrap">
       <div class="names"><div class="cell head" style="height:${rowH}px">Task</div>${names}</div>
       <div class="chart"><div style="width:${chartW}px">
         <div class="scale">${scale.join('')}</div>
@@ -168,6 +234,11 @@ export class AuroraGantt extends AuroraElement {
         </div>
       </div></div>
     </div>`
+    this.root.querySelectorAll<HTMLButtonElement>('[data-sc]').forEach((btn) =>
+      btn.addEventListener('click', () => {
+        this.scale = btn.dataset['sc'] as 'day' | 'week' | 'month'
+      }),
+    )
     this.root.querySelectorAll<HTMLElement>('.bar').forEach((bar) => {
       let dragged = false
       const pick = (): void => {
@@ -193,7 +264,7 @@ export class AuroraGantt extends AuroraElement {
         dragged = false
         bar.setPointerCapture?.(e.pointerId)
         bar.classList.add('dragging')
-        const dw = this.numberAttr('day-width', 34)
+        const dw = this.pxPerDay()
         const onMove = (move: PointerEvent): void => {
           const days = Math.round((move.clientX - startClientX) / dw)
           if (days !== 0) dragged = true

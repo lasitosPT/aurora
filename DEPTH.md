@@ -114,8 +114,8 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 | TreeList + Timeline layout   | 🔶 flat task column (subtask tree ⬜) |
 | Data binding                 | ✅ tasks (+ adapter)                  |
 | Columns                      | 🔶 single title column                |
-| Planned vs actual            | ⬜ → v1.8 (baseline bars)             |
-| Views (day/week/month ruler) | ⬜ → v1.8                             |
+| Planned vs actual            | ✅ baseline bars                      |
+| Views (day/week/month ruler) | ✅ switchable scales                  |
 | Move/resize/edit tasks       | ✅ drag-move + grip-resize            |
 | Dependencies                 | ✅ arrows (editing ⬜)                |
 | Sorting/reordering           | ⬜                                    |

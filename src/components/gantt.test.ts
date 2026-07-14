@@ -100,3 +100,45 @@ describe('gantt drag editing', () => {
     el.remove()
   })
 })
+
+describe('gantt depth (v1.8)', () => {
+  it('switches time scales from the toolbar, compressing the ruler', () => {
+    const el = document.createElement('aurora-gantt') as AuroraGantt
+    el.setAttribute('day-width', '28')
+    document.body.append(el)
+    el.tasks = JSON.parse(JSON.stringify(TASKS))
+    const dayCells = el.shadowRoot?.querySelectorAll('.scale div').length ?? 0
+    el.shadowRoot?.querySelector<HTMLButtonElement>('[data-sc="week"]')?.click()
+    expect(el.scale).toBe('week')
+    const weekCells = el.shadowRoot?.querySelectorAll('.scale div').length ?? 0
+    expect(weekCells).toBeLessThan(dayCells)
+    expect(el.shadowRoot?.querySelector('[data-sc="week"]')?.getAttribute('aria-pressed')).toBe(
+      'true',
+    )
+    el.shadowRoot?.querySelector<HTMLButtonElement>('[data-sc="month"]')?.click()
+    const monthCells = el.shadowRoot?.querySelectorAll('.scale div').length ?? 0
+    expect(monthCells).toBeLessThanOrEqual(weekCells)
+    el.remove()
+  })
+
+  it('renders planned-vs-actual baselines for tasks with planned dates', () => {
+    const el = document.createElement('aurora-gantt') as AuroraGantt
+    document.body.append(el)
+    el.tasks = [
+      {
+        id: 'slip',
+        title: 'Slipped task',
+        start: '2026-07-05',
+        end: '2026-07-12',
+        plannedStart: '2026-07-01',
+        plannedEnd: '2026-07-08',
+      },
+      { id: 'ontime', title: 'On time', start: '2026-07-02', end: '2026-07-04' },
+    ]
+    expect(el.shadowRoot?.querySelectorAll('.baseline').length).toBe(1)
+    const baseline = el.shadowRoot?.querySelector<HTMLElement>('.baseline[data-for="slip"]')
+    const bar = el.shadowRoot?.querySelector<HTMLElement>('.bar[data-id="slip"]')
+    expect(parseFloat(baseline?.style.left ?? '0')).toBeLessThan(parseFloat(bar?.style.left ?? '0'))
+    el.remove()
+  })
+})
