@@ -719,6 +719,60 @@ function wireDiagram(dg: AuroraDiagram | null): void {
 }
 wireDiagram(document.getElementById('catDiagram') as AuroraDiagram | null)
 
+/* ---------- map demo (stylized Portugal regions) ---------- */
+import type { AuroraMap, GeoJson } from 'aurora'
+const poly = (name: string, pts: number[][]): GeoJson['features'][number] => ({
+  type: 'Feature',
+  properties: { name },
+  geometry: { type: 'Polygon', coordinates: [pts] },
+})
+const MAP_GEO: GeoJson = {
+  type: 'FeatureCollection',
+  features: [
+    poly('Norte', [
+      [-8.9, 42.1],
+      [-6.2, 42.0],
+      [-6.3, 41.0],
+      [-8.8, 40.9],
+      [-8.9, 42.1],
+    ]),
+    poly('Centro', [
+      [-8.8, 40.9],
+      [-6.3, 41.0],
+      [-6.9, 39.7],
+      [-9.4, 39.4],
+      [-8.8, 40.9],
+    ]),
+    poly('Lisboa', [
+      [-9.4, 39.4],
+      [-8.6, 39.3],
+      [-8.7, 38.7],
+      [-9.5, 38.6],
+      [-9.4, 39.4],
+    ]),
+    poly('Alentejo', [
+      [-8.7, 38.7],
+      [-6.9, 39.7],
+      [-7.0, 37.6],
+      [-8.8, 37.5],
+      [-8.7, 38.7],
+    ]),
+    poly('Algarve', [
+      [-8.8, 37.5],
+      [-7.0, 37.6],
+      [-7.4, 36.9],
+      [-8.9, 37.0],
+      [-8.8, 37.5],
+    ]),
+  ],
+}
+function wireMap(mapEl: AuroraMap | null): void {
+  if (!mapEl) return
+  mapEl.geo = MAP_GEO
+  mapEl.data = { Norte: 84, Centro: 51, Lisboa: 97, Alentejo: 32, Algarve: 66 }
+}
+wireMap(document.getElementById('catMap') as AuroraMap | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -1047,6 +1101,7 @@ if (docRoot) {
     wireWiz(document.getElementById('docWiz') as AuroraChartwizard | null)
     wireSheet(document.getElementById('docSs') as AuroraSpreadsheet | null)
     wireDiagram(document.getElementById('docDiagram') as AuroraDiagram | null)
+    wireMap(document.getElementById('docMap') as AuroraMap | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

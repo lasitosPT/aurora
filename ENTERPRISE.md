@@ -40,7 +40,7 @@ other symbologies ⬜) · PDF Viewer 🚫 (needs a pdf.js-scale rendering engine
 ## Diagrams and Maps
 
 OrgChart ✅ · Diagram ✅ (`aurora-diagram`: draggable nodes, live edges, pan/zoom) ·
-Map 🚫→⬜ (SVG choropleth from GeoJSON in progress — no tile servers)
+Map ✅ (`aurora-map`: GeoJSON choropleth, value scale, tooltips — no tile servers)
 
 ## Charts
 

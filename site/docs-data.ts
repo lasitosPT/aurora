@@ -2801,6 +2801,28 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-map',
+    title: 'Map',
+    category: 'Enterprise & Data',
+    summary:
+      'A choropleth without tile servers — GeoJSON polygons rendered as SVG, shaded along a value scale, with pointer tooltips and region selection.',
+    example: `<aurora-map id="docMap" label="Regional revenue" style="width:100%"></aurora-map>`,
+    attributes: [
+      ['geo (property)', 'A GeoJSON FeatureCollection (Polygon / MultiPolygon)'],
+      ['data (property)', '{ regionName: value } — drives the color scale'],
+      ['name-key', 'Feature property used as the region name (default "name")'],
+    ],
+    events: [['aurora-select', '{ name, value }']],
+    cssvars: [['--aurora-map-height / -accent', 'Canvas height and scale color']],
+    methods: [['geo / data', 'Get/set']],
+    tutorial: [
+      {
+        heading: '1 · Bring any GeoJSON',
+        text: 'Simplified country or district files drop straight in — the projection fits the bounding box automatically, values shade from low to high.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

@@ -49,7 +49,7 @@
       <div class="wrap">
         <p class="kicker">The catalogue</p>
         <h1 class="section-title" style="max-width: none">
-          One hundred and twenty-five components.<br /><span class="grad"
+          One hundred and twenty-six components.<br /><span class="grad"
             >Every one of them live.</span
           >
         </h1>
@@ -467,6 +467,26 @@ fm.addEventListener('aurora-open', (e) => view(e.detail.path))</pre>
                 <pre>
 diagram.nodes = [{ id: 'a', label: 'Ingest', x: 40, y: 60 }]
 diagram.edges = [{ from: 'a', to: 'b', label: 'raw' }]</pre>
+              </div>
+            </article>
+            <!-- Map -->
+            <article class="demo" data-reveal>
+              <div class="demo-head">
+                <h3>Map</h3>
+                <code>&lt;aurora-map&gt;</code>
+              </div>
+              <div class="demo-desc">
+                A GeoJSON choropleth, no tile servers — hover the regions.
+                <a href="./docs.html?c=aurora-map" style="color: var(--accent)">Docs →</a>
+              </div>
+              <div class="stage stack">
+                <aurora-map id="catMap" label="Regional revenue" style="width: 100%"></aurora-map>
+              </div>
+              <div class="code">
+                <button class="copy">Copy</button>
+                <pre>
+map.geo = featureCollection
+map.data = { Norte: 84, Centro: 51, Lisboa: 97, Alentejo: 32, Algarve: 66 }</pre>
               </div>
             </article>
             <!-- Sparkline -->
@@ -1238,7 +1258,7 @@ sheet.show()</pre>
               <div class="stage">
                 <aurora-popover placement="bottom">
                   <aurora-button slot="trigger" variant="ghost">What is aurora?</aurora-button>
-                  <strong>One hundred and twenty-five components.</strong><br />
+                  <strong>One hundred and twenty-six components.</strong><br />
                   <span style="color: var(--muted)">Native web components, GSAP motion, MIT.</span>
                 </aurora-popover>
               </div>

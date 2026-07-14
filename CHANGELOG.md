@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.95.0
+
+Giant three: Map.
+
+- `aurora-map` — an SVG choropleth with no tile servers: GeoJSON polygons project
+  onto the canvas, regions shade along an accent value scale with a legend, tooltips
+  follow the pointer, clicks select. Ships with docs.
+
 ## 0.94.0
 
 Giant two: Diagram.
