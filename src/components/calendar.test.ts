@@ -131,3 +131,34 @@ describe('calendar day templates (v1.12)', () => {
     el.remove()
   })
 })
+
+describe('calendar century view (v2.8)', () => {
+  it('zooms decade → century and drills into a decade', () => {
+    const el = document.createElement('aurora-calendar') as AuroraCalendar
+    el.setAttribute('start-view', 'decade')
+    el.value = '2026-07-14'
+    document.body.append(el)
+    el.shadowRoot?.querySelector<HTMLButtonElement>('.title')?.click()
+    expect(el.shadowRoot?.querySelector('.title')?.textContent).toBe('2000 – 2099')
+    const cells = Array.from(
+      el.shadowRoot?.querySelectorAll<HTMLButtonElement>('.zoom button') ?? [],
+    )
+    expect(cells.length).toBe(12)
+    expect(cells[0]?.textContent).toBe('1990 – 1999')
+    expect(cells.find((c) => c.classList.contains('now'))?.textContent).toBe('2020 – 2029')
+    cells.find((c) => c.textContent === '2030 – 2039')?.click()
+    expect(el.shadowRoot?.querySelector('.title')?.textContent).toBe('2030 – 2039')
+    el.remove()
+  })
+
+  it('starts at century view and pages by 100 years', () => {
+    const el = document.createElement('aurora-calendar') as AuroraCalendar
+    el.setAttribute('start-view', 'century')
+    el.value = '2026-07-14'
+    document.body.append(el)
+    expect(el.shadowRoot?.querySelector('.title')?.textContent).toBe('2000 – 2099')
+    el.shadowRoot?.querySelector<HTMLButtonElement>('[data-nav="1"]')?.click()
+    expect(el.shadowRoot?.querySelector('.title')?.textContent).toBe('2100 – 2199')
+    el.remove()
+  })
+})

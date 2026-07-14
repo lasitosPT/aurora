@@ -6,19 +6,19 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 
 ## Calendar (affects datepicker, datetimepicker, multiviewcalendar, daterange)
 
-| Kendo feature                                     | aurora                                  |
-| ------------------------------------------------- | --------------------------------------- |
-| Selected dates (initial)                          | ✅ `value`                              |
-| Disabled dates                                    | ✅ list attr + veto fn                  |
-| Start view & navigation depth (month/year/decade) | ✅                                      |
-| Day template                                      | ✅ dayTemplate fn                       |
-| Week numbers                                      | ✅ ISO weeks                            |
-| Multiple/range selection                          | 🔶 `aurora-daterange` handles ranges    |
-| Century cells format                              | ⬜ (century view out of scope for v1.1) |
-| Reverse selection                                 | ✅ daterange auto-swaps                 |
-| Show other month days                             | ✅ hide-other-months                    |
-| Min/max dates                                     | ✅                                      |
-| Accessibility                                     | ✅ roving grid keyboard                 |
+| Kendo feature                                     | aurora                               |
+| ------------------------------------------------- | ------------------------------------ |
+| Selected dates (initial)                          | ✅ `value`                           |
+| Disabled dates                                    | ✅ list attr + veto fn               |
+| Start view & navigation depth (month/year/decade) | ✅                                   |
+| Day template                                      | ✅ dayTemplate fn                    |
+| Week numbers                                      | ✅ ISO weeks                         |
+| Multiple/range selection                          | 🔶 `aurora-daterange` handles ranges |
+| Century cells format                              | ✅ decade-range cells, ±100y paging  |
+| Reverse selection                                 | ✅ daterange auto-swaps              |
+| Show other month days                             | ✅ hide-other-months                 |
+| Min/max dates                                     | ✅                                   |
+| Accessibility                                     | ✅ roving grid keyboard              |
 
 ## Window
 

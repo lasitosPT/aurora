@@ -1,6 +1,6 @@
 {
   "name": "@lasitospt/aurora",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "A framework-agnostic library of animated UI components (Web Components) powered by GSAP and Three.js.",
   "keywords": [
     "web-components",

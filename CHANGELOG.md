@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.8.0
+
+Calendar: century view — the last zoom level. Decade view's title zooms out
+to a century of "2020 – 2029"-style decade cells (current decade ringed,
+edge decades faded), paging moves ±100 years, and `start-view="century"`
+opens there. The full ladder is now month ⇄ year ⇄ decade ⇄ century.
+
 ## 2.7.0
 
 Spreadsheet: cell comments and list editors.

@@ -52,7 +52,7 @@ const fmt = (d: Date): string =>
 
 /**
  * `<aurora-calendar value="2026-07-11">` — a calendar with month, year, and
- * decade views (click the title to zoom out, a cell to zoom in). `min`/`max`
+ * decade, and century views (click the title to zoom out, a cell in). `min`/`max`
  * bound the pickable range, `disabled-dates` (comma ISO list) or a
  * `disabledDate` function veto days, `week-numbers` adds the ISO week
  * column, and `hide-other-months` blanks the spill-over days. Arrow /
@@ -63,7 +63,7 @@ export class AuroraCalendar extends AuroraElement {
   static readonly formAssociated = true
   private internals: ElementInternals | null = null
   private cursor = new Date()
-  private view: 'month' | 'year' | 'decade' = 'month'
+  private view: 'month' | 'year' | 'decade' | 'century' = 'month'
 
   /** Optional veto function for selectable days (return true to disable). */
   disabledDate: ((iso: string) => boolean) | null = null
@@ -128,7 +128,7 @@ export class AuroraCalendar extends AuroraElement {
 
   connectedCallback(): void {
     const start = this.getAttribute('start-view')
-    if (start === 'year' || start === 'decade') this.view = start
+    if (start === 'year' || start === 'decade' || start === 'century') this.view = start
     const initial = this.getAttribute('value')
     if (initial) this.value = initial
     else this.render()
@@ -179,6 +179,35 @@ export class AuroraCalendar extends AuroraElement {
         }),
         (dir) => {
           this.cursor = new Date(y + dir * 10, 0, 1)
+          this.render()
+        },
+        () => {
+          this.view = 'century'
+          this.render()
+        },
+      )
+      return
+    }
+    if (this.view === 'century') {
+      const c0 = Math.floor(y / 100) * 100
+      const nowDecade = Math.floor(new Date().getFullYear() / 10) * 10
+      this.renderZoom(
+        `${c0} – ${c0 + 99}`,
+        Array.from({ length: 12 }, (_, i) => {
+          const decade = c0 - 10 + i * 10
+          return {
+            label: `${decade} – ${decade + 9}`,
+            faded: decade < c0 || decade > c0 + 90,
+            now: decade === nowDecade,
+            go: () => {
+              this.cursor = new Date(decade, 0, 1)
+              this.view = 'decade'
+              this.render()
+            },
+          }
+        }),
+        (dir) => {
+          this.cursor = new Date(y + dir * 100, 0, 1)
           this.render()
         },
         null,
