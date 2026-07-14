@@ -931,11 +931,46 @@ html.js .features:not(.is-live) .ico :is(path, circle, rect) {
 }
 .demo-head {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  align-items: center;
   gap: 12px;
   flex-wrap: wrap;
   padding: 22px 26px 0;
+}
+.demo-head h3 {
+  margin-right: auto;
+}
+.docs-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 4px 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+.docs-btn span {
+  transition: transform 0.15s ease;
+}
+.docs-btn:hover,
+.docs-btn:focus-visible {
+  color: var(--fg);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.docs-btn:hover span {
+  transform: translateX(2px);
+}
+.docs-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 .demo-head h3 {
   font-family: var(--font-display);
