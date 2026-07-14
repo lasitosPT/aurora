@@ -71,14 +71,14 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 
 ## TreeView
 
-| Kendo feature          | aurora                              |
-| ---------------------- | ----------------------------------- |
-| Data binding           | ✅ items (+ adapter for remote)     |
-| Drag and drop nodes    | ⬜ → v1.5                           |
-| Item configuration     | ✅ label/value/open/children        |
-| Checkboxes (tri-state) | ⬜ → v1.5                           |
-| Load on demand         | ⬜ → v1.5 (children: () => Promise) |
-| Filtering              | ⬜ → v1.5                           |
+| Kendo feature          | aurora                                            |
+| ---------------------- | ------------------------------------------------- |
+| Data binding           | ✅ items (+ adapter for remote)                   |
+| Drag and drop nodes    | ⬜ (compose aurora-sortable; native DnD deferred) |
+| Item configuration     | ✅ label/value/open/children                      |
+| Checkboxes (tri-state) | ✅ cascade down, summarize up                     |
+| Load on demand         | ✅ node.load() promise                            |
+| Filtering              | ✅ box + filter(text)                             |
 
 ## Scheduler
 

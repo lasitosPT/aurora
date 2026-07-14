@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.5.0
+
+TreeView depth.
+
+- `aurora-treeview` — `checkboxes` adds tri-state checking (branches cascade to
+  leaves, parents summarize as mixed, `checkedValues` in/out, `aurora-check`);
+  `filterable` adds a search box keeping matches and their ancestors visible
+  (`filter(text)` programmatically); nodes with a `load` function fetch their
+  children on first expand with a loading row.
+
 ## 1.4.0
 
 Editor depth.

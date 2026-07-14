@@ -45,3 +45,87 @@ describe('aurora-treeview', () => {
     el.remove()
   })
 })
+
+describe('treeview depth (v1.5)', () => {
+  const ITEMS = [
+    {
+      label: 'src',
+      children: [
+        { label: 'grid.ts', value: 'grid' },
+        { label: 'chart.ts', value: 'chart' },
+      ],
+    },
+    { label: 'README.md', value: 'readme' },
+  ]
+
+  it('cascades tri-state checkboxes down and summarizes up', () => {
+    const el = document.createElement('aurora-treeview') as AuroraTreeview
+    el.setAttribute('checkboxes', '')
+    document.body.append(el)
+    el.items = JSON.parse(JSON.stringify(ITEMS))
+    let got: string[] = []
+    el.addEventListener('aurora-check', (e) => {
+      got = (e as CustomEvent<{ values: string[] }>).detail.values
+    })
+    // check the branch — both leaves check
+    el.shadowRoot?.querySelector<HTMLButtonElement>('.row[data-v="src"] .cb')?.click()
+    expect(got.sort()).toEqual(['chart', 'grid'])
+    expect(el.shadowRoot?.querySelector('.row[data-v="src"] .cb')?.getAttribute('data-state')).toBe(
+      'on',
+    )
+    // uncheck one leaf — parent goes mixed
+    el.shadowRoot?.querySelector<HTMLButtonElement>('.row[data-v="grid"] .cb')?.click()
+    expect(el.shadowRoot?.querySelector('.row[data-v="src"] .cb')?.getAttribute('data-state')).toBe(
+      'mixed',
+    )
+    expect(el.checkedValues).toEqual(['chart'])
+    el.remove()
+  })
+
+  it('filters to matches and their ancestors', () => {
+    const el = document.createElement('aurora-treeview') as AuroraTreeview
+    el.setAttribute('filterable', '')
+    document.body.append(el)
+    el.items = JSON.parse(JSON.stringify(ITEMS))
+    el.filter('chart')
+    expect(
+      el.shadowRoot
+        ?.querySelector('.row[data-v="readme"]')
+        ?.closest('li')
+        ?.classList.contains('filtered-out'),
+    ).toBe(true)
+    expect(
+      el.shadowRoot
+        ?.querySelector('.row[data-v="chart"]')
+        ?.closest('li')
+        ?.classList.contains('filtered-out'),
+    ).toBe(false)
+    expect(
+      el.shadowRoot
+        ?.querySelector('.row[data-v="src"]')
+        ?.closest('li')
+        ?.classList.contains('filtered-out'),
+    ).toBe(false)
+    el.filter('')
+    expect(el.shadowRoot?.querySelectorAll('li.filtered-out').length).toBe(0)
+    el.remove()
+  })
+
+  it('loads lazy branches on first expand', async () => {
+    const el = document.createElement('aurora-treeview') as AuroraTreeview
+    document.body.append(el)
+    el.items = [
+      {
+        label: 'Remote',
+        value: 'remote',
+        load: () => Promise.resolve([{ label: 'fetched.ts', value: 'fetched' }]),
+      },
+    ]
+    const row = el.shadowRoot?.querySelector<HTMLElement>('.row[data-v="remote"]')
+    expect(row?.closest('li')?.getAttribute('aria-expanded')).toBe('false')
+    row?.click()
+    await new Promise((r) => setTimeout(r, 0))
+    expect(el.shadowRoot?.querySelector('.row[data-v="fetched"]')).not.toBeNull()
+    el.remove()
+  })
+})

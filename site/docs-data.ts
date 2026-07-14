@@ -2251,7 +2251,9 @@ export const DOCS: ComponentDoc[] = [
       'A select whose popup is a full treeview — pick branches or leaves from nested data, with the whole tree keyboard pattern inside.',
     example: `<aurora-dropdowntree id="docDdt" label="Team" placeholder="Pick a team…"></aurora-dropdowntree>`,
     attributes: [
-      ['items (property)', 'Nested { label, value?, open?, children? }'],
+      ['items (property)', 'Nested { label, value?, open?, checked?, children?, load? }'],
+      ['checkboxes', 'Tri-state checking — checkedValues + aurora-check'],
+      ['filterable', 'Search box; filter(text) keeps matches and ancestors'],
       ['label / placeholder / value / name', 'Field chrome and form wiring'],
     ],
     events: [['aurora-change', '{ value }']],
