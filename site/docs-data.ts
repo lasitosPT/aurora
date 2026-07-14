@@ -2543,6 +2543,30 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-propertygrid',
+    title: 'PropertyGrid',
+    category: 'Enterprise & Data',
+    summary:
+      'An object inspector — every property gets the right editor, inferred from its type or declared with groups, selects, and labels.',
+    example: `<aurora-propertygrid id="docPropgrid" style="width:100%;max-width:380px"></aurora-propertygrid>`,
+    attributes: [
+      ['value (property)', 'The object being inspected (mutated in place)'],
+      [
+        'properties (property)',
+        '{ key, label?, type?, options?, group? }[] — optional explicit defs',
+      ],
+    ],
+    events: [['aurora-change', '{ key, value, object }']],
+    cssvars: [['--aurora-surface / -field / -accent', 'Rows and editors']],
+    methods: [['value / properties', 'Get/set']],
+    tutorial: [
+      {
+        heading: '1 · Settings panels for free',
+        text: 'Point it at a config object and wire aurora-change to persistence — types map to editors automatically, booleans become aurora checkboxes.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

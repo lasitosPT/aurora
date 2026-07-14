@@ -586,6 +586,20 @@ function wirePrompt(box: AuroraPromptbox | null): void {
 }
 wirePrompt(document.getElementById('catPrompt') as AuroraPromptbox | null)
 
+/* ---------- propertygrid demo ---------- */
+import type { AuroraPropertygrid } from 'aurora'
+function wirePropgrid(pg: AuroraPropertygrid | null): void {
+  if (!pg) return
+  pg.value = { title: 'Aurora dashboard', width: 320, visible: true, accent: '#6d5cff' }
+  pg.properties = [
+    { key: 'title', label: 'Title', group: 'General' },
+    { key: 'visible', label: 'Visible', type: 'boolean', group: 'General' },
+    { key: 'width', label: 'Width (px)', type: 'number', group: 'Layout' },
+    { key: 'accent', label: 'Accent', type: 'color', group: 'Theme' },
+  ]
+}
+wirePropgrid(document.getElementById('catPropgrid') as AuroraPropertygrid | null)
+
 /* ---------- drawer demo ---------- */
 document.getElementById('drawerBtn')?.addEventListener('click', () => {
   ;(document.getElementById('demoDrawer') as (HTMLElement & { show(): void }) | null)?.show()
@@ -908,6 +922,7 @@ if (docRoot) {
     wireOrg(document.getElementById('docOrg') as AuroraOrgchart | null)
     wireBoard(document.getElementById('docBoard') as AuroraTaskboard | null)
     wirePrompt(document.getElementById('docPrompt') as AuroraPromptbox | null)
+    wirePropgrid(document.getElementById('docPropgrid') as AuroraPropertygrid | null)
     const docListview = document.getElementById('docListview') as AuroraListview | null
     if (docListview) {
       docListview.template = LV_TPL

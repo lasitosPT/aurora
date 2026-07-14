@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.85.0
+
+Object inspection.
+
+- `aurora-propertygrid` — assign an object and get an inspector: editors inferred
+  from value types (text, number, checkbox, color) or declared explicitly with
+  selects and group headers; edits mutate the object and emit `aurora-change`.
+  Ships with docs.
+
 ## 0.84.0
 
 Funnels and needles.

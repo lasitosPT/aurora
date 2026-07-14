@@ -28,7 +28,7 @@ SplitButton ✅ · Stepper ✅ · ToggleButton ✅ · Toolbar ✅ · TreeView �
 | PivotGrid / PivotGrid v2       | ✅     | `aurora-pivotgrid`                                                             |
 | Filter (standalone builder UI) | ⬜     | filtering exists in-grid; standalone expression builder planned                |
 | Pager (standalone)             | ✅     | `aurora-pager` (windowed numbers + ellipses)                                   |
-| PropertyGrid                   | ⬜     | planned (object → composed editor rows)                                        |
+| PropertyGrid                   | ✅     | `aurora-propertygrid` (type-inferred editors, groups, explicit defs)           |
 | FileManager                    | ⬜     | planned as a composition showcase (treeview + listview + toolbar + breadcrumb) |
 | Spreadsheet                    | 🚫     | a formula engine is a product of its own                                       |
 
