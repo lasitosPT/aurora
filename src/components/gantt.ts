@@ -16,6 +16,23 @@ export interface GanttTask {
   /** Baseline dates — rendered as a thin planned bar under the actual one. */
   plannedStart?: string
   plannedEnd?: string
+  /** Parent task id — nests this task in the tree; parents become summary bars. */
+  parent?: string
+}
+
+export interface GanttColumn {
+  field: string
+  title?: string
+  width?: number
+}
+
+interface GanttRow {
+  task: GanttTask
+  level: number
+  hasChildren: boolean
+  start: string
+  end: string
+  progress: number
 }
 
 const DAY = 86400000
@@ -34,6 +51,30 @@ const STYLE = `
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .names .head { color: var(--aurora-muted, #9a98b3); font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .names .row { display: grid; }
+  .names .head button {
+    all: unset; cursor: pointer; display: flex; align-items: center; gap: 5px; width: 100%; height: 100%;
+  }
+  .names .head button:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); border-radius: 6px; }
+  .names .head .dirmark { font-size: 0.85em; opacity: 0.8; }
+  .cell .tg {
+    all: unset; cursor: pointer; width: 17px; height: 17px; display: inline-grid; place-items: center;
+    margin-inline-end: 3px; border-radius: 5px; color: var(--aurora-muted, #9a98b3); flex: none;
+    font-size: 0.72rem;
+  }
+  .cell .tg:hover { color: var(--aurora-fg, #ececf2); background: rgba(255, 255, 255, 0.07); }
+  .cell .tg:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); }
+  .bar.summary {
+    height: 9px; border-radius: 3px; cursor: default;
+    background: color-mix(in srgb, var(--c, #6d5cff) 65%, transparent); border: none;
+  }
+  .bar.summary::before, .bar.summary::after {
+    content: ''; position: absolute; bottom: -4px; border: 5px solid transparent;
+    border-top-color: color-mix(in srgb, var(--c, #6d5cff) 65%, transparent);
+  }
+  .bar.summary::before { left: 0; }
+  .bar.summary::after { right: 0; }
+  .bar.summary span { display: none; }
   .chart { position: relative; overflow-x: auto; }
   .scale { display: flex; height: var(--row, 40px); border-bottom: 1px solid var(--aurora-border, rgba(255,255,255,0.05)); }
   .scale div {
@@ -84,19 +125,118 @@ const STYLE = `
 
 /**
  * `<aurora-gantt>` — a project timeline. Assign `tasks`
- * (`{ id, title, start, end, progress?, dependsOn?, color? }[]`); the chart
- * lays out the timeline at `scale` day, week, or month (switchable from the
- * built-in toolbar), draws bars with progress fills
- * that sweep in, grey planned-vs-actual baselines under tasks that carry
+ * (`{ id, title, start, end, progress?, dependsOn?, color?, parent? }[]`);
+ * the chart lays out the timeline at `scale` day, week, or month (switchable
+ * from the built-in toolbar), draws bars with progress fills that sweep in,
+ * grey planned-vs-actual baselines under tasks that carry
  * `plannedStart`/`plannedEnd`, dependency arrows between bars, and a today
- * line. Emits
+ * line. Tasks with a `parent` id nest into a collapsible tree; parents render
+ * as summary bars spanning their subtree with duration-weighted progress.
+ * `columns` shows extra task fields in the left pane
+ * (`{ field, title?, width? }[]`) and clicking a column header cycles
+ * ascending/descending/off sorting within each sibling group. Emits
  * `aurora-select` with the clicked task. Unless `readonly`, drag a bar to
  * move it in day steps or drag its right edge to resize; commits update the
  * task and emit `aurora-update` with `{ task, start, end }`.
  */
 export class AuroraGantt extends AuroraElement {
   #tasks: GanttTask[] = []
+  #columns: GanttColumn[] = [{ field: 'title', title: 'Task' }]
+  private collapsedIds = new Set<string>()
+  private sortState: { field: string; dir: 1 | -1 } | null = null
   private cleanup: (() => void) | null = null
+
+  get columns(): GanttColumn[] {
+    return this.#columns
+  }
+
+  set columns(v: GanttColumn[]) {
+    this.#columns = v?.length ? v : [{ field: 'title', title: 'Task' }]
+    this.render()
+  }
+
+  /** Collapse or expand a parent task's subtree. */
+  toggleCollapse(id: string): void {
+    if (this.collapsedIds.has(id)) this.collapsedIds.delete(id)
+    else this.collapsedIds.add(id)
+    this.render()
+  }
+
+  private childrenOf(): Map<string | null, GanttTask[]> {
+    const ids = new Set(this.#tasks.map((t) => t.id))
+    const byParent = new Map<string | null, GanttTask[]>()
+    for (const t of this.#tasks) {
+      const p = t.parent && t.parent !== t.id && ids.has(t.parent) ? t.parent : null
+      const list = byParent.get(p) ?? []
+      list.push(t)
+      byParent.set(p, list)
+    }
+    return byParent
+  }
+
+  /** Aggregate a task's subtree: date span and duration-weighted progress. */
+  private span(
+    task: GanttTask,
+    byParent: Map<string | null, GanttTask[]>,
+    seen = new Set<string>(),
+  ): { start: string; end: string; progress: number } {
+    const kids = byParent.get(task.id) ?? []
+    if (!kids.length || seen.has(task.id))
+      return { start: task.start, end: task.end, progress: task.progress ?? 0 }
+    seen.add(task.id)
+    let start = ''
+    let end = ''
+    let weighted = 0
+    let total = 0
+    for (const kid of kids) {
+      const sub = this.span(kid, byParent, seen)
+      if (!start || sub.start < start) start = sub.start
+      if (!end || sub.end > end) end = sub.end
+      const dur = Math.max(
+        (new Date(`${sub.end}T00:00`).getTime() - new Date(`${sub.start}T00:00`).getTime()) / DAY +
+          1,
+        1,
+      )
+      weighted += sub.progress * dur
+      total += dur
+    }
+    return { start, end, progress: total ? Math.round(weighted / total) : 0 }
+  }
+
+  private visibleRows(): GanttRow[] {
+    const byParent = this.childrenOf()
+    const cmp = this.sortState
+      ? (a: GanttTask, b: GanttTask): number => {
+          const field = (this.sortState as { field: string }).field
+          const dir = (this.sortState as { dir: 1 | -1 }).dir
+          const av = (a as unknown as Record<string, unknown>)[field]
+          const bv = (b as unknown as Record<string, unknown>)[field]
+          if (typeof av === 'number' && typeof bv === 'number') return (av - bv) * dir
+          return String(av ?? '').localeCompare(String(bv ?? '')) * dir
+        }
+      : null
+    const rows: GanttRow[] = []
+    const seen = new Set<string>()
+    const walk = (parent: string | null, level: number): void => {
+      const kids = [...(byParent.get(parent) ?? [])]
+      if (cmp) kids.sort(cmp)
+      for (const t of kids) {
+        if (seen.has(t.id)) continue
+        seen.add(t.id)
+        const hasChildren = (byParent.get(t.id) ?? []).length > 0
+        rows.push({ task: t, level, hasChildren, ...this.span(t, byParent) })
+        if (hasChildren && !this.collapsedIds.has(t.id)) walk(t.id, level + 1)
+      }
+    }
+    walk(null, 0)
+    return rows
+  }
+
+  private cellValue(task: GanttTask, field: string): string {
+    if (field === 'progress') return `${Math.min(Math.max(task.progress ?? 0, 0), 100)}%`
+    const v = (task as unknown as Record<string, unknown>)[field]
+    return v === undefined || v === null ? '' : String(v)
+  }
 
   get scale(): 'day' | 'week' | 'month' {
     const s = this.getAttribute('scale')
@@ -138,6 +278,7 @@ export class AuroraGantt extends AuroraElement {
     }
     const dayW = this.pxPerDay()
     const rowH = 40
+    const rows = this.visibleRows()
     const starts = this.#tasks.map((t) => new Date(`${t.start}T00:00`).getTime())
     const ends = this.#tasks.map((t) => new Date(`${t.end}T00:00`).getTime())
     const min = Math.min(...starts) - DAY
@@ -174,32 +315,66 @@ export class AuroraGantt extends AuroraElement {
         i += w
       }
     }
-    const names = this.#tasks.map((t) => `<div class="cell">${escapeHtml(t.title)}</div>`).join('')
-    const bars = this.#tasks
-      .map((t, i) => {
-        const left = x(t.start)
-        const width = Math.max(x(t.end) - left + dayW, dayW * 0.5)
-        const progress = Math.min(Math.max(t.progress ?? 0, 0), 100)
+    const widths = this.#columns
+      .map((c) => `${c.width ?? (c.field === 'title' ? 168 : 84)}px`)
+      .join(' ')
+    const paneW = this.#columns.reduce(
+      (sum, c) => sum + (c.width ?? (c.field === 'title' ? 168 : 84)),
+      0,
+    )
+    const headCells = this.#columns
+      .map((c) => {
+        const active = this.sortState?.field === c.field
+        const mark = active
+          ? `<span class="dirmark" aria-hidden="true">${this.sortState?.dir === 1 ? '▲' : '▼'}</span>`
+          : ''
+        return `<div class="cell head" style="height:${rowH}px"><button data-sort="${escapeHtml(c.field)}" aria-label="Sort by ${escapeHtml(c.title ?? c.field)}">${escapeHtml(c.title ?? c.field)}${mark}</button></div>`
+      })
+      .join('')
+    const names = rows
+      .map((row) => {
+        const cells = this.#columns
+          .map((c, ci) => {
+            if (ci === 0) {
+              const caret = row.hasChildren
+                ? `<button class="tg" data-tg="${escapeHtml(row.task.id)}" aria-expanded="${!this.collapsedIds.has(row.task.id)}" aria-label="Toggle ${escapeHtml(row.task.title)} subtasks">${this.collapsedIds.has(row.task.id) ? '▸' : '▾'}</button>`
+                : ''
+              return `<div class="cell" style="padding-inline-start:${14 + row.level * 16}px">${caret}<span style="overflow:hidden;text-overflow:ellipsis">${escapeHtml(this.cellValue(row.task, c.field))}</span></div>`
+            }
+            return `<div class="cell">${escapeHtml(this.cellValue(row.task, c.field))}</div>`
+          })
+          .join('')
+        return `<div class="row" style="grid-template-columns:${widths}">${cells}</div>`
+      })
+      .join('')
+    const bars = rows
+      .map((row, i) => {
+        const t = row.task
+        const left = x(row.start)
+        const width = Math.max(x(row.end) - left + dayW, dayW * 0.5)
+        const progress = Math.min(Math.max(row.progress, 0), 100)
         let baseline = ''
         if (t.plannedStart && t.plannedEnd) {
           const bLeft = x(t.plannedStart)
           const bWidth = Math.max(x(t.plannedEnd) - bLeft + dayW, dayW * 0.5)
           baseline = `<div class="baseline" data-for="${escapeHtml(t.id)}" style="left:${bLeft}px;top:${i * rowH + 33}px;width:${bWidth}px" title="Planned"></div>`
         }
+        if (row.hasChildren)
+          return `${baseline}<div class="bar summary" data-id="${escapeHtml(t.id)}" role="button" tabindex="0" style="left:${left}px;top:${i * rowH + 15}px;width:${width}px;${t.color ? `--c:${t.color};` : ''}" aria-label="${escapeHtml(t.title)} summary, ${progress}% done"></div>`
         return `${baseline}<div class="bar" data-id="${escapeHtml(t.id)}" role="button" tabindex="0" style="left:${left}px;top:${i * rowH + 9}px;width:${width}px;${t.color ? `--c:${t.color};` : ''}--p:${progress}%" aria-label="${escapeHtml(t.title)}, ${progress}% done"><i></i><span>${escapeHtml(t.title)}</span>${this.hasAttribute('readonly') ? '' : '<b class="grip" aria-hidden="true"></b>'}</div>`
       })
       .join('')
-    const byId = new Map(this.#tasks.map((t, i) => [t.id, i]))
+    const byId = new Map(rows.map((row, i) => [row.task.id, i]))
     let arrows = ''
-    this.#tasks.forEach((t, i) => {
-      for (const dep of t.dependsOn ?? []) {
+    rows.forEach((row, i) => {
+      for (const dep of row.task.dependsOn ?? []) {
         const from = byId.get(dep)
         if (from === undefined) continue
-        const fromTask = this.#tasks[from]
-        if (!fromTask) continue
-        const x1 = x(fromTask.end) + dayW
+        const fromRow = rows[from]
+        if (!fromRow) continue
+        const x1 = x(fromRow.end) + dayW
         const y1 = from * rowH + 20
-        const x2 = x(t.start)
+        const x2 = x(row.start)
         const y2 = i * rowH + 20
         const midX = Math.max(x1 + 8, x2 - 8)
         arrows += `<path d="M${x1} ${y1} L${x1 + 8} ${y1} L${midX} ${y1} L${midX} ${y2} L${x2 - 3} ${y2}"/><polygon points="${x2},${y2} ${x2 - 6},${y2 - 3.5} ${x2 - 6},${y2 + 3.5}"/>`
@@ -221,14 +396,16 @@ export class AuroraGantt extends AuroraElement {
         (sc) =>
           `<button data-sc="${sc}" aria-pressed="${sc === this.scale}">${sc[0]?.toUpperCase()}${sc.slice(1)}</button>`,
       )
-      .join('')}</div><div class="wrap">
-      <div class="names"><div class="cell head" style="height:${rowH}px">Task</div>${names}</div>
+      .join(
+        '',
+      )}</div><div class="wrap" style="grid-template-columns:var(--aurora-gantt-label, ${paneW}px) 1fr">
+      <div class="names"><div class="row" style="grid-template-columns:${widths}">${headCells}</div>${names}</div>
       <div class="chart"><div style="width:${chartW}px">
         <div class="scale">${scale.join('')}</div>
-        <div class="rows" style="height:${this.#tasks.length * rowH}px;--dayw:${dayW}px">
+        <div class="rows" style="height:${rows.length * rowH}px;--dayw:${dayW}px">
           <div class="grid-bg"></div>
-          ${this.#tasks.map(() => '<div class="rowline"></div>').join('')}
-          <svg class="deps" width="${chartW}" height="${this.#tasks.length * rowH}">${arrows}</svg>
+          ${rows.map(() => '<div class="rowline"></div>').join('')}
+          <svg class="deps" width="${chartW}" height="${rows.length * rowH}">${arrows}</svg>
           ${bars}
           ${todayLine}
         </div>
@@ -237,6 +414,20 @@ export class AuroraGantt extends AuroraElement {
     this.root.querySelectorAll<HTMLButtonElement>('[data-sc]').forEach((btn) =>
       btn.addEventListener('click', () => {
         this.scale = btn.dataset['sc'] as 'day' | 'week' | 'month'
+      }),
+    )
+    this.root
+      .querySelectorAll<HTMLButtonElement>('[data-tg]')
+      .forEach((btn) =>
+        btn.addEventListener('click', () => this.toggleCollapse(btn.dataset['tg'] ?? '')),
+      )
+    this.root.querySelectorAll<HTMLButtonElement>('[data-sort]').forEach((btn) =>
+      btn.addEventListener('click', () => {
+        const field = btn.dataset['sort'] ?? ''
+        if (this.sortState?.field !== field) this.sortState = { field, dir: 1 }
+        else if (this.sortState.dir === 1) this.sortState = { field, dir: -1 }
+        else this.sortState = null
+        this.render()
       }),
     )
     this.root.querySelectorAll<HTMLElement>('.bar').forEach((bar) => {
@@ -250,7 +441,7 @@ export class AuroraGantt extends AuroraElement {
       bar.addEventListener('keydown', (e) => {
         if ((e as KeyboardEvent).key === 'Enter') pick()
       })
-      if (this.hasAttribute('readonly')) return
+      if (this.hasAttribute('readonly') || bar.classList.contains('summary')) return
       bar.addEventListener('pointerdown', (e) => {
         const task = this.#tasks.find((t) => t.id === bar.dataset['id'])
         if (!task) return

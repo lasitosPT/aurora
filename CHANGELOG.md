@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.3.0
+
+Gantt: task tree, columns, sorting.
+
+- `task.parent` nests tasks into a collapsible tree (caret in the task pane);
+  parents render as summary bars spanning their subtree with duration-weighted
+  progress
+- `columns` shows extra task fields in the left pane; clicking a header cycles
+  ascending/descending/off, sorted within each sibling group
+- Dependency arrows follow visible rows and skip collapsed subtrees
+- `toggleCollapse(id)` drives the tree from code
+
 ## 2.2.0
 
 Spreadsheet: multiple sheets.

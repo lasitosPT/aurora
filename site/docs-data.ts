@@ -2087,10 +2087,12 @@ export const DOCS: ComponentDoc[] = [
     title: 'Gantt',
     category: 'Enterprise & Data',
     summary:
-      'Project timelines — bars positioned on a day scale with progress fills, dependency arrows, a today line, and a frozen task column beside the scrollable chart.',
+      'Project timelines — bars positioned on a day scale with progress fills, dependency arrows, a today line, and a collapsible task tree with sortable columns beside the scrollable chart. Parents render as summary bars spanning their subtree.',
     example: `<aurora-gantt id="docGantt" style="width:100%"></aurora-gantt>`,
     attributes: [
-      ['tasks (property)', '{ id, title, start, end, progress?, dependsOn?, color? }[]'],
+      ['tasks (property)', '{ id, title, start, end, progress?, dependsOn?, color?, parent? }[]'],
+      ['columns (property)', '{ field, title?, width? }[] — extra task-pane columns, headers sort'],
+      ['task.parent', 'Nests the task; parents become summary bars with weighted progress'],
       ['day-width', 'Pixels per day at day scale (default 34)'],
       ['scale', '"day" (default), "week", "month" — switchable from the toolbar'],
       ['task.plannedStart / plannedEnd', 'Grey baseline bar under the actual — slips at a glance'],
@@ -2101,7 +2103,10 @@ export const DOCS: ComponentDoc[] = [
       ['aurora-update', '{ task, start, end } — after a drag-move or grip-resize'],
     ],
     cssvars: [['--aurora-gantt-label', 'Task column width (default 168px)']],
-    methods: [['tasks', 'Get/set']],
+    methods: [
+      ['tasks / columns', 'Get/set'],
+      ['toggleCollapse(id)', 'Collapse or expand a subtree from code'],
+    ],
     tutorial: [
       {
         heading: '1 · Dependencies',

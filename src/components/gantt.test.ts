@@ -142,3 +142,97 @@ describe('gantt depth (v1.8)', () => {
     el.remove()
   })
 })
+
+describe('gantt task tree, columns, sorting (v2.3)', () => {
+  const TREE = [
+    { id: 'phase', title: 'Phase 1', start: '2026-07-01', end: '2026-07-02' },
+    {
+      id: 'design',
+      title: 'Design',
+      start: '2026-07-01',
+      end: '2026-07-04',
+      progress: 100,
+      parent: 'phase',
+    },
+    {
+      id: 'build',
+      title: 'Build',
+      start: '2026-07-05',
+      end: '2026-07-12',
+      progress: 50,
+      parent: 'phase',
+    },
+    { id: 'ship', title: 'Ship', start: '2026-07-13', end: '2026-07-14' },
+  ]
+
+  function make(): AuroraGantt {
+    const el = document.createElement('aurora-gantt') as AuroraGantt
+    document.body.append(el)
+    el.tasks = structuredClone(TREE)
+    return el
+  }
+
+  it('nests children under parents and renders a spanning summary bar', () => {
+    const el = make()
+    const summary = el.shadowRoot?.querySelector<HTMLElement>('.bar.summary')
+    expect(summary?.dataset['id']).toBe('phase')
+    const design = el.shadowRoot?.querySelector<HTMLElement>('.bar[data-id="design"]')
+    const build = el.shadowRoot?.querySelector<HTMLElement>('.bar[data-id="build"]')
+    expect(parseFloat(summary?.style.left ?? '')).toBe(parseFloat(design?.style.left ?? '-1'))
+    const summaryRight =
+      parseFloat(summary?.style.left ?? '') + parseFloat(summary?.style.width ?? '')
+    const buildRight = parseFloat(build?.style.left ?? '') + parseFloat(build?.style.width ?? '')
+    expect(summaryRight).toBe(buildRight)
+    // duration-weighted progress: 4 days at 100% + 8 days at 50% = 67%
+    expect(summary?.getAttribute('aria-label')).toContain('67% done')
+    const first = el.shadowRoot?.querySelector('.names .row:nth-of-type(3) .cell')
+    expect((first as HTMLElement)?.style.paddingInlineStart).toBe('30px')
+    el.remove()
+  })
+
+  it('collapses a subtree from the caret and restores it', () => {
+    const el = make()
+    expect(el.shadowRoot?.querySelectorAll('.bar').length).toBe(4)
+    el.shadowRoot?.querySelector<HTMLButtonElement>('[data-tg="phase"]')?.click()
+    expect(el.shadowRoot?.querySelectorAll('.bar').length).toBe(2)
+    expect(el.shadowRoot?.querySelector('.bar[data-id="design"]')).toBeNull()
+    el.shadowRoot?.querySelector<HTMLButtonElement>('[data-tg="phase"]')?.click()
+    expect(el.shadowRoot?.querySelectorAll('.bar').length).toBe(4)
+    el.remove()
+  })
+
+  it('shows extra columns and sorts by them, cycling asc/desc/off', () => {
+    const el = make()
+    el.columns = [
+      { field: 'title', title: 'Task' },
+      { field: 'progress', title: '%' },
+    ]
+    const cells = (): string[] =>
+      Array.from(el.shadowRoot?.querySelectorAll('.names .row:not(:first-of-type)') ?? []).map(
+        (r) =>
+          (r.querySelector('.cell span') ?? r.querySelector('.cell'))?.textContent?.trim() ?? '',
+      )
+    expect(cells()).toEqual(['Phase 1', 'Design', 'Build', 'Ship'])
+    const sortBtn = el.shadowRoot?.querySelector<HTMLButtonElement>('[data-sort="title"]')
+    sortBtn?.click()
+    expect(cells()).toEqual(['Phase 1', 'Build', 'Design', 'Ship'])
+    el.shadowRoot?.querySelector<HTMLButtonElement>('[data-sort="title"]')?.click()
+    expect(cells()).toEqual(['Ship', 'Phase 1', 'Design', 'Build'])
+    el.shadowRoot?.querySelector<HTMLButtonElement>('[data-sort="title"]')?.click()
+    expect(cells()).toEqual(['Phase 1', 'Design', 'Build', 'Ship'])
+    const pct = el.shadowRoot?.querySelector('.names .row:nth-of-type(3) .cell:nth-of-type(2)')
+    expect(pct?.textContent).toBe('100%')
+    el.remove()
+  })
+
+  it('skips dependency arrows into collapsed subtrees', () => {
+    const el = make()
+    el.tasks = structuredClone(TREE).map((t) =>
+      t.id === 'ship' ? { ...t, dependsOn: ['build'] } : t,
+    )
+    expect(el.shadowRoot?.querySelectorAll('svg.deps path').length).toBe(1)
+    el.shadowRoot?.querySelector<HTMLButtonElement>('[data-tg="phase"]')?.click()
+    expect(el.shadowRoot?.querySelectorAll('svg.deps path').length).toBe(0)
+    el.remove()
+  })
+})

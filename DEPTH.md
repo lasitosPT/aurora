@@ -109,16 +109,16 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 
 ## Gantt
 
-| Kendo feature                | aurora                                |
-| ---------------------------- | ------------------------------------- |
-| TreeList + Timeline layout   | 🔶 flat task column (subtask tree ⬜) |
-| Data binding                 | ✅ tasks (+ adapter)                  |
-| Columns                      | 🔶 single title column                |
-| Planned vs actual            | ✅ baseline bars                      |
-| Views (day/week/month ruler) | ✅ switchable scales                  |
-| Move/resize/edit tasks       | ✅ drag-move + grip-resize            |
-| Dependencies                 | ✅ arrows (editing ⬜)                |
-| Sorting/reordering           | ⬜                                    |
+| Kendo feature                | aurora                                     |
+| ---------------------------- | ------------------------------------------ |
+| TreeList + Timeline layout   | ✅ collapsible subtask tree + summary bars |
+| Data binding                 | ✅ tasks (+ adapter)                       |
+| Columns                      | ✅ columns prop, sortable headers          |
+| Planned vs actual            | ✅ baseline bars                           |
+| Views (day/week/month ruler) | ✅ switchable scales                       |
+| Move/resize/edit tasks       | ✅ drag-move + grip-resize                 |
+| Dependencies                 | ✅ arrows (editing ⬜)                     |
+| Sorting/reordering           | 🔶 column sorting (drag row reorder ⬜)    |
 
 ## Grid (from the user-audited list — previously closed)
 
