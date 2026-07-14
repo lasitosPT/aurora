@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.82.0
+
+Grid wave 6.
+
+- `aurora-grid` — `getState()`/`setState()` snapshot and restore the whole view
+  (sorts, filters, operators, search, page, widths, hidden columns, grouping);
+  `selectable="cell"` selects cells with Ctrl/⌘ multi-select; `column-menu` puts a
+  sort/hide/freeze menu on every header.
+
 ## 0.81.0
 
 The AI interface, backend-agnostic.

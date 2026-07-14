@@ -105,12 +105,12 @@ ProgressBar ✅ · Skeleton ✅ · Sortable ✅ · TaskBoard ✅ (`aurora-taskbo
 | Paging              | ✅ client-side + page sizes; server paging waits on the DataSource adapter            |
 | Sorting             | ✅ single + multi (Shift+click) with order badges                                     |
 | Export              | ✅ CSV + Excel (in-house OOXML writer); PDF/print 🚫                                  |
-| Column enhancements | ✅ frozen/locked, resize, reorder, hide, multi-column headers; column menu UI ⬜      |
-| State persistence   | ⬜ getState()/setState() planned                                                      |
+| Column enhancements | ✅ frozen/locked, resize, reorder, hide, multi-column headers, column menu            |
+| State persistence   | ✅ getState()/setState() JSON snapshots                                               |
 | Hierarchy           | ✅ detail templates; nested child grids compose via detail; also `aurora-treelist`    |
 | Templates           | ✅ formatters + detail templates; row/group templates 🔶                              |
 | Scroll modes        | ✅ virtualization (10k rows < 100 nodes); endless remote scroll waits on DataSource   |
-| Selection           | ✅ single/multi row, checkbox column, select-all; cell selection ⬜                   |
+| Selection           | ✅ single/multi row, checkbox column, select-all, cell selection w/ Ctrl multi        |
 | Rendering/styling   | ✅ striped/dense/height/theming; adaptive mobile rendering ⬜                         |
 | Globalization       | ⬜ en-only; RTL untested                                                              |
 | Accessibility       | ✅ ARIA grid roles, aria-sort, keyboard cell navigation; full screen-reader audit ⬜  |

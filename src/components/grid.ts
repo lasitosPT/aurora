@@ -65,6 +65,28 @@ const STYLE = `
   tbody tr[aria-selected='true'] .fz { background: color-mix(in srgb, var(--aurora-surface, #14141f) 82%, var(--aurora-accent, #6d5cff)); }
   .fz-edge { box-shadow: inset -7px 0 7px -7px rgba(0, 0, 0, 0.6); }
   td.editing input.invalid { outline: 2px solid var(--aurora-danger, #f43f5e); border-radius: 5px; }
+  :host([selectable='cell']) td[data-cell] { cursor: cell; }
+  td[data-cell][aria-selected='true'] {
+    background: rgba(109, 92, 255, 0.2) !important;
+    outline: 1.5px solid var(--aurora-accent, #6d5cff); outline-offset: -1.5px;
+  }
+  .colmenu-btn {
+    all: unset; cursor: pointer; margin-left: 6px; width: 17px; height: 17px;
+    display: inline-grid; place-items: center; border-radius: 5px; font-size: 0.75em;
+    color: var(--aurora-muted, #9a98b3); vertical-align: middle;
+  }
+  .colmenu-btn:hover { color: var(--aurora-fg, #ececf2); background: rgba(255, 255, 255, 0.08); }
+  .colmenu-btn:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); }
+  .colmenu {
+    position: absolute; z-index: 6; margin-top: 4px; min-width: 150px;
+    display: flex; flex-direction: column; padding: 5px;
+    background: var(--aurora-surface, #16161f);
+    border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.14));
+    border-radius: 10px; box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+    font-weight: 400; font-size: 0.85rem;
+  }
+  .colmenu button { all: unset; cursor: pointer; padding: 0.42rem 0.7rem; border-radius: 7px; }
+  .colmenu button:hover, .colmenu button:focus-visible { background: rgba(109, 92, 255, 0.14); }
   .cell-error {
     position: absolute; z-index: 5; margin-top: 2px; padding: 3px 9px; font-size: 0.74rem;
     color: #fff; background: var(--aurora-danger, #f43f5e); border-radius: 7px; white-space: nowrap;
@@ -194,6 +216,17 @@ type Row = Record<string, unknown>
 
 export type FilterOp = 'contains' | 'equals' | 'starts' | 'gt' | 'lt'
 
+export interface GridState {
+  sorts: { field: string; dir: 'asc' | 'desc' }[]
+  filters: Record<string, string>
+  ops: Record<string, FilterOp>
+  search: string
+  page: number
+  widths: Record<string, number>
+  hidden: string[]
+  groupBy: string | null
+}
+
 const FILTER_OPS: { op: FilterOp; sym: string; label: string }[] = [
   { op: 'contains', sym: '≈', label: 'contains' },
   { op: 'equals', sym: '=', label: 'equals' },
@@ -237,6 +270,7 @@ export class AuroraGrid extends AuroraElement {
   private vStart = 0
   private vTotal = 0
   private widths = new Map<string, number>()
+  private cellSel = new Set<string>()
   private draggedField: string | null = null
   #groupBy: string | null = null
   #detail: ((row: Row) => string) | null = null
@@ -319,6 +353,36 @@ export class AuroraGrid extends AuroraElement {
   setFilterOp(field: string, op: FilterOp): void {
     this.ops.set(field, op)
     this.page = 0
+    this.render()
+  }
+
+  /** Snapshot every user-adjustable view setting as a JSON-safe object. */
+  getState(): GridState {
+    return {
+      sorts: this.sorts.map((s) => ({ ...s })),
+      filters: Object.fromEntries(this.filters),
+      ops: Object.fromEntries(this.ops),
+      search: this.search,
+      page: this.page,
+      widths: Object.fromEntries(this.widths),
+      hidden: this.#columns.filter((c) => c.hidden).map((c) => c.field),
+      groupBy: this.#groupBy,
+    }
+  }
+
+  /** Restore a snapshot from getState() (e.g. out of localStorage). */
+  setState(state: Partial<GridState>): void {
+    if (state.sorts) this.sorts = state.sorts.map((s) => ({ ...s }))
+    if (state.filters) this.filters = new Map(Object.entries(state.filters))
+    if (state.ops) this.ops = new Map(Object.entries(state.ops) as [string, FilterOp][])
+    if (state.search !== undefined) this.search = state.search
+    if (state.page !== undefined) this.page = state.page
+    if (state.widths) this.widths = new Map(Object.entries(state.widths))
+    if (state.hidden)
+      this.#columns.forEach((c) => {
+        c.hidden = state.hidden?.includes(c.field) || undefined
+      })
+    if (state.groupBy !== undefined) this.#groupBy = state.groupBy
     this.render()
   }
 
@@ -585,10 +649,13 @@ export class AuroraGrid extends AuroraElement {
         const rz = this.hasAttribute('resizable')
           ? `<span class="rz" data-rz="${col.field}" aria-hidden="true"></span>`
           : ''
+        const cm = this.hasAttribute('column-menu')
+          ? `<button class="colmenu-btn" data-cm="${col.field}" aria-label="Column menu for ${label}" aria-haspopup="menu">⋮</button>`
+          : ''
         const drag = this.hasAttribute('reorderable')
           ? ` draggable="true" data-col="${col.field}"`
           : ''
-        return `<th role="columnheader" aria-sort="${ariaSort}"${cls(col)}${width}${drag}>${inner}${rz}</th>`
+        return `<th role="columnheader" aria-sort="${ariaSort}"${cls(col)}${width}${drag}>${inner}${cm}${rz}</th>`
       })
       .join('')
 
@@ -628,11 +695,13 @@ export class AuroraGrid extends AuroraElement {
           .join('')}</tr>`
       : ''
 
-    const cell = (row: Row, col: GridColumn): string => {
+    const cellMode = this.getAttribute('selectable') === 'cell'
+    const cell = (row: Row, col: GridColumn, i: number): string => {
       const raw = row[col.field]
       const text = col.formatter ? col.formatter(raw, row) : String(raw ?? '')
       const edit = editable && col.editable !== false ? ` data-edit="${col.field}"` : ''
-      return `<td${cls(col)}${edit} tabindex="-1" data-cell>${text}</td>`
+      const sel = cellMode && this.cellSel.has(`${i}:${col.field}`) ? ' aria-selected="true"' : ''
+      return `<td${cls(col)}${edit}${sel} tabindex="-1" data-cell data-f="${col.field}">${text}</td>`
     }
 
     const rowHtml = (row: Row, i: number): string => {
@@ -646,7 +715,7 @@ export class AuroraGrid extends AuroraElement {
         this.#detail && this.expanded.has(row)
           ? `<tr class="detail-row"><td colspan="${span}">${this.#detail(row)}</td></tr>`
           : ''
-      return `<tr data-index="${i}" aria-selected="${this.selectedRows.has(row)}">${check}${exp}${row === undefined ? '' : cols.map((c) => cell(row, c)).join('')}</tr>${detail}`
+      return `<tr data-index="${i}" aria-selected="${this.selectedRows.has(row)}">${check}${exp}${row === undefined ? '' : cols.map((c) => cell(row, c, i)).join('')}</tr>${detail}`
     }
 
     let body = ''
@@ -797,6 +866,73 @@ export class AuroraGrid extends AuroraElement {
     this.root
       .querySelector('[data-export-xlsx]')
       ?.addEventListener('click', () => this.exportExcel())
+    if (this.getAttribute('selectable') === 'cell') {
+      this.root.querySelectorAll<HTMLTableCellElement>('td[data-cell]').forEach((td) =>
+        td.addEventListener('click', (e) => {
+          const tr = td.closest('tr')
+          const i = Number(tr?.dataset.index)
+          const key = `${i}:${td.dataset.f ?? ''}`
+          if (!(e as MouseEvent).ctrlKey && !(e as MouseEvent).metaKey) this.cellSel.clear()
+          if (this.cellSel.has(key)) this.cellSel.delete(key)
+          else this.cellSel.add(key)
+          this.render()
+          const row = rows[i]
+          this.dispatchEvent(
+            new CustomEvent('aurora-selection', {
+              detail: {
+                cells: [...this.cellSel].map((k) => {
+                  const [ri = '', field = ''] = k.split(':')
+                  return { row: rows[Number(ri)], field, value: rows[Number(ri)]?.[field] }
+                }),
+                row,
+              },
+            }),
+          )
+        }),
+      )
+    }
+    this.root.querySelectorAll<HTMLButtonElement>('[data-cm]').forEach((btn) =>
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation()
+        const field = btn.dataset.cm ?? ''
+        const existing = this.root.querySelector('.colmenu')
+        if (existing) {
+          existing.remove()
+          return
+        }
+        const col = this.#columns.find((c) => c.field === field)
+        const menu = document.createElement('div')
+        menu.className = 'colmenu'
+        menu.setAttribute('role', 'menu')
+        menu.innerHTML = `
+          <button data-a="asc">↑ Sort ascending</button>
+          <button data-a="desc">↓ Sort descending</button>
+          <button data-a="clear">✕ Clear sort</button>
+          <button data-a="hide">Hide column</button>
+          <button data-a="freeze">${col?.frozen ? 'Unfreeze' : 'Freeze'} column</button>`
+        btn.closest('th')?.appendChild(menu)
+        menu.querySelectorAll<HTMLButtonElement>('button').forEach((item) =>
+          item.addEventListener('click', () => {
+            const a = item.dataset.a
+            if (a === 'asc' || a === 'desc') this.sorts = [{ field, dir: a }]
+            else if (a === 'clear') this.sorts = this.sorts.filter((x) => x.field !== field)
+            else if (a === 'hide') {
+              const c = this.#columns.find((x) => x.field === field)
+              if (c) c.hidden = true
+            } else if (a === 'freeze') {
+              const c = this.#columns.find((x) => x.field === field)
+              if (c) c.frozen = !c.frozen
+            }
+            this.render()
+            this.dispatchEvent(
+              new CustomEvent('aurora-sort', {
+                detail: { sorts: this.sorts.map((x) => ({ ...x })) },
+              }),
+            )
+          }),
+        )
+      }),
+    )
     this.root.querySelectorAll<HTMLButtonElement>('[data-fop]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const field = btn.dataset.fop ?? ''
@@ -1013,7 +1149,7 @@ export class AuroraGrid extends AuroraElement {
     })
 
     const selectable = this.getAttribute('selectable')
-    if (!selectable) return
+    if (!selectable || selectable === 'cell') return
     const emit = (): void => {
       this.dispatchEvent(
         new CustomEvent('aurora-selection', { detail: { selected: this.selected } }),

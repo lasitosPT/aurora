@@ -423,3 +423,77 @@ describe('grid popup edit', () => {
     el.remove()
   })
 })
+
+describe('grid wave 6', () => {
+  const cols = [
+    { field: 'name', title: 'Name' },
+    { field: 'stars', title: 'Stars' },
+  ]
+  const data = [
+    { name: 'pulse', stars: 412 },
+    { name: 'aurora', stars: 951 },
+  ]
+
+  it('round-trips view state through getState/setState', () => {
+    const a = document.createElement('aurora-grid') as AuroraGrid
+    a.setAttribute('filterable', '')
+    document.body.append(a)
+    a.columns = JSON.parse(JSON.stringify(cols))
+    a.data = data
+    a.setState({
+      sorts: [{ field: 'stars', dir: 'desc' }],
+      filters: { name: 'a' },
+      ops: { name: 'contains' },
+      search: '',
+      hidden: [],
+      groupBy: null,
+    })
+    const snap = a.getState()
+    expect(snap.sorts).toEqual([{ field: 'stars', dir: 'desc' }])
+    expect(snap.filters).toEqual({ name: 'a' })
+    const b = document.createElement('aurora-grid') as AuroraGrid
+    document.body.append(b)
+    b.columns = JSON.parse(JSON.stringify(cols))
+    b.data = data
+    b.setState(JSON.parse(JSON.stringify(snap)))
+    const firstCell = b.shadowRoot?.querySelector('tbody td[data-cell]')
+    expect(firstCell?.textContent).toBe('aurora')
+    a.remove()
+    b.remove()
+  })
+
+  it('selects cells with Ctrl multi-select and reports them', () => {
+    const el = document.createElement('aurora-grid') as AuroraGrid
+    el.setAttribute('selectable', 'cell')
+    document.body.append(el)
+    el.columns = JSON.parse(JSON.stringify(cols))
+    el.data = data
+    let cells: { field: string }[] = []
+    el.addEventListener('aurora-selection', (e) => {
+      cells = (e as CustomEvent<{ cells: { field: string }[] }>).detail.cells
+    })
+    el.shadowRoot?.querySelector<HTMLTableCellElement>('td[data-f="name"]')?.click()
+    expect(cells.length).toBe(1)
+    expect(el.shadowRoot?.querySelectorAll('td[aria-selected="true"]').length).toBe(1)
+    const stars = el.shadowRoot?.querySelector<HTMLTableCellElement>('td[data-f="stars"]')
+    stars?.dispatchEvent(new MouseEvent('click', { ctrlKey: true, bubbles: true }))
+    expect(el.shadowRoot?.querySelectorAll('td[aria-selected="true"]').length).toBe(2)
+    el.remove()
+  })
+
+  it('drives sort, hide, and freeze from the column menu', () => {
+    const el = document.createElement('aurora-grid') as AuroraGrid
+    el.setAttribute('column-menu', '')
+    document.body.append(el)
+    el.columns = JSON.parse(JSON.stringify(cols))
+    el.data = data
+    el.shadowRoot?.querySelector<HTMLButtonElement>('[data-cm="stars"]')?.click()
+    expect(el.shadowRoot?.querySelector('.colmenu')).not.toBeNull()
+    el.shadowRoot?.querySelector<HTMLButtonElement>('.colmenu [data-a="desc"]')?.click()
+    expect(el.shadowRoot?.querySelector('tbody td[data-cell]')?.textContent).toBe('aurora')
+    el.shadowRoot?.querySelector<HTMLButtonElement>('[data-cm="name"]')?.click()
+    el.shadowRoot?.querySelector<HTMLButtonElement>('.colmenu [data-a="hide"]')?.click()
+    expect(el.getState().hidden).toEqual(['name'])
+    el.remove()
+  })
+})
