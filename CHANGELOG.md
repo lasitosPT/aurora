@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.5.0
+
+Grid: batch editing and foreign-key columns.
+
+- `editable="batch"` queues cell edits instead of mutating rows — dirty
+  corner markers, toolbar Save/Cancel buttons (enabled while dirty),
+  `saveChanges()`/`cancelChanges()`/`pendingChanges`/`dirty`, and an
+  `aurora-save` event carrying every `{ row, patch }`; editing a cell back
+  to its original value un-queues it
+- `column.values` (`{ value, text }[]`) renders foreign-key cells as their
+  lookup text and edits them with a select
+- Cell text is now HTML-escaped in the default renderer (formatters still
+  emit raw HTML deliberately)
+
 ## 2.4.0
 
 Chart: date series and error bars.

@@ -122,9 +122,12 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 
 ## Grid (from the user-audited list — previously closed)
 
-All 16 documented feature rows ✅ except: adaptive rendering ⬜, globalization/RTL ⬜,
-batch edit queue ⬜, custom editor renderers ⬜, checkbox filter menus ⬜,
-foreign-key columns ⬜, endless remote scroll 🔶 (DataSource pattern documented).
+All 16 documented feature rows ✅ except: adaptive rendering ⬜,
+endless remote scroll 🔶 (DataSource pattern documented). Closed since:
+globalization/RTL ✅, checkbox filter menus ✅, custom editor renderers ✅,
+batch edit queue ✅ (editable="batch" + saveChanges/cancelChanges + dirty
+markers + toolbar buttons), foreign-key columns ✅ (column.values lookup +
+select editor).
 
 ## Cross-cutting (every Kendo component lists these)
 

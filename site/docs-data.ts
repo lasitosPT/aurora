@@ -26,7 +26,9 @@ export const DOCS: ComponentDoc[] = [
       ['filterable', 'Shows the per-column filter row'],
       ['searchable', 'Adds a global search box to the toolbar'],
       ['exportable', 'Adds an Export CSV button to the toolbar'],
-      ['editable', 'Enables inline cell editing (double-click / Enter)'],
+      ['editable', 'Inline cell editing (double-click / Enter); "popup" for a row dialog'],
+      ['editable="batch"', 'Queue edits with dirty markers; toolbar Save/Cancel, aurora-save'],
+      ['column.values', '{ value, text }[] foreign-key lookup — display text + select editor'],
       ['resizable', 'Drag handles on header edges'],
       ['reorderable', 'Drag headers to reorder columns'],
       ['virtual + row-height', 'Windowed rendering for huge datasets (paging off)'],
@@ -37,7 +39,8 @@ export const DOCS: ComponentDoc[] = [
       ['aurora-filter', '{ filters }'],
       ['aurora-page', '{ page, pageSize }'],
       ['aurora-selection', '{ selected: rows[] }'],
-      ['aurora-edit', '{ row, field, value, oldValue }'],
+      ['aurora-edit', '{ row, field, value, oldValue, batch }'],
+      ['aurora-save', '{ changes: { row, patch }[] } — batch queue applied'],
       ['aurora-resize / aurora-reorder', 'column geometry changes'],
     ],
     cssvars: [
@@ -51,6 +54,7 @@ export const DOCS: ComponentDoc[] = [
       ['detail', 'Function (row) => html for expandable detail rows'],
       ['selected / refresh() / toggleColumn(f)', 'Selection getter, re-render, hide column'],
       ['toCsv() / exportCsv(name)', 'CSV of the filtered + sorted view'],
+      ['saveChanges() / cancelChanges() / pendingChanges / dirty', 'Batch edit queue control'],
     ],
     tutorial: [
       {

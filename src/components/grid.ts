@@ -163,6 +163,12 @@ const STYLE = `
   .pager button:disabled { opacity: 0.35; cursor: default; }
   .pager button:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); }
   input[type='checkbox'] { accent-color: var(--aurora-accent, #6d5cff); cursor: pointer; }
+  td.dirty { position: relative; }
+  td.dirty::after {
+    content: ''; position: absolute; top: 0; inset-inline-start: 0;
+    border: 4.5px solid transparent; border-top-color: var(--aurora-danger, #f43f5e);
+    border-inline-start-color: var(--aurora-danger, #f43f5e);
+  }
   .toolbar {
     display: flex; align-items: center; gap: 10px; padding: 0.55rem 0.9rem;
     border-bottom: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.08));
@@ -216,6 +222,8 @@ export interface GridColumn<T = Record<string, unknown>> {
   validator?: (value: unknown, row: T) => string | null
   /** Custom inline editor: return an element, call commit(next) to save. */
   editor?: (value: unknown, row: T, commit: (next: unknown) => void) => HTMLElement
+  /** Foreign-key lookup: cells display the matching text, edits use a select. */
+  values?: { value: unknown; text: string }[]
   aggregate?: 'sum' | 'avg' | 'min' | 'max' | 'count'
   formatter?: (value: unknown, row: T) => string
 }
@@ -251,9 +259,12 @@ const FILTER_OPS: { op: FilterOp; sym: string; label: string }[] = [
  * grouping with collapsible headers and per-group aggregates (`groupBy`),
  * footer aggregates (column `aggregate: sum|avg|min|max|count`), inline cell
  * editing (`editable` + column `editable`, dblclick → Enter/blur commits;
- * `editable="popup"` opens a row dialog instead; a
+ * `editable="popup"` opens a row dialog instead; `editable="batch"` queues
+ * edits with dirty-cell markers until `saveChanges()`/`cancelChanges()` —
+ * toolbar buttons included — and emits `aurora-save` with all changes; a
  * column `validator` blocks bad commits with an inline error, column `group`
- * strings render spanning header groups,
+ * strings render spanning header groups, a column `values` list renders
+ * foreign-key cells (display text + select editor),
  * Escape cancels), row detail templates (`detail = (row) => html`), column
  * hiding (`hidden`, `toggleColumn()`), and CSV export (`exportable`,
  * `toCsv()`/`exportCsv()`). Emits `aurora-sort`, `aurora-filter`,
@@ -273,6 +284,7 @@ export class AuroraGrid extends AuroraElement {
   private page = 0
   private pageSize = -1
   private selectedRows = new Set<Row>()
+  private pending = new Map<Row, Map<string, unknown>>()
   private collapsed = new Set<string>()
   private expanded = new Set<Row>()
   private scrollTopSaved = 0
@@ -393,6 +405,59 @@ export class AuroraGrid extends AuroraElement {
       })
     if (state.groupBy !== undefined) this.#groupBy = state.groupBy
     this.render()
+  }
+
+  /** Uncommitted batch edits as `{ row, patch }` entries. */
+  get pendingChanges(): { row: Row; patch: Record<string, unknown> }[] {
+    return [...this.pending.entries()].map(([row, patch]) => ({
+      row,
+      patch: Object.fromEntries(patch),
+    }))
+  }
+
+  /** True while batch edits are queued. */
+  get dirty(): boolean {
+    return this.pending.size > 0
+  }
+
+  /** Apply every queued batch edit to the data and emit `aurora-save`. */
+  saveChanges(): void {
+    if (!this.pending.size) return
+    const changes = this.pendingChanges
+    for (const [row, patch] of this.pending) for (const [f, v] of patch) row[f] = v
+    this.pending.clear()
+    this.render()
+    this.dispatchEvent(new CustomEvent('aurora-save', { detail: { changes } }))
+  }
+
+  /** Discard every queued batch edit. */
+  cancelChanges(): void {
+    if (!this.pending.size) return
+    this.pending.clear()
+    this.render()
+  }
+
+  /** The value a cell shows: pending batch edit first, then the row. */
+  private cellRaw(row: Row, field: string): unknown {
+    const patch = this.pending.get(row)
+    return patch?.has(field) ? patch.get(field) : row[field]
+  }
+
+  private commitCell(row: Row, field: string, next: unknown, oldValue: unknown): void {
+    if (next === oldValue) return
+    const batch = this.getAttribute('editable') === 'batch'
+    if (batch) {
+      const patch = this.pending.get(row) ?? new Map<string, unknown>()
+      if (next === row[field]) patch.delete(field)
+      else patch.set(field, next)
+      if (patch.size) this.pending.set(row, patch)
+      else this.pending.delete(row)
+    } else {
+      row[field] = next
+    }
+    this.dispatchEvent(
+      new CustomEvent('aurora-edit', { detail: { row, field, value: next, oldValue, batch } }),
+    )
   }
 
   /** Open the popup editor for a row (used by editable="popup"). */
@@ -636,13 +701,17 @@ export class AuroraGrid extends AuroraElement {
       return parts.length ? ` class="${parts.join(' ')}"` : ''
     }
 
+    const batchTools =
+      editMode === 'batch'
+        ? `<button class="tool-btn" data-save ${this.pending.size ? '' : 'disabled'}>${t('grid.saveChanges')}</button><button class="tool-btn" data-cancel ${this.pending.size ? '' : 'disabled'}>${t('grid.cancelChanges')}</button>`
+        : ''
     const toolbar =
-      this.hasAttribute('searchable') || this.hasAttribute('exportable')
+      this.hasAttribute('searchable') || this.hasAttribute('exportable') || batchTools
         ? `<div class="toolbar" part="toolbar">${
             this.hasAttribute('searchable')
               ? `<input data-search type="search" placeholder="${t('grid.search')}" aria-label="Search all columns" value="${this.search}" />`
               : ''
-          }${this.hasAttribute('exportable') ? `<button class="tool-btn" data-export>${t('grid.exportCsv')}</button><button class="tool-btn" data-export-xlsx>${t('grid.exportExcel')}</button>` : ''}</div>`
+          }${this.hasAttribute('exportable') ? `<button class="tool-btn" data-export>${t('grid.exportCsv')}</button><button class="tool-btn" data-export-xlsx>${t('grid.exportExcel')}</button>` : ''}${batchTools}</div>`
         : ''
 
     const head = cols
@@ -710,11 +779,21 @@ export class AuroraGrid extends AuroraElement {
 
     const cellMode = this.getAttribute('selectable') === 'cell'
     const cell = (row: Row, col: GridColumn, i: number): string => {
-      const raw = row[col.field]
-      const text = col.formatter ? col.formatter(raw, row) : String(raw ?? '')
+      const raw = this.cellRaw(row, col.field)
+      const fk = col.values?.find((v) => v.value === raw)
+      const text = col.formatter
+        ? col.formatter(raw, row)
+        : escapeHtml(fk ? fk.text : String(raw ?? ''))
       const edit = editable && col.editable !== false ? ` data-edit="${col.field}"` : ''
       const sel = cellMode && this.cellSel.has(`${i}:${col.field}`) ? ' aria-selected="true"' : ''
-      return `<td${cls(col)}${edit}${sel} tabindex="-1" data-cell data-f="${col.field}">${text}</td>`
+      const dirty = this.pending.get(row)?.has(col.field)
+      const classes = cls(col)
+      const dirtyCls = dirty
+        ? classes
+          ? classes.replace('class="', 'class="dirty ')
+          : ' class="dirty"'
+        : classes
+      return `<td${dirtyCls}${edit}${sel} tabindex="-1" data-cell data-f="${col.field}">${text}</td>`
     }
 
     const rowHtml = (row: Row, i: number): string => {
@@ -876,6 +955,8 @@ export class AuroraGrid extends AuroraElement {
       next?.setSelectionRange(next.value.length, next.value.length)
     })
     this.root.querySelector('[data-export]')?.addEventListener('click', () => this.exportCsv())
+    this.root.querySelector('[data-save]')?.addEventListener('click', () => this.saveChanges())
+    this.root.querySelector('[data-cancel]')?.addEventListener('click', () => this.cancelChanges())
     this.root
       .querySelector('[data-export-xlsx]')
       ?.addEventListener('click', () => this.exportExcel())
@@ -1033,9 +1114,46 @@ export class AuroraGrid extends AuroraElement {
         const row = rows[Number(tr?.dataset.index)]
         const field = td.dataset.edit ?? ''
         if (!row) return
-        const oldValue = row[field]
+        const oldValue = this.cellRaw(row, field)
         td.classList.add('editing')
-        const custom = this.#columns.find((c) => c.field === field)?.editor
+        const column = this.#columns.find((c) => c.field === field)
+        const custom = column?.editor
+        if (!custom && column?.values) {
+          td.innerHTML = `<select aria-label="Edit ${escapeHtml(column.title ?? field)}">${column.values
+            .map(
+              (v, vi) =>
+                `<option value="${vi}"${v.value === oldValue ? ' selected' : ''}>${escapeHtml(v.text)}</option>`,
+            )
+            .join('')}</select>`
+          const select = td.querySelector('select')
+          if (!select) return
+          select.focus()
+          let selDone = false
+          const commitSel = (): void => {
+            if (selDone) return
+            selDone = true
+            const next = column.values?.[Number(select.value)]?.value
+            const message = column.validator ? column.validator(next, row) : null
+            if (message) {
+              this.dispatchEvent(
+                new CustomEvent('aurora-invalid', { detail: { row, field, value: next, message } }),
+              )
+              this.render()
+              return
+            }
+            this.commitCell(row, field, next, oldValue)
+            this.render()
+          }
+          select.addEventListener('change', commitSel)
+          select.addEventListener('blur', commitSel)
+          select.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+              selDone = true
+              this.render()
+            }
+          })
+          return
+        }
         if (custom) {
           const finish = (next: unknown): void => {
             const col = this.#columns.find((c) => c.field === field)
@@ -1046,12 +1164,7 @@ export class AuroraGrid extends AuroraElement {
               )
               return
             }
-            if (next !== oldValue) {
-              row[field] = next
-              this.dispatchEvent(
-                new CustomEvent('aurora-edit', { detail: { row, field, value: next, oldValue } }),
-              )
-            }
+            this.commitCell(row, field, next, oldValue)
             this.render()
           }
           td.innerHTML = ''
@@ -1091,12 +1204,7 @@ export class AuroraGrid extends AuroraElement {
             return
           }
           done = true
-          if (next !== oldValue) {
-            row[field] = next
-            this.dispatchEvent(
-              new CustomEvent('aurora-edit', { detail: { row, field, value: next, oldValue } }),
-            )
-          }
+          this.commitCell(row, field, next, oldValue)
           this.render()
         }
         input.addEventListener('blur', commit)

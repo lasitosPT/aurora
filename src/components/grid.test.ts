@@ -583,3 +583,91 @@ describe('grid custom editors (v1.12)', () => {
     el.remove()
   })
 })
+
+describe('grid batch editing + foreign keys (v2.5)', () => {
+  function edit(grid: AuroraGrid, rowIdx: number, field: string, value: string): void {
+    const td = grid.shadowRoot?.querySelector<HTMLElement>(
+      `tbody tr[data-index="${rowIdx}"] td[data-edit="${field}"]`,
+    )
+    td?.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }))
+    const input = td?.querySelector('input')
+    if (!input) throw new Error('no editor input')
+    input.value = value
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+  }
+
+  it('queues edits without touching data, marks cells dirty, saves on demand', () => {
+    const grid = buildGrid({ editable: 'batch' })
+    const saves: { changes: { patch: Record<string, unknown> }[] }[] = []
+    grid.addEventListener('aurora-save', (e) => {
+      saves.push((e as CustomEvent<{ changes: { patch: Record<string, unknown> }[] }>).detail)
+    })
+    edit(grid, 0, 'name', 'Pulse 2')
+    expect(grid.data[0]?.name).toBe('Pulse')
+    expect(grid.dirty).toBe(true)
+    expect(grid.pendingChanges[0]?.patch).toEqual({ name: 'Pulse 2' })
+    const dirtyCell = grid.shadowRoot?.querySelector('td.dirty')
+    expect(dirtyCell?.textContent).toBe('Pulse 2')
+    grid.saveChanges()
+    expect(grid.data[0]?.name).toBe('Pulse 2')
+    expect(grid.dirty).toBe(false)
+    expect(saves[0]?.changes[0]?.patch).toEqual({ name: 'Pulse 2' })
+    expect(grid.shadowRoot?.querySelector('td.dirty')).toBeNull()
+    grid.remove()
+  })
+
+  it('cancelChanges discards the queue; re-editing back to the original un-dirties', () => {
+    const grid = buildGrid({ editable: 'batch' })
+    edit(grid, 1, 'stars', '100')
+    expect(grid.dirty).toBe(true)
+    grid.cancelChanges()
+    expect(grid.dirty).toBe(false)
+    expect(grid.data[1]?.stars).toBe(95)
+    edit(grid, 1, 'stars', '100')
+    edit(grid, 1, 'stars', '95')
+    expect(grid.dirty).toBe(false)
+    grid.remove()
+  })
+
+  it('renders toolbar save/cancel buttons that enable with pending edits', () => {
+    const grid = buildGrid({ editable: 'batch' })
+    const save = grid.shadowRoot?.querySelector<HTMLButtonElement>('[data-save]')
+    expect(save?.disabled).toBe(true)
+    edit(grid, 0, 'name', 'X')
+    const save2 = grid.shadowRoot?.querySelector<HTMLButtonElement>('[data-save]')
+    expect(save2?.disabled).toBe(false)
+    save2?.click()
+    expect(grid.data[0]?.name).toBe('X')
+    grid.remove()
+  })
+
+  it('foreign-key columns display lookup text and edit via a select', () => {
+    const grid = document.createElement('aurora-grid') as AuroraGrid
+    grid.setAttribute('editable', '')
+    document.body.append(grid)
+    grid.columns = [
+      { field: 'name', title: 'Project' },
+      {
+        field: 'cat',
+        title: 'Category',
+        values: [
+          { value: 1, text: 'App' },
+          { value: 2, text: 'Library' },
+        ],
+      },
+    ]
+    grid.data = [{ name: 'Pulse', cat: 1 }]
+    const td = grid.shadowRoot?.querySelector<HTMLElement>('td[data-edit="cat"]')
+    expect(td?.textContent).toBe('App')
+    td?.dispatchEvent(new MouseEvent('dblclick', { bubbles: true }))
+    const select = td?.querySelector('select')
+    expect(select?.options.length).toBe(2)
+    if (select) {
+      select.value = '1'
+      select.dispatchEvent(new Event('change', { bubbles: true }))
+    }
+    expect(grid.data[0]?.cat).toBe(2)
+    expect(grid.shadowRoot?.querySelector('td[data-edit="cat"]')?.textContent).toBe('Library')
+    grid.remove()
+  })
+})

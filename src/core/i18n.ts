@@ -6,6 +6,8 @@ const DEFAULTS: Record<string, string> = {
   'grid.search': 'Search…',
   'grid.exportCsv': 'Export CSV',
   'grid.exportExcel': 'Export Excel',
+  'grid.saveChanges': 'Save changes',
+  'grid.cancelChanges': 'Cancel changes',
   'grid.empty': 'No matching rows.',
   'grid.of': 'of',
   'grid.perPage': '/ page',
