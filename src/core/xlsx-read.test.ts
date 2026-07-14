@@ -1,6 +1,6 @@
 import { deflateRawSync } from 'node:zlib'
 import { describe, expect, it } from 'vitest'
-import { makeXlsx, parseXlsx, readZip } from './xlsx'
+import { makeXlsx, makeXlsxSheets, parseXlsx, parseXlsxSheets, readZip } from './xlsx'
 
 function deflatedZip(name: string, content: string): Uint8Array {
   const data = deflateRawSync(Buffer.from(content))
@@ -86,5 +86,38 @@ describe('xlsx reading', () => {
     const zipB = deflatedZip('xl/sharedStrings.xml', shared)
     const filesB = await readZip(zipB, ['xl/sharedStrings.xml'])
     expect(filesB['xl/sharedStrings.xml']).toContain('Hello')
+  })
+})
+
+describe('multi-sheet workbooks', () => {
+  it('round-trips several sheets with names and types intact', async () => {
+    const bytes = makeXlsxSheets([
+      {
+        name: 'Revenue',
+        headers: ['Q', 'Total'],
+        rows: [
+          ['Q1', 1200.5],
+          ['Q2', 900],
+        ],
+      },
+      { name: 'Über & <Costs>', headers: null, rows: [['rent', 300]] },
+      { name: 'Empty', headers: null, rows: [] },
+    ])
+    const sheets = await parseXlsxSheets(bytes)
+    expect(sheets.map((s) => s.name)).toEqual(['Revenue', 'Über & <Costs>', 'Empty'])
+    expect(sheets[0]?.cells['A1']).toBe('Q')
+    expect(sheets[0]?.cells['B2']).toBe('1200.5')
+    expect(sheets[0]?.cells['B3']).toBe('900')
+    expect(sheets[1]?.cells['A1']).toBe('rent')
+    expect(sheets[1]?.cells['B1']).toBe('300')
+    expect(sheets[2]?.cells).toEqual({})
+  })
+
+  it('parseXlsx still returns the first sheet', async () => {
+    const bytes = makeXlsxSheets([
+      { name: 'First', headers: null, rows: [['x']] },
+      { name: 'Second', headers: null, rows: [['y']] },
+    ])
+    expect((await parseXlsx(bytes))['A1']).toBe('x')
   })
 })

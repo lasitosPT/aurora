@@ -103,8 +103,8 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 | Images in sheets | ⬜                                      |
 | Custom editors   | ⬜                                      |
 | Custom functions | ✅ registerFunction + ROUND/ABS         |
-| Import/export    | ✅ CSV + .xlsx export (import ⬜)       |
-| Multiple sheets  | ⬜                                      |
+| Import/export    | ✅ CSV + multi-sheet .xlsx both ways    |
+| Multiple sheets  | ✅ tabs: add/rename/remove/switch       |
 | Localization     | ⬜ (tracked globally)                   |
 
 ## Gantt

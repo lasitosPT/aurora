@@ -2,7 +2,7 @@ import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { register } from '../core/register'
 import { evaluateFormula, indexToCol, registerFormulaFunction } from '../core/formula'
-import { makeXlsx, parseXlsx } from '../core/xlsx'
+import { makeXlsxSheets, parseXlsxSheets } from '../core/xlsx'
 
 export interface CellStyle {
   bold?: boolean
@@ -66,7 +66,31 @@ const STYLE = `
   td input {
     all: unset; width: 100%; font: inherit; text-align: end;
   }
+  .tabs {
+    display: flex; gap: 3px; align-items: center; padding: 5px 8px;
+    border-top: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.08));
+    overflow-x: auto;
+  }
+  .tabs .tab {
+    all: unset; cursor: pointer; padding: 3px 13px; border-radius: 7px;
+    font-size: 0.78rem; color: var(--aurora-muted, #9a98b3); white-space: nowrap;
+  }
+  .tabs .tab:hover { color: var(--aurora-fg, #ececf2); background: rgba(255, 255, 255, 0.05); }
+  .tabs .tab.on { color: #fff; background: var(--aurora-accent, #6d5cff); }
+  .tabs .tab:focus-visible, .tabs .add:focus-visible { outline: 2px solid var(--aurora-accent, #6d5cff); }
+  .tabs .tab input { all: unset; width: 72px; font: inherit; color: inherit; }
+  .tabs .add {
+    all: unset; cursor: pointer; width: 22px; height: 22px; display: inline-grid;
+    place-items: center; border-radius: 6px; color: var(--aurora-muted, #9a98b3);
+  }
+  .tabs .add:hover { color: var(--aurora-fg, #ececf2); background: rgba(255, 255, 255, 0.06); }
 `
+
+interface SheetState {
+  name: string
+  cells: Map<string, string>
+  styles: Map<string, CellStyle>
+}
 
 /**
  * `<aurora-spreadsheet rows="12" cols="8">` — a formula-capable sheet:
@@ -76,17 +100,92 @@ const STYLE = `
  * Enter/F2/typing, commit with Enter (moves down) or Tab (moves right); the
  * formula bar shows and edits the raw value. `data` in/out as a
  * `{ A1: raw }` map; `styles` carries `{ A1: { bold, italic, align, color } }`
- * cell formatting (a toolbar edits the selected cell); `toCsv()` and
- * `toExcel()`/`exportExcel()` export computed values, `importExcel()` reads
- * .xlsx files back in (in-house zip reader, store and deflate);
+ * cell formatting (a toolbar edits the selected cell). Sheet tabs along the
+ * bottom hold independent worksheets — click to switch, double-click to
+ * rename, `+` / `addSheet()` to append, `activeSheet` to drive it from code.
+ * `toCsv()` exports the active sheet; `toExcel()`/`exportExcel()` write every
+ * tab as a real worksheet and `importExcel()` reads all worksheets back into
+ * tabs (in-house zip reader, store and deflate);
  * `AuroraSpreadsheet.registerFunction()` extends the formula engine. Emits
  * `aurora-change` with `{ ref, raw, value }`.
  */
 export class AuroraSpreadsheet extends AuroraElement {
-  private cells = new Map<string, string>()
-  private cellStyles = new Map<string, CellStyle>()
+  private sheets: SheetState[] = [{ name: 'Sheet1', cells: new Map(), styles: new Map() }]
+  private active = 0
   private selected = 'A1'
   private editing = false
+
+  private get cells(): Map<string, string> {
+    return (this.sheets[this.active] as SheetState).cells
+  }
+
+  private set cells(v: Map<string, string>) {
+    ;(this.sheets[this.active] as SheetState).cells = v
+  }
+
+  private get cellStyles(): Map<string, CellStyle> {
+    return (this.sheets[this.active] as SheetState).styles
+  }
+
+  private set cellStyles(v: Map<string, CellStyle>) {
+    ;(this.sheets[this.active] as SheetState).styles = v
+  }
+
+  /** Sheet names in tab order. */
+  get sheetNames(): string[] {
+    return this.sheets.map((sh) => sh.name)
+  }
+
+  /** Index of the active sheet; assign to switch tabs. */
+  get activeSheet(): number {
+    return this.active
+  }
+
+  set activeSheet(i: number) {
+    const next = Math.max(0, Math.min(this.sheets.length - 1, i))
+    if (next === this.active) return
+    this.active = next
+    this.selected = 'A1'
+    this.render()
+    this.dispatchEvent(
+      new CustomEvent('aurora-sheet', {
+        detail: { index: this.active, name: this.sheets[this.active]?.name },
+      }),
+    )
+  }
+
+  /** Append a sheet (auto-named unless given) and switch to it. */
+  addSheet(name?: string): number {
+    this.sheets.push({
+      name: name ?? `Sheet${this.sheets.length + 1}`,
+      cells: new Map(),
+      styles: new Map(),
+    })
+    this.active = this.sheets.length - 1
+    this.selected = 'A1'
+    this.render()
+    this.dispatchEvent(
+      new CustomEvent('aurora-sheet', {
+        detail: { index: this.active, name: this.sheets[this.active]?.name },
+      }),
+    )
+    return this.active
+  }
+
+  /** Remove a sheet by index (the last sheet cannot be removed). */
+  removeSheet(i: number): void {
+    if (this.sheets.length <= 1 || !this.sheets[i]) return
+    this.sheets.splice(i, 1)
+    this.active = Math.min(this.active, this.sheets.length - 1)
+    this.render()
+  }
+
+  renameSheet(i: number, name: string): void {
+    const sheet = this.sheets[i]
+    if (!sheet || !name.trim()) return
+    sheet.name = name.trim()
+    this.render()
+  }
 
   /** Register a custom formula function usable across every sheet. */
   static registerFunction(name: string, fn: (values: number[]) => number): void {
@@ -114,23 +213,39 @@ export class AuroraSpreadsheet extends AuroraElement {
     this.focusCell(key)
   }
 
-  /** Load a .xlsx file's first worksheet into the sheet (replaces data). */
+  /** Load every worksheet of a .xlsx file into tabs (replaces all sheets). */
   async importExcel(bytes: Uint8Array): Promise<void> {
-    const cells = await parseXlsx(bytes)
-    this.cells = new Map(Object.entries(cells))
-    this.cellStyles.clear()
+    const parsed = await parseXlsxSheets(bytes)
+    if (!parsed.length) return
+    this.sheets = parsed.map((sh) => ({
+      name: sh.name,
+      cells: new Map(Object.entries(sh.cells)),
+      styles: new Map(),
+    }))
+    this.active = 0
+    this.selected = 'A1'
     this.render()
-    this.dispatchEvent(new CustomEvent('aurora-import', { detail: { cells: this.data } }))
+    this.dispatchEvent(
+      new CustomEvent('aurora-import', {
+        detail: { cells: this.data, sheets: this.sheetNames },
+      }),
+    )
   }
 
-  /** The current sheet as .xlsx bytes (computed values). */
+  /** The whole workbook as .xlsx bytes — one worksheet per tab, computed values. */
   toExcel(): Uint8Array {
     const rows = this.numberAttr('rows', 12)
     const cols = this.numberAttr('cols', 8)
-    const grid: unknown[][] = []
-    for (let r = 1; r <= rows; r++)
-      grid.push(Array.from({ length: cols }, (_, c) => this.valueAt(`${indexToCol(c)}${r}`)))
-    return makeXlsx(null, grid, 'Sheet1')
+    const remembered = this.active
+    const workbook = this.sheets.map((sh, i) => {
+      this.active = i
+      const grid: unknown[][] = []
+      for (let r = 1; r <= rows; r++)
+        grid.push(Array.from({ length: cols }, (_, c) => this.valueAt(`${indexToCol(c)}${r}`)))
+      return { name: sh.name, headers: null, rows: grid }
+    })
+    this.active = remembered
+    return makeXlsxSheets(workbook)
   }
 
   /** Download the sheet as an Excel workbook. */
@@ -231,7 +346,13 @@ export class AuroraSpreadsheet extends AuroraElement {
     }
     this.root.innerHTML = `<style>${STYLE}</style>
       <div class="bar" part="bar"><span class="ref">${escapeHtml(this.selected)}</span><input class="fx" part="formula" aria-label="Formula" value="${escapeHtml(this.getCell(this.selected))}" spellcheck="false" /><div class="fmt" part="format"><button data-f="bold" aria-label="Bold"><b>B</b></button><button data-f="italic" aria-label="Italic"><i>I</i></button><button data-f="left" aria-label="Align left">⇤</button><button data-f="center" aria-label="Align center">↔</button><button data-f="right" aria-label="Align right">⇥</button><button class="swatch" aria-label="Text color">A<input type="color" data-f="color" value="#22d3ee" /></button><button data-f="xlsx" aria-label="Export Excel">⬇</button><button data-f="import" aria-label="Import Excel">📂</button></div></div><input type="file" accept=".xlsx" hidden />
-      <div class="viewport"><table aria-label="Spreadsheet"><thead><tr><th class="corner rowh"></th>${head}</tr></thead><tbody>${body}</tbody></table></div>`
+      <div class="viewport"><table aria-label="Spreadsheet"><thead><tr><th class="corner rowh"></th>${head}</tr></thead><tbody>${body}</tbody></table></div>
+      <div class="tabs" part="tabs" role="tablist" aria-label="Sheets">${this.sheets
+        .map(
+          (sh, i) =>
+            `<button class="tab${i === this.active ? ' on' : ''}" role="tab" aria-selected="${i === this.active}" data-s="${i}">${escapeHtml(sh.name)}</button>`,
+        )
+        .join('')}<button class="add" aria-label="Add sheet">+</button></div>`
     this.wire()
   }
 
@@ -270,6 +391,30 @@ export class AuroraSpreadsheet extends AuroraElement {
         this.setCell(this.selected, fx.value)
         this.focusCell(this.selected)
       }
+    })
+    this.root.querySelectorAll<HTMLButtonElement>('.tabs .tab').forEach((tab) => {
+      const i = Number(tab.dataset['s'])
+      tab.addEventListener('click', () => {
+        this.activeSheet = i
+      })
+      tab.addEventListener('dblclick', () => {
+        const current = this.sheets[i]?.name ?? ''
+        tab.innerHTML = `<input value="${escapeHtml(current)}" aria-label="Rename sheet" />`
+        const input = tab.querySelector('input')
+        if (!input) return
+        input.focus()
+        input.select()
+        const commit = (): void => this.renameSheet(i, input.value || current)
+        input.addEventListener('blur', commit)
+        input.addEventListener('keydown', (e) => {
+          e.stopPropagation()
+          if (e.key === 'Enter') commit()
+          else if (e.key === 'Escape') this.render()
+        })
+      })
+    })
+    this.root.querySelector('.tabs .add')?.addEventListener('click', () => {
+      this.addSheet()
     })
     this.root.querySelectorAll<HTMLTableCellElement>('td[data-ref]').forEach((td) => {
       const ref = td.dataset['ref'] ?? 'A1'

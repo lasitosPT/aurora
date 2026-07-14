@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.2.0
+
+Spreadsheet: multiple sheets.
+
+- Sheet tabs along the bottom — click to switch, double-click to rename,
+  `+` to add; `addSheet()`/`removeSheet()`/`renameSheet()`/`activeSheet`/
+  `sheetNames` drive it from code, `aurora-sheet` fires on switch
+- Each tab holds independent cells and styles; `data`/`styles`/`toCsv()`
+  operate on the active sheet
+- `toExcel()` writes every tab as a real worksheet; `importExcel()` reads
+  all worksheets back into tabs
+- Core: `makeXlsxSheets()` / `parseXlsxSheets()` exported — multi-sheet
+  workbooks validated against openpyxl
+
 ## 2.1.0
 
 Right-to-left support. Set `dir="rtl"` on any ancestor and the components follow:

@@ -2777,7 +2777,7 @@ export const DOCS: ComponentDoc[] = [
     title: 'Spreadsheet',
     category: 'Enterprise & Data',
     summary:
-      'A formula-capable sheet — =SUM(A1:B3), arithmetic with refs, circular-reference detection, keyboard-first editing, and a formula bar. The engine is in-house.',
+      'A formula-capable workbook — =SUM(A1:B3), arithmetic with refs, circular-reference detection, keyboard-first editing, a formula bar, and sheet tabs (click to switch, double-click to rename). The engine is in-house.',
     example: `<aurora-spreadsheet id="docSs" rows="8" cols="6" style="width:100%"></aurora-spreadsheet>`,
     attributes: [['rows / cols', 'Sheet dimensions (default 12 × 8)']],
     events: [['aurora-change', '{ ref, raw, value } per commit']],
@@ -2785,8 +2785,16 @@ export const DOCS: ComponentDoc[] = [
     methods: [
       ['setCell(ref, raw) / getCell(ref) / valueAt(ref)', 'Raw in, computed out'],
       ['data', '{ A1: raw } map in/out'],
-      ['toCsv() / toExcel() / exportExcel()', 'Computed values as CSV or .xlsx (in-house writer)'],
-      ['importExcel(bytes)', 'Load a .xlsx first worksheet (in-house zip reader, store + deflate)'],
+      [
+        'toCsv() / toExcel() / exportExcel()',
+        'CSV of the active sheet; .xlsx of every tab (in-house writer)',
+      ],
+      [
+        'importExcel(bytes)',
+        'Load every worksheet into tabs (in-house zip reader, store + deflate)',
+      ],
+      ['addSheet(name?) / removeSheet(i) / renameSheet(i, name)', 'Manage tabs from code'],
+      ['activeSheet / sheetNames', 'Switch tabs programmatically; aurora-sheet fires on change'],
       ['formatCell(patch, ref?) / styles', 'Bold, italic, align, color per cell'],
       ['AuroraSpreadsheet.registerFunction(name, fn)', 'Extend the formula engine'],
     ],

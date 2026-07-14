@@ -114,3 +114,57 @@ describe('spreadsheet xlsx import (v1.10)', () => {
     b.remove()
   })
 })
+
+describe('spreadsheet multiple sheets (v2.2)', () => {
+  it('holds independent data per sheet and switches via tabs', () => {
+    const el = make()
+    el.data = { A1: 'first' }
+    el.addSheet('Budget')
+    expect(el.sheetNames).toEqual(['Sheet1', 'Budget'])
+    expect(el.activeSheet).toBe(1)
+    expect(el.getCell('A1')).toBe('')
+    el.data = { A1: 'second' }
+    el.activeSheet = 0
+    expect(el.getCell('A1')).toBe('first')
+    const tabs = el.shadowRoot?.querySelectorAll<HTMLButtonElement>('.tabs .tab')
+    expect(tabs?.length).toBe(2)
+    tabs?.[1]?.click()
+    expect(el.activeSheet).toBe(1)
+    expect(el.getCell('A1')).toBe('second')
+    el.remove()
+  })
+
+  it('emits aurora-sheet on switch and supports rename/remove', () => {
+    const el = make()
+    el.addSheet()
+    let detail: { index: number; name?: string } | null = null
+    el.addEventListener('aurora-sheet', (e) => {
+      detail = (e as CustomEvent<{ index: number; name?: string }>).detail
+    })
+    el.activeSheet = 0
+    expect(detail).toEqual({ index: 0, name: 'Sheet1' })
+    el.renameSheet(1, 'Data')
+    expect(el.sheetNames[1]).toBe('Data')
+    el.removeSheet(1)
+    el.removeSheet(0)
+    expect(el.sheetNames).toEqual(['Sheet1'])
+    el.remove()
+  })
+
+  it('round-trips every tab through xlsx export and import', async () => {
+    const a = make()
+    a.data = { A1: 'one', B1: '=1+1' }
+    a.addSheet('Numbers')
+    a.data = { A1: '41.5' }
+    const bytes = a.toExcel()
+    const b = make()
+    await b.importExcel(bytes)
+    expect(b.sheetNames).toEqual(['Sheet1', 'Numbers'])
+    expect(b.getCell('A1')).toBe('one')
+    expect(b.getCell('B1')).toBe('2')
+    b.activeSheet = 1
+    expect(b.getCell('A1')).toBe('41.5')
+    a.remove()
+    b.remove()
+  })
+})
