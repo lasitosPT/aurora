@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.9.0
+
+Long-tail depth, round one.
+
+- `aurora-scheduler` — drag an event's bottom edge to resize it in half-hour snaps
+  (base events only; emits `aurora-update`)
+- `aurora-grid` — the column menu grows checkbox value filters: distinct column
+  values with check-to-include semantics and a clear action, composing with the
+  operator filter row.
+
 ## 1.8.0
 
 Gantt depth.

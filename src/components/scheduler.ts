@@ -41,6 +41,7 @@ const STYLE = `
   .ev time { display: block; opacity: 0.75; font-size: 0.68rem; }
   .ev .rep { position: absolute; right: 5px; top: 3px; font-size: 0.66rem; opacity: 0.7; }
   .ev.dragging { opacity: 0.85; z-index: 4; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); cursor: grabbing; }
+  .ev .rsz { position: absolute; left: 0; right: 0; bottom: 0; height: 7px; cursor: ns-resize; }
   .resources { display: flex; gap: 12px; padding: 6px 14px; font-size: 0.74rem; color: var(--aurora-muted, #9a98b3);
     border-bottom: 1px solid var(--aurora-border, rgba(255,255,255,0.06)); flex-wrap: wrap; }
   .resources i { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
@@ -268,7 +269,7 @@ export class AuroraScheduler extends AuroraElement {
               const top = ((s.getHours() + s.getMinutes() / 60 - h0) / slots) * 100
               const height = Math.max(((en.getTime() - s.getTime()) / 3600000 / slots) * 100, 3)
               const color = this.colorOf(e)
-              return `<div class="ev${occurrence ? ' occ' : ''}" data-i="${idx}" data-occ="${occurrence}" role="button" tabindex="0" style="top:${top}%;height:${height}%;${color ? `--c:${color}` : ''}">${escapeHtml(e.title)}${e.repeat ? '<span class="rep" aria-label="Repeats">↻</span>' : ''}<time>${hm(s)}–${hm(en)}</time></div>`
+              return `<div class="ev${occurrence ? ' occ' : ''}" data-i="${idx}" data-occ="${occurrence}" role="button" tabindex="0" style="top:${top}%;height:${height}%;${color ? `--c:${color}` : ''}">${escapeHtml(e.title)}${e.repeat ? '<span class="rep" aria-label="Repeats">↻</span>' : ''}<time>${hm(s)}–${hm(en)}</time>${occurrence ? '' : '<span class="rsz" aria-hidden="true"></span>'}</div>`
             })
             .join('')
           return `<div class="day${key === today ? ' today' : ''}" data-key="${key}" style="height: calc(var(--slot) * ${slots})">${evs}</div>`
@@ -376,6 +377,7 @@ export class AuroraScheduler extends AuroraElement {
           const event = this.#events[Number(el.dataset['i'])]
           if (!event) return
           e.preventDefault()
+          const resizing = (e.target as HTMLElement).classList?.contains('rsz')
           const sx = e.clientX
           const sy = e.clientY
           let moved = false
@@ -383,7 +385,16 @@ export class AuroraScheduler extends AuroraElement {
           const onMove = (m: PointerEvent): void => {
             if (Math.abs(m.clientX - sx) + Math.abs(m.clientY - sy) > 4) moved = true
             el.classList.add('dragging')
-            el.style.transform = `translate(${m.clientX - sx}px, ${m.clientY - sy}px)`
+            if (resizing) {
+              const grow = m.clientY - sy
+              el.style.height = `calc(${el.style.height.split('calc').pop() ?? el.style.height} + 0px)`
+              el.style.transform = ''
+              el.style.marginBottom = `${-grow}px`
+              el.style.zIndex = '4'
+              el.style.minHeight = `${el.offsetHeight + grow > 14 ? el.offsetHeight + grow : 14}px`
+            } else {
+              el.style.transform = `translate(${m.clientX - sx}px, ${m.clientY - sy}px)`
+            }
           }
           const onUp = (u: PointerEvent): void => {
             el.removeEventListener('pointermove', onMove)
@@ -391,11 +402,37 @@ export class AuroraScheduler extends AuroraElement {
             el.removeEventListener('pointercancel', onUp)
             el.classList.remove('dragging')
             el.style.transform = ''
+            el.style.minHeight = ''
+            el.style.marginBottom = ''
             if (!moved) return
             draggedRecently = true
             window.setTimeout(() => {
               draggedRecently = false
             }, 0)
+            if (resizing) {
+              const col = el.closest('.day') as HTMLElement | null
+              const rect = col?.getBoundingClientRect()
+              if (!col || !rect || !rect.height) {
+                this.render()
+                return
+              }
+              const h0 = this.numberAttr('start-hour', 8)
+              const h1 = this.numberAttr('end-hour', 19)
+              const frac = Math.min(Math.max((u.clientY - rect.top) / rect.height, 0.02), 1)
+              const minutes = Math.round((frac * (h1 - h0) * 60) / 30) * 30
+              const endH = h0 + Math.floor(minutes / 60)
+              const endM = minutes % 60
+              const key = col.dataset['key'] ?? event.start.slice(0, 10)
+              const newEnd = `${key}T${String(endH).padStart(2, '0')}:${String(endM).padStart(2, '0')}`
+              if (newEnd > event.start) event.end = newEnd
+              this.render()
+              this.dispatchEvent(
+                new CustomEvent('aurora-update', {
+                  detail: { event, start: event.start, end: event.end },
+                }),
+              )
+              return
+            }
             const target = Array.from(this.root.querySelectorAll<HTMLElement>('.day')).find((d) => {
               const r = d.getBoundingClientRect()
               return r.width > 0 && u.clientX >= r.left && u.clientX <= r.right

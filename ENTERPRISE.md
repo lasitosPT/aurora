@@ -100,7 +100,7 @@ ProgressBar ✅ · Skeleton ✅ · Sortable ✅ · TaskBoard ✅ (`aurora-taskbo
 | ------------------- | ------------------------------------------------------------------------------------- |
 | Data binding        | ✅ local arrays + `createDataSource()` remote adapter                                 |
 | Editing             | ✅ inline + popup + per-column validators; batch queue ⬜, custom editor renderers ⬜ |
-| Filtering           | ✅ filter row + 5 operators + global search; checkbox/menu filter UI ⬜               |
+| Filtering           | ✅ filter row + 5 operators + global search + checkbox value filters in column menus  |
 | Grouping            | ✅ groupBy + collapsible + per-group aggregates; load-on-demand 🚫 (server concern)   |
 | Paging              | ✅ client-side + page sizes; server paging waits on the DataSource adapter            |
 | Sorting             | ✅ single + multi (Shift+click) with order badges                                     |

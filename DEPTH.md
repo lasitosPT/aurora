@@ -82,16 +82,16 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 
 ## Scheduler
 
-| Kendo feature              | aurora                               |
-| -------------------------- | ------------------------------------ |
-| Local/remote data          | ✅ events (+ adapter)                |
-| Views + custom views       | ✅ day/week/month/agenda (custom ⬜) |
-| Resources                  | ✅ colors + legend                   |
-| Timezones                  | ⬜ (ISO local by design; documented) |
-| Printing                   | ⬜                                   |
-| Adaptive rendering         | 🔶 responsive CSS                    |
-| Recurrence                 | ✅ daily/weekly/monthly + until      |
-| Drag to move/resize events | ✅ move w/ 30-min snap (resize ⬜)   |
+| Kendo feature              | aurora                                     |
+| -------------------------- | ------------------------------------------ |
+| Local/remote data          | ✅ events (+ adapter)                      |
+| Views + custom views       | ✅ day/week/month/agenda (custom ⬜)       |
+| Resources                  | ✅ colors + legend                         |
+| Timezones                  | ⬜ (ISO local by design; documented)       |
+| Printing                   | ⬜                                         |
+| Adaptive rendering         | 🔶 responsive CSS                          |
+| Recurrence                 | ✅ daily/weekly/monthly + until            |
+| Drag to move/resize events | ✅ move + bottom-edge resize, 30-min snaps |
 
 ## Spreadsheet
 

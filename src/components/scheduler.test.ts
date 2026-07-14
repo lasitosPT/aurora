@@ -152,3 +152,26 @@ describe('scheduler depth (v1.6)', () => {
     el.remove()
   })
 })
+
+describe('scheduler event resize (v1.9)', () => {
+  it('renders resize grips on base events only', () => {
+    const el = document.createElement('aurora-scheduler') as AuroraScheduler
+    el.setAttribute('date', '2026-07-13')
+    document.body.append(el)
+    el.events = [
+      { title: 'Base', start: '2026-07-13T10:00', end: '2026-07-13T11:00' },
+      {
+        title: 'Rec',
+        start: '2026-07-13T14:00',
+        end: '2026-07-13T14:30',
+        repeat: 'daily',
+        until: '2026-07-15',
+      },
+    ]
+    const base = el.shadowRoot?.querySelector('.ev[data-occ="false"]')
+    expect(base?.querySelector('.rsz')).not.toBeNull()
+    const occ = el.shadowRoot?.querySelector('.ev[data-occ="true"]')
+    expect(occ?.querySelector('.rsz')).toBeNull()
+    el.remove()
+  })
+})

@@ -497,3 +497,33 @@ describe('grid wave 6', () => {
     el.remove()
   })
 })
+
+describe('grid checkbox value filters (v1.9)', () => {
+  it('filters rows to checked distinct values from the column menu', () => {
+    const el = document.createElement('aurora-grid') as AuroraGrid
+    el.setAttribute('column-menu', '')
+    document.body.append(el)
+    el.columns = [
+      { field: 'name', title: 'Name' },
+      { field: 'lang', title: 'Lang' },
+    ]
+    el.data = [
+      { name: 'pulse', lang: 'TypeScript' },
+      { name: 'aurora', lang: 'TypeScript' },
+      { name: 'volley', lang: 'Go' },
+    ]
+    el.shadowRoot?.querySelector<HTMLButtonElement>('[data-cm="lang"]')?.click()
+    const boxes = el.shadowRoot?.querySelectorAll<HTMLInputElement>('.vf input[type="checkbox"]')
+    expect(boxes?.length).toBe(2)
+    const goBox = Array.from(boxes ?? []).find((b) => b.dataset['v'] === 'Go')
+    if (goBox) {
+      goBox.checked = false
+      goBox.dispatchEvent(new Event('change'))
+    }
+    expect(el.shadowRoot?.querySelectorAll('tbody tr[data-index]').length).toBe(2)
+    el.shadowRoot?.querySelector<HTMLButtonElement>('[data-cm="lang"]')?.click()
+    el.shadowRoot?.querySelector<HTMLButtonElement>('.colmenu [data-a="vf-clear"]')?.click()
+    expect(el.shadowRoot?.querySelectorAll('tbody tr[data-index]').length).toBe(3)
+    el.remove()
+  })
+})

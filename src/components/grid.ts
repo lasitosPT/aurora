@@ -86,6 +86,10 @@ const STYLE = `
     font-weight: 400; font-size: 0.85rem;
   }
   .colmenu button { all: unset; cursor: pointer; padding: 0.42rem 0.7rem; border-radius: 7px; }
+  .colmenu .vf { border-top: 1px solid var(--aurora-border, rgba(255,255,255,0.1)); margin-top: 5px; padding-top: 5px; max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; }
+  .colmenu .vf-row { display: flex; align-items: center; gap: 7px; padding: 0.28rem 0.7rem; cursor: pointer; font-size: 0.84rem; }
+  .colmenu .vf-row:hover { background: rgba(109, 92, 255, 0.1); border-radius: 6px; }
+  .colmenu .vf input { accent-color: var(--aurora-accent, #6d5cff); }
   .colmenu button:hover, .colmenu button:focus-visible { background: rgba(109, 92, 255, 0.14); }
   .cell-error {
     position: absolute; z-index: 5; margin-top: 2px; padding: 3px 9px; font-size: 0.74rem;
@@ -260,6 +264,7 @@ export class AuroraGrid extends AuroraElement {
   private sorts: { field: string; dir: 'asc' | 'desc' }[] = []
   private filters = new Map<string, string>()
   private ops = new Map<string, FilterOp>()
+  private valueFilters = new Map<string, Set<string>>()
   private search = ''
   private page = 0
   private pageSize = -1
@@ -548,6 +553,10 @@ export class AuroraGrid extends AuroraElement {
             .includes(q),
         ),
       )
+    }
+    for (const [field, allowed] of this.valueFilters) {
+      if (!allowed.size) continue
+      rows = rows.filter((row) => allowed.has(String(row[field] ?? '')))
     }
     for (const [field, query] of this.filters) {
       if (!query) continue
@@ -904,16 +913,50 @@ export class AuroraGrid extends AuroraElement {
         const menu = document.createElement('div')
         menu.className = 'colmenu'
         menu.setAttribute('role', 'menu')
+        const distinct = [...new Set(this.#data.map((r) => String(r[field] ?? '')))]
+          .sort()
+          .slice(0, 12)
+        const active = this.valueFilters.get(field)
         menu.innerHTML = `
           <button data-a="asc">↑ Sort ascending</button>
           <button data-a="desc">↓ Sort descending</button>
           <button data-a="clear">✕ Clear sort</button>
           <button data-a="hide">Hide column</button>
-          <button data-a="freeze">${col?.frozen ? 'Unfreeze' : 'Freeze'} column</button>`
+          <button data-a="freeze">${col?.frozen ? 'Unfreeze' : 'Freeze'} column</button>
+          <div class="vf" role="group" aria-label="Filter values">${distinct
+            .map(
+              (v) =>
+                `<label class="vf-row"><input type="checkbox" data-v="${escapeHtml(v)}" ${!active || active.has(v) ? 'checked' : ''}/> ${escapeHtml(v) || '(empty)'}</label>`,
+            )
+            .join('')}<button data-a="vf-clear">Clear value filter</button></div>`
         btn.closest('th')?.appendChild(menu)
+        menu.querySelectorAll<HTMLInputElement>('.vf input[type="checkbox"]').forEach((box) =>
+          box.addEventListener('change', () => {
+            const checked = Array.from(
+              menu.querySelectorAll<HTMLInputElement>('.vf input[type="checkbox"]'),
+            )
+              .filter((b) => b.checked)
+              .map((b) => b.dataset.v ?? '')
+            if (checked.length === distinct.length) this.valueFilters.delete(field)
+            else this.valueFilters.set(field, new Set(checked))
+            this.page = 0
+            this.render()
+            this.dispatchEvent(
+              new CustomEvent('aurora-filter', {
+                detail: { filters: Object.fromEntries(this.filters) },
+              }),
+            )
+          }),
+        )
         menu.querySelectorAll<HTMLButtonElement>('button').forEach((item) =>
           item.addEventListener('click', () => {
             const a = item.dataset.a
+            if (a === 'vf-clear') {
+              this.valueFilters.delete(field)
+              this.page = 0
+              this.render()
+              return
+            }
             if (a === 'asc' || a === 'desc') this.sorts = [{ field, dir: a }]
             else if (a === 'clear') this.sorts = this.sorts.filter((x) => x.field !== field)
             else if (a === 'hide') {
