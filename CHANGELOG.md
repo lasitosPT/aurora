@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1.0
+
+Calendar depth (from the Kendo feature-list audit in DEPTH.md).
+
+- `aurora-calendar` — month/year/decade zoom views (click the title to zoom out, a
+  cell to drill in, `start-view` to begin zoomed), `min`/`max` bounds,
+  `disabled-dates` lists and a `disabledDate` veto function, ISO `week-numbers`,
+  and `hide-other-months`. Everything composing the calendar — datepicker,
+  datetimepicker, multiviewcalendar — inherits the upgrades.
+
 ## 1.0.0
 
 One-oh. The catalogue is complete.

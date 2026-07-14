@@ -176,6 +176,12 @@ export const DOCS: ComponentDoc[] = [
     example: `<aurora-calendar value="2026-07-11"></aurora-calendar>`,
     attributes: [
       ['value', 'ISO date (yyyy-mm-dd)'],
+      [
+        'min / max / disabled-dates',
+        'Bound the pickable range; comma ISO list (or a disabledDate function)',
+      ],
+      ['week-numbers / hide-other-months', 'ISO week column; blank the spill-over days'],
+      ['start-view', '"month" (default), "year", "decade" — title click zooms out'],
       ['name', 'Form field name'],
     ],
     events: [['aurora-change', '{ value } — ISO date on pick']],
@@ -202,6 +208,12 @@ export const DOCS: ComponentDoc[] = [
     example: `<aurora-datepicker value="2026-07-11" format="locale"></aurora-datepicker>`,
     attributes: [
       ['value', 'ISO date (yyyy-mm-dd)'],
+      [
+        'min / max / disabled-dates',
+        'Bound the pickable range; comma ISO list (or a disabledDate function)',
+      ],
+      ['week-numbers / hide-other-months', 'ISO week column; blank the spill-over days'],
+      ['start-view', '"month" (default), "year", "decade" — title click zooms out'],
       ['placeholder', 'Trigger text before a pick'],
       ['format', '"iso" (default) or "locale" display'],
       ['name', 'Form field name'],
