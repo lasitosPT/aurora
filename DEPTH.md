@@ -43,8 +43,8 @@ Legend: ✅ have · 🔶 partial/equivalent · ⬜ open
 | Appearance             | ✅ CSS vars + palette                |
 | Axes (titles, config)  | ✅ x/y titles (custom scales ⬜)     |
 | Data series / types    | ✅ 9 types (bubble/polar/bullet ⬜)  |
-| Date series            | ⬜                                   |
-| Error bars             | ⬜                                   |
+| Date series            | ✅ date-axis + base-unit + aggregate |
+| Error bars             | ✅ ± or [low, high] whiskers         |
 | Legend                 | ✅                                   |
 | Notes/annotations      | ⬜                                   |
 | Panes                  | ⬜                                   |

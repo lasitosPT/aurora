@@ -511,13 +511,16 @@ export const DOCS: ComponentDoc[] = [
       ['stacked', 'Stack bar series instead of grouping'],
       ['chart-title / x-title / y-title', 'Captions around the plot'],
       ['empty-text', 'No-data message (shown when every series is empty)'],
+      ['date-axis', 'Parse labels as dates and bucket into calendar units, zero-filling gaps'],
+      ['base-unit', '"day", "week", "month", "year" — or auto by span'],
+      ['aggregate', '"sum" (default), "avg", "min", "max" for points sharing a bucket'],
       ['aria-label', 'Describe the chart (role="img")'],
     ],
     events: [],
     cssvars: [['--aurora-chart-height', 'Canvas height (default 240px)']],
     methods: [
       ['labels', 'string[] category names'],
-      ['series', '{ label, data, color? }[] — palette colors by default'],
+      ['series', '{ label, data, color?, errors? }[] — errors draw ± or [low, high] whiskers'],
     ],
     tutorial: [
       {

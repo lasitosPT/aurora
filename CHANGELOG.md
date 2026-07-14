@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.4.0
+
+Chart: date series and error bars.
+
+- `date-axis` parses labels as dates and buckets points into calendar units
+  (`base-unit` day/week/month/year, auto-picked from the span), aggregating
+  collisions (`aggregate` sum/avg/min/max) and zero-filling empty buckets —
+  a true time axis; `aggregateByDate()` exported for reuse
+- `series.errors` draws per-point error-bar whiskers: a symmetric ± number or
+  absolute `[low, high]`; the y-scale expands to fit them
+- Crowded category labels now thin out instead of overlapping
+- Fixed: the no-data message could stay visible under a populated chart
+  (author display beat the hidden attribute) and push the legend off-view
+
 ## 2.3.0
 
 Gantt: task tree, columns, sorting.

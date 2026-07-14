@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import './chart'
+import { aggregateByDate } from './chart'
 import type { AuroraChart } from './chart'
 
 describe('aurora-chart', () => {
@@ -110,5 +111,61 @@ describe('chart depth (v1.3)', () => {
     el.series = [{ label: 'A', data: [1] }]
     expect(typeof el.toImage()).toBe('string')
     el.remove()
+  })
+})
+
+describe('date series (v2.4)', () => {
+  it('buckets daily points into months, aggregating and zero-filling', () => {
+    const out = aggregateByDate(
+      ['2026-01-05', '2026-01-20', '2026-03-02'],
+      [{ label: 'Sales', data: [10, 5, 7] }],
+      'month',
+    )
+    expect(out.unit).toBe('month')
+    expect(out.labels).toEqual(['Jan 26', 'Feb 26', 'Mar 26'])
+    expect(out.series[0]?.data).toEqual([15, 0, 7])
+  })
+
+  it('supports avg/min/max aggregates', () => {
+    const labels = ['2026-01-01', '2026-01-02']
+    const series = [{ label: 'x', data: [10, 20] }]
+    expect(aggregateByDate(labels, series, 'month', 'avg').series[0]?.data).toEqual([15])
+    expect(aggregateByDate(labels, series, 'month', 'min').series[0]?.data).toEqual([10])
+    expect(aggregateByDate(labels, series, 'month', 'max').series[0]?.data).toEqual([20])
+  })
+
+  it('picks a base unit from the span when auto', () => {
+    expect(aggregateByDate(['2026-01-01', '2026-01-04'], [{ label: 'x', data: [1, 1] }]).unit).toBe(
+      'day',
+    )
+    expect(aggregateByDate(['2026-01-01', '2026-03-01'], [{ label: 'x', data: [1, 1] }]).unit).toBe(
+      'week',
+    )
+    expect(aggregateByDate(['2024-07-01', '2026-01-01'], [{ label: 'x', data: [1, 1] }]).unit).toBe(
+      'month',
+    )
+    expect(aggregateByDate(['2020-01-01', '2026-01-01'], [{ label: 'x', data: [1, 1] }]).unit).toBe(
+      'year',
+    )
+  })
+
+  it('weeks start on Monday and label by start date', () => {
+    const out = aggregateByDate(
+      ['2026-07-07', '2026-07-14'], // Tue + following Tue
+      [{ label: 'x', data: [1, 2] }],
+      'week',
+    )
+    expect(out.labels).toEqual(['Jul 6', 'Jul 13'])
+    expect(out.series[0]?.data).toEqual([1, 2])
+  })
+
+  it('carries error bars only through single-point buckets', () => {
+    const out = aggregateByDate(
+      ['2026-01-01', '2026-02-01', '2026-02-02'],
+      [{ label: 'x', data: [10, 4, 6], errors: [2, 1, 1] }],
+      'month',
+    )
+    expect(out.series[0]?.errors).toEqual([2, null])
+    expect(out.series[0]?.data).toEqual([10, 10])
   })
 })

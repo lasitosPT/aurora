@@ -23,6 +23,7 @@ const STYLE = `
     display: grid; place-items: center; height: var(--aurora-chart-height, 240px);
     color: var(--aurora-muted, #9a98b3); font-size: 0.88rem;
   }
+  .nodata[hidden] { display: none; }
   .tip {
     position: absolute; pointer-events: none; display: none; padding: 6px 10px; font-size: 0.8rem;
     background: var(--aurora-surface, #16161f); border: 1px solid var(--aurora-border, rgba(255,255,255,0.16));
@@ -36,6 +37,96 @@ export interface ChartSeries {
   label: string
   data: number[]
   color?: string
+  /** Per-point error bars: a symmetric ± number, an absolute [low, high], or null. */
+  errors?: ([number, number] | number | null)[]
+}
+
+export type DateUnit = 'day' | 'week' | 'month' | 'year'
+
+function unitFloor(t: number, unit: DateUnit): number {
+  const d = new Date(t)
+  if (unit === 'year') return new Date(d.getFullYear(), 0, 1).getTime()
+  if (unit === 'month') return new Date(d.getFullYear(), d.getMonth(), 1).getTime()
+  if (unit === 'week') {
+    const day = new Date(d.getFullYear(), d.getMonth(), d.getDate())
+    day.setDate(day.getDate() - ((day.getDay() + 6) % 7))
+    return day.getTime()
+  }
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime()
+}
+
+function unitNext(t: number, unit: DateUnit): number {
+  const d = new Date(t)
+  if (unit === 'year') return new Date(d.getFullYear() + 1, 0, 1).getTime()
+  if (unit === 'month') return new Date(d.getFullYear(), d.getMonth() + 1, 1).getTime()
+  d.setDate(d.getDate() + (unit === 'week' ? 7 : 1))
+  return d.getTime()
+}
+
+function unitLabel(t: number, unit: DateUnit): string {
+  const d = new Date(t)
+  if (unit === 'year') return String(d.getFullYear())
+  if (unit === 'month') return d.toLocaleDateString('en', { month: 'short', year: '2-digit' })
+  return d.toLocaleDateString('en', { month: 'short', day: 'numeric' })
+}
+
+/**
+ * Bucket date-labelled points into calendar units, aggregating collisions and
+ * zero-filling empty buckets so the axis is a true time axis. Error bars are
+ * carried through only when a bucket holds a single point.
+ */
+export function aggregateByDate(
+  labels: string[],
+  series: ChartSeries[],
+  unit: DateUnit | 'auto' = 'auto',
+  aggregate: 'sum' | 'avg' | 'min' | 'max' = 'sum',
+): { labels: string[]; series: ChartSeries[]; unit: DateUnit } {
+  const times = labels.map((l) => new Date(l.includes('T') ? l : `${l}T00:00`).getTime())
+  const valid = times.filter((t) => !Number.isNaN(t))
+  if (!valid.length) return { labels, series, unit: 'day' }
+  const lo = Math.min(...valid)
+  const hi = Math.max(...valid)
+  let u: DateUnit
+  if (unit !== 'auto') u = unit
+  else {
+    const span = (hi - lo) / 86400000
+    u = span > 730 ? 'year' : span > 120 ? 'month' : span > 21 ? 'week' : 'day'
+  }
+  const buckets: number[] = []
+  for (let t = unitFloor(lo, u); t <= hi; t = unitNext(t, u)) buckets.push(t)
+  const index = new Map(buckets.map((t, i) => [t, i]))
+  const outSeries = series.map((s) => {
+    const groups: number[][] = buckets.map(() => [])
+    const errGroups: (([number, number] | number | null)[] | null)[] = buckets.map(() => null)
+    s.data.forEach((v, i) => {
+      const t = times[i]
+      if (t === undefined || Number.isNaN(t)) return
+      const bi = index.get(unitFloor(t, u))
+      if (bi === undefined) return
+      ;(groups[bi] as number[]).push(v)
+      const err = s.errors?.[i]
+      if (err !== undefined) {
+        const list = errGroups[bi] ?? []
+        list.push(err)
+        errGroups[bi] = list
+      }
+    })
+    const data = groups.map((g) => {
+      if (!g.length) return 0
+      if (aggregate === 'avg') return g.reduce((a, b) => a + b, 0) / g.length
+      if (aggregate === 'min') return Math.min(...g)
+      if (aggregate === 'max') return Math.max(...g)
+      return g.reduce((a, b) => a + b, 0)
+    })
+    const errors = s.errors
+      ? groups.map((g, i) => {
+          const list = errGroups[i]
+          return g.length === 1 && list?.length === 1 ? (list[0] ?? null) : null
+        })
+      : undefined
+    return { ...s, data, ...(errors ? { errors } : {}) }
+  })
+  return { labels: buckets.map((t) => unitLabel(t, u)), series: outSeries, unit: u }
 }
 
 /**
@@ -44,8 +135,12 @@ export interface ChartSeries {
  * animated intro, plus `chart-title`/`x-title`/`y-title` captions, a no-data
  * state (`empty-text`), and PNG export (`toImage()`/`exportImage()`). Assign
  * `labels` (string[] categories) and `series`
- * (`{ label, data, color? }[]`; donut/pie use the first series). Bars can
- * `stacked`; height via `--aurora-chart-height`.
+ * (`{ label, data, color?, errors? }[]`; donut/pie use the first series).
+ * Bars can `stacked`; height via `--aurora-chart-height`. With `date-axis`,
+ * labels parse as dates and bucket into calendar units (`base-unit`
+ * day/week/month/year, default auto by span) aggregating collisions
+ * (`aggregate` sum/avg/min/max) and zero-filling gaps — a true date series.
+ * `series.errors` draws per-point error-bar whiskers (± number or [low, high]).
  */
 export class AuroraChart extends AuroraElement {
   #series: ChartSeries[] = []
@@ -68,6 +163,30 @@ export class AuroraChart extends AuroraElement {
 
   set labels(v: string[]) {
     this.#labels = v ?? []
+  }
+
+  /** labels/series after date bucketing (identity without date-axis). */
+  private view(): { labels: string[]; series: ChartSeries[] } {
+    if (!this.hasAttribute('date-axis')) return { labels: this.#labels, series: this.#series }
+    const unitAttr = this.getAttribute('base-unit')
+    const aggAttr = this.getAttribute('aggregate')
+    return aggregateByDate(
+      this.#labels,
+      this.#series,
+      unitAttr === 'day' || unitAttr === 'week' || unitAttr === 'month' || unitAttr === 'year'
+        ? unitAttr
+        : 'auto',
+      aggAttr === 'avg' || aggAttr === 'min' || aggAttr === 'max' ? aggAttr : 'sum',
+    )
+  }
+
+  private errorRange(
+    v: number,
+    err: [number, number] | number | null | undefined,
+  ): [number, number] | null {
+    if (err === null || err === undefined) return null
+    if (typeof err === 'number') return [v - err, v + err]
+    return err
   }
 
   connectedCallback(): void {
@@ -195,16 +314,22 @@ export class AuroraChart extends AuroraElement {
       return
     }
     const stacked = type === 'bar' && this.hasAttribute('stacked')
-    const n0 = Math.max(...this.#series.map((s) => s.data.length), 1)
+    const { labels, series } = this.view()
+    const n0 = Math.max(...series.map((s) => s.data.length), 1)
     const max = stacked
       ? Math.max(
           ...Array.from({ length: n0 }, (_, i) =>
-            this.#series.reduce((sum, s) => sum + (s.data[i] ?? 0), 0),
+            series.reduce((sum, s) => sum + (s.data[i] ?? 0), 0),
           ),
           1,
         )
-      : Math.max(...this.#series.flatMap((s) => s.data), 1)
-    const n = Math.max(...this.#series.map((s) => s.data.length), 1)
+      : Math.max(
+          ...series.flatMap((s) =>
+            s.data.map((v, i) => this.errorRange(v, s.errors?.[i])?.[1] ?? v),
+          ),
+          1,
+        )
+    const n = Math.max(...series.map((s) => s.data.length), 1)
     const x0 = pad + 8
     const plotW = w - x0 - 8
     const plotH = h - pad - 6
@@ -222,11 +347,32 @@ export class AuroraChart extends AuroraElement {
       ctx.fillText(String(Math.round(v)), x0 - 6, y + 3)
     }
     ctx.textAlign = 'center'
-    this.#labels.slice(0, n).forEach((label, i) => {
-      ctx.fillText(label, x0 + ((i + 0.5) / n) * plotW, h - 6)
+    const step = Math.ceil(n / Math.max(Math.floor(plotW / 52), 1))
+    labels.slice(0, n).forEach((label, i) => {
+      if (i % step === 0) ctx.fillText(label, x0 + ((i + 0.5) / n) * plotW, h - 6)
     })
     const stackBase = new Array<number>(n).fill(0)
-    this.#series.forEach((s, si) => {
+    const whisker = (v: number, i: number, s: ChartSeries, cx: number): void => {
+      const range = this.errorRange(v, s.errors?.[i])
+      if (!range || this.progress < 1) return
+      const [lo, hi] = range
+      const yLo = 6 + plotH - (lo / max) * plotH
+      const yHi = 6 + plotH - (hi / max) * plotH
+      const cap = Math.min(plotW / n / 4, 9)
+      ctx.save()
+      ctx.strokeStyle = 'rgba(255,255,255,0.75)'
+      ctx.lineWidth = 1.2
+      ctx.beginPath()
+      ctx.moveTo(cx, yLo)
+      ctx.lineTo(cx, yHi)
+      ctx.moveTo(cx - cap, yLo)
+      ctx.lineTo(cx + cap, yLo)
+      ctx.moveTo(cx - cap, yHi)
+      ctx.lineTo(cx + cap, yHi)
+      ctx.stroke()
+      ctx.restore()
+    }
+    series.forEach((s, si) => {
       ctx.fillStyle = this.color(si)
       ctx.strokeStyle = this.color(si)
       if (type === 'bar' && stacked) {
@@ -243,7 +389,9 @@ export class AuroraChart extends AuroraElement {
         const bw = (group * 0.7) / this.#series.length
         s.data.forEach((v, i) => {
           const bh = (v / max) * plotH * this.progress
-          ctx.fillRect(x0 + i * group + group * 0.15 + si * bw, 6 + plotH - bh, bw - 2, bh)
+          const bx = x0 + i * group + group * 0.15 + si * bw
+          ctx.fillRect(bx, 6 + plotH - bh, bw - 2, bh)
+          whisker(v, i, s, bx + (bw - 2) / 2)
         })
       } else if (type === 'scatter') {
         s.data.forEach((v, i) => {
@@ -254,6 +402,7 @@ export class AuroraChart extends AuroraElement {
           ctx.globalAlpha = 0.85
           ctx.fill()
           ctx.globalAlpha = 1
+          whisker(v, i, s, x)
         })
       } else {
         ctx.lineWidth = 2
@@ -269,6 +418,10 @@ export class AuroraChart extends AuroraElement {
           else ctx.lineTo(p.x, p.y)
         })
         ctx.stroke()
+        if (type === 'line')
+          s.data.slice(0, upto + 1).forEach((v, i) => {
+            whisker(v, i, s, x0 + ((i + 0.5) / n) * plotW)
+          })
         if (type === 'area' && pts.length > 1) {
           const first = pts[0]
           const last = pts[pts.length - 1]
@@ -347,7 +500,6 @@ export class AuroraChart extends AuroraElement {
     if (!canvas || this.#series.length === 0) return
     const rect = canvas.getBoundingClientRect()
     const type = this.getAttribute('type') ?? 'bar'
-    const n = Math.max(...this.#series.map((s) => s.data.length), 1)
     if (type === 'funnel' || type === 'pyramid') {
       const data = this.#series[0]?.data ?? []
       const gap = 3
@@ -398,13 +550,17 @@ export class AuroraChart extends AuroraElement {
     }
     const x0 = 42
     const plotW = rect.width - x0 - 8
-    const i = Math.min(Math.max(Math.floor(((e.clientX - rect.left - x0) / plotW) * n), 0), n - 1)
-    const lines = this.#series.map(
+    const { labels, series } = this.view()
+    const nv = Math.max(...series.map((s) => s.data.length), 1)
+    const i = Math.min(Math.max(Math.floor(((e.clientX - rect.left - x0) / plotW) * nv), 0), nv - 1)
+    const fmt = (v: number | undefined): string =>
+      v === undefined ? '–' : String(Math.round(v * 100) / 100)
+    const lines = series.map(
       (s, si) =>
-        `<span style="color:${this.color(si)}">●</span> ${escapeHtml(s.label)}: ${s.data[i] ?? '–'}`,
+        `<span style="color:${this.color(si)}">●</span> ${escapeHtml(s.label)}: ${fmt(s.data[i])}`,
     )
     this.tip(
-      `<strong>${escapeHtml(this.#labels[i] ?? String(i))}</strong><br>${lines.join('<br>')}`,
+      `<strong>${escapeHtml(labels[i] ?? String(i))}</strong><br>${lines.join('<br>')}`,
       e.clientX - rect.left,
       e.clientY - rect.top,
     )
