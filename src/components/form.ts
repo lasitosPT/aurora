@@ -2,6 +2,7 @@ import { gsap } from 'gsap'
 import { AuroraElement } from '../core/base'
 import { prefersReducedMotion } from '../core/motion'
 import { register } from '../core/register'
+import { t } from '../core/i18n'
 
 export interface FormRule {
   type: 'required' | 'min' | 'max' | 'pattern' | 'email' | 'custom'
@@ -138,30 +139,30 @@ export class AuroraForm extends AuroraElement {
       const msg = rule.message
       switch (rule.type) {
         case 'required':
-          if (this.empty(value)) return msg ?? 'This field is required'
+          if (this.empty(value)) return msg ?? t('form.required')
           break
         case 'min': {
           const n = typeof value === 'string' ? value.trim().length : Number(value)
           if (!this.empty(value) && n < Number(rule.value ?? 0))
-            return msg ?? `Must be at least ${rule.value}`
+            return msg ?? t('form.min', String(rule.value))
           break
         }
         case 'max': {
           const n = typeof value === 'string' ? value.trim().length : Number(value)
           if (!this.empty(value) && n > Number(rule.value ?? 0))
-            return msg ?? `Must be at most ${rule.value}`
+            return msg ?? t('form.max', String(rule.value))
           break
         }
         case 'pattern':
           if (!this.empty(value) && !new RegExp(String(rule.value ?? '')).test(String(value)))
-            return msg ?? 'Invalid format'
+            return msg ?? t('form.pattern')
           break
         case 'email':
           if (!this.empty(value) && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(value)))
-            return msg ?? 'Enter a valid email'
+            return msg ?? t('form.email')
           break
         case 'custom':
-          if (rule.fn && !rule.fn(value, data)) return msg ?? 'Invalid value'
+          if (rule.fn && !rule.fn(value, data)) return msg ?? t('form.invalid')
           break
       }
     }

@@ -15,13 +15,13 @@ const STYLE = `
   .viewport { overflow: auto; max-height: var(--aurora-grid-height, none); }
   table { width: 100%; border-collapse: collapse; }
   th, td {
-    text-align: right; padding: 0.55rem 0.9rem; white-space: nowrap;
+    text-align: end; padding: 0.55rem 0.9rem; white-space: nowrap;
     border-bottom: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.07));
     font-variant-numeric: tabular-nums;
   }
   thead th { position: sticky; top: 0; background: var(--aurora-surface, #14141f); z-index: 2; font-weight: 600; }
   th.rowhead, td.rowhead {
-    text-align: left; position: sticky; left: 0; background: var(--aurora-surface, #14141f); z-index: 1;
+    text-align: start; position: sticky; left: 0; background: var(--aurora-surface, #14141f); z-index: 1;
     font-weight: 500;
   }
   thead th.rowhead { z-index: 3; }

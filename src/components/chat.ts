@@ -3,6 +3,7 @@ import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { prefersReducedMotion } from '../core/motion'
 import { register } from '../core/register'
+import { t } from '../core/i18n'
 import './avatar'
 
 export interface ChatMessage {
@@ -35,7 +36,7 @@ const STYLE = `
     border-bottom-left-radius: 16px; border-bottom-right-radius: 5px;
   }
   .meta { font-size: 0.72rem; color: var(--aurora-muted, #9a98b3); margin-top: 4px; }
-  .msg.me .meta { text-align: right; }
+  .msg.me .meta { text-align: end; }
   .typing { display: none; gap: 5px; padding: 12px 18px; align-items: center; }
   :host([typing]) .typing { display: flex; }
   .typing i {
@@ -83,13 +84,13 @@ export class AuroraChat extends AuroraElement {
   }
 
   connectedCallback(): void {
-    const placeholder = this.getAttribute('placeholder') ?? 'Type a message…'
+    const placeholder = this.getAttribute('placeholder') ?? t('chat.placeholder')
     this.root.innerHTML = `<style>${STYLE}</style>
       <div class="log" part="log" role="log" aria-live="polite"></div>
       <div class="typing" part="typing" aria-label="Typing"><i></i><i></i><i></i></div>
       <form class="composer" part="composer">
         <input part="input" placeholder="${escapeHtml(placeholder)}" aria-label="Message" />
-        <button class="send" part="send" type="submit">${escapeHtml(this.getAttribute('send-label') ?? 'Send')}</button>
+        <button class="send" part="send" type="submit">${escapeHtml(this.getAttribute('send-label') ?? t('chat.send'))}</button>
       </form>`
     this.root.querySelector('form')?.addEventListener('submit', (e) => {
       e.preventDefault()

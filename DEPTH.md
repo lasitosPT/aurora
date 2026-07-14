@@ -126,8 +126,10 @@ All 16 documented feature rows ✅ except: adaptive rendering ⬜, globalization
 batch edit queue ⬜, custom editor renderers ⬜, checkbox filter menus ⬜,
 foreign-key columns ⬜, endless remote scroll 🔶 (DataSource pattern documented).
 
-## Cross-cutting ⬜ (every Kendo component lists these)
+## Cross-cutting (every Kendo component lists these)
 
-- Globalization/localization (message strings are English literals today)
-- RTL rendering
-- Formal screen-reader audit (ARIA is in place; NVDA/VoiceOver passes not run)
+- Globalization/localization ✅ `setMessages()` registry — all built-in strings
+  resolve through `t()` with template args; ship a locale pack object and done
+- RTL rendering 🔶 logical text alignment throughout; directional layout
+  (flyout sides, frozen columns) pending a full `dir="rtl"` pass
+- Formal screen-reader audit ⬜ (ARIA is in place; NVDA/VoiceOver passes not run)

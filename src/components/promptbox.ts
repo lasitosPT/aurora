@@ -3,6 +3,7 @@ import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { prefersReducedMotion } from '../core/motion'
 import { register } from '../core/register'
+import { t } from '../core/i18n'
 
 const STYLE = `
   :host {
@@ -96,7 +97,7 @@ export class AuroraPromptbox extends AuroraElement {
       <div class="busy" aria-label="Generating" role="status"><i></i><i></i><i></i></div>
       ${chips.length ? `<div class="chips" part="chips">${chips.map((c) => `<button data-c="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('')}</div>` : ''}
       <div class="composer" part="composer">
-        <textarea part="input" rows="1" placeholder="${escapeHtml(this.getAttribute('placeholder') ?? 'Ask anything…')}" aria-label="Prompt"></textarea>
+        <textarea part="input" rows="1" placeholder="${escapeHtml(this.getAttribute('placeholder') ?? t('prompt.placeholder'))}" aria-label="Prompt"></textarea>
         <button class="send" part="send" aria-label="Send">➤</button>
       </div>`
     const area = this.root.querySelector<HTMLTextAreaElement>('textarea')

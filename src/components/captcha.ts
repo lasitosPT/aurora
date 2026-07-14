@@ -1,6 +1,7 @@
 import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { register } from '../core/register'
+import { t } from '../core/i18n'
 
 const GLYPHS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
 
@@ -60,7 +61,7 @@ export class AuroraCaptcha extends AuroraElement {
   connectedCallback(): void {
     this.root.innerHTML = `<style>${STYLE}</style>
       <div class="row"><canvas width="170" height="52" aria-hidden="true"></canvas><button class="refresh" aria-label="New challenge">↻</button></div>
-      <input aria-label="${escapeHtml(this.getAttribute('label') ?? 'Type the characters shown')}" autocomplete="off" spellcheck="false" placeholder="Type it…" />
+      <input aria-label="${escapeHtml(this.getAttribute('label') ?? 'Type the characters shown')}" autocomplete="off" spellcheck="false" placeholder="${t('captcha.placeholder')}" />
       <div class="state" aria-live="polite"></div>`
     this.root.querySelector('.refresh')?.addEventListener('click', () => this.regenerate())
     this.root.querySelector('input')?.addEventListener('input', () => this.check())
@@ -123,7 +124,7 @@ export class AuroraCaptcha extends AuroraElement {
     this.toggleAttribute('verified', valid)
     this.internals?.setFormValue(valid ? 'verified' : null)
     const state = this.root.querySelector('.state')
-    if (state) state.textContent = valid ? '✓ Verified' : ''
+    if (state) state.textContent = valid ? t('captcha.verified') : ''
     if (valid || typed.length >= this.code.length)
       this.dispatchEvent(new CustomEvent('aurora-verify', { detail: { valid } }))
   }

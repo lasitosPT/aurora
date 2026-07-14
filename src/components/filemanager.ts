@@ -3,6 +3,7 @@ import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { prefersReducedMotion } from '../core/motion'
 import { register } from '../core/register'
+import { t } from '../core/i18n'
 import './breadcrumb'
 import './treeview'
 import type { AuroraBreadcrumb } from './breadcrumb'
@@ -147,7 +148,7 @@ export class AuroraFilemanager extends AuroraElement {
               `<button class="tile" data-n="${escapeHtml(n.name)}" data-t="${n.type}" aria-selected="${this.selected === n.name}"><span class="ico" aria-hidden="true">${iconFor(n)}</span><span class="nm">${escapeHtml(n.name)}</span><span class="sz">${n.type === 'folder' ? `${n.children?.length ?? 0} items` : this.fmtSize(n.size)}</span></button>`,
           )
           .join('')
-      : '<div class="empty">This folder is empty</div>'
+      : `<div class="empty">${t('filemanager.empty')}</div>`
     files.querySelectorAll<HTMLButtonElement>('.tile').forEach((tile) => {
       tile.addEventListener('click', () => {
         this.selected = tile.dataset['n'] ?? null

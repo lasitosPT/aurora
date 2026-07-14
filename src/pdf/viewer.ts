@@ -2,6 +2,7 @@ import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { clamp } from '../core/motion'
 import { register } from '../core/register'
+import { t } from '../core/i18n'
 
 interface PdfPageLike {
   getViewport: (opts: { scale: number }) => { width: number; height: number }
@@ -80,7 +81,7 @@ export class AuroraPdfviewer extends AuroraElement {
         <button data-a="zoomin" aria-label="Zoom in">+</button>
         <a data-a="download" download href="${escapeHtml(this.getAttribute('src') ?? '')}" aria-label="Download PDF"><button tabindex="-1">⬇</button></a>
       </div>
-      <div class="stage" part="stage"><div class="state">Loading document…</div></div>`
+      <div class="stage" part="stage"><div class="state">${t('pdf.loading')}</div></div>`
     this.root
       .querySelector('[data-a="prev"]')
       ?.addEventListener('click', () => this.go(this.page - 1))
@@ -106,7 +107,7 @@ export class AuroraPdfviewer extends AuroraElement {
     } catch (err) {
       const stage = this.root.querySelector('.stage')
       if (stage)
-        stage.innerHTML = `<div class="state error">Could not load the document${err instanceof Error ? ` — ${escapeHtml(err.message)}` : ''}</div>`
+        stage.innerHTML = `<div class="state error">${t('pdf.error')}${err instanceof Error ? ` — ${escapeHtml(err.message)}` : ''}</div>`
     }
   }
 

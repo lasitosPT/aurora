@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.11.0
+
+Localization foundation.
+
+- `setMessages()`/`t()` — every built-in UI string (grid chrome, form validation
+  messages, scheduler views, empty states, placeholders across fourteen components)
+  now resolves through a message registry; pass a locale pack once and the library
+  speaks your language. Template args supported (`Must be at least {0}`).
+- RTL groundwork — component styles now use logical text alignment
+  (`start`/`end` instead of `left`/`right`) throughout.
+
 ## 1.10.0
 
 Excel files, both directions.

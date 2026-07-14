@@ -3,6 +3,7 @@ import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { prefersReducedMotion } from '../core/motion'
 import { register } from '../core/register'
+import { t } from '../core/i18n'
 
 const STYLE = `
   :host {
@@ -28,7 +29,7 @@ const STYLE = `
   .body { display: grid; grid-template-columns: 46px repeat(var(--cols, 7), 1fr); position: relative; }
   .hours { display: flex; flex-direction: column; }
   .hours span { height: var(--slot, 44px); font-size: 0.7rem; color: var(--aurora-muted, #9a98b3);
-    text-align: right; padding-right: 6px; transform: translateY(-0.55em); }
+    text-align: end; padding-right: 6px; transform: translateY(-0.55em); }
   .day { position: relative; border-left: 1px solid var(--aurora-border, rgba(255,255,255,0.06));
     background-image: repeating-linear-gradient(to bottom, transparent 0 calc(var(--slot, 44px) - 1px), rgba(255,255,255,0.05) calc(var(--slot, 44px) - 1px) var(--slot, 44px)); }
   .day.today { background-color: rgba(109, 92, 255, 0.045); }
@@ -217,7 +218,7 @@ export class AuroraScheduler extends AuroraElement {
       `<strong aria-live="polite">${this.heading()}</strong>` +
       `<div class="switch" part="switch" role="group" aria-label="View">${VIEWS.map(
         (v) =>
-          `<button data-view="${v}" aria-pressed="${v === this.view}">${v[0]?.toUpperCase()}${v.slice(1)}</button>`,
+          `<button data-view="${v}" aria-pressed="${v === this.view}">${t(`scheduler.${v}`)}</button>`,
       ).join('')}</div>` +
       `<button data-w="1" aria-label="Next">›</button></div>`
     const body =
@@ -330,7 +331,7 @@ export class AuroraScheduler extends AuroraElement {
         })
         .join('')
     }
-    return `<div class="agenda">${any ? out : '<div class="empty">No events in this range.</div>'}</div>`
+    return `<div class="agenda">${any ? out : `<div class="empty">${t('scheduler.empty')}</div>`}</div>`
   }
 
   private page(dir: number): void {

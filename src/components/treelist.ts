@@ -34,7 +34,7 @@ const STYLE = `
   table { width: 100%; border-collapse: collapse; }
   thead { position: sticky; top: 0; z-index: 2; background: var(--aurora-surface, #14141f); }
   th, td {
-    text-align: left;
+    text-align: start;
     padding: 0.6rem 0.9rem;
     border-bottom: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.08));
     white-space: nowrap;
@@ -50,7 +50,7 @@ const STYLE = `
   tbody tr[aria-selected='true'] { background: rgba(109, 92, 255, 0.14) !important; }
   :host([selectable]) tbody tr { cursor: pointer; }
   :host([dense]) th, :host([dense]) td { padding: 0.4rem 0.7rem; }
-  td.num, th.num { text-align: right; }
+  td.num, th.num { text-align: end; }
   td.center, th.center { text-align: center; }
   .cell0 { display: inline-flex; align-items: center; gap: 6px; }
   .caret {

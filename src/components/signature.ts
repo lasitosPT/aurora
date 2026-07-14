@@ -1,6 +1,7 @@
 import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { register } from '../core/register'
+import { t } from '../core/i18n'
 
 const VIEW_W = 400
 const VIEW_H = 160
@@ -69,7 +70,7 @@ export class AuroraSignature extends AuroraElement {
   }
 
   connectedCallback(): void {
-    const hint = this.getAttribute('placeholder') ?? 'Sign here'
+    const hint = this.getAttribute('placeholder') ?? t('signature.hint')
     this.root.innerHTML = `<style>${STYLE}</style><div class="pad" part="pad" tabindex="0" role="img" aria-label="Signature pad"><svg viewBox="0 0 ${VIEW_W} ${VIEW_H}" preserveAspectRatio="none"></svg><span class="base" part="baseline"></span><span class="hint" part="hint">${escapeHtml(hint)}</span><button class="clear" part="clear" aria-label="Clear signature">✕</button></div>`
     const pad = this.root.querySelector<HTMLElement>('.pad')
     if (!pad) return

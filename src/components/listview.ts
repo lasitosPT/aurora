@@ -3,6 +3,7 @@ import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { prefersReducedMotion } from '../core/motion'
 import { register } from '../core/register'
+import { t } from '../core/i18n'
 
 const STYLE = `
   :host {
@@ -103,7 +104,7 @@ export class AuroraListview extends AuroraElement {
               }">${this.#template ? this.#template(row) : escapeHtml(Object.values(row).join(' · '))}</div>`,
           )
           .join('')
-      : '<div class="empty">No items</div>'
+      : `<div class="empty">${t('listview.empty')}</div>`
     const pager =
       pages > 1
         ? `<div class="pager"><button class="prev" ${this.page === 0 ? 'disabled' : ''}>‹ Prev</button><span>${

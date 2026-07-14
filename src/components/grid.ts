@@ -3,6 +3,7 @@ import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { clamp, prefersReducedMotion } from '../core/motion'
 import { register } from '../core/register'
+import { t } from '../core/i18n'
 import { makeXlsx } from '../core/xlsx'
 
 const STYLE = `
@@ -19,7 +20,7 @@ const STYLE = `
   table { width: 100%; border-collapse: collapse; }
   thead { position: sticky; top: 0; z-index: 2; background: var(--aurora-surface, #14141f); }
   th, td {
-    text-align: left;
+    text-align: start;
     padding: 0.65rem 0.9rem;
     border-bottom: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.08));
     white-space: nowrap;
@@ -137,7 +138,7 @@ const STYLE = `
   tbody tr[aria-selected='true'] { background: rgba(109, 92, 255, 0.14) !important; }
   :host([selectable]) tbody tr { cursor: pointer; }
   :host([dense]) th, :host([dense]) td { padding: 0.4rem 0.7rem; }
-  td.num, th.num { text-align: right; }
+  td.num, th.num { text-align: end; }
   td.center, th.center { text-align: center; }
   .empty { padding: 26px; text-align: center; color: var(--aurora-muted, #9a98b3); }
   .pager {
@@ -402,14 +403,14 @@ export class AuroraGrid extends AuroraElement {
     pop.className = 'pop'
     pop.setAttribute('role', 'dialog')
     pop.setAttribute('aria-modal', 'true')
-    pop.innerHTML = `<h3>Edit row</h3>${cols
+    pop.innerHTML = `<h3>${t('grid.editRow')}</h3>${cols
       .map(
         (c) =>
           `<label>${escapeHtml(c.title ?? c.field)}<input data-f="${escapeHtml(c.field)}" value="${escapeHtml(String(row[c.field] ?? ''))}" /><span class="err" data-e="${escapeHtml(c.field)}"></span></label>`,
       )
       .join(
         '',
-      )}<div class="row2"><button class="cancel">Cancel</button><button class="save">Save</button></div>`
+      )}<div class="row2"><button class="cancel">${t('grid.cancel')}</button><button class="save">${t('grid.save')}</button></div>`
     const close = (): void => {
       wrap.remove()
       pop.remove()
@@ -636,9 +637,9 @@ export class AuroraGrid extends AuroraElement {
       this.hasAttribute('searchable') || this.hasAttribute('exportable')
         ? `<div class="toolbar" part="toolbar">${
             this.hasAttribute('searchable')
-              ? `<input data-search type="search" placeholder="Search…" aria-label="Search all columns" value="${this.search}" />`
+              ? `<input data-search type="search" placeholder="${t('grid.search')}" aria-label="Search all columns" value="${this.search}" />`
               : ''
-          }${this.hasAttribute('exportable') ? '<button class="tool-btn" data-export>Export CSV</button><button class="tool-btn" data-export-xlsx>Export Excel</button>' : ''}</div>`
+          }${this.hasAttribute('exportable') ? `<button class="tool-btn" data-export>${t('grid.exportCsv')}</button><button class="tool-btn" data-export-xlsx>${t('grid.exportExcel')}</button>` : ''}</div>`
         : ''
 
     const head = cols
@@ -802,7 +803,7 @@ export class AuroraGrid extends AuroraElement {
         `<tr aria-hidden="true" style="height:${below * rowH}px"></tr>`
     }
     const vh = virtual ? ' style="max-height: var(--aurora-grid-height, 420px)"' : ''
-    this.root.innerHTML = `<style>${STYLE}</style>${toolbar}<div class="viewport"${vh}><table role="grid" aria-rowcount="${total}"><thead>${groupRow}<tr>${selectHead}${expandHead}${head}</tr>${filterRow}</thead><tbody>${body}</tbody>${foot}</table>${rows.length === 0 ? '<div class="empty">No matching rows.</div>' : ''}</div>${pager}`
+    this.root.innerHTML = `<style>${STYLE}</style>${toolbar}<div class="viewport"${vh}><table role="grid" aria-rowcount="${total}"><thead>${groupRow}<tr>${selectHead}${expandHead}${head}</tr>${filterRow}</thead><tbody>${body}</tbody>${foot}</table>${rows.length === 0 ? `<div class="empty">${t('grid.empty')}</div>` : ''}</div>${pager}`
 
     if (virtual) {
       const vp = this.root.querySelector<HTMLElement>('.viewport')
@@ -918,17 +919,17 @@ export class AuroraGrid extends AuroraElement {
           .slice(0, 12)
         const active = this.valueFilters.get(field)
         menu.innerHTML = `
-          <button data-a="asc">↑ Sort ascending</button>
-          <button data-a="desc">↓ Sort descending</button>
-          <button data-a="clear">✕ Clear sort</button>
-          <button data-a="hide">Hide column</button>
-          <button data-a="freeze">${col?.frozen ? 'Unfreeze' : 'Freeze'} column</button>
+          <button data-a="asc">${t('grid.sortAsc')}</button>
+          <button data-a="desc">${t('grid.sortDesc')}</button>
+          <button data-a="clear">${t('grid.clearSort')}</button>
+          <button data-a="hide">${t('grid.hideColumn')}</button>
+          <button data-a="freeze">${col?.frozen ? t('grid.unfreeze') : t('grid.freeze')}</button>
           <div class="vf" role="group" aria-label="Filter values">${distinct
             .map(
               (v) =>
                 `<label class="vf-row"><input type="checkbox" data-v="${escapeHtml(v)}" ${!active || active.has(v) ? 'checked' : ''}/> ${escapeHtml(v) || '(empty)'}</label>`,
             )
-            .join('')}<button data-a="vf-clear">Clear value filter</button></div>`
+            .join('')}<button data-a="vf-clear">${t('grid.clearValueFilter')}</button></div>`
         btn.closest('th')?.appendChild(menu)
         menu.querySelectorAll<HTMLInputElement>('.vf input[type="checkbox"]').forEach((box) =>
           box.addEventListener('change', () => {

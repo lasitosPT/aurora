@@ -3,6 +3,7 @@ import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { prefersReducedMotion } from '../core/motion'
 import { register } from '../core/register'
+import { t } from '../core/i18n'
 
 const STYLE = `
   :host { display: inline-flex; flex-direction: column; gap: 8px; width: 210px; color: var(--aurora-fg, #ececf2); }
@@ -129,7 +130,7 @@ export class AuroraListbox extends AuroraElement {
               `<button class="item" role="option" data-v="${escapeHtml(item)}" aria-selected="${item === this.selected}">${escapeHtml(item)}</button>`,
           )
           .join('')
-      : '<div class="empty">Empty</div>'
+      : `<div class="empty">${t('listbox.empty')}</div>`
     list.querySelectorAll<HTMLButtonElement>('.item').forEach((btn) => {
       btn.addEventListener('click', () => {
         this.selected = btn.dataset['v'] ?? null

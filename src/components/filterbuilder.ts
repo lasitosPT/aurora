@@ -1,6 +1,7 @@
 import { AuroraElement } from '../core/base'
 import { escapeHtml } from '../core/html'
 import { register } from '../core/register'
+import { t } from '../core/i18n'
 
 export interface FilterField {
   field: string
@@ -180,15 +181,15 @@ export class AuroraFilterbuilder extends AuroraElement {
                 `<option value="${escapeHtml(o.op)}" ${o.op === rule.op ? 'selected' : ''}>${escapeHtml(o.label)}</option>`,
             )
             .join('')}</select>
-          <input data-r="value" value="${escapeHtml(rule.value)}" placeholder="Value…" aria-label="Value" />
+          <input data-r="value" value="${escapeHtml(rule.value)}" placeholder="${t('filter.value')}" aria-label="Value" />
           <button class="remove" aria-label="Remove rule">✕</button>
         </div>`
       })
       .join('')
     this.root.innerHTML = `<style>${STYLE}</style>
-      <div class="logic">Match <button data-l="and" aria-pressed="${this.logic === 'and'}">ALL</button><button data-l="or" aria-pressed="${this.logic === 'or'}">ANY</button> of the rules</div>
+      <div class="logic">${t('filter.matchLabel', '').split('{0}')[0] ?? ''}<button data-l="and" aria-pressed="${this.logic === 'and'}">${t('filter.matchAll')}</button><button data-l="or" aria-pressed="${this.logic === 'or'}">${t('filter.matchAny')}</button> ${(t('filter.matchLabel', 'X').split('X')[1] ?? '').trim()}</div>
       ${rows}
-      <button class="add">+ Add rule</button>`
+      <button class="add">${t('filter.addRule')}</button>`
     this.root.querySelectorAll<HTMLButtonElement>('[data-l]').forEach((btn) =>
       btn.addEventListener('click', () => {
         this.logic = btn.dataset['l'] === 'or' ? 'or' : 'and'

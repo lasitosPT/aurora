@@ -55,16 +55,16 @@ const STYLE = `
   th.corner { left: 0; z-index: 3; }
   td {
     padding: 0.35rem 0.6rem; border: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.05));
-    text-align: right; cursor: cell; white-space: nowrap; min-width: 74px; height: 1.4em;
+    text-align: end; cursor: cell; white-space: nowrap; min-width: 74px; height: 1.4em;
   }
-  td.text { text-align: left; }
+  td.text { text-align: start; }
   td.err { color: var(--aurora-danger, #f43f5e); font-size: 0.78rem; }
   td[aria-selected='true'] {
     outline: 2px solid var(--aurora-accent, #6d5cff); outline-offset: -2px;
     background: rgba(109, 92, 255, 0.09);
   }
   td input {
-    all: unset; width: 100%; font: inherit; text-align: right;
+    all: unset; width: 100%; font: inherit; text-align: end;
   }
 `
 

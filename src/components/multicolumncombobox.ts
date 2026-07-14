@@ -27,7 +27,7 @@ const STYLE = `
   :host([open]) .panel { display: block; }
   table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
   th {
-    text-align: left; padding: 0.5rem 0.9rem; font-size: 0.72rem; text-transform: uppercase;
+    text-align: start; padding: 0.5rem 0.9rem; font-size: 0.72rem; text-transform: uppercase;
     letter-spacing: 0.05em; color: var(--aurora-muted, #9a98b3);
     border-bottom: 1px solid var(--aurora-border, rgba(255, 255, 255, 0.1));
     position: sticky; top: 0; background: var(--aurora-surface, #16161f);
