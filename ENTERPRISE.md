@@ -74,7 +74,7 @@ Avatar ✅ · Badge ✅ · Card ✅ · Dialog ✅ · ExpansionPanel ✅ · Form 
 PanelBar 🔶 (`aurora-accordion`) · PopOver ✅ · Popup 🔶 (popover/menu primitives) ·
 ResponsivePanel ✅ (`aurora-responsivepanel`) · Ripple ✅ · Splitter ✅ ·
 TabStrip ✅ · TileLayout ✅ · Timeline ✅ · Tooltip ✅ · Window ✅ ·
-DockManager 🔶 (splitter + window + tilelayout compose most of it; dedicated manager ⬜)
+DockManager ✅ (`aurora-dockmanager`: five zones, drag re-dock by slot reassignment)
 
 ## Interactivity & UX
 

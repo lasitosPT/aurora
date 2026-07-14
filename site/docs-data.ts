@@ -2729,6 +2729,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-dockmanager',
+    title: 'DockManager',
+    category: 'Enterprise & Data',
+    summary:
+      'IDE-style docking — drag panes between five zones with live target highlighting; re-docking is slot reassignment, so nothing loses state.',
+    example: `<aurora-dockmanager style="width:100%;--aurora-dock-side:180px">\n  <aurora-dockpane heading="Explorer" zone="left">Your file tree here.</aurora-dockpane>\n  <aurora-dockpane heading="Editor" zone="center">The main surface.</aurora-dockpane>\n  <aurora-dockpane heading="Terminal" zone="bottom">Logs and shells.</aurora-dockpane>\n</aurora-dockmanager>`,
+    attributes: [
+      ['pane: heading / zone', 'Title and dock target (top/left/center/right/bottom)'],
+      ['pane: collapsed', 'Reflected fold state'],
+    ],
+    events: [['aurora-dock', '{ heading, zone } after a re-dock']],
+    cssvars: [['--aurora-dock-side', 'Side column width (default 220px)']],
+    methods: [['pane.zone', 'Get/set — programmatic docking']],
+    tutorial: [
+      {
+        heading: '1 · Workbenches',
+        text: 'Fill panes with aurora components — a treeview explorer, an editor, a chat — and let users arrange their own workspace.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

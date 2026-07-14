@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.92.0
+
+Docking.
+
+- `aurora-dockmanager` + `aurora-dockpane` — IDE-style pane docking in five zones:
+  drag a pane by its header, zones outline and the hovered one highlights, dropping
+  re-docks by slot reassignment so listeners survive; panes collapse from their
+  headers. Ships with docs.
+
 ## 0.91.0
 
 Drag and drop, generic.
