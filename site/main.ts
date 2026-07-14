@@ -565,11 +565,11 @@ function wirePrompt(box: AuroraPromptbox | null): void {
   const answers: [RegExp, string][] = [
     [
       /what is aurora/i,
-      'aurora is a library of 110 animated Web Components — data grids to gauges — powered by GSAP. MIT licensed, zero wrappers.',
+      'aurora is a library of animated Web Components — data grids to gauges — powered by GSAP. MIT licensed, zero wrappers.',
     ],
     [
       /how many/i,
-      'One hundred and ten components, each with docs, tests, and a live demo on this site.',
+      `${document.querySelectorAll('#catalog article.demo').length ? 'Well over a hundred' : 'Many'} components, each with docs, tests, and a live demo on this site.`,
     ],
     [
       /.*/,
