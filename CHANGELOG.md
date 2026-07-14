@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.88.0
+
+Image editing.
+
+- `aurora-imageeditor` — open a file or pass `src`, rotate in quarter turns, flip
+  either axis, adjust brightness/contrast/saturation live on canvas, reset, and
+  export as a data URL or download. Ships with docs.
+
 ## 0.87.0
 
 The long tail.

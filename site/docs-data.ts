@@ -2637,6 +2637,27 @@ export const DOCS: ComponentDoc[] = [
     ],
   },
   {
+    tag: 'aurora-imageeditor',
+    title: 'ImageEditor',
+    category: 'Forms & Inputs',
+    summary:
+      'Canvas image editing — rotate, flip, and tune brightness, contrast, and saturation live, then export the result as a PNG.',
+    example: `<aurora-imageeditor src="/og.jpg" style="width:100%;max-width:520px"></aurora-imageeditor>`,
+    attributes: [['src', 'Initial image (or use the Open button)']],
+    events: [['aurora-change', '{ edits } — rotation, flips, and filter values']],
+    cssvars: [['--aurora-surface / -accent', 'Chrome and slider styling']],
+    methods: [
+      ['rotate(±90) / flip(axis) / reset()', 'Programmatic operations'],
+      ['toDataUrl(type?) / loadUrl(url)', 'Export and load'],
+    ],
+    tutorial: [
+      {
+        heading: '1 · Avatars and uploads',
+        text: 'Pair with aurora-upload — let users straighten and brighten before the file leaves the browser.',
+      },
+    ],
+  },
+  {
     tag: 'aurora-toaster',
     title: 'Toasts',
     category: 'Overlays & Feedback',

@@ -61,7 +61,7 @@ NumericTextBox ✅ · OTP ✅ · RadioButton 🔶 / RadioGroup ✅ · RangeSlide
 Rich Text Editor ✅ · Signature ✅ · Slider ✅ · Switch ✅ · TextArea ✅ · TextBox ✅ ·
 TimeDurationPicker ✅ · TimePicker ✅ · Validator ✅ (`aurora-form`) ·
 Captcha ✅ (`aurora-captcha`, client-side; docs say pair with server checks) ·
-ImageEditor ⬜ (crop/rotate/flip/export planned)
+ImageEditor ✅ (`aurora-imageeditor`: rotate/flip/filters/export; crop ⬜)
 
 ## Scheduling
 
